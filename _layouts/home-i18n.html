@@ -16,13 +16,17 @@ layout: default
         <div class="tagline">{{ t.hero_subtitle }}</div>
         
         <div class="cta">
-            <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
+            {% assign docs_url = "/docs/" %}
+            {% if lang != site.default_lang %}
+                {% assign docs_url = "/" | append: lang | append: "/docs/" %}
+            {% endif %}
+            <a href="{{ docs_url | relative_url }}" class="btn btn-primary">
                 {{ t.get_started }} →
             </a>
             <a href="{{ site.github_url }}" class="btn">
                 {{ t.view_github }}
             </a>
-            <a href="{{ '/docs/' | relative_url }}" class="btn">
+            <a href="{{ docs_url | relative_url }}" class="btn">
                 {{ t.documentation }}
             </a>
         </div>

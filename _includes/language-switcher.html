@@ -13,17 +13,63 @@
     <div class="lang-dropdown">
         {% for lang in site.languages %}
             {% if lang != current_lang %}
-                {% assign lang_url = page.url | replace: current_lang, lang %}
-                {% if current_lang == site.default_lang %}
-                    {% assign lang_url = "/" | append: lang | append: page.url %}
+                {% comment %} Lógica de conversão de URL para troca de idioma {% endcomment %}
+                {% assign lang_url = page.url %}
+                
+                {% comment %} Se estamos em inglês (padrão) indo para outro idioma {% endcomment %}
+                {% if current_lang == site.default_lang and lang != site.default_lang %}
+                    {% if page.url == "/" %}
+                        {% assign lang_url = "/" | append: lang | append: "/" %}
+                    {% else %}
+                        {% assign lang_url = "/" | append: lang | append: page.url %}
+                    {% endif %}
                 {% endif %}
-                {% if lang == site.default_lang and current_lang != site.default_lang %}
-                    {% assign lang_url = page.url | remove_first: "/" | remove_first: current_lang | remove_first: "/" %}
-                    {% if lang_url == "" %}
+                
+                {% comment %} Se estamos em outro idioma indo para inglês {% endcomment %}
+                {% if current_lang != site.default_lang and lang == site.default_lang %}
+                    {% assign clean_url = page.url | remove_first: "/" | remove_first: current_lang %}
+                    {% if clean_url == "/" or clean_url == "" %}
                         {% assign lang_url = "/" %}
                     {% else %}
-                        {% assign lang_url = "/" | append: lang_url %}
+                        {% assign lang_url = clean_url %}
                     {% endif %}
+                {% endif %}
+                
+                {% comment %} Se estamos trocando entre idiomas não-padrão {% endcomment %}
+                {% if current_lang != site.default_lang and lang != site.default_lang %}
+                    {% assign lang_url = page.url | replace_first: current_lang, lang %}
+                {% endif %}
+                
+                {% comment %} Mapeamento de slugs específicos para português {% endcomment %}
+                {% if lang == 'pt' %}
+                    {% assign lang_url = lang_url | replace: '/docs/installation/', '/docs/instalacao/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/quickstart/', '/docs/inicio-rapido/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/configuration/', '/docs/configuracao/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/routing/', '/docs/roteamento/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/requests-responses/', '/docs/requisicoes-respostas/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/security/', '/docs/seguranca/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/events/', '/docs/eventos/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/validation/', '/docs/validacao/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/database/', '/docs/banco-de-dados/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/providers/', '/docs/provedores/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/testing/', '/docs/testes/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/deployment/', '/docs/deploy/' %}
+                {% endif %}
+                
+                {% comment %} Mapeamento de slugs do português para inglês {% endcomment %}
+                {% if current_lang == 'pt' and lang == site.default_lang %}
+                    {% assign lang_url = lang_url | replace: '/docs/instalacao/', '/docs/installation/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/inicio-rapido/', '/docs/quickstart/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/configuracao/', '/docs/configuration/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/roteamento/', '/docs/routing/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/requisicoes-respostas/', '/docs/requests-responses/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/seguranca/', '/docs/security/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/eventos/', '/docs/events/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/validacao/', '/docs/validation/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/banco-de-dados/', '/docs/database/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/provedores/', '/docs/providers/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/testes/', '/docs/testing/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/deploy/', '/docs/deployment/' %}
                 {% endif %}
                 
                 <a href="{{ lang_url | relative_url }}" class="lang-option">

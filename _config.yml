@@ -41,6 +41,16 @@ defaults:
       type: "docs"
     values:
       layout: "docs"
+  - scope:
+      path: "pt"
+      type: "pages"
+    values:
+      layout: "docs-i18n"
+  - scope:
+      path: "pt/_docs"
+      type: "pages"
+    values:
+      layout: "docs-i18n"
 
 # Custom variables
 github_url: https://github.com/helixphp
@@ -67,6 +77,10 @@ footer:
       url: /docs/
     - title: Examples
       url: /examples/
+
+# Include Portuguese pages
+include:
+  - pt
 
 # Exclude from build
 exclude:
