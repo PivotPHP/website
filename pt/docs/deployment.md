@@ -359,21 +359,21 @@ echo "Deploy concluído com sucesso!"
 
 @task('deploy')
     echo 'Clonando repositório'
-    [ -d {{ $releases_dir }} ] || mkdir {{ $releases_dir }}
-    git clone --depth 1 --branch master {{ $repository }} {{ $new_release_dir }}
+    [ -d {% raw %}{{ $releases_dir }}{% endraw %} ] || mkdir {% raw %}{{ $releases_dir }}{% endraw %}
+    git clone --depth 1 --branch master {% raw %}{{ $repository }}{% endraw %} {% raw %}{{ $new_release_dir }}{% endraw %}
 
     echo 'Instalando dependências do composer'
-    cd {{ $new_release_dir }}
+    cd {% raw %}{{ $new_release_dir }}{% endraw %}
     composer install --prefer-dist --no-dev --optimize-autoloader
 
     echo 'Criando link do arquivo .env'
-    ln -nfs {{ $app_dir }}/.env {{ $new_release_dir }}/.env
+    ln -nfs {% raw %}{{ $app_dir }}{% endraw %}/.env {% raw %}{{ $new_release_dir }}{% endraw %}/.env
 
     echo 'Criando link do diretório storage'
-    ln -nfs {{ $app_dir }}/storage {{ $new_release_dir }}/storage
+    ln -nfs {% raw %}{{ $app_dir }}{% endraw %}/storage {% raw %}{{ $new_release_dir }}{% endraw %}/storage
 
     echo 'Executando migrações'
-    cd {{ $new_release_dir }}
+    cd {% raw %}{{ $new_release_dir }}{% endraw %}
     php helix migrate --force
 
     echo 'Cacheando configuração'
@@ -381,7 +381,7 @@ echo "Deploy concluído com sucesso!"
     php helix route:cache
 
     echo 'Criando link da release atual'
-    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
+    ln -nfs {% raw %}{{ $new_release_dir }}{% endraw %} {% raw %}{{ $app_dir }}{% endraw %}/current
 
     echo 'Reiniciando FPM'
     sudo service php8.1-fpm reload

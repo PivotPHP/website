@@ -47,7 +47,7 @@ defaults:
     values:
       layout: "docs-i18n"
   - scope:
-      path: "pt/_docs"
+      path: "pt/docs"
       type: "pages"
     values:
       layout: "docs-i18n"

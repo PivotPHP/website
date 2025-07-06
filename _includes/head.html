@@ -14,13 +14,13 @@
     
     <!-- Preload critical resources -->
     <link rel="preload" href="{{ '/assets/css/style.css' | relative_url }}" as="style">
-    {% if page.layout == 'docs' %}
+    {% if page.layout == 'docs' or page.layout == 'docs-i18n' %}
     <link rel="preload" href="{{ '/assets/css/docs.css' | relative_url }}" as="style">
     {% endif %}
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    {% if page.layout == 'docs' %}
+    {% if page.layout == 'docs' or page.layout == 'docs-i18n' %}
     <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
     {% endif %}
     

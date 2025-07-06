@@ -361,7 +361,7 @@ $validator = validate($registerData, $registerRules)
 
 // Nas views
 @if($errors->login->has('email'))
-    <span class="error">{{ $errors->login->first('email') }}</span>
+    <span class="error">{% raw %}{{ $errors->login->first('email') }}{% endraw %}</span>
 @endif
 ```
 
