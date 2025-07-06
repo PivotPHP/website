@@ -36,7 +36,7 @@
         {% endif %}
     </ul>
     
-    <h3>{{ t.features }}</h3>
+    <h3>{{ t.nav.features }}</h3>
     <ul>
         {% if lang == 'pt' %}
         <li><a href="{{ lang_prefix | append: '/docs/seguranca/' | relative_url }}">{{ t.nav.security }}</a></li>
