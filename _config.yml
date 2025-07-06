@@ -2,8 +2,8 @@
 title: HelixPHP
 tagline: The Evolutionary PHP Microframework
 description: Build modern APIs with Express.js-like syntax, 52M+ ops/sec performance, and zero configuration.
-url: "https://helixphp.com"
-baseurl: ""
+url: "https://helixphp.github.io"
+baseurl: "/website"
 logo: /assets/images/DarkLogo.png
 
 # Build settings
@@ -11,10 +11,11 @@ markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
-# Plugins
+# Plugins (GitHub Pages compatible)
 plugins:
   - jekyll-sitemap
   - jekyll-feed
+  - jekyll-relative-links
 
 # Collections
 collections:
