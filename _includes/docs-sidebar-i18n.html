@@ -1,0 +1,40 @@
+{% assign lang = page.lang | default: site.default_lang %}
+{% assign t = site.data.translations[lang] %}
+{% assign lang_prefix = "" %}
+{% if lang != site.default_lang %}
+    {% assign lang_prefix = "/" | append: lang %}
+{% endif %}
+
+<!-- Sidebar -->
+<aside class="docs-sidebar">
+    <h3>{{ t.nav.getting_started }}</h3>
+    <ul>
+        <li><a href="{{ lang_prefix | append: '/docs/' | relative_url }}">{{ t.nav.introduction }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/installation/' | relative_url }}">{{ t.nav.installation }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/quickstart/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/configuration/' | relative_url }}">{{ t.nav.configuration }}</a></li>
+    </ul>
+    
+    <h3>{{ t.nav.core_concepts }}</h3>
+    <ul>
+        <li><a href="{{ lang_prefix | append: '/docs/routing/' | relative_url }}">{{ t.nav.routing }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/middleware/' | relative_url }}">{{ t.nav.middleware }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/requests-responses/' | relative_url }}">{{ t.nav.requests_responses }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/container/' | relative_url }}">{{ t.nav.container }}</a></li>
+    </ul>
+    
+    <h3>{{ t.features }}</h3>
+    <ul>
+        <li><a href="{{ lang_prefix | append: '/docs/security/' | relative_url }}">{{ t.nav.security }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/events/' | relative_url }}">{{ t.nav.events }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/validation/' | relative_url }}">{{ t.nav.validation }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/database/' | relative_url }}">{{ t.nav.database }}</a></li>
+    </ul>
+    
+    <h3>{{ t.nav.advanced }}</h3>
+    <ul>
+        <li><a href="{{ lang_prefix | append: '/docs/providers/' | relative_url }}">{{ t.nav.providers }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/testing/' | relative_url }}">{{ t.nav.testing }}</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/deployment/' | relative_url }}">{{ t.nav.deployment }}</a></li>
+    </ul>
+</aside>

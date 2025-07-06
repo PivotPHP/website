@@ -1,0 +1,126 @@
+# UI Translations
+en:
+  lang_name: "English"
+  lang_flag: "🇺🇸"
+  tagline: "The Evolutionary PHP Microframework"
+  hero_subtitle: "Built for performance. Designed to evolve."
+  get_started: "Get Started"
+  view_github: "View on GitHub"
+  documentation: "Documentation"
+  home: "Home"
+  quick_start: "Quick Start"
+  features: "Features"
+  
+  # Navigation
+  nav:
+    getting_started: "Getting Started"
+    introduction: "Introduction"
+    installation: "Installation"
+    quick_start: "Quick Start"
+    configuration: "Configuration"
+    core_concepts: "Core Concepts"
+    routing: "Routing"
+    middleware: "Middleware"
+    requests_responses: "Requests & Responses"
+    container: "Service Container"
+    security: "Security"
+    events: "Events"
+    validation: "Validation"
+    database: "Database"
+    advanced: "Advanced"
+    providers: "Service Providers"
+    testing: "Testing"
+    deployment: "Deployment"
+  
+  # Features
+  features:
+    evolutionary:
+      title: "Evolutionary Architecture"
+      desc: "Adapts to your needs with a flexible, extensible design"
+    performance:
+      title: "52M+ Operations/Second"
+      desc: "Blazing fast performance optimized for modern PHP"
+    security:
+      title: "Security by Design"
+      desc: "Built-in CSRF, XSS protection, and rate limiting"
+    zero_config:
+      title: "Zero Configuration"
+      desc: "Start building immediately with sensible defaults"
+  
+  # Metrics
+  metrics:
+    ops_second: "Ops/Second"
+    compliant: "Compliant"
+    tests: "Tests"
+    configuration: "Configuration"
+  
+  # Footer
+  footer:
+    tagline: "Evolution over Convention • Performance in Every Strand • Structure meets Speed"
+    license: "MIT Licensed"
+  
+  # Code example
+  code_example_title: "Express.js-like Syntax for PHP Developers"
+
+pt:
+  lang_name: "Português"
+  lang_flag: "🇧🇷"
+  tagline: "O Microframework PHP Evolutivo"
+  hero_subtitle: "Construído para performance. Projetado para evoluir."
+  get_started: "Começar"
+  view_github: "Ver no GitHub"
+  documentation: "Documentação"
+  home: "Início"
+  quick_start: "Início Rápido"
+  features: "Recursos"
+  
+  # Navigation
+  nav:
+    getting_started: "Primeiros Passos"
+    introduction: "Introdução"
+    installation: "Instalação"
+    quick_start: "Início Rápido"
+    configuration: "Configuração"
+    core_concepts: "Conceitos Principais"
+    routing: "Roteamento"
+    middleware: "Middleware"
+    requests_responses: "Requisições e Respostas"
+    container: "Container de Serviços"
+    security: "Segurança"
+    events: "Eventos"
+    validation: "Validação"
+    database: "Banco de Dados"
+    advanced: "Avançado"
+    providers: "Provedores de Serviço"
+    testing: "Testes"
+    deployment: "Implantação"
+  
+  # Features
+  features:
+    evolutionary:
+      title: "Arquitetura Evolutiva"
+      desc: "Adapta-se às suas necessidades com design flexível e extensível"
+    performance:
+      title: "52M+ Operações/Segundo"
+      desc: "Performance extrema otimizada para PHP moderno"
+    security:
+      title: "Segurança por Design"
+      desc: "Proteção CSRF, XSS e rate limiting integrados"
+    zero_config:
+      title: "Zero Configuração"
+      desc: "Comece a construir imediatamente com padrões sensatos"
+  
+  # Metrics
+  metrics:
+    ops_second: "Ops/Segundo"
+    compliant: "Compatível"
+    tests: "Testes"
+    configuration: "Configuração"
+  
+  # Footer
+  footer:
+    tagline: "Evolução sobre Convenção • Performance em Cada Linha • Estrutura encontra Velocidade"
+    license: "Licença MIT"
+  
+  # Code example
+  code_example_title: "Sintaxe similar ao Express.js para desenvolvedores PHP"

@@ -1,0 +1,27 @@
+---
+layout: default
+---
+
+{% include docs-header.html %}
+
+<!-- Documentation Content -->
+<main class="docs-main">
+    <div class="container docs-container">
+        {% include docs-sidebar-i18n.html %}
+        
+        <!-- Content -->
+        <div class="docs-content">
+            {{ content }}
+        </div>
+    </div>
+</main>
+
+{% include docs-footer.html %}
+
+<!-- Documentation scripts -->
+<!-- Option 1: Simple transitions (default) -->
+<script src="{{ '/assets/js/transitions.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/active-nav.js' | relative_url }}"></script>
+
+<!-- Option 2: Turbo-like navigation (comment out above and uncomment below for AJAX navigation) -->
+<!-- <script src="{{ '/assets/js/turbo-nav.js' | relative_url }}"></script> -->

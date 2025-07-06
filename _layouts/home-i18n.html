@@ -1,0 +1,117 @@
+---
+layout: default
+---
+{% assign lang = page.lang | default: site.default_lang %}
+{% assign t = site.data.translations[lang] %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ '/assets/images/DarkLogo.png' | relative_url }}" alt="{{ site.title }} Logo" class="logo logo-dark">
+            <img src="{{ '/assets/images/LigthLogo.png' | relative_url }}" alt="{{ site.title }} Logo" class="logo logo-light">
+        </div>
+        <h1>{{ site.title }}</h1>
+        <div class="subtitle">{{ t.tagline }}</div>
+        <div class="tagline">{{ t.hero_subtitle }}</div>
+        
+        <div class="cta">
+            <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
+                {{ t.get_started }} →
+            </a>
+            <a href="{{ site.github_url }}" class="btn">
+                {{ t.view_github }}
+            </a>
+            <a href="{{ '/docs/' | relative_url }}" class="btn">
+                {{ t.documentation }}
+            </a>
+        </div>
+        
+        <div class="hero-lang-switcher">
+            {% include language-switcher.html %}
+        </div>
+    </div>
+</section>
+
+<!-- Metrics Section -->
+<section class="metrics">
+    <div class="metric">
+        <div class="metric-value">52M+</div>
+        <div class="metric-label">{{ t.metrics.ops_second }}</div>
+    </div>
+    <div class="metric">
+        <div class="metric-value">PSR-15</div>
+        <div class="metric-label">{{ t.metrics.compliant }}</div>
+    </div>
+    <div class="metric">
+        <div class="metric-value">270+</div>
+        <div class="metric-label">{{ t.metrics.tests }}</div>
+    </div>
+    <div class="metric">
+        <div class="metric-value">Zero</div>
+        <div class="metric-label">{{ t.metrics.configuration }}</div>
+    </div>
+</section>
+
+<!-- Value Props Section -->
+<section class="value-props">
+    <div class="container">
+        <div class="props-grid">
+            <div class="prop-item">
+                <span class="prop-icon">🧬</span>
+                <h3 class="prop-title">{{ t.features.evolutionary.title }}</h3>
+                <p class="prop-desc">{{ t.features.evolutionary.desc }}</p>
+            </div>
+            <div class="prop-item">
+                <span class="prop-icon">⚡</span>
+                <h3 class="prop-title">{{ t.features.performance.title }}</h3>
+                <p class="prop-desc">{{ t.features.performance.desc }}</p>
+            </div>
+            <div class="prop-item">
+                <span class="prop-icon">🛡️</span>
+                <h3 class="prop-title">{{ t.features.security.title }}</h3>
+                <p class="prop-desc">{{ t.features.security.desc }}</p>
+            </div>
+            <div class="prop-item">
+                <span class="prop-icon">🔧</span>
+                <h3 class="prop-title">{{ t.features.zero_config.title }}</h3>
+                <p class="prop-desc">{{ t.features.zero_config.desc }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Code Example -->
+<section class="code-preview">
+    <div class="container">
+        <h3 class="code-header">{{ t.code_example_title }}</h3>
+        <pre><code>use Helix\Core\Application;
+
+$app = new Application();
+
+$app->get('/', function($req, $res) {
+    return $res->json(['message' => 'Welcome to HelixPHP']);
+});
+
+$app->post('/users', function($req, $res) {
+    $user = User::create($req->body());
+    return $res->status(201)->json($user);
+});
+
+$app->run();</code></pre>
+    </div>
+</section>
+
+{{ content }}
+
+{% include footer-i18n.html %}
+
+<style>
+.hero-lang-switcher {
+    margin-top: 2rem;
+}
+
+.hero-lang-switcher .language-switcher {
+    display: inline-block;
+}
+</style>

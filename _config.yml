@@ -6,6 +6,12 @@ url: "https://helixphp.github.io"
 baseurl: "/website"
 logo: /assets/images/DarkLogo.png
 
+# Internationalization
+languages: ["en", "pt"]
+default_lang: "en"
+exclude_from_localization: ["assets", "CNAME"]
+parallel_localization: true
+
 # Build settings
 markdown: kramdown
 highlighter: rouge

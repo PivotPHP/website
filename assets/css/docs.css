@@ -7,6 +7,27 @@ body {
     min-height: 100vh;
 }
 
+/* Language Switcher in Docs */
+.docs-header .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.docs-header .language-switcher {
+    margin-left: 2rem;
+}
+
+@media (max-width: 768px) {
+    .docs-header .language-switcher {
+        margin-left: 1rem;
+    }
+    
+    .docs-header .nav-links {
+        gap: 1rem;
+    }
+}
+
 /* Documentation Header */
 .docs-header {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);

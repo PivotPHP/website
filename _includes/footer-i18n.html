@@ -1,0 +1,10 @@
+{% assign lang = page.lang | default: site.default_lang %}
+{% assign t = site.data.translations[lang] %}
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <p>{{ t.footer.tagline }}</p>
+        <p>© {{ 'now' | date: "%Y" }} {{ site.title }}. {{ t.footer.license }}</p>
+    </div>
+</footer>
