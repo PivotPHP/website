@@ -1,3 +1,8 @@
+---
+layout: docs
+title: Why HelixPHP?
+permalink: /docs/why-helix/
+---
 # HelixPHP 🧬
 
 **The Evolutionary PHP Microframework**
@@ -336,12 +341,20 @@ HelixPHP is open-sourced software licensed under the [MIT license](LICENSE).
 
 ---
 
+## Join the Evolution
+
+HelixPHP isn't just another framework. It's a return to simplicity, performance, and developer happiness. Whether you're building a simple API or a complex microservices architecture, HelixPHP adapts to your needs.
+
+Ready to evolve your PHP development?
+
+[Get Started Now](/docs/installation/) | [View on GitHub](https://github.com/helixphp)
+
 <div align="center">
 
-**⭐ Star us on GitHub — it helps!**
+**⭐ Dê uma estrela no GitHub — isso ajuda!**
 
-**Made with ❤️ by the PHP community, for the PHP community.**
+**Feito com ❤️ pela comunidade PHP, para a comunidade PHP.**
 
-*HelixPHP: The framework that evolves with your project.*
+*HelixPHP: O framework que evolui com seu projeto.*
 
 </div>

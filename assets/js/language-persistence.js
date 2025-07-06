@@ -30,7 +30,8 @@
             '/docs/database/': '/docs/banco-de-dados/',
             '/docs/providers/': '/docs/provedores/',
             '/docs/testing/': '/docs/testes/',
-            '/docs/deployment/': '/docs/deploy/'
+            '/docs/deployment/': '/docs/deploy/',
+            '/docs/why-helix/': '/docs/porque-helix/'
         }
     };
     

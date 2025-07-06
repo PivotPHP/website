@@ -54,6 +54,7 @@
                     {% assign lang_url = lang_url | replace: '/docs/providers/', '/docs/provedores/' %}
                     {% assign lang_url = lang_url | replace: '/docs/testing/', '/docs/testes/' %}
                     {% assign lang_url = lang_url | replace: '/docs/deployment/', '/docs/deploy/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/porque-helix/' %}
                 {% endif %}
                 
                 {% comment %} Mapeamento de slugs do português para inglês {% endcomment %}
@@ -70,6 +71,7 @@
                     {% assign lang_url = lang_url | replace: '/docs/provedores/', '/docs/providers/' %}
                     {% assign lang_url = lang_url | replace: '/docs/testes/', '/docs/testing/' %}
                     {% assign lang_url = lang_url | replace: '/docs/deploy/', '/docs/deployment/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/porque-helix/', '/docs/why-helix/' %}
                 {% endif %}
                 
                 <a href="{{ lang_url | relative_url }}" class="lang-option">

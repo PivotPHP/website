@@ -11,16 +11,18 @@
     <ul>
         <li><a href="{{ lang_prefix | append: '/docs/' | relative_url }}">{{ t.nav.introduction }}</a></li>
         {% if lang == 'pt' %}
+        <li><a href="{{ lang_prefix | append: '/docs/why-helix/' | relative_url }}">Por que HelixPHP?</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/instalacao/' | relative_url }}">{{ t.nav.installation }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/inicio-rapido/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/configuracao/' | relative_url }}">{{ t.nav.configuration }}</a></li>
         {% else %}
+        <li><a href="{{ lang_prefix | append: '/docs/why-helix/' | relative_url }}">Why HelixPHP?</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/installation/' | relative_url }}">{{ t.nav.installation }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/quickstart/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/configuration/' | relative_url }}">{{ t.nav.configuration }}</a></li>
         {% endif %}
     </ul>
-    
+
     <h3>{{ t.nav.core_concepts }}</h3>
     <ul>
         {% if lang == 'pt' %}
@@ -35,7 +37,7 @@
         <li><a href="{{ lang_prefix | append: '/docs/container/' | relative_url }}">{{ t.nav.container }}</a></li>
         {% endif %}
     </ul>
-    
+
     <h3>{{ t.nav.features }}</h3>
     <ul>
         {% if lang == 'pt' %}
@@ -50,7 +52,7 @@
         <li><a href="{{ lang_prefix | append: '/docs/database/' | relative_url }}">{{ t.nav.database }}</a></li>
         {% endif %}
     </ul>
-    
+
     <h3>{{ t.nav.advanced }}</h3>
     <ul>
         {% if lang == 'pt' %}

@@ -17,8 +17,14 @@ layout: default
         
         <div class="cta">
             {% assign docs_url = "/docs/" %}
+            {% assign why_url = "/docs/why-helix/" %}
             {% if lang != site.default_lang %}
                 {% assign docs_url = "/" | append: lang | append: "/docs/" %}
+                {% if lang == "pt" %}
+                    {% assign why_url = "/" | append: lang | append: "/docs/porque-helix/" %}
+                {% else %}
+                    {% assign why_url = "/" | append: lang | append: "/docs/why-helix/" %}
+                {% endif %}
             {% endif %}
             <a href="{{ docs_url | relative_url }}" class="btn btn-primary">
                 {{ t.get_started }} →
@@ -26,8 +32,8 @@ layout: default
             <a href="{{ site.github_url }}" class="btn">
                 {{ t.view_github }}
             </a>
-            <a href="{{ docs_url | relative_url }}" class="btn">
-                {{ t.documentation }}
+            <a href="{{ why_url | relative_url }}" class="btn">
+                {% if lang == "pt" %}Por que HelixPHP?{% else %}Why HelixPHP?{% endif %}
             </a>
         </div>
         
