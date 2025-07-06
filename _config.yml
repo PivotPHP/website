@@ -1,0 +1,72 @@
+# Site settings
+title: HelixPHP
+tagline: The Evolutionary PHP Microframework
+description: Build modern APIs with Express.js-like syntax, 52M+ ops/sec performance, and zero configuration.
+url: "https://helixphp.com"
+baseurl: ""
+logo: /assets/images/DarkLogo.png
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-feed
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: "_docs"
+      type: "docs"
+    values:
+      layout: "docs"
+
+# Custom variables
+github_url: https://github.com/helixphp
+github_org: helixphp
+twitter_username: helixphp
+author: HelixPHP Team
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Documentation
+    url: /docs/
+  - title: GitHub
+    url: https://github.com/helixphp
+    external: true
+
+# Footer
+footer:
+  links:
+    - title: GitHub
+      url: https://github.com/helixphp
+    - title: Documentation
+      url: /docs/
+    - title: Examples
+      url: /examples/
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .gitignore
+  - README.md

@@ -1,0 +1,32 @@
+---
+layout: default
+---
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="logo-container">
+            <img src="{{ site.baseurl }}/assets/images/DarkLogo.png" alt="{{ site.title }} Logo" class="logo logo-dark">
+            <img src="{{ site.baseurl }}/assets/images/LigthLogo.png" alt="{{ site.title }} Logo" class="logo logo-light">
+        </div>
+        <h1>{{ site.title }}</h1>
+        <div class="subtitle">{{ site.tagline }}</div>
+        <div class="tagline">Built for performance. Designed to evolve.</div>
+        
+        <div class="cta">
+            <a href="{{ site.baseurl }}/docs/" class="btn btn-primary">
+                Get Started →
+            </a>
+            <a href="{{ site.github_url }}" class="btn">
+                View on GitHub
+            </a>
+            <a href="{{ site.baseurl }}/docs/" class="btn">
+                Documentation
+            </a>
+        </div>
+    </div>
+</section>
+
+{{ content }}
+
+{% include footer.html %}
