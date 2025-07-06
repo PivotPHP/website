@@ -8,7 +8,7 @@ permalink: /pt/docs/why-helix/
 **O Microframework PHP Evolutivo**
 *Rápido, sem opiniões, minimalista. Construído para performance, projetado para evoluir.*
 
-[![Última Versão](https://img.shields.io/packagist/v/helixphp/helixphp-core.svg)](https://packagist.org/packages/helixphp/helixphp-core)
+[![Última Versão](https://img.shields.io/packagist/v/helixphp/core.svg)](https://packagist.org/packages/helixphp/helixphp-core)
 [![Status Build](https://img.shields.io/github/actions/workflow/status/helixphp/helixphp-core/tests.yml?branch=main)](https://github.com/helixphp/helixphp-core/actions)
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Versão PHP](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
