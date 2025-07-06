@@ -161,9 +161,9 @@ HelixPHP delivers exceptional performance without sacrificing developer experien
 | Framework | Requests/sec | Memory Usage | Response Time |
 |-----------|-------------|--------------|---------------|
 | **HelixPHP** | **52,000+** | **8.2 MB** | **0.05ms** |
-| Slim 4 | 12,000 | 12.5 MB | 0.12ms |
-| Flight | 15,000 | 10.1 MB | 0.08ms |
-| Laravel | 3,500 | 25.7 MB | 0.35ms |
+| Framework A | 12,000 | 12.5 MB | 0.12ms |
+| Framework B | 15,000 | 10.1 MB | 0.08ms |
+| Framework C | 3,500 | 25.7 MB | 0.35ms |
 
 *Benchmarks run on PHP 8.2, single-threaded, simple JSON response. [View full benchmarks →](https://helixphp.github.io/benchmarks)*
 
