@@ -8,7 +8,7 @@ permalink: /docs/why-helix/
 **The Evolutionary PHP Microframework**
 *Fast, unopinionated, minimalist web framework for PHP. Built for performance, designed to evolve.*
 
-[![Latest Version](https://img.shields.io/packagist/v/helixphp/helixphp-core.svg)](https://packagist.org/packages/helixphp/helixphp-core)
+[![Latest Version](https://img.shields.io/packagist/v/helixphp/core.svg)](https://packagist.org/packages/helixphp/core)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/helixphp/helixphp-core/tests.yml?branch=main)](https://github.com/helixphp/helixphp-core/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PHP Version](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
