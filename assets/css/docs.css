@@ -295,3 +295,117 @@ html {
 .docs-content section {
     scroll-margin-top: 80px;
 }
+
+/* Page Transitions */
+.page-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--light);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+@media (prefers-color-scheme: dark) {
+    .page-transition-overlay {
+        background: #1a1a1a;
+    }
+}
+
+body.page-transitioning .page-transition-overlay {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Smooth transitions for content */
+.docs-main {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading indicator */
+body.page-transitioning::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--primary);
+    z-index: 10000;
+    animation: loadingBar 0.8s ease forwards;
+}
+
+@keyframes loadingBar {
+    to {
+        width: 100%;
+    }
+}
+
+/* Prevent layout shift */
+.docs-sidebar {
+    will-change: transform;
+}
+
+.docs-content {
+    will-change: opacity;
+}
+
+/* Active link highlighting with transition */
+.docs-sidebar a {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.docs-sidebar a::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--primary);
+    transition: height 0.2s ease;
+}
+
+.docs-sidebar a:hover::before,
+.docs-sidebar a.active::before {
+    height: 70%;
+}
+
+/* Prefetch indicator */
+a[data-prefetched] {
+    position: relative;
+}
+
+/* Smooth image loading */
+img {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+img.loading {
+    opacity: 0;
+}
+
+/* Better focus styles */
+a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+    border-radius: 2px;
+}

@@ -4,13 +4,29 @@
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
     
+    <!-- DNS Prefetch for performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    
     <!-- Favicon support -->
     <link rel="icon" href="{{ '/assets/images/dark.ico' | relative_url }}" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="{{ '/assets/images/ligth.ico' | relative_url }}" media="(prefers-color-scheme: light)">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{{ '/assets/css/style.css' | relative_url }}" as="style">
+    {% if page.layout == 'docs' %}
+    <link rel="preload" href="{{ '/assets/css/docs.css' | relative_url }}" as="style">
+    {% endif %}
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     {% if page.layout == 'docs' %}
     <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
     {% endif %}
+    
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <script>
+        // Remove no-js class immediately
+        document.documentElement.classList.remove('no-js');
+    </script>
 </head>
