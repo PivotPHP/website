@@ -14,14 +14,14 @@ layout: default
         <h1>{{ site.title }}</h1>
         <div class="subtitle">{{ t.tagline }}</div>
         <div class="tagline">{{ t.hero_subtitle }}</div>
-        
+
         <div class="cta">
             {% assign docs_url = "/docs/" %}
             {% assign why_url = "/docs/why-helix/" %}
             {% if lang != site.default_lang %}
                 {% assign docs_url = "/" | append: lang | append: "/docs/" %}
                 {% if lang == "pt" %}
-                    {% assign why_url = "/" | append: lang | append: "/docs/porque-helix/" %}
+                    {% assign why_url = "/" | append: lang | append: "/docs/why-helix/" %}
                 {% else %}
                     {% assign why_url = "/" | append: lang | append: "/docs/why-helix/" %}
                 {% endif %}
@@ -36,7 +36,7 @@ layout: default
                 {% if lang == "pt" %}Por que HelixPHP?{% else %}Why HelixPHP?{% endif %}
             </a>
         </div>
-        
+
         <div class="hero-lang-switcher">
             {% include language-switcher.html %}
         </div>

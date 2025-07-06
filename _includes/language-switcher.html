@@ -9,13 +9,13 @@
             <path d="M3 5l3 3 3-3" stroke="currentColor" fill="none" stroke-width="2"/>
         </svg>
     </button>
-    
+
     <div class="lang-dropdown">
         {% for lang in site.languages %}
             {% if lang != current_lang %}
                 {% comment %} Lógica de conversão de URL para troca de idioma {% endcomment %}
                 {% assign lang_url = page.url %}
-                
+
                 {% comment %} Se estamos em inglês (padrão) indo para outro idioma {% endcomment %}
                 {% if current_lang == site.default_lang and lang != site.default_lang %}
                     {% if page.url == "/" %}
@@ -24,7 +24,7 @@
                         {% assign lang_url = "/" | append: lang | append: page.url %}
                     {% endif %}
                 {% endif %}
-                
+
                 {% comment %} Se estamos em outro idioma indo para inglês {% endcomment %}
                 {% if current_lang != site.default_lang and lang == site.default_lang %}
                     {% assign clean_url = page.url | remove_first: "/" | remove_first: current_lang %}
@@ -34,12 +34,12 @@
                         {% assign lang_url = clean_url %}
                     {% endif %}
                 {% endif %}
-                
+
                 {% comment %} Se estamos trocando entre idiomas não-padrão {% endcomment %}
                 {% if current_lang != site.default_lang and lang != site.default_lang %}
                     {% assign lang_url = page.url | replace_first: current_lang, lang %}
                 {% endif %}
-                
+
                 {% comment %} Mapeamento de slugs específicos para português {% endcomment %}
                 {% if lang == 'pt' %}
                     {% assign lang_url = lang_url | replace: '/docs/installation/', '/docs/instalacao/' %}
@@ -54,9 +54,9 @@
                     {% assign lang_url = lang_url | replace: '/docs/providers/', '/docs/provedores/' %}
                     {% assign lang_url = lang_url | replace: '/docs/testing/', '/docs/testes/' %}
                     {% assign lang_url = lang_url | replace: '/docs/deployment/', '/docs/deploy/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/porque-helix/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/why-helix/' %}
                 {% endif %}
-                
+
                 {% comment %} Mapeamento de slugs do português para inglês {% endcomment %}
                 {% if current_lang == 'pt' and lang == site.default_lang %}
                     {% assign lang_url = lang_url | replace: '/docs/instalacao/', '/docs/installation/' %}
@@ -71,9 +71,9 @@
                     {% assign lang_url = lang_url | replace: '/docs/provedores/', '/docs/providers/' %}
                     {% assign lang_url = lang_url | replace: '/docs/testes/', '/docs/testing/' %}
                     {% assign lang_url = lang_url | replace: '/docs/deploy/', '/docs/deployment/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/porque-helix/', '/docs/why-helix/' %}
+                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/why-helix/' %}
                 {% endif %}
-                
+
                 <a href="{{ lang_url | relative_url }}" class="lang-option">
                     <span class="lang-flag">{{ translations[lang].lang_flag }}</span>
                     <span class="lang-name">{{ translations[lang].lang_name }}</span>
@@ -171,11 +171,11 @@
         background: #2a2a2a;
         border-color: #444;
     }
-    
+
     .lang-option {
         color: #e0e0e0;
     }
-    
+
     .lang-option:hover {
         background: #333;
     }

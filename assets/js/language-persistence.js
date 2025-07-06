@@ -1,7 +1,7 @@
 // Language persistence across navigation
 (function() {
     'use strict';
-    
+
     // Get current language from URL
     function getCurrentLang() {
         const path = window.location.pathname;
@@ -9,13 +9,13 @@
         const match = path.match(/^\/(?:website\/)?(pt|es|fr|de)\//);
         return match ? match[1] : 'en';
     }
-    
+
     // Store current language
     const currentLang = getCurrentLang();
     if (currentLang !== 'en') {
         localStorage.setItem('preferred-language', currentLang);
     }
-    
+
     // URL slug mappings
     const urlMappings = {
         'pt': {
@@ -31,31 +31,31 @@
             '/docs/providers/': '/docs/provedores/',
             '/docs/testing/': '/docs/testes/',
             '/docs/deployment/': '/docs/deploy/',
-            '/docs/why-helix/': '/docs/porque-helix/'
+            '/docs/why-helix/': '/docs/why-helix/'
         }
     };
-    
+
     // Update all internal links to maintain language
     function updateLinks() {
         const lang = getCurrentLang();
         if (lang === 'en') return;
-        
+
         // Update all docs links
         document.querySelectorAll('a[href*="/docs/"]').forEach(link => {
             const href = link.getAttribute('href');
-            
+
             // Skip if already has language prefix
             if (href.includes('/' + lang + '/')) return;
-            
+
             let newHref = href;
-            
+
             // Add language prefix
             if (href.startsWith('/docs/')) {
                 newHref = '/' + lang + href;
             } else if (href.includes('/docs/')) {
                 newHref = href.replace('/docs/', '/' + lang + '/docs/');
             }
-            
+
             // Apply slug mappings for the language
             if (urlMappings[lang]) {
                 Object.keys(urlMappings[lang]).forEach(englishSlug => {
@@ -63,10 +63,10 @@
                     newHref = newHref.replace(englishSlug, targetSlug);
                 });
             }
-            
+
             link.setAttribute('href', newHref);
         });
-        
+
         // Update home links to docs
         document.querySelectorAll('a[href="/docs/"], a[href="./docs/"]').forEach(link => {
             if (lang !== 'en') {
@@ -74,17 +74,17 @@
             }
         });
     }
-    
+
     // Run on page load
     updateLinks();
-    
+
     // Run after any dynamic content changes
     const observer = new MutationObserver(updateLinks);
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
-    
+
     // Redirect to preferred language on homepage
     const path = window.location.pathname;
     if (path === '/' || path === '/website/' || path === '/website') {
