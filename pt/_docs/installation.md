@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Instalação
-permalink: /pt/docs/installation/
+permalink: /pt/docs/instalacao/
 lang: pt
 ---
 
@@ -9,7 +9,7 @@ lang: pt
 
 ## Requisitos
 
-Antes de instalar, certifique-se de que seu sistema atenda aos seguintes requisitos:
+Antes de instalar o HelixPHP, certifique-se de que seu sistema atenda aos seguintes requisitos:
 
 - **PHP 8.1** ou superior
 - **Composer** (versão mais recente recomendada)
@@ -84,7 +84,7 @@ $app = new Application();
 
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'HelixPHP está funcionando!',
+        'message' => 'HelixPHP está funcionando!', // HelixPHP está rodando!
         'version' => Application::VERSION
     ]);
 });
@@ -102,4 +102,4 @@ Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSO
 
 ## Próximos Passos
 
-Agora que você tem o HelixPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }}) para aprender o básico.
+Agora que você tem o HelixPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/inicio-rapido/' | relative_url }}) para aprender o básico.
