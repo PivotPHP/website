@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelixPHP Documentation</title>
+    <meta name="description" content="Complete documentation for HelixPHP - The evolutionary PHP microframework">
+    
+    <!-- Favicon support -->
+    <link rel="icon" href="assets/images/dark.ico" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="assets/images/ligth.ico" media="(prefers-color-scheme: light)">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/docs.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="docs-header">
+        <div class="container">
+            <nav class="docs-nav">
+                <a href="index.html" class="nav-logo">
+                    <img src="assets/images/DarkLogo.png" alt="HelixPHP Logo" class="logo-small logo-dark">
+                    <img src="assets/images/LigthLogo.png" alt="HelixPHP Logo" class="logo-small logo-light">
+                    <span>HelixPHP</span>
+                </a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="#quickstart">Quick Start</a>
+                    <a href="#features">Features</a>
+                    <a href="https://github.com/helixphp">GitHub</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Documentation Content -->
+    <main class="docs-main">
+        <div class="container docs-container">
+            <!-- Sidebar -->
+            <aside class="docs-sidebar">
+                <h3>Getting Started</h3>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="#quickstart">Quick Start</a></li>
+                    <li><a href="#configuration">Configuration</a></li>
+                </ul>
+                
+                <h3>Core Concepts</h3>
+                <ul>
+                    <li><a href="#routing">Routing</a></li>
+                    <li><a href="#middleware">Middleware</a></li>
+                    <li><a href="#requests">Requests & Responses</a></li>
+                    <li><a href="#container">Service Container</a></li>
+                </ul>
+                
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="#security">Security</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#validation">Validation</a></li>
+                    <li><a href="#database">Database</a></li>
+                </ul>
+                
+                <h3>Advanced</h3>
+                <ul>
+                    <li><a href="#providers">Service Providers</a></li>
+                    <li><a href="#testing">Testing</a></li>
+                    <li><a href="#deployment">Deployment</a></li>
+                </ul>
+            </aside>
+
+            <!-- Content -->
+            <div class="docs-content">
+                <!-- Introduction -->
+                <section id="introduction">
+                    <h1>HelixPHP Documentation</h1>
+                    <p class="lead">Welcome to HelixPHP - The evolutionary PHP microframework designed for building modern, high-performance applications with minimal overhead.</p>
+                    
+                    <h2>Why HelixPHP?</h2>
+                    <p>HelixPHP brings the simplicity and elegance of Express.js to the PHP ecosystem while maintaining the performance and reliability PHP developers expect. With over 52 million operations per second, zero configuration requirements, and PSR-15 compliance, HelixPHP is perfect for:</p>
+                    
+                    <ul>
+                        <li>High-performance API development</li>
+                        <li>Microservices architecture</li>
+                        <li>Rapid prototyping</li>
+                        <li>Enterprise applications</li>
+                    </ul>
+                </section>
+
+                <!-- Installation -->
+                <section id="installation">
+                    <h2>Installation</h2>
+                    <p>Install HelixPHP using Composer:</p>
+                    
+                    <pre><code>composer require helixphp/framework</code></pre>
+                    
+                    <p>Or create a new project:</p>
+                    
+                    <pre><code>composer create-project helixphp/helixphp my-app
+cd my-app
+php -S localhost:8000 -t public</code></pre>
+                    
+                    <h3>Requirements</h3>
+                    <ul>
+                        <li>PHP 8.1 or higher</li>
+                        <li>Composer</li>
+                        <li>ext-json</li>
+                        <li>ext-mbstring</li>
+                    </ul>
+                </section>
+
+                <!-- Quick Start -->
+                <section id="quickstart">
+                    <h2>Quick Start</h2>
+                    <p>Create your first HelixPHP application in minutes:</p>
+                    
+                    <h3>1. Create index.php</h3>
+                    <pre><code>&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Helix\Core\Application;
+
+$app = new Application();
+
+// Define a route
+$app-&gt;get('/', function($request, $response) {
+    return $response-&gt;json([
+        'message' =&gt; 'Welcome to HelixPHP!',
+        'version' =&gt; '1.0.0'
+    ]);
+});
+
+// Start the application
+$app-&gt;run();</code></pre>
+                    
+                    <h3>2. Run Your Application</h3>
+                    <pre><code>php -S localhost:8000</code></pre>
+                    
+                    <p>Visit <code>http://localhost:8000</code> to see your application running!</p>
+                </section>
+
+                <!-- Configuration -->
+                <section id="configuration">
+                    <h2>Configuration</h2>
+                    <p>HelixPHP works out of the box with zero configuration. However, you can customize various aspects:</p>
+                    
+                    <h3>Environment Configuration</h3>
+                    <pre><code>// .env file
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://myapp.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=myapp
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+                    
+                    <h3>Application Configuration</h3>
+                    <pre><code>$app = new Application([
+    'debug' =&gt; true,
+    'timezone' =&gt; 'UTC',
+    'providers' =&gt; [
+        // Your service providers
+    ]
+]);</code></pre>
+                </section>
+
+                <!-- Routing -->
+                <section id="routing">
+                    <h2>Routing</h2>
+                    <p>HelixPHP provides an Express.js-like routing system that's intuitive and powerful:</p>
+                    
+                    <h3>Basic Routes</h3>
+                    <pre><code>// GET request
+$app-&gt;get('/users', function($req, $res) {
+    return $res-&gt;json(['users' =&gt; []]);
+});
+
+// POST request
+$app-&gt;post('/users', function($req, $res) {
+    $data = $req-&gt;body();
+    // Create user...
+    return $res-&gt;status(201)-&gt;json($user);
+});
+
+// PUT request
+$app-&gt;put('/users/{id}', function($req, $res) {
+    $id = $req-&gt;param('id');
+    // Update user...
+    return $res-&gt;json($user);
+});
+
+// DELETE request
+$app-&gt;delete('/users/{id}', function($req, $res) {
+    $id = $req-&gt;param('id');
+    // Delete user...
+    return $res-&gt;status(204)-&gt;send();
+});</code></pre>
+                    
+                    <h3>Route Parameters</h3>
+                    <pre><code>// Required parameter
+$app-&gt;get('/users/{id}', function($req, $res) {
+    $id = $req-&gt;param('id');
+    return $res-&gt;json(['user_id' =&gt; $id]);
+});
+
+// Optional parameter
+$app-&gt;get('/posts/{id?}', function($req, $res) {
+    $id = $req-&gt;param('id', 'latest');
+    return $res-&gt;json(['post_id' =&gt; $id]);
+});
+
+// Regular expression constraints
+$app-&gt;get('/users/{id:[0-9]+}', function($req, $res) {
+    // Only matches numeric IDs
+});</code></pre>
+                    
+                    <h3>Route Groups</h3>
+                    <pre><code>$app-&gt;group('/api', function($group) {
+    $group-&gt;get('/users', [UserController::class, 'index']);
+    $group-&gt;post('/users', [UserController::class, 'store']);
+    
+    $group-&gt;group('/admin', function($admin) {
+        $admin-&gt;middleware('auth:admin');
+        $admin-&gt;get('/dashboard', [AdminController::class, 'dashboard']);
+    });
+});</code></pre>
+                </section>
+
+                <!-- Middleware -->
+                <section id="middleware">
+                    <h2>Middleware</h2>
+                    <p>Middleware provides a convenient mechanism for filtering HTTP requests entering your application:</p>
+                    
+                    <h3>Creating Middleware</h3>
+                    <pre><code>namespace App\Middleware;
+
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class AuthMiddleware implements MiddlewareInterface
+{
+    public function process(
+        ServerRequestInterface $request, 
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
+        // Check authentication
+        if (!$this-&gt;isAuthenticated($request)) {
+            return new Response(401, [], json_encode([
+                'error' =&gt; 'Unauthorized'
+            ]));
+        }
+        
+        // Continue to next middleware
+        return $handler-&gt;handle($request);
+    }
+}</code></pre>
+                    
+                    <h3>Using Middleware</h3>
+                    <pre><code>// Global middleware
+$app-&gt;middleware(new CorsMiddleware());
+$app-&gt;middleware(new RateLimitMiddleware());
+
+// Route-specific middleware
+$app-&gt;get('/admin', function($req, $res) {
+    // Admin only
+})-&gt;middleware('auth:admin');
+
+// Group middleware
+$app-&gt;group('/api', function($group) {
+    // All routes in this group
+})-&gt;middleware(['auth', 'throttle:60,1']);</code></pre>
+                </section>
+
+                <!-- Requests & Responses -->
+                <section id="requests">
+                    <h2>Requests & Responses</h2>
+                    
+                    <h3>Request Object</h3>
+                    <pre><code>$app-&gt;post('/users', function($req, $res) {
+    // Get all input
+    $input = $req-&gt;all();
+    
+    // Get specific input
+    $name = $req-&gt;input('name');
+    $email = $req-&gt;input('email', 'default@example.com');
+    
+    // Get JSON body
+    $body = $req-&gt;body();
+    
+    // Get headers
+    $contentType = $req-&gt;header('Content-Type');
+    
+    // Get query parameters
+    $page = $req-&gt;query('page', 1);
+    
+    // Check HTTP method
+    if ($req-&gt;isPost()) {
+        // Handle POST
+    }
+});</code></pre>
+                    
+                    <h3>Response Object</h3>
+                    <pre><code>// JSON response
+return $res-&gt;json(['status' =&gt; 'success']);
+
+// Set status code
+return $res-&gt;status(201)-&gt;json($data);
+
+// Set headers
+return $res-&gt;header('X-Custom', 'value')
+           -&gt;json($data);
+
+// Redirect
+return $res-&gt;redirect('/login');
+
+// Download file
+return $res-&gt;download('/path/to/file.pdf');
+
+// Stream response
+return $res-&gt;stream(function() {
+    echo "Streaming data...";
+});</code></pre>
+                </section>
+
+                <!-- Service Container -->
+                <section id="container">
+                    <h2>Service Container</h2>
+                    <p>HelixPHP includes a powerful service container for managing dependencies:</p>
+                    
+                    <h3>Binding Services</h3>
+                    <pre><code>// Simple binding
+$app-&gt;bind('mailer', function() {
+    return new Mailer(config('mail'));
+});
+
+// Singleton binding
+$app-&gt;singleton('cache', function() {
+    return new CacheManager();
+});
+
+// Interface binding
+$app-&gt;bind(UserRepositoryInterface::class, UserRepository::class);</code></pre>
+                    
+                    <h3>Resolving Services</h3>
+                    <pre><code>// Using dependency injection
+class UserController
+{
+    public function __construct(
+        private UserRepository $users,
+        private Mailer $mailer
+    ) {}
+    
+    public function store(Request $request, Response $response)
+    {
+        $user = $this-&gt;users-&gt;create($request-&gt;all());
+        $this-&gt;mailer-&gt;send(new WelcomeEmail($user));
+        
+        return $response-&gt;json($user);
+    }
+}
+
+// Manual resolution
+$mailer = $app-&gt;make('mailer');
+$cache = $app-&gt;get(CacheManager::class);</code></pre>
+                </section>
+
+                <!-- Security -->
+                <section id="security">
+                    <h2>Security</h2>
+                    <p>HelixPHP includes comprehensive security features out of the box:</p>
+                    
+                    <h3>CSRF Protection</h3>
+                    <pre><code>// Enable CSRF protection
+$app-&gt;middleware(new CsrfMiddleware());
+
+// In forms
+&lt;form method="POST"&gt;
+    &lt;input type="hidden" name="_token" value="&lt;?= csrf_token() ?&gt;"&gt;
+    &lt;!-- form fields --&gt;
+&lt;/form&gt;</code></pre>
+                    
+                    <h3>XSS Protection</h3>
+                    <pre><code>// Automatic XSS protection for responses
+$app-&gt;middleware(new XssProtectionMiddleware());
+
+// Manual escaping
+$safe = e($userInput);
+echo $safe;</code></pre>
+                    
+                    <h3>Rate Limiting</h3>
+                    <pre><code>// Apply rate limiting
+$app-&gt;middleware(new RateLimitMiddleware([
+    'max_attempts' =&gt; 60,
+    'decay_minutes' =&gt; 1
+]));
+
+// Route-specific limits
+$app-&gt;post('/api/login', function() {
+    // Handle login
+})-&gt;middleware('throttle:5,1');</code></pre>
+                    
+                    <h3>Authentication</h3>
+                    <pre><code>// Basic authentication setup
+$app-&gt;post('/login', function($req, $res) use ($auth) {
+    $credentials = $req-&gt;only(['email', 'password']);
+    
+    if ($auth-&gt;attempt($credentials)) {
+        $token = $auth-&gt;generateToken();
+        return $res-&gt;json(['token' =&gt; $token]);
+    }
+    
+    return $res-&gt;status(401)-&gt;json(['error' =&gt; 'Invalid credentials']);
+});
+
+// Protect routes
+$app-&gt;group('/api', function($group) {
+    $group-&gt;get('/profile', [ProfileController::class, 'show']);
+})-&gt;middleware('auth');</code></pre>
+                </section>
+
+                <!-- Events -->
+                <section id="events">
+                    <h2>Events</h2>
+                    <p>HelixPHP provides a simple event system for decoupling application components:</p>
+                    
+                    <h3>Dispatching Events</h3>
+                    <pre><code>// Define an event
+class UserRegistered
+{
+    public function __construct(
+        public User $user
+    ) {}
+}
+
+// Dispatch event
+$app-&gt;dispatch(new UserRegistered($user));</code></pre>
+                    
+                    <h3>Event Listeners</h3>
+                    <pre><code>// Register listener
+$app-&gt;on(UserRegistered::class, function($event) {
+    // Send welcome email
+    Mail::send(new WelcomeEmail($event-&gt;user));
+    
+    // Log registration
+    Log::info('New user registered: ' . $event-&gt;user-&gt;email);
+});
+
+// Class-based listener
+class SendWelcomeEmail
+{
+    public function handle(UserRegistered $event)
+    {
+        // Handle event
+    }
+}
+
+$app-&gt;on(UserRegistered::class, SendWelcomeEmail::class);</code></pre>
+                </section>
+
+                <!-- Validation -->
+                <section id="validation">
+                    <h2>Validation</h2>
+                    <p>Validate incoming data with HelixPHP's validation system:</p>
+                    
+                    <h3>Basic Validation</h3>
+                    <pre><code>$app-&gt;post('/users', function($req, $res) {
+    $validator = validate($req-&gt;all(), [
+        'name' =&gt; 'required|string|max:255',
+        'email' =&gt; 'required|email|unique:users',
+        'password' =&gt; 'required|min:8|confirmed',
+        'age' =&gt; 'nullable|integer|min:18'
+    ]);
+    
+    if ($validator-&gt;fails()) {
+        return $res-&gt;status(422)-&gt;json([
+            'errors' =&gt; $validator-&gt;errors()
+        ]);
+    }
+    
+    // Data is valid
+    $validated = $validator-&gt;validated();
+});</code></pre>
+                    
+                    <h3>Custom Validation Rules</h3>
+                    <pre><code>// Register custom rule
+Validator::extend('phone', function($attribute, $value) {
+    return preg_match('/^[0-9]{10}$/', $value);
+});
+
+// Use custom rule
+$validator = validate($data, [
+    'phone' =&gt; 'required|phone'
+]);</code></pre>
+                </section>
+
+                <!-- Database -->
+                <section id="database">
+                    <h2>Database</h2>
+                    <p>HelixPHP integrates seamlessly with Cycle ORM for database operations:</p>
+                    
+                    <h3>Configuration</h3>
+                    <pre><code>composer require helixphp/cycle-orm</code></pre>
+                    
+                    <h3>Defining Entities</h3>
+                    <pre><code>namespace App\Entity;
+
+use Cycle\Annotated\Annotation as Cycle;
+
+#[Cycle\Entity(repository: UserRepository::class)]
+class User
+{
+    #[Cycle\Column(type: 'primary')]
+    private int $id;
+    
+    #[Cycle\Column(type: 'string')]
+    private string $name;
+    
+    #[Cycle\Column(type: 'string', unique: true)]
+    private string $email;
+    
+    #[Cycle\Column(type: 'datetime')]
+    private \DateTimeInterface $created_at;
+    
+    // Getters and setters...
+}</code></pre>
+                    
+                    <h3>Repository Pattern</h3>
+                    <pre><code>class UserRepository extends Repository
+{
+    public function findByEmail(string $email): ?User
+    {
+        return $this-&gt;findOne(['email' =&gt; $email]);
+    }
+    
+    public function findActive(): array
+    {
+        return $this-&gt;select()
+            -&gt;where('status', 'active')
+            -&gt;orderBy('created_at', 'DESC')
+            -&gt;fetchAll();
+    }
+}</code></pre>
+                    
+                    <h3>Using in Controllers</h3>
+                    <pre><code>class UserController
+{
+    public function __construct(
+        private UserRepository $users
+    ) {}
+    
+    public function index(Request $req, Response $res)
+    {
+        $users = $this-&gt;users-&gt;findAll();
+        return $res-&gt;json($users);
+    }
+    
+    public function store(Request $req, Response $res)
+    {
+        $user = new User();
+        $user-&gt;setName($req-&gt;input('name'));
+        $user-&gt;setEmail($req-&gt;input('email'));
+        
+        $this-&gt;users-&gt;persist($user);
+        
+        return $res-&gt;status(201)-&gt;json($user);
+    }
+}</code></pre>
+                </section>
+
+                <!-- Service Providers -->
+                <section id="providers">
+                    <h2>Service Providers</h2>
+                    <p>Service providers are the central place to configure and bootstrap your application:</p>
+                    
+                    <h3>Creating a Provider</h3>
+                    <pre><code>namespace App\Providers;
+
+use Helix\Core\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        // Register bindings
+        $this-&gt;app-&gt;singleton(Cache::class, function() {
+            return new RedisCache(
+                config('cache.redis')
+            );
+        });
+    }
+    
+    public function boot(): void
+    {
+        // Bootstrap services
+        Validator::extend('custom', new CustomRule());
+        
+        // Register middleware
+        $this-&gt;app-&gt;middleware(new LoggingMiddleware());
+    }
+}</code></pre>
+                    
+                    <h3>Registering Providers</h3>
+                    <pre><code>$app = new Application([
+    'providers' =&gt; [
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+    ]
+]);</code></pre>
+                </section>
+
+                <!-- Testing -->
+                <section id="testing">
+                    <h2>Testing</h2>
+                    <p>HelixPHP is built with testing in mind:</p>
+                    
+                    <h3>Unit Testing</h3>
+                    <pre><code>use PHPUnit\Framework\TestCase;
+use App\Services\Calculator;
+
+class CalculatorTest extends TestCase
+{
+    public function test_addition()
+    {
+        $calculator = new Calculator();
+        
+        $this-&gt;assertEquals(4, $calculator-&gt;add(2, 2));
+        $this-&gt;assertEquals(0, $calculator-&gt;add(-1, 1));
+    }
+}</code></pre>
+                    
+                    <h3>Feature Testing</h3>
+                    <pre><code>use Helix\Testing\TestCase;
+
+class UserApiTest extends TestCase
+{
+    public function test_can_create_user()
+    {
+        $response = $this-&gt;post('/api/users', [
+            'name' =&gt; 'John Doe',
+            'email' =&gt; 'john@example.com',
+            'password' =&gt; 'secret123'
+        ]);
+        
+        $response-&gt;assertStatus(201)
+                 -&gt;assertJson([
+                     'name' =&gt; 'John Doe',
+                     'email' =&gt; 'john@example.com'
+                 ]);
+        
+        $this-&gt;assertDatabaseHas('users', [
+            'email' =&gt; 'john@example.com'
+        ]);
+    }
+    
+    public function test_requires_authentication()
+    {
+        $response = $this-&gt;get('/api/profile');
+        
+        $response-&gt;assertStatus(401);
+    }
+}</code></pre>
+                    
+                    <h3>Running Tests</h3>
+                    <pre><code># Run all tests
+composer test
+
+# Run specific test suite
+composer test -- --testsuite=Unit
+
+# Run with coverage
+composer test:coverage</code></pre>
+                </section>
+
+                <!-- Deployment -->
+                <section id="deployment">
+                    <h2>Deployment</h2>
+                    <p>Deploy your HelixPHP application to production:</p>
+                    
+                    <h3>Environment Setup</h3>
+                    <pre><code># Production .env
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=your-secret-key
+
+# Optimize autoloader
+composer install --no-dev --optimize-autoloader
+
+# Cache configuration
+php helix config:cache
+php helix route:cache</code></pre>
+                    
+                    <h3>Web Server Configuration</h3>
+                    
+                    <h4>Nginx</h4>
+                    <pre><code>server {
+    listen 80;
+    server_name example.com;
+    root /var/www/html/public;
+    
+    index index.php;
+    
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}</code></pre>
+                    
+                    <h4>Apache</h4>
+                    <pre><code>&lt;VirtualHost *:80&gt;
+    ServerName example.com
+    DocumentRoot /var/www/html/public
+    
+    &lt;Directory /var/www/html/public&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</code></pre>
+                    
+                    <h3>Performance Optimization</h3>
+                    <ul>
+                        <li>Enable OPcache for PHP</li>
+                        <li>Use Redis or Memcached for caching</li>
+                        <li>Configure proper database indexes</li>
+                        <li>Enable HTTP/2 on your web server</li>
+                        <li>Use a CDN for static assets</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="docs-footer">
+        <div class="container">
+            <p>© 2024 HelixPHP. MIT Licensed. Built with 🧬 by the HelixPHP Team.</p>
+        </div>
+    </footer>
+</body>
+</html>
