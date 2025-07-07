@@ -1,7 +1,8 @@
 ---
-layout: docs
-title: Why PivotPHP?
+layout: docs-i18n
+title: Por que PivotPHP?
 permalink: /pt/docs/why-pivotphp/
+lang: pt
 ---
 # PivotPHP 🧬
 

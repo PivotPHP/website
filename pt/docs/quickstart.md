@@ -240,7 +240,7 @@ Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais
 - Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições
 - Entenda o [Container de Serviços]({{ '/pt/docs/container/' | relative_url }}) para injeção de dependência
 - Confira integração com [Banco de Dados]({{ '/pt/docs/banco-de-dados/' | relative_url }}) usando Cycle ORM
-- Implemente [Autenticação]({{ '/pt/docs/seguranca/' | relative_url }}) para proteger suas rotas
+- Implemente [Segurança]({{ '/pt/docs/seguranca/' | relative_url }}) para proteger suas rotas
 - Adicione [Validação]({{ '/pt/docs/validacao/' | relative_url }}) para garantir integridade dos dados
 
 ### Recursos Adicionais

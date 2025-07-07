@@ -1,4 +1,4 @@
-// Mobile navigation functionality - Atualizado para novo design
+// Mobile navigation functionality - PivotPHP
 (function() {
     'use strict';
 
@@ -17,11 +17,14 @@
             // Toggle mobile menu
             mobileToggle.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile toggle clicked');
                 toggleMobileMenu();
             });
 
             // Close menu when clicking overlay
             overlay.addEventListener('click', function() {
+                console.log('Overlay clicked');
                 closeMobileMenu();
             });
 
@@ -29,6 +32,7 @@
             const navLinks = navMenu.querySelectorAll('a');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
+                    console.log('Nav link clicked');
                     closeMobileMenu();
                 });
             });
@@ -36,6 +40,7 @@
             // Close menu on window resize if open
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                    console.log('Window resized, closing mobile menu');
                     closeMobileMenu();
                 }
             });
@@ -43,6 +48,7 @@
             // Handle escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                    console.log('Escape key pressed');
                     closeMobileMenu();
                 }
             });
@@ -54,12 +60,15 @@
                 overlay = document.createElement('div');
                 overlay.className = 'mobile-overlay';
                 document.body.appendChild(overlay);
+                console.log('Mobile overlay created');
             }
             return overlay;
         }
 
         function toggleMobileMenu() {
             const isActive = navMenu.classList.contains('active');
+            console.log('Toggle mobile menu - currently active:', isActive);
+
             if (isActive) {
                 closeMobileMenu();
             } else {
@@ -68,6 +77,7 @@
         }
 
         function openMobileMenu() {
+            console.log('Opening mobile menu');
             navMenu.classList.add('active');
             overlay.classList.add('active');
             mobileToggle.classList.add('active');
@@ -75,12 +85,15 @@
 
             // Animate hamburger icon
             const spans = mobileToggle.querySelectorAll('span');
-            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            if (spans.length >= 3) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            }
         }
 
         function closeMobileMenu() {
+            console.log('Closing mobile menu');
             navMenu.classList.remove('active');
             overlay.classList.remove('active');
             mobileToggle.classList.remove('active');
@@ -88,9 +101,11 @@
 
             // Reset hamburger icon
             const spans = mobileToggle.querySelectorAll('span');
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '';
-            spans[2].style.transform = '';
+            if (spans.length >= 3) {
+                spans[0].style.transform = '';
+                spans[1].style.opacity = '';
+                spans[2].style.transform = '';
+            }
         }
     });
 
@@ -117,15 +132,15 @@
         }
 
         .mobile-menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+            transform: rotate(45deg) translate(5px, 5px) !important;
         }
 
         .mobile-menu-toggle.active span:nth-child(2) {
-            opacity: 0;
+            opacity: 0 !important;
         }
 
         .mobile-menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
+            transform: rotate(-45deg) translate(7px, -6px) !important;
         }
 
         @media (max-width: 768px) {
@@ -142,175 +157,6 @@
         }
     `;
     document.head.appendChild(style);
-                }
-            });
-        }
 
-        // Handle sidebar toggle
-        if (sidebarToggle && sidebar) {
-            sidebarToggle.addEventListener('click', function() {
-                const isActive = sidebar.classList.contains('active');
-
-                if (isActive) {
-                    closeSidebar();
-                } else {
-                    openSidebar();
-                }
-            });
-        }
-
-        // Handle overlay clicks
-        overlay.addEventListener('click', function() {
-            closeNav();
-            closeSidebar();
-        });
-
-        // Close menus on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeNav();
-                closeSidebar();
-            }
-        });
-
-        // Handle window resize
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                if (window.innerWidth > 768) {
-                    closeNav();
-                    closeSidebar();
-                }
-            }, 250);
-        });
-
-        // Navigation functions
-        function openNav() {
-            navLinks.classList.add('active');
-            navToggle.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeNav() {
-            navLinks.classList.remove('active');
-            navToggle.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function openSidebar() {
-            sidebar.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeSidebar() {
-            if (sidebar) {
-                sidebar.classList.remove('active');
-            }
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Close navigation when clicking on a link
-        if (navLinks) {
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', closeNav);
-            });
-        }
-
-        // Handle swipe gestures
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        document.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-
-            // Swipe left to open nav (from right edge)
-            if (diff < -swipeThreshold && touchStartX > window.innerWidth - 50) {
-                openNav();
-            }
-
-            // Swipe right to close nav
-            if (diff > swipeThreshold && navLinks && navLinks.classList.contains('active')) {
-                closeNav();
-            }
-
-            // Swipe right to open sidebar (from left edge)
-            if (diff > swipeThreshold && touchStartX < 50 && sidebar) {
-                openSidebar();
-            }
-
-            // Swipe left to close sidebar
-            if (diff < -swipeThreshold && sidebar && sidebar.classList.contains('active')) {
-                closeSidebar();
-            }
-        }
-    }
-
-    // Auto-hide header on scroll (mobile only)
-    function initAutoHideHeader() {
-        if (window.innerWidth > 768) return;
-
-        const header = document.querySelector('.docs-header');
-        if (!header) return;
-
-        let lastScrollTop = 0;
-        let isScrolling;
-
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // Clear timeout
-            window.clearTimeout(isScrolling);
-
-            // Scrolling down
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                header.style.transform = 'translateY(-100%)';
-            }
-            // Scrolling up
-            else {
-                header.style.transform = 'translateY(0)';
-            }
-
-            // Set timeout to show header when scrolling stops
-            isScrolling = setTimeout(function() {
-                header.style.transform = 'translateY(0)';
-            }, 1000);
-
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        }, { passive: true });
-
-        // Add transition
-        header.style.transition = 'transform 0.3s ease';
-    }
-
-    // Initialize on DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            initMobileNav();
-            initAutoHideHeader();
-        });
-    } else {
-        initMobileNav();
-        initAutoHideHeader();
-    }
-
-    // Re-initialize on navigation (for turbo-nav compatibility)
-    window.addEventListener('turbo:load', function() {
-        initMobileNav();
-        initAutoHideHeader();
-    });
+    console.log('PivotPHP: Mobile navigation styles injected');
 })();
