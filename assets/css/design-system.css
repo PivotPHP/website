@@ -120,10 +120,41 @@
     color: var(--color-text-primary);
 }
 
+/* Hero section theming */
+.home-hero {
+    background: linear-gradient(135deg, var(--pivot-purple-50) 0%, var(--pivot-pink-50) 50%, var(--pivot-cyan-50) 100%);
+    color: var(--pivot-dark);
+    position: relative;
+}
+
+.home-hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.5) 100%);
+    pointer-events: none;
+}
+
 /* Navigation dark mode */
 [data-theme="dark"] .navbar {
-    background: var(--color-surface);
+    background: rgba(15, 23, 42, 0.95);
     border-bottom-color: var(--color-border);
+}
+
+/* Navbar links dark mode */
+[data-theme="dark"] .navbar-nav a {
+    color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .navbar-nav a:hover {
+    color: var(--pivot-purple-400);
+}
+
+[data-theme="dark"] .navbar-brand {
+    color: var(--color-text-primary);
 }
 
 [data-theme="dark"] .docs-header {
@@ -143,7 +174,21 @@
 
 /* Home sections dark mode */
 [data-theme="dark"] .home-hero {
-    background: var(--color-background);
+    background: linear-gradient(135deg, var(--pivot-gray-950) 0%, var(--pivot-gray-900) 50%, var(--pivot-gray-950) 100%);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .home-hero::after {
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+}
+
+/* Gradient text adjustments for dark mode */
+[data-theme="dark"] .home-hero h1,
+[data-theme="dark"] .gradient-text {
+    background: linear-gradient(135deg, #A78BFA 0%, #F472B6 50%, #38BDF8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 [data-theme="dark"] .performance-section {
@@ -683,6 +728,27 @@ pre, code, .code-block, .code-preview {
 /* Chart.js dark mode overrides */
 [data-theme="dark"] .benchmark-chart {
     color: var(--color-text-primary);
+}
+
+/* Button theming */
+[data-theme="dark"] .btn-secondary {
+    color: var(--pivot-purple-400);
+    border-color: var(--pivot-purple-400);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: var(--pivot-purple-400);
+    color: var(--pivot-gray-900);
+}
+
+/* Performance section dark mode */
+[data-theme="dark"] .performance-metric {
+    background: var(--pivot-gray-800);
+    border-color: var(--pivot-gray-700);
+}
+
+[data-theme="dark"] .performance-value {
+    color: var(--pivot-purple-400);
 }
 
 /* Responsive adjustments */

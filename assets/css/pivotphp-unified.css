@@ -339,8 +339,8 @@ pre {
 
 /* ===== HERO SECTION ===== */
 .home-hero {
-  background: var(--pivot-gradient);
-  color: var(--pivot-white);
+  background: var(--pivot-light);
+  color: var(--pivot-dark);
   padding: 8rem 0 6rem;
   position: relative;
   overflow: hidden;
