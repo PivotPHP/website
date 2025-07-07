@@ -4,8 +4,6 @@ title: Installation
 permalink: /docs/installation/
 ---
 
-# Installation
-
 ## Requirements
 
 Before installing PivotPHP, make sure your system meets the following requirements:

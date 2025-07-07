@@ -4,8 +4,6 @@ title: Por que PivotPHP?
 permalink: /pt/docs/why-pivotphp/
 lang: pt
 ---
-# PivotPHP 🧬
-
 **O Microframework PHP Evolutivo**
 *Rápido, sem opiniões, minimalista. Construído para performance, projetado para evoluir.*
 

@@ -4,8 +4,6 @@ title: Validation
 permalink: /docs/validation/
 ---
 
-# Validation
-
 PivotPHP provides a powerful and flexible validation system for validating incoming data. The validator supports a wide variety of validation rules and allows you to easily validate form data, API requests, and more.
 
 ## Basic Usage

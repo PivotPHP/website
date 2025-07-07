@@ -4,8 +4,6 @@ title: Service Container
 permalink: /docs/container/
 ---
 
-# Service Container
-
 The PivotPHP service container is a powerful tool for managing class dependencies and performing dependency injection. It's essentially a sophisticated factory that creates and manages object instances for your application.
 
 ## Introduction to Dependency Injection

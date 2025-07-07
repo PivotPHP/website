@@ -5,8 +5,6 @@ permalink: /pt/docs/providers/
 lang: pt
 ---
 
-# Provedores de Serviços
-
 Os provedores de serviços são o local central de toda a inicialização da aplicação PivotPHP. Sua própria aplicação, bem como todos os serviços principais do PivotPHP, são inicializados através de provedores de serviços.
 
 ## Introdução

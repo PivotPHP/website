@@ -5,8 +5,6 @@ permalink: /pt/docs/installation/
 lang: pt
 ---
 
-# Instalação
-
 ## Requisitos
 
 Antes de instalar o PivotPHP, certifique-se de que seu sistema atenda aos seguintes requisitos:

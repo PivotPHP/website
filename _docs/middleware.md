@@ -4,8 +4,6 @@ title: Middleware
 permalink: /docs/middleware/
 ---
 
-# Middleware
-
 Middleware provides a convenient mechanism for filtering HTTP requests entering your application. PivotPHP implements the PSR-15 middleware standard, ensuring compatibility with the broader PHP ecosystem.
 
 ## Understanding Middleware

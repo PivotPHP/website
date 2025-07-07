@@ -5,8 +5,6 @@ permalink: /pt/docs/requests-responses/
 lang: pt
 ---
 
-# Requisições e Respostas
-
 O PivotPHP usa objetos de mensagem HTTP compatíveis com PSR-7 para requisições e respostas, fornecendo uma interface consistente e interoperável para lidar com comunicação HTTP.
 
 ## O Objeto Request

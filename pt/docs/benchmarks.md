@@ -5,8 +5,6 @@ description: Análise abrangente de performance e benchmarks do PivotPHP
 lang: pt
 ---
 
-# Benchmarks de Performance
-
 O PivotPHP oferece performance excepcional através de arquitetura inteligente e otimizações. Nossos benchmarks abrangentes demonstram performance real em vários cenários.
 
 ## Resumo Executivo

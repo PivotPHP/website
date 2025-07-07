@@ -5,8 +5,6 @@ permalink: /pt/docs/events/
 lang: pt
 ---
 
-# Eventos
-
 O PivotPHP fornece um sistema de eventos simples, mas poderoso, que permite que você assine e escute vários eventos que ocorrem em sua aplicação. Isso proporciona uma ótima maneira de desacoplar vários aspectos da sua aplicação.
 
 ## Uso Básico

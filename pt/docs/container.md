@@ -5,8 +5,6 @@ permalink: /pt/docs/container/
 lang: pt
 ---
 
-# Container de Serviços
-
 O container de serviços do PivotPHP é uma ferramenta poderosa para gerenciar dependências de classes e realizar injeção de dependência. É essencialmente uma fábrica sofisticada que cria e gerencia instâncias de objetos para sua aplicação.
 
 ## Introdução à Injeção de Dependência

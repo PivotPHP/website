@@ -109,6 +109,49 @@
     --pivot-purple-700: #8B5CF6;
     --pivot-pink-500: #EC4899;
     --pivot-cyan-500: #06B6D4;
+    
+    /* Gradient adjustments for dark mode */
+    --pivot-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #06B6D4 100%);
+}
+
+/* Additional dark mode styles */
+[data-theme="dark"] body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+/* Navigation dark mode */
+[data-theme="dark"] .navbar {
+    background: var(--color-surface);
+    border-bottom-color: var(--color-border);
+}
+
+[data-theme="dark"] .docs-header {
+    background: var(--color-surface);
+    border-bottom-color: var(--color-border);
+}
+
+/* Footer dark mode */
+[data-theme="dark"] .footer {
+    background: var(--pivot-gray-900);
+    border-top: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .footer-bottom {
+    border-top-color: var(--color-border);
+}
+
+/* Home sections dark mode */
+[data-theme="dark"] .home-hero {
+    background: var(--color-background);
+}
+
+[data-theme="dark"] .performance-section {
+    background: var(--pivot-gray-900);
+}
+
+[data-theme="dark"] .cta-section {
+    background: var(--pivot-gray-800);
 }
 
 /* Stats Cards */
@@ -168,11 +211,14 @@
 .feature-card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 1rem;
+    border-radius: var(--radius-xl);
     padding: 2rem;
     transition: all 200ms ease;
     position: relative;
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .feature-card::before {
@@ -196,6 +242,61 @@
     border-color: var(--pivot-purple-300);
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+}
+
+.feature-card-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--pivot-gradient);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card-icon svg {
+    color: white;
+    width: 24px;
+    height: 24px;
+}
+
+.feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card p {
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+    position: relative;
+    z-index: 2;
+}
+
+.feature-card-stats {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    background: var(--pivot-gradient);
+    color: white;
+    border-radius: var(--radius-full, 9999px);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* Dark mode specific card styles */
@@ -450,6 +551,138 @@ pre, code, .code-block, .code-preview {
 .section-header-card p {
     margin-bottom: 0;
     line-height: 1.6;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    transition: all 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--pivot-purple-400);
+    color: var(--pivot-purple-600);
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.theme-icon-light {
+    display: block;
+}
+
+.theme-icon-dark {
+    display: none;
+}
+
+[data-theme="dark"] .theme-icon-light {
+    display: none;
+}
+
+[data-theme="dark"] .theme-icon-dark {
+    display: block;
+}
+
+.theme-toggle-btn:active .theme-icon {
+    transform: rotate(180deg);
+}
+
+/* Nav adjustments for theme toggle */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.docs-nav .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Benchmark specific styles */
+.benchmark-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.benchmark-chart {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-card);
+}
+
+.benchmark-chart canvas {
+    max-height: 400px;
+}
+
+.load-test-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.load-test-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+}
+
+.load-test-card h4 {
+    color: var(--pivot-purple-600);
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+}
+
+.benchmark-table {
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.benchmark-table td {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.benchmark-table td.value {
+    text-align: right;
+    font-weight: 600;
+    color: var(--pivot-purple-600);
+}
+
+[data-theme="dark"] .benchmark-table td.value {
+    color: var(--pivot-purple-400);
+}
+
+[data-theme="dark"] .load-test-card h4 {
+    color: var(--pivot-purple-400);
+}
+
+/* Chart.js dark mode overrides */
+[data-theme="dark"] .benchmark-chart {
+    color: var(--color-text-primary);
 }
 
 /* Responsive adjustments */

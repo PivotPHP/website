@@ -4,8 +4,6 @@ title: Documentation
 permalink: /docs/
 ---
 
-# PivotPHP Documentation
-
 <p class="lead">Welcome to PivotPHP - The evolutionary PHP microframework designed for building modern, high-performance applications with minimal overhead.</p>
 
 ## Why PivotPHP?

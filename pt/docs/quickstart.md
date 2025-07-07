@@ -5,8 +5,6 @@ permalink: /pt/docs/quickstart/
 lang: pt
 ---
 
-# Início Rápido
-
 Este guia mostrará como criar sua primeira aplicação PivotPHP. Vamos construir uma API REST simples para gerenciar tarefas.
 
 ## Passo 1: Crie Sua Aplicação

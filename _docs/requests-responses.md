@@ -4,8 +4,6 @@ title: Requests & Responses
 permalink: /docs/requests-responses/
 ---
 
-# Requests & Responses
-
 PivotPHP uses PSR-7 compliant HTTP message objects for requests and responses, providing a consistent and interoperable interface for handling HTTP communication.
 
 ## The Request Object

@@ -4,8 +4,6 @@ title: Security
 permalink: /docs/security/
 ---
 
-# Security
-
 PivotPHP takes security seriously and provides multiple layers of protection out of the box. This guide covers the security features available and best practices for keeping your application secure.
 
 ## Overview

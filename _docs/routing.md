@@ -4,8 +4,6 @@ title: Routing
 permalink: /docs/routing/
 ---
 
-# Routing
-
 PivotPHP provides an Express.js-like routing system that's intuitive and powerful. Routes are defined using HTTP verb methods on the application instance.
 
 ## Basic Routing

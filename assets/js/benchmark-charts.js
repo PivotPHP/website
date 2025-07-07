@@ -1,18 +1,37 @@
 // Benchmark Charts - PivotPHP Performance Visualization
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Function to get current theme colors
+    function getThemeColors() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        return {
+            primary: '#7C3AED',
+            secondary: '#EC4899',
+            accent: '#06B6D4',
+            dark: '#0F172A',
+            gray: '#64748B',
+            light: '#F8FAFC',
+            text: isDark ? '#E2E8F0' : '#1E293B',
+            gridColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            tickColor: isDark ? '#CBD5E1' : '#475569'
+        };
+    }
+    
+    // Update charts when theme changes
+    window.addEventListener('theme-changed', function(e) {
+        // Destroy and recreate all charts with new colors
+        const charts = Chart.instances;
+        Object.values(charts).forEach(chart => {
+            chart.destroy();
+        });
+        initCharts();
+    });
+    
     // Chart.js default configuration
     Chart.defaults.font.family = getComputedStyle(document.documentElement).getPropertyValue('--font-display');
     
-    // PivotPHP brand colors
-    const colors = {
-        primary: '#7C3AED',
-        secondary: '#EC4899',
-        accent: '#06B6D4',
-        dark: '#0F172A',
-        gray: '#64748B',
-        light: '#F8FAFC'
-    };
+    function initCharts() {
+        const colors = getThemeColors();
     
     // Request Type Performance Chart - Updated with latest data
     const requestTypeCtx = document.getElementById('requestTypeChart');
@@ -52,9 +71,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     y: {
                         beginAtZero: true,
                         ticks: {
+                            color: colors.tickColor,
                             callback: function(value) {
                                 return value.toLocaleString();
                             }
+                        },
+                        grid: {
+                            color: colors.gridColor
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: colors.tickColor
+                        },
+                        grid: {
+                            color: colors.gridColor
                         }
                     }
                 }
@@ -222,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     legend: {
                         position: 'bottom',
                         labels: {
-                            color: 'white'
+                            color: colors.text
                         }
                     },
                     tooltip: {
@@ -237,13 +268,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     x: {
                         beginAtZero: true,
                         ticks: {
-                            color: 'white',
+                            color: colors.tickColor,
                             callback: function(value) {
                                 return value.toLocaleString();
                             }
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                            color: colors.gridColor
                         }
                     },
                     y: {
@@ -251,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             color: 'white'
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                            color: colors.gridColor
                         }
                     }
                 }

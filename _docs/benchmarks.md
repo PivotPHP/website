@@ -4,8 +4,6 @@ title: Performance Benchmarks
 description: Comprehensive performance analysis and benchmarks for PivotPHP
 ---
 
-# Performance Benchmarks
-
 PivotPHP delivers exceptional performance through intelligent architecture and optimizations. Our comprehensive benchmarks demonstrate real-world performance across various scenarios.
 
 ## Executive Summary

@@ -5,8 +5,6 @@ permalink: /pt/docs/testing/
 lang: pt
 ---
 
-# Testes
-
 O PivotPHP é construído com testes em mente. O framework fornece uma suíte de testes poderosa baseada no PHPUnit, com ajudantes e asserções adicionais para tornar os testes de sua aplicação muito fáceis.
 
 ## Começando

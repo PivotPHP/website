@@ -4,8 +4,6 @@ title: Service Providers
 permalink: /docs/providers/
 ---
 
-# Service Providers
-
 Service providers are the central place of all PivotPHP application bootstrapping. Your own application, as well as all of PivotPHP's core services, are bootstrapped via service providers.
 
 ## Introduction

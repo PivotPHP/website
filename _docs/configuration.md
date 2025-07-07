@@ -4,8 +4,6 @@ title: Configuration
 permalink: /docs/configuration/
 ---
 
-# Configuration
-
 PivotPHP uses a simple yet powerful configuration system that allows you to manage your application settings across different environments.
 
 ## Environment Configuration

@@ -4,8 +4,6 @@ title: Deployment
 permalink: /docs/deployment/
 ---
 
-# Deployment
-
 This guide covers best practices and procedures for deploying PivotPHP applications to production environments.
 
 ## Server Requirements

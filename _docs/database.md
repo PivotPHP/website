@@ -4,8 +4,6 @@ title: Database
 permalink: /docs/database/
 ---
 
-# Database
-
 PivotPHP integrates seamlessly with Cycle ORM, providing a powerful and intuitive way to work with databases. Cycle ORM is a modern, schema-driven ORM that offers excellent performance and flexibility.
 
 ## Installation

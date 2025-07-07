@@ -4,8 +4,6 @@ title: Events
 permalink: /docs/events/
 ---
 
-# Events
-
 PivotPHP provides a simple yet powerful event system that allows you to subscribe to and listen for various events that occur in your application. This provides a great way to decouple various aspects of your application.
 
 ## Basic Usage

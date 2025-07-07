@@ -38,5 +38,15 @@
     <script>
         // Remove no-js class immediately
         document.documentElement.classList.remove('no-js');
+        
+        // Apply saved theme immediately to prevent theme flash
+        (function() {
+            const saved = localStorage.getItem('pivotphp-theme');
+            const theme = ['light', 'dark'].includes(saved) ? saved : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
     </script>
+    
+    <!-- Theme Toggle System -->
+    <script src="{{ '/assets/js/theme-toggle.js' | relative_url }}" defer></script>
 </head>

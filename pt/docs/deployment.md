@@ -5,8 +5,6 @@ permalink: /pt/docs/deployment/
 lang: pt
 ---
 
-# Deploy
-
 Este guia cobre as melhores práticas e procedimentos para fazer deploy de aplicações PivotPHP em ambientes de produção.
 
 ## Requisitos do Servidor

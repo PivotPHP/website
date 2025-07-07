@@ -5,8 +5,6 @@ permalink: /pt/docs/
 lang: pt
 ---
 
-# Documentação PivotPHP
-
 <p class="lead">Bem-vindo ao PivotPHP - O microframework PHP evolutivo projetado para construir aplicações modernas de alta performance com overhead mínimo.</p>
 
 ## Por que PivotPHP?
