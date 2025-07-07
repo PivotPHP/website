@@ -26,20 +26,20 @@ layout: default
 
       <div class="home-hero-stats">
         <div class="home-stat">
-          <span class="home-stat-value">52M+</span>
-          <span class="home-stat-label">ops/sec</span>
+          <span class="home-stat-value">13,374</span>
+          <span class="home-stat-label">req/sec</span>
         </div>
         <div class="home-stat">
-          <span class="home-stat-value">&lt;1ms</span>
-          <span class="home-stat-label">response time</span>
+          <span class="home-stat-value">0.07ms</span>
+          <span class="home-stat-label">avg latency</span>
         </div>
         <div class="home-stat">
-          <span class="home-stat-value">PSR-15</span>
-          <span class="home-stat-label">compliant</span>
+          <span class="home-stat-value">0-2MB</span>
+          <span class="home-stat-label">memory</span>
         </div>
         <div class="home-stat">
-          <span class="home-stat-value">Zero</span>
-          <span class="home-stat-label">configuration</span>
+          <span class="home-stat-value">100</span>
+          <span class="home-stat-label">concurrent conn</span>
         </div>
       </div>
     </div>
@@ -105,7 +105,7 @@ layout: default
       <div class="home-feature">
         <div class="home-feature-icon">🚀</div>
         <h3>Blazing Fast</h3>
-        <p>52M+ operations per second for CORS, 2.57M ops/sec for response handling. Built for speed from the ground up.</p>
+        <p>Up to 13,374 requests/second with 0.07ms latency. 2.9x faster than Slim 4, 4.6x faster than Lumen.</p>
       </div>
 
       <div class="home-feature">
@@ -151,21 +151,27 @@ layout: default
 
     <div class="performance-grid">
       <div class="performance-metric">
-        <span class="performance-value">52M</span>
-        <span class="performance-label">CORS ops/sec</span>
+        <span class="performance-value">13.4K</span>
+        <span class="performance-label">Peak req/sec</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">2.57M</span>
-        <span class="performance-label">Response ops/sec</span>
+        <span class="performance-value">4K</span>
+        <span class="performance-label">100 concurrent</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">757K</span>
-        <span class="performance-label">Route ops/sec</span>
+        <span class="performance-value">0.07ms</span>
+        <span class="performance-label">Avg latency</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">1.2MB</span>
+        <span class="performance-value">0-2MB</span>
         <span class="performance-label">Memory usage</span>
       </div>
+    </div>
+    
+    <div class="text-center mt-4">
+      <a href="{{ '/docs/benchmarks/' | relative_url }}" class="btn btn-secondary">
+        View Detailed Benchmarks →
+      </a>
     </div>
   </div>
 </section>

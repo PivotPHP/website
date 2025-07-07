@@ -1,0 +1,108 @@
+---
+layout: default
+---
+
+<!-- Additional CSS for Benchmarks -->
+<link rel="stylesheet" href="{{ '/assets/css/benchmarks.css' | relative_url }}">
+
+<!-- Documentation Content -->
+<main class="docs-main">
+    <div class="container docs-container">
+        {% include docs-sidebar.html %}
+
+        <!-- Content -->
+        <div class="docs-content">
+            <article>
+                <h1>{{ page.title }}</h1>
+                {{ content }}
+            </article>
+
+            <!-- Navigation Links -->
+            <div class="docs-nav-bottom">
+                {% if page.prev %}
+                <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost">
+                    ← {{ page.prev.title }}
+                </a>
+                {% endif %}
+
+                {% if page.next %}
+                <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost" style="margin-left: auto;">
+                    {{ page.next.title }} →
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Documentation Scripts -->
+<script src="{{ '/assets/js/active-nav.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/transitions.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/docs-mobile.js' | relative_url }}"></script>
+
+<style>
+.docs-nav-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--pivot-gray-light);
+}
+
+.docs-nav-bottom .btn {
+  max-width: 45%;
+}
+
+/* Improve code blocks in documentation */
+.docs-content pre {
+  margin: 1.5rem 0;
+}
+
+.docs-content h2 {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+}
+
+.docs-content h3 {
+  margin-top: 2rem;
+}
+
+.docs-content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+}
+
+.docs-content table th,
+.docs-content table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--pivot-gray-light);
+}
+
+.docs-content table th {
+  font-weight: 600;
+  background: var(--pivot-light);
+}
+
+.docs-content blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--pivot-primary);
+  background: rgba(124, 58, 237, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.docs-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Syntax highlighting improvements */
+.highlight {
+  margin: 1.5rem 0;
+}
+
+.highlight pre {
+  margin: 0;
+}
+</style>
