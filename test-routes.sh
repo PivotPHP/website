@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Testing HelixPHP Website Routes"
+echo "Testing PivotPHP Website Routes"
 echo "=============================="
 
 BASE_URL="http://localhost:4000/website"

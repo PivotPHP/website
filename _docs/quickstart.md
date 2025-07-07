@@ -6,7 +6,7 @@ permalink: /docs/quickstart/
 
 # Quick Start
 
-This guide will walk you through creating your first HelixPHP application. We'll build a simple REST API for managing tasks.
+This guide will walk you through creating your first PivotPHP application. We'll build a simple REST API for managing tasks.
 
 ## Step 1: Create Your Application
 
@@ -16,7 +16,7 @@ First, create a new file `public/index.php`:
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 // Create the application instance
 $app = new Application();
@@ -24,7 +24,7 @@ $app = new Application();
 // Define your first route
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'Welcome to HelixPHP!',
+        'message' => 'Welcome to PivotPHP!',
         'timestamp' => time()
     ]);
 });
@@ -59,27 +59,27 @@ $app->get('/tasks', function($req, $res) use (&$tasks) {
 // Get a specific task
 $app->get('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Task not found'
         ]);
     }
-    
+
     return $res->json($tasks[$id]);
 });
 
 // Create a new task
 $app->post('/tasks', function($req, $res) use (&$tasks) {
     $data = $req->body();
-    
+
     // Simple validation
     if (empty($data['title'])) {
         return $res->status(400)->json([
             'error' => 'Title is required'
         ]);
     }
-    
+
     $id = uniqid();
     $task = [
         'id' => $id,
@@ -87,40 +87,40 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
         'completed' => false,
         'created_at' => date('Y-m-d H:i:s')
     ];
-    
+
     $tasks[$id] = $task;
-    
+
     return $res->status(201)->json($task);
 });
 
 // Update a task
 $app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Task not found'
         ]);
     }
-    
+
     $data = $req->body();
     $tasks[$id] = array_merge($tasks[$id], $data);
-    
+
     return $res->json($tasks[$id]);
 });
 
 // Delete a task
 $app->delete('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Task not found'
         ]);
     }
-    
+
     unset($tasks[$id]);
-    
+
     return $res->status(204)->send();
 });
 ```
@@ -133,10 +133,10 @@ Let's add some middleware for logging and CORS:
 // Logging middleware
 $app->middleware(function($req, $handler) {
     $start = microtime(true);
-    
+
     // Process the request
     $response = $handler->handle($req);
-    
+
     // Log the request
     $duration = round((microtime(true) - $start) * 1000, 2);
     error_log(sprintf(
@@ -145,14 +145,14 @@ $app->middleware(function($req, $handler) {
         $req->getUri()->getPath(),
         $duration
     ));
-    
+
     return $response;
 });
 
 // CORS middleware
 $app->middleware(function($req, $handler) {
     $response = $handler->handle($req);
-    
+
     return $response
         ->withHeader('Access-Control-Allow-Origin', '*')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
@@ -168,7 +168,7 @@ You can test your API using curl or any HTTP client:
 # Create a task
 curl -X POST http://localhost:8000/tasks \
   -H "Content-Type: application/json" \
-  -d '{"title": "Learn HelixPHP"}'
+  -d '{"title": "Learn PivotPHP"}'
 
 # List all tasks
 curl http://localhost:8000/tasks
@@ -190,7 +190,7 @@ Here's the complete code for reference:
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 $app = new Application();
 
@@ -235,7 +235,7 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
     if (empty($data['title'])) {
         return $res->status(400)->json(['error' => 'Title is required']);
     }
-    
+
     $id = uniqid();
     $task = [
         'id' => $id,
@@ -243,7 +243,7 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
         'completed' => false,
         'created_at' => date('Y-m-d H:i:s')
     ];
-    
+
     $tasks[$id] = $task;
     return $res->status(201)->json($task);
 });
@@ -253,7 +253,7 @@ $app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
     if (!isset($tasks[$id])) {
         return $res->status(404)->json(['error' => 'Task not found']);
     }
-    
+
     $tasks[$id] = array_merge($tasks[$id], $req->body());
     return $res->json($tasks[$id]);
 });
@@ -263,7 +263,7 @@ $app->delete('/tasks/{id}', function($req, $res) use (&$tasks) {
     if (!isset($tasks[$id])) {
         return $res->status(404)->json(['error' => 'Task not found']);
     }
-    
+
     unset($tasks[$id]);
     return $res->status(204)->send();
 });
@@ -273,7 +273,7 @@ $app->run();
 
 ## What's Next?
 
-Congratulations! You've built your first HelixPHP application. To learn more:
+Congratulations! You've built your first PivotPHP application. To learn more:
 
 - Explore [Routing]({{ site.baseurl }}/docs/routing/) for advanced routing features
 - Learn about [Middleware]({{ site.baseurl }}/docs/middleware/) for request processing

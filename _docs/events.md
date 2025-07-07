@@ -6,7 +6,7 @@ permalink: /docs/events/
 
 # Events
 
-HelixPHP provides a simple yet powerful event system that allows you to subscribe to and listen for various events that occur in your application. This provides a great way to decouple various aspects of your application.
+PivotPHP provides a simple yet powerful event system that allows you to subscribe to and listen for various events that occur in your application. This provides a great way to decouple various aspects of your application.
 
 ## Basic Usage
 
@@ -15,7 +15,7 @@ HelixPHP provides a simple yet powerful event system that allows you to subscrib
 The simplest way to dispatch an event is using the event dispatcher:
 
 ```php
-use Helix\Events\Dispatcher;
+use PivotPHP\Events\Dispatcher;
 
 // Dispatch a simple event
 $dispatcher = new Dispatcher();
@@ -89,12 +89,12 @@ namespace App\Listeners;
 class SendWelcomeEmail
 {
     private Mailer $mailer;
-    
+
     public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
     }
-    
+
     public function handle(UserRegistered $event): void
     {
         $this->mailer->send(
@@ -117,13 +117,13 @@ Defer time-consuming tasks to background jobs:
 ```php
 namespace App\Listeners;
 
-use Helix\Contracts\Queue\ShouldQueue;
-use Helix\Queue\InteractsWithQueue;
+use PivotPHP\Contracts\Queue\ShouldQueue;
+use PivotPHP\Queue\InteractsWithQueue;
 
 class ProcessUserAnalytics implements ShouldQueue
 {
     use InteractsWithQueue;
-    
+
     public function handle(UserRegistered $event): void
     {
         // This will run in the background
@@ -132,7 +132,7 @@ class ProcessUserAnalytics implements ShouldQueue
             'source' => $event->additionalData['source'] ?? 'web'
         ]);
     }
-    
+
     public function failed(UserRegistered $event, \Throwable $exception): void
     {
         // Handle failure
@@ -154,19 +154,19 @@ class UserEventSubscriber
     {
         // Handle registration
     }
-    
+
     public function handleUserLogin(UserLoggedIn $event): void
     {
         // Update last login
         $event->user->update(['last_login' => now()]);
     }
-    
+
     public function handleUserLogout(UserLoggedOut $event): void
     {
         // Clear user cache
         Cache::forget("user.{$event->user->id}");
     }
-    
+
     public function subscribe(Dispatcher $events): array
     {
         return [
@@ -230,7 +230,7 @@ $dispatcher->listen('payment.processing', function($payment) {
     if ($payment->amount > 10000) {
         // Require manual approval
         $payment->setStatus('pending_approval');
-        
+
         // Stop other listeners
         return false;
     }
@@ -263,13 +263,13 @@ class ConditionalListener
         // Only handle premium users
         return $event->user->isPremium();
     }
-    
+
     public function handle(UserRegistered $event): void
     {
         if (!$this->shouldHandle($event)) {
             return;
         }
-        
+
         // Handle premium user registration
     }
 }
@@ -282,8 +282,8 @@ Organize event listeners in a service provider:
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Events\Dispatcher;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Events\Dispatcher;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -293,46 +293,46 @@ class EventServiceProvider extends ServiceProvider
             UpdateUserStatistics::class,
             NotifyAdminOfNewUser::class,
         ],
-        
+
         OrderPlaced::class => [
             ProcessPayment::class,
             SendOrderConfirmation::class,
             UpdateInventory::class,
         ],
     ];
-    
+
     protected array $subscribe = [
         UserEventSubscriber::class,
         PaymentEventSubscriber::class,
     ];
-    
+
     public function boot(): void
     {
         $dispatcher = $this->app->make(Dispatcher::class);
-        
+
         // Register listeners
         foreach ($this->listen as $event => $listeners) {
             foreach ($listeners as $listener) {
                 $dispatcher->listen($event, $listener);
             }
         }
-        
+
         // Register subscribers
         foreach ($this->subscribe as $subscriber) {
             $dispatcher->subscribe($subscriber);
         }
-        
+
         // Register dynamic listeners
         $this->registerDynamicListeners($dispatcher);
     }
-    
+
     private function registerDynamicListeners(Dispatcher $dispatcher): void
     {
         // Model events
         User::created(function($user) use ($dispatcher) {
             $dispatcher->dispatch(new UserCreated($user));
         });
-        
+
         User::updated(function($user) use ($dispatcher) {
             if ($user->wasChanged('email')) {
                 $dispatcher->dispatch(new UserEmailChanged($user));
@@ -344,7 +344,7 @@ class EventServiceProvider extends ServiceProvider
 
 ## Built-in Events
 
-HelixPHP dispatches several built-in events:
+PivotPHP dispatches several built-in events:
 
 ```php
 // Request lifecycle events
@@ -374,8 +374,8 @@ HelixPHP dispatches several built-in events:
 Test your events and listeners:
 
 ```php
-use Helix\Testing\TestCase;
-use Helix\Support\Facades\Event;
+use PivotPHP\Testing\TestCase;
+use PivotPHP\Support\Facades\Event;
 
 class UserRegistrationTest extends TestCase
 {
@@ -383,30 +383,30 @@ class UserRegistrationTest extends TestCase
     {
         // Fake events
         Event::fake();
-        
+
         // Perform registration
         $response = $this->post('/register', [
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'password'
         ]);
-        
+
         // Assert event was dispatched
         Event::assertDispatched(UserRegistered::class, function($event) {
             return $event->user->email === 'john@example.com';
         });
-        
+
         // Assert event was dispatched exactly once
         Event::assertDispatchedTimes(UserRegistered::class, 1);
     }
-    
+
     public function test_welcome_email_is_sent()
     {
         Event::fake([UserRegistered::class]);
-        
+
         $user = User::factory()->create();
         event(new UserRegistered($user));
-        
+
         Event::assertListening(
             UserRegistered::class,
             SendWelcomeEmail::class
@@ -425,7 +425,7 @@ For better performance, process events asynchronously:
 class AsyncEventDispatcher extends Dispatcher
 {
     private Queue $queue;
-    
+
     public function dispatch($event, $payload = []): void
     {
         // Critical events processed immediately
@@ -433,16 +433,16 @@ class AsyncEventDispatcher extends Dispatcher
             parent::dispatch($event, $payload);
             return;
         }
-        
+
         // Queue non-critical events
         $this->queue->push(new ProcessEvent($event, $payload));
     }
-    
+
     private function isCritical($event): bool
     {
         $critical = ['payment.failed', 'security.breach', 'system.error'];
-        
-        return in_array($event, $critical) || 
+
+        return in_array($event, $critical) ||
                $event instanceof CriticalEvent;
     }
 }
@@ -457,34 +457,34 @@ class BatchedEventDispatcher
 {
     private array $events = [];
     private bool $batching = false;
-    
+
     public function batch(callable $callback): void
     {
         $this->batching = true;
-        
+
         $callback();
-        
+
         $this->batching = false;
         $this->flushEvents();
     }
-    
+
     public function dispatch($event, $payload = []): void
     {
         if ($this->batching) {
             $this->events[] = [$event, $payload];
             return;
         }
-        
+
         // Dispatch immediately if not batching
         parent::dispatch($event, $payload);
     }
-    
+
     private function flushEvents(): void
     {
         foreach ($this->events as [$event, $payload]) {
             parent::dispatch($event, $payload);
         }
-        
+
         $this->events = [];
     }
 }

@@ -7,7 +7,7 @@ lang: pt
 
 # Container de Serviços
 
-O container de serviços do HelixPHP é uma ferramenta poderosa para gerenciar dependências de classes e realizar injeção de dependência. É essencialmente uma fábrica sofisticada que cria e gerencia instâncias de objetos para sua aplicação.
+O container de serviços do PivotPHP é uma ferramenta poderosa para gerenciar dependências de classes e realizar injeção de dependência. É essencialmente uma fábrica sofisticada que cria e gerencia instâncias de objetos para sua aplicação.
 
 ## Introdução à Injeção de Dependência
 
@@ -29,12 +29,12 @@ class UserController
 class UserController
 {
     private Database $db;
-    
+
     public function __construct(Database $db)
     {
         $this->db = $db; // Dependência injetada
     }
-    
+
     public function index()
     {
         $users = $this->db->query('SELECT * FROM users');
@@ -126,7 +126,7 @@ O container pode resolver automaticamente classes e suas dependências:
 class UserRepository
 {
     private Database $db;
-    
+
     public function __construct(Database $db)
     {
         $this->db = $db;
@@ -136,7 +136,7 @@ class UserRepository
 class UserController
 {
     private UserRepository $repository;
-    
+
     public function __construct(UserRepository $repository)
     {
         $this->repository = $repository;
@@ -207,7 +207,7 @@ $app->when(Mailer::class)
 class Service
 {
     private string $apiKey;
-    
+
     public function __construct(string $apiKey)
     {
         $this->apiKey = $apiKey;
@@ -246,7 +246,7 @@ Organize suas vinculações em provedores de serviço:
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -260,13 +260,13 @@ class AppServiceProvider extends ServiceProvider
                 $app->make('redis.connection')
             );
         });
-        
+
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
         );
     }
-    
+
     /**
      * Inicializar serviços da aplicação
      */
@@ -310,11 +310,11 @@ Estenda serviços resolvidos:
 $app->extend(Database::class, function($db, $app) {
     // Adicionar log de queries
     $db->enableQueryLog();
-    
+
     $db->listen(function($query) use ($app) {
         $app->make('logger')->info($query);
     });
-    
+
     return $db;
 });
 ```
@@ -332,12 +332,12 @@ interface ReportFactory
 class ReportFactoryImpl implements ReportFactory
 {
     private Container $container;
-    
+
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
-    
+
     public function create(string $type): Report
     {
         return match($type) {
@@ -361,13 +361,13 @@ class UserController
 {
     private UserRepository $users;
     private Mailer $mailer;
-    
+
     public function __construct(UserRepository $users, Mailer $mailer)
     {
         $this->users = $users;
         $this->mailer = $mailer;
     }
-    
+
     public function store(Request $request, Validator $validator)
     {
         // Ambas dependências do construtor e método são injetadas
@@ -375,10 +375,10 @@ class UserController
             'email' => 'required|email',
             'name' => 'required|string'
         ]);
-        
+
         $user = $this->users->create($validated);
         $this->mailer->send(new WelcomeEmail($user));
-        
+
         return response()->json($user);
     }
 }
@@ -404,19 +404,19 @@ class LoggingCache implements Cache
 {
     private Cache $cache;
     private Logger $logger;
-    
+
     public function __construct(Cache $cache, Logger $logger)
     {
         $this->cache = $cache;
         $this->logger = $logger;
     }
-    
+
     public function get(string $key)
     {
         $this->logger->info("Obtendo chave de cache: {$key}");
         return $this->cache->get($key);
     }
-    
+
     public function set(string $key, $value)
     {
         $this->logger->info("Definindo chave de cache: {$key}");
@@ -427,11 +427,11 @@ class LoggingCache implements Cache
 // Vinculação com decoração
 $app->bind(Cache::class, function($app) {
     $redis = new RedisCache();
-    
+
     if ($app->environment('local')) {
         return new LoggingCache($redis, $app->make(Logger::class));
     }
-    
+
     return $redis;
 });
 ```
@@ -480,15 +480,15 @@ class UserServiceTest extends TestCase
         // Mock de dependências
         $mockRepo = $this->createMock(UserRepository::class);
         $mockMailer = $this->createMock(Mailer::class);
-        
+
         // Vincular mocks ao container
         $this->app->instance(UserRepository::class, $mockRepo);
         $this->app->instance(Mailer::class, $mockMailer);
-        
+
         // Testar com dependências mockadas
         $service = $this->app->make(UserService::class);
         $service->createUser(['name' => 'João']);
-        
+
         // Verificar expectativas do mock
     }
 }

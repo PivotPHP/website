@@ -8,7 +8,7 @@ permalink: /docs/installation/
 
 ## Requirements
 
-Before installing HelixPHP, make sure your system meets the following requirements:
+Before installing PivotPHP, make sure your system meets the following requirements:
 
 - **PHP 8.1** or higher
 - **Composer** (latest version recommended)
@@ -17,18 +17,18 @@ Before installing HelixPHP, make sure your system meets the following requiremen
 
 ## Install via Composer
 
-The recommended way to install HelixPHP is through [Composer](https://getcomposer.org/):
+The recommended way to install PivotPHP is through [Composer](https://getcomposer.org/):
 
 ```bash
-composer require helixphp/framework
+composer require pivotphp/core
 ```
 
 ## Create a New Project
 
-To create a new HelixPHP project with a basic structure:
+To create a new PivotPHP project with a basic structure:
 
 ```bash
-composer create-project helixphp/helixphp my-app
+composer create-project pivotphp/pivotphp my-app
 cd my-app
 ```
 
@@ -59,9 +59,9 @@ If you prefer to set up your project manually:
    ```bash
    composer init
    ```
-3. Require HelixPHP:
+3. Require PivotPHP:
    ```bash
-   composer require helixphp/framework
+   composer require pivotphp/core
    ```
 4. Create your entry point:
    ```bash
@@ -71,19 +71,19 @@ If you prefer to set up your project manually:
 
 ## Verify Installation
 
-To verify that HelixPHP is installed correctly, create a simple `index.php` file:
+To verify that PivotPHP is installed correctly, create a simple `index.php` file:
 
 ```php
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 $app = new Application();
 
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'HelixPHP is running!',
+        'message' => 'PivotPHP is running!',
         'version' => Application::VERSION
     ]);
 });
@@ -97,8 +97,8 @@ Then start the built-in PHP server:
 php -S localhost:8000 -t public
 ```
 
-Visit `http://localhost:8000` in your browser. You should see a JSON response confirming HelixPHP is running.
+Visit `http://localhost:8000` in your browser. You should see a JSON response confirming PivotPHP is running.
 
 ## Next Steps
 
-Now that you have HelixPHP installed, you're ready to build your first application! Check out our [Quick Start guide]({{ site.baseurl }}/docs/quickstart/) to learn the basics.
+Now that you have PivotPHP installed, you're ready to build your first application! Check out our [Quick Start guide]({{ site.baseurl }}/docs/quickstart/) to learn the basics.

@@ -7,22 +7,22 @@ lang: pt
 
 # Provedores de Serviços
 
-Os provedores de serviços são o local central de toda a inicialização da aplicação HelixPHP. Sua própria aplicação, bem como todos os serviços principais do HelixPHP, são inicializados através de provedores de serviços.
+Os provedores de serviços são o local central de toda a inicialização da aplicação PivotPHP. Sua própria aplicação, bem como todos os serviços principais do PivotPHP, são inicializados através de provedores de serviços.
 
 ## Introdução
 
-Os provedores de serviços são o ponto de conexão entre seu pacote e o HelixPHP. Um provedor de serviços é responsável por vincular coisas ao contêiner de serviços do HelixPHP e informar ao HelixPHP onde carregar recursos do pacote, como views, configurações e arquivos de localização.
+Os provedores de serviços são o ponto de conexão entre seu pacote e o PivotPHP. Um provedor de serviços é responsável por vincular coisas ao contêiner de serviços do PivotPHP e informar ao PivotPHP onde carregar recursos do pacote, como views, configurações e arquivos de localização.
 
 ## Escrevendo Provedores de Serviços
 
-Todos os provedores de serviços estendem a classe `Helix\Core\ServiceProvider` e contêm dois métodos: `register` e `boot`.
+Todos os provedores de serviços estendem a classe `PivotPHP\Core\Core\ServiceProvider` e contêm dois métodos: `register` e `boot`.
 
 ### Estrutura Básica
 
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Registra vinculações no contêiner
     }
-    
+
     /**
      * Inicializa qualquer serviço da aplicação.
      */
@@ -55,14 +55,14 @@ public function register(): void
     $this->app->bind('mailer', function ($app) {
         return new Mailer($app->make('config')->get('mail'));
     });
-    
+
     // Vinculação singleton
     $this->app->singleton(ConnectionInterface::class, function ($app) {
         return new DatabaseConnection(
             $app->make('config')->get('database')
         );
     });
-    
+
     // Vinculação de instância
     $this->app->instance('api.client', new ApiClient(
         $_ENV['API_KEY']
@@ -79,18 +79,18 @@ public function boot(): void
 {
     // Registra ouvintes de eventos
     Event::listen(UserRegistered::class, SendWelcomeEmail::class);
-    
+
     // Registra middleware
     $this->app->middleware(RateLimitMiddleware::class);
-    
+
     // Publica configuração
     $this->publishes([
         __DIR__.'/../config/services.php' => config_path('services.php'),
     ], 'config');
-    
+
     // Carrega rotas
     $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-    
+
     // Carrega views
     $this->loadViewsFrom(__DIR__.'/../resources/views', 'package');
 }
@@ -105,12 +105,12 @@ Registre seus provedores de serviços no arquivo de configuração `config/app.p
 ```php
 'providers' => [
     /*
-     * Provedores de Serviços do Framework HelixPHP...
+     * Provedores de Serviços do Framework PivotPHP...
      */
-    Helix\Foundation\Providers\FoundationServiceProvider::class,
-    Helix\Routing\RoutingServiceProvider::class,
-    Helix\Session\SessionServiceProvider::class,
-    
+    PivotPHP\Foundation\Providers\FoundationServiceProvider::class,
+    PivotPHP\Routing\RoutingServiceProvider::class,
+    PivotPHP\Session\SessionServiceProvider::class,
+
     /*
      * Provedores de Serviços da Aplicação...
      */
@@ -128,7 +128,7 @@ Se seu provedor está apenas registrando vinculações no contêiner de serviço
 ```php
 namespace App\Providers;
 
-use Helix\Core\DeferredServiceProvider;
+use PivotPHP\Core\Core\DeferredServiceProvider;
 use App\Services\ImageProcessor;
 
 class ImageServiceProvider extends DeferredServiceProvider
@@ -145,7 +145,7 @@ class ImageServiceProvider extends DeferredServiceProvider
             );
         });
     }
-    
+
     /**
      * Obtém os serviços fornecidos pelo provedor.
      */
@@ -163,8 +163,8 @@ class ImageServiceProvider extends DeferredServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Routing\Router;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -172,7 +172,7 @@ class RouteServiceProvider extends ServiceProvider
      * O caminho para a rota "home" da sua aplicação.
      */
     public const HOME = '/dashboard';
-    
+
     /**
      * Define suas vinculações de modelo de rota, filtros de padrão, etc.
      */
@@ -181,14 +181,14 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->defineRoutes();
     }
-    
+
     /**
      * Define as rotas para a aplicação.
      */
     protected function defineRoutes(): void
     {
         $router = $this->app->make(Router::class);
-        
+
         // Rotas da API
         $router->group([
             'prefix' => 'api',
@@ -196,7 +196,7 @@ class RouteServiceProvider extends ServiceProvider
         ], function ($router) {
             require base_path('routes/api.php');
         });
-        
+
         // Rotas Web
         $router->group([
             'middleware' => ['web'],
@@ -204,7 +204,7 @@ class RouteServiceProvider extends ServiceProvider
             require base_path('routes/web.php');
         });
     }
-    
+
     /**
      * Configura os limitadores de taxa para a aplicação.
      */
@@ -213,7 +213,7 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function ($request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
-        
+
         RateLimiter::for('login', function ($request) {
             return Limit::perMinute(5)->by($request->ip());
         });
@@ -226,7 +226,7 @@ class RouteServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 use App\Services\Auth\JwtGuard;
 use App\Services\Auth\UserProvider;
 
@@ -244,7 +244,7 @@ class AuthServiceProvider extends ServiceProvider
                 $app->make(UserRepository::class)
             );
         });
-        
+
         // Registra guarda personalizado
         $this->app->singleton('auth.guard', function ($app) {
             return new JwtGuard(
@@ -254,7 +254,7 @@ class AuthServiceProvider extends ServiceProvider
             );
         });
     }
-    
+
     /**
      * Inicializa qualquer serviço de autenticação/autorização.
      */
@@ -264,11 +264,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update-post', function ($user, $post) {
             return $user->id === $post->user_id;
         });
-        
+
         Gate::define('admin', function ($user) {
             return $user->role === 'admin';
         });
-        
+
         // Registra políticas
         Gate::policy(Post::class, PostPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
@@ -281,8 +281,8 @@ class AuthServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Events\Dispatcher;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Events\Dispatcher;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -295,21 +295,21 @@ class EventServiceProvider extends ServiceProvider
             LogUserRegistration::class,
             UpdateUserStatistics::class,
         ],
-        
+
         OrderPlaced::class => [
             ProcessPayment::class,
             SendOrderConfirmation::class,
             UpdateInventory::class,
             NotifyWarehouse::class,
         ],
-        
+
         PaymentFailed::class => [
             NotifyCustomerOfFailure::class,
             LogFailedPayment::class,
             RevertOrderStatus::class,
         ],
     ];
-    
+
     /**
      * Os assinantes a serem registrados.
      */
@@ -317,24 +317,24 @@ class EventServiceProvider extends ServiceProvider
         UserEventSubscriber::class,
         PaymentEventSubscriber::class,
     ];
-    
+
     /**
      * Registra qualquer evento para sua aplicação.
      */
     public function boot(): void
     {
         parent::boot();
-        
+
         // Registra eventos de modelo
         User::observe(UserObserver::class);
         Post::observe(PostObserver::class);
-        
+
         // Registra eventos personalizados
         Event::listen('cache.cleared', function () {
             Log::info('Cache da aplicação foi limpo');
         });
     }
-    
+
     /**
      * Determina se eventos e ouvintes devem ser automaticamente descobertos.
      */
@@ -342,7 +342,7 @@ class EventServiceProvider extends ServiceProvider
     {
         return true;
     }
-    
+
     /**
      * Obtém os diretórios de ouvintes que devem ser usados para descobrir eventos.
      */
@@ -361,8 +361,8 @@ class EventServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Broadcasting\BroadcastManager;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Broadcasting\BroadcastManager;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
@@ -372,11 +372,11 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerChannels();
-        
+
         // Registra rotas de transmissão
         require base_path('routes/channels.php');
     }
-    
+
     /**
      * Registra canais de transmissão.
      */
@@ -386,7 +386,7 @@ class BroadcastServiceProvider extends ServiceProvider
         Broadcast::channel('user.{id}', function ($user, $id) {
             return (int) $user->id === (int) $id;
         });
-        
+
         // Autorização de canal de presença
         Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
             if ($user->canJoinRoom($roomId)) {
@@ -397,7 +397,7 @@ class BroadcastServiceProvider extends ServiceProvider
                 ];
             }
         });
-        
+
         // Transmissão de modelo
         Broadcast::channel('App.Models.Order.{order}', function ($user, Order $order) {
             return $user->id === $order->user_id;
@@ -411,8 +411,8 @@ class BroadcastServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\View\View;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\View\View;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -423,7 +423,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Inicializa qualquer serviço da aplicação.
      */
@@ -431,25 +431,25 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Registra compositores de view
         View::composer('profile', ProfileComposer::class);
-        
+
         View::composer(['dashboard', 'analytics'], function ($view) {
             $view->with('stats', app(StatsService::class)->getStats());
         });
-        
+
         // Registra criadores de view
         View::creator('notifications', function ($view) {
             $view->with('notifications', auth()->user()->unreadNotifications);
         });
-        
+
         // Compartilha dados com todas as views
         View::share('appName', config('app.name'));
         View::share('currentYear', date('Y'));
-        
+
         // Registra diretivas personalizadas
         Blade::directive('datetime', function ($expression) {
             return "<?php echo ($expression)->format('Y-m-d H:i:s'); ?>";
         });
-        
+
         Blade::if('env', function ($environment) {
             return app()->environment($environment);
         });
@@ -464,7 +464,7 @@ Ao criar pacotes, use provedores de serviços para registrar recursos do pacote:
 ```php
 namespace YourPackage\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
 {
@@ -475,38 +475,38 @@ class PackageServiceProvider extends ServiceProvider
     {
         // Carrega rotas do pacote
         $this->loadRoutesFrom(__DIR__.'/../routes.php');
-        
+
         // Carrega views do pacote
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'package');
-        
+
         // Carrega traduções do pacote
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'package');
-        
+
         // Carrega migrações do pacote
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        
+
         // Publica recursos do pacote
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/package.php' => config_path('package.php'),
             ], 'config');
-            
+
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/package'),
             ], 'views');
-            
+
             $this->publishes([
                 __DIR__.'/../resources/assets' => public_path('vendor/package'),
             ], 'assets');
         }
-        
+
         // Registra comandos
         $this->commands([
             InstallCommand::class,
             PublishCommand::class,
         ]);
     }
-    
+
     /**
      * Registra os serviços da aplicação.
      */
@@ -516,7 +516,7 @@ class PackageServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/package.php', 'package'
         );
-        
+
         // Registra serviços do pacote
         $this->app->singleton('package', function ($app) {
             return new Package($app['config']['package']);
@@ -543,22 +543,22 @@ class CustomServiceProviderTest extends TestCase
             $this->app->make(CustomService::class)
         );
     }
-    
+
     public function test_bindings_are_correct()
     {
         $this->app->register(CustomServiceProvider::class);
-        
+
         $this->assertTrue($this->app->bound('custom.service'));
         $this->assertSame(
             $this->app->make('custom.service'),
             $this->app->make('custom.service')
         );
     }
-    
+
     public function test_configuration_is_published()
     {
         $provider = new CustomServiceProvider($this->app);
-        
+
         $this->assertArrayHasKey('config', $provider->pathsToPublish());
     }
 }

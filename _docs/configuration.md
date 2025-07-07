@@ -6,16 +6,16 @@ permalink: /docs/configuration/
 
 # Configuration
 
-HelixPHP uses a simple yet powerful configuration system that allows you to manage your application settings across different environments.
+PivotPHP uses a simple yet powerful configuration system that allows you to manage your application settings across different environments.
 
 ## Environment Configuration
 
 ### The .env File
 
-HelixPHP uses environment variables to manage configuration that varies between deployment environments. The `.env` file in your project root contains these variables:
+PivotPHP uses environment variables to manage configuration that varies between deployment environments. The `.env` file in your project root contains these variables:
 
 ```bash
-APP_NAME=HelixPHP
+APP_NAME=PivotPHP
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://localhost
@@ -85,7 +85,7 @@ Each configuration file returns an array:
 ```php
 // config/app.php
 return [
-    'name' => env('APP_NAME', 'HelixPHP'),
+    'name' => env('APP_NAME', 'PivotPHP'),
     'env' => env('APP_ENV', 'production'),
     'debug' => env('APP_DEBUG', false),
     'url' => env('APP_URL', 'http://localhost'),
@@ -129,7 +129,7 @@ return [
     | Application Name
     |--------------------------------------------------------------------------
     */
-    'name' => env('APP_NAME', 'HelixPHP'),
+    'name' => env('APP_NAME', 'PivotPHP'),
 
     /*
     |--------------------------------------------------------------------------
@@ -189,10 +189,10 @@ return [
     |--------------------------------------------------------------------------
     */
     'aliases' => [
-        'App' => Helix\Support\Facades\App::class,
-        'Config' => Helix\Support\Facades\Config::class,
-        'DB' => Helix\Support\Facades\DB::class,
-        'Route' => Helix\Support\Facades\Route::class,
+        'App' => PivotPHP\Support\Facades\App::class,
+        'Config' => PivotPHP\Support\Facades\Config::class,
+        'DB' => PivotPHP\Support\Facades\DB::class,
+        'Route' => PivotPHP\Support\Facades\Route::class,
     ],
 ];
 ```
@@ -328,7 +328,7 @@ $webhookSecret = config('services.stripe.webhook.secret');
 class StripeService
 {
     private string $apiKey;
-    
+
     public function __construct()
     {
         $this->apiKey = config('services.stripe.secret');
@@ -384,22 +384,22 @@ config()->merge('database.connections.mysql', [
 Access the configuration repository directly:
 
 ```php
-use Helix\Config\Repository;
+use PivotPHP\Config\Repository;
 
 class ConfigService
 {
     private Repository $config;
-    
+
     public function __construct(Repository $config)
     {
         $this->config = $config;
     }
-    
+
     public function getDatabaseConfig(): array
     {
         return $this->config->get('database.connections.mysql');
     }
-    
+
     public function updateMailSettings(array $settings): void
     {
         $this->config->set('mail', array_merge(
@@ -413,7 +413,7 @@ class ConfigService
 ## Environment Detection
 
 ```php
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 // Check current environment
 if (app()->environment('local')) {
@@ -468,7 +468,7 @@ private function validateConfiguration(): void
         'database.connections.mysql.host' => 'Database host is not configured',
         'mail.driver' => 'Mail driver is not configured',
     ];
-    
+
     foreach ($required as $key => $message) {
         if (empty(config($key))) {
             throw new \RuntimeException($message);
@@ -491,7 +491,7 @@ class DatabaseConfig
         public readonly string $username,
         public readonly string $password,
     ) {}
-    
+
     public static function fromArray(array $config): self
     {
         return new self(

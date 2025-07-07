@@ -7,7 +7,7 @@ lang: pt
 
 # Início Rápido
 
-Este guia mostrará como criar sua primeira aplicação HelixPHP. Vamos construir uma API REST simples para gerenciar tarefas.
+Este guia mostrará como criar sua primeira aplicação PivotPHP. Vamos construir uma API REST simples para gerenciar tarefas.
 
 ## Passo 1: Crie Sua Aplicação
 
@@ -17,7 +17,7 @@ Primeiro, crie um novo arquivo `public/index.php`:
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 // Crie a instância da aplicação
 $app = new Application();
@@ -25,7 +25,7 @@ $app = new Application();
 // Defina sua primeira rota
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'Bem-vindo ao HelixPHP!',
+        'message' => 'Bem-vindo ao PivotPHP!',
         'timestamp' => time()
     ]);
 });
@@ -60,27 +60,27 @@ $app->get('/tasks', function($req, $res) use (&$tasks) {
 // Obter uma tarefa específica
 $app->get('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Tarefa não encontrada'
         ]);
     }
-    
+
     return $res->json($tasks[$id]);
 });
 
 // Criar uma nova tarefa
 $app->post('/tasks', function($req, $res) use (&$tasks) {
     $data = $req->body();
-    
+
     // Validação simples
     if (empty($data['title'])) {
         return $res->status(400)->json([
             'error' => 'Título é obrigatório'
         ]);
     }
-    
+
     $id = uniqid();
     $task = [
         'id' => $id,
@@ -88,40 +88,40 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
         'completed' => false,
         'created_at' => date('Y-m-d H:i:s')
     ];
-    
+
     $tasks[$id] = $task;
-    
+
     return $res->status(201)->json($task);
 });
 
 // Atualizar uma tarefa
 $app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Tarefa não encontrada'
         ]);
     }
-    
+
     $data = $req->body();
     $tasks[$id] = array_merge($tasks[$id], $data);
-    
+
     return $res->json($tasks[$id]);
 });
 
 // Deletar uma tarefa
 $app->delete('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Tarefa não encontrada'
         ]);
     }
-    
+
     unset($tasks[$id]);
-    
+
     return $res->status(204);
 });
 ```
@@ -134,10 +134,10 @@ Vamos adicionar um middleware de logging para registrar todas as requisições:
 // Middleware de logging
 $app->use(function($req, $res, $next) {
     $start = microtime(true);
-    
+
     // Processa a requisição
     $response = $next($req, $res);
-    
+
     // Registra a requisição
     $duration = round((microtime(true) - $start) * 1000, 2);
     error_log(sprintf(
@@ -147,7 +147,7 @@ $app->use(function($req, $res, $next) {
         $req->path(),
         $duration
     ));
-    
+
     return $response;
 });
 
@@ -156,11 +156,11 @@ $app->use(function($req, $res, $next) {
     $res->header('Access-Control-Allow-Origin', '*');
     $res->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     $res->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    
+
     if ($req->method() === 'OPTIONS') {
         return $res->status(204);
     }
-    
+
     return $next($req, $res);
 });
 ```
@@ -176,35 +176,35 @@ namespace App\Controllers;
 class TaskController
 {
     private array $tasks = [];
-    
+
     public function index($request, $response)
     {
         return $response->json($this->tasks);
     }
-    
+
     public function show($request, $response)
     {
         $id = $request->param('id');
-        
+
         if (!isset($this->tasks[$id])) {
             return $response->status(404)->json([
                 'error' => 'Tarefa não encontrada'
             ]);
         }
-        
+
         return $response->json($this->tasks[$id]);
     }
-    
+
     public function store($request, $response)
     {
         $data = $request->body();
-        
+
         if (empty($data['title'])) {
             return $response->status(400)->json([
                 'error' => 'Título é obrigatório'
             ]);
         }
-        
+
         $id = uniqid();
         $task = [
             'id' => $id,
@@ -212,9 +212,9 @@ class TaskController
             'completed' => false,
             'created_at' => date('Y-m-d H:i:s')
         ];
-        
+
         $this->tasks[$id] = $task;
-        
+
         return $response->status(201)->json($task);
     }
 }
@@ -234,7 +234,7 @@ $app->post('/tasks', [TaskController::class, 'store']);
 
 ## O Que Vem a Seguir?
 
-Parabéns! Você construiu sua primeira aplicação HelixPHP. Para aprender mais:
+Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais:
 
 - Explore [Roteamento]({{ '/pt/docs/roteamento/' | relative_url }}) para recursos avançados de roteamento
 - Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições
@@ -245,6 +245,6 @@ Parabéns! Você construiu sua primeira aplicação HelixPHP. Para aprender mais
 
 ### Recursos Adicionais
 
-- [Repositório GitHub](https://github.com/helix-php/framework)
-- [Exemplos Completos](https://github.com/helix-php/examples)
-- [Comunidade Discord](https://discord.gg/helixphp)
+- [Repositório GitHub](https://github.com/pivotphp/framework)
+- [Exemplos Completos](https://github.com/pivotphp/examples)
+- [Comunidade Discord](https://discord.gg/pivotphp)

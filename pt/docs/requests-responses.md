@@ -7,7 +7,7 @@ lang: pt
 
 # Requisições e Respostas
 
-O HelixPHP usa objetos de mensagem HTTP compatíveis com PSR-7 para requisições e respostas, fornecendo uma interface consistente e interoperável para lidar com comunicação HTTP.
+O PivotPHP usa objetos de mensagem HTTP compatíveis com PSR-7 para requisições e respostas, fornecendo uma interface consistente e interoperável para lidar com comunicação HTTP.
 
 ## O Objeto Request
 
@@ -19,25 +19,25 @@ O objeto request representa a requisição HTTP e fornece métodos para acessar 
 $app->post('/usuarios', function($request, $response) {
     // Obter todos os dados de entrada
     $todos = $request->all();
-    
+
     // Obter entrada específica com valor padrão
     $nome = $request->input('nome', 'Anônimo');
     $email = $request->input('email');
-    
+
     // Obter entrada aninhada usando notação de ponto
     $cidade = $request->input('endereco.cidade');
-    
+
     // Obter apenas campos específicos
     $credenciais = $request->only(['email', 'senha']);
-    
+
     // Obter todos exceto campos específicos
     $dados = $request->except(['senha', 'confirmacao_senha']);
-    
+
     // Verificar se entrada existe
     if ($request->has('email')) {
         // Processar email
     }
-    
+
     // Verificar se múltiplas entradas existem
     if ($request->hasAny(['email', 'usuario'])) {
         // Processar login
@@ -82,7 +82,7 @@ $app->get('/usuarios/{id}/posts/{postId}', function($request, $response) {
     // Obter parâmetros de rota
     $usuarioId = $request->param('id');
     $postId = $request->param('postId');
-    
+
     // Obter todos os parâmetros de rota
     $params = $request->params();
 });
@@ -167,24 +167,24 @@ $caminho = $request->path();        // usuarios/123
 $app->post('/upload', function($request, $response) {
     // Obter arquivo enviado
     $arquivo = $request->file('avatar');
-    
+
     if ($arquivo && $arquivo->getError() === UPLOAD_ERR_OK) {
         // Obter informações do arquivo
         $nomeArquivo = $arquivo->getClientFilename();
         $tamanho = $arquivo->getSize();
         $tipo = $arquivo->getClientMediaType();
-        
+
         // Mover arquivo enviado
         $novoCaminho = 'uploads/' . uniqid() . '_' . $nomeArquivo;
         $arquivo->moveTo($novoCaminho);
-        
+
         return $response->json([
             'caminho' => $novoCaminho,
             'tamanho' => $tamanho,
             'tipo' => $tipo
         ]);
     }
-    
+
     // Múltiplos arquivos
     $arquivos = $request->file('documentos');
     foreach ($arquivos as $arquivo) {
@@ -352,13 +352,13 @@ return $response->file('/caminho/para/documento.pdf', [
 // Transmitir dados grandes
 return $response->stream(function() {
     $handle = fopen('arquivo-grande.csv', 'r');
-    
+
     while (!feof($handle)) {
         echo fread($handle, 1024);
         ob_flush();
         flush();
     }
-    
+
     fclose($handle);
 });
 
@@ -386,13 +386,13 @@ $app->post('/api/usuarios', function($request, $response) {
     if (!$request->isJson()) {
         return $response->badRequest('Tipo de conteúdo inválido');
     }
-    
+
     // Obter dados JSON
     $dados = $request->json();
-    
+
     // Obter campo específico
     $email = $request->json('email');
-    
+
     // Validar JSON
     if (!$request->json()->has(['email', 'senha'])) {
         return $response->unprocessable([
@@ -452,10 +452,10 @@ return $response->erro('Credenciais inválidas', 401);
 ```php
 $app->get('/dados', function($request, $response) {
     $dados = ['nome' => 'João', 'email' => 'joao@exemplo.com'];
-    
+
     // Verificar o que o cliente aceita
     $accept = $request->header('Accept');
-    
+
     if (str_contains($accept, 'application/xml')) {
         return $response->xml($dados);
     } elseif (str_contains($accept, 'text/csv')) {
@@ -477,8 +477,8 @@ $app->get('/dados', function($request, $response) {
 7. **Use type hints**: Type hint parâmetros request e response para melhor suporte IDE
 
 ```php
-use Helix\Http\Request;
-use Helix\Http\Response;
+use PivotPHP\Http\Request;
+use PivotPHP\Http\Response;
 
 $app->post('/usuarios', function(Request $request, Response $response) {
     // Melhor suporte IDE e segurança de tipos

@@ -6,7 +6,7 @@ permalink: /docs/routing/
 
 # Routing
 
-HelixPHP provides an Express.js-like routing system that's intuitive and powerful. Routes are defined using HTTP verb methods on the application instance.
+PivotPHP provides an Express.js-like routing system that's intuitive and powerful. Routes are defined using HTTP verb methods on the application instance.
 
 ## Basic Routing
 
@@ -20,7 +20,7 @@ $app->get('/', function($request, $response) {
 
 ### Available Router Methods
 
-HelixPHP supports all standard HTTP verbs:
+PivotPHP supports all standard HTTP verbs:
 
 ```php
 $app->get($uri, $callback);
@@ -68,7 +68,7 @@ $app->get('/posts/{year}/{month}/{slug}', function($req, $res) {
     $year = $req->param('year');
     $month = $req->param('month');
     $slug = $req->param('slug');
-    
+
     // Find post by year, month, and slug
 });
 ```
@@ -80,7 +80,7 @@ Make a parameter optional by adding a `?`:
 ```php
 $app->get('/posts/{id?}', function($req, $res) {
     $id = $req->param('id', 'latest'); // Default to 'latest'
-    
+
     if ($id === 'latest') {
         // Return latest posts
     } else {
@@ -117,15 +117,15 @@ Group related routes to share common attributes like middleware or URL prefixes:
 ```php
 $app->group('/api', function($group) {
     // All routes in this group will be prefixed with /api
-    
+
     $group->get('/users', function($req, $res) {
         // Matches: GET /api/users
     });
-    
+
     $group->post('/users', function($req, $res) {
         // Matches: POST /api/users
     });
-    
+
     // Nested groups
     $group->group('/v1', function($v1) {
         $v1->get('/status', function($req, $res) {
@@ -147,7 +147,7 @@ $app->group('/admin', function($group) {
 // Or apply middleware inside the group
 $app->group('/api', function($group) {
     $group->middleware('throttle:60,1');
-    
+
     $group->get('/users', function($req, $res) {
         // Rate limited
     });

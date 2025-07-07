@@ -1,6 +1,6 @@
-# HelixPHP Website
+# PivotPHP Website
 
-This is the official website and documentation for HelixPHP, built with Jekyll for GitHub Pages.
+This is the official website and documentation for PivotPHP, built with Jekyll for GitHub Pages.
 
 ## Local Development
 

@@ -1,6 +1,6 @@
-# Guia de Assets para Redes Sociais - HelixPHP
+# Guia de Assets para Redes Sociais - PivotPHP
 
-Este documento descreve todas as imagens necessárias para otimizar o compartilhamento do site HelixPHP nas redes sociais e garantir uma aparência profissional em todas as plataformas.
+Este documento descreve todas as imagens necessárias para otimizar o compartilhamento do site PivotPHP nas redes sociais e garantir uma aparência profissional em todas as plataformas.
 
 ## 🖼️ Imagem Principal de Compartilhamento
 
@@ -11,12 +11,12 @@ Este documento descreve todas as imagens necessárias para otimizar o compartilh
 - **Localização**: `/assets/images/social-share.png`
 
 **Requisitos de Design**:
-- Logo HelixPHP centralizado e prominente
+- Logo PivotPHP centralizado e prominente
 - Tagline: "High-Performance PHP Microframework"
 - Métricas principais: 52M+ ops/sec, PSR Compliant, Zero Config
 - Cores da marca: #007bff (azul principal) com gradiente para #0056b3
 - Fundo claro com elementos visuais que representem performance/velocidade
-- URL do site visível: helixphp.github.io
+- URL do site visível: pivotphp.github.io
 
 ## 📱 Favicons e Ícones de Aplicativo
 
@@ -57,7 +57,7 @@ Este documento descreve todas as imagens necessárias para otimizar o compartilh
 - Textos: Fonte clean e moderna (sugestão: Inter, Roboto, ou system fonts)
 
 ### Elementos Visuais
-1. **Logo**: Usar a versão completa do logo HelixPHP
+1. **Logo**: Usar a versão completa do logo PivotPHP
 2. **Ícones**: Podem incluir elementos que representem:
    - Velocidade (raios, setas)
    - Código (brackets, tags)
@@ -107,7 +107,7 @@ Este documento descreve todas as imagens necessárias para otimizar o compartilh
 |                                  |
 |        +------------------+      |
 |        |                  |      |
-|        |   Logo HelixPHP  |      |
+|        |   Logo PivotPHP  |      |
 |        |                  |      |
 |        +------------------+      |
 |                                  |
@@ -117,7 +117,7 @@ Este documento descreve todas as imagens necessárias para otimizar o compartilh
 |   [52M+]   [PSR]    [Zero]      |
 |   ops/sec  Compliant Config     |
 |                                  |
-|       helixphp.github.io         |
+|       pivotphp.github.io         |
 +----------------------------------+
 ```
 

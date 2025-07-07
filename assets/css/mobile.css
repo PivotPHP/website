@@ -1,4 +1,4 @@
-/* Mobile-first responsive improvements for HelixPHP website */
+/* Mobile-first responsive improvements for PivotPHP website */
 
 /* ===== Base Mobile Styles ===== */
 :root {
@@ -394,7 +394,7 @@ html {
     html {
         scroll-behavior: smooth;
     }
-    
+
     /* Offset scroll to account for fixed header */
     :target {
         scroll-margin-top: calc(var(--header-height) + 1rem);

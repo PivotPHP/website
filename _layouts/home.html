@@ -3,27 +3,185 @@ layout: default
 ---
 
 <!-- Hero Section -->
-<section class="hero">
-    <div class="container">
-        <div class="logo-container">
-            <img src="{{ '/assets/images/DarkLogo.png' | relative_url }}" alt="{{ site.title }} Logo" class="logo logo-dark">
-            <img src="{{ '/assets/images/LigthLogo.png' | relative_url }}" alt="{{ site.title }} Logo" class="logo logo-light">
+<section class="home-hero">
+  <div class="container">
+    <div class="home-hero-content animate-fadeIn">
+      <h1>PivotPHP</h1>
+      <p class="tagline">The Evolutionary PHP Microframework</p>
+      <p class="hero-description">
+        Build high-performance APIs that adapt and evolve. Express.js-inspired syntax meets PHP's power.
+      </p>
+      
+      <div class="home-hero-buttons">
+        <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
+          Get Started →
+        </a>
+        <a href="{{ site.github_url }}/pivotphp-core" class="btn btn-secondary">
+          View on GitHub
+        </a>
+      </div>
+      
+      <div class="home-hero-stats">
+        <div class="home-stat">
+          <span class="home-stat-value">52M+</span>
+          <span class="home-stat-label">ops/sec</span>
         </div>
-        <div class="subtitle">{{ site.tagline }}</div>
-        <div class="tagline">Built for performance. Designed to evolve.</div>
-        
-        <div class="cta">
-            <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
-                Get Started →
-            </a>
-            <a href="{{ site.github_url }}" class="btn">
-                View on GitHub
-            </a>
-            <a href="{{ '/docs/' | relative_url }}" class="btn">
-                Documentation
-            </a>
+        <div class="home-stat">
+          <span class="home-stat-value">&lt;1ms</span>
+          <span class="home-stat-label">response time</span>
         </div>
+        <div class="home-stat">
+          <span class="home-stat-value">PSR-15</span>
+          <span class="home-stat-label">compliant</span>
+        </div>
+        <div class="home-stat">
+          <span class="home-stat-value">Zero</span>
+          <span class="home-stat-label">configuration</span>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- Code Demo Section -->
+<section class="code-demo">
+  <div class="container">
+    <div class="code-demo-grid">
+      <div class="code-demo-content">
+        <h2 class="gradient-text">Express.js Simplicity, PHP Performance</h2>
+        <p>Write modern PHP with a familiar, intuitive API inspired by Express.js. No boilerplate, just productivity.</p>
+        <ul>
+          <li>Intuitive routing with middleware support</li>
+          <li>Built-in dependency injection container</li>
+          <li>PSR-7/PSR-15 compliant HTTP handling</li>
+          <li>Zero configuration to get started</li>
+          <li>Type-safe with PHPStan Level 9</li>
+        </ul>
+      </div>
+      <div class="code-example">
+        <div class="code-header">app.php</div>
+        <div class="code-content">
+<pre><code><span class="code-keyword">use</span> <span class="code-function">PivotPHP\Core\Core\Application</span>;
+
+<span class="code-variable">$app</span> = <span class="code-keyword">new</span> <span class="code-function">Application</span>();
+
+<span class="code-comment">// Simple routing with Express.js-like syntax</span>
+<span class="code-variable">$app</span>-><span class="code-function">get</span>(<span class="code-string">'/api/users/:id'</span>, <span class="code-keyword">function</span> (<span class="code-variable">$req</span>, <span class="code-variable">$res</span>) {
+    <span class="code-keyword">return</span> <span class="code-variable">$res</span>-><span class="code-function">json</span>([
+        <span class="code-string">'id'</span> => <span class="code-variable">$req</span>-><span class="code-function">param</span>(<span class="code-string">'id'</span>),
+        <span class="code-string">'name'</span> => <span class="code-string">'John Doe'</span>
+    ]);
+});
+
+<span class="code-comment">// Middleware support</span>
+<span class="code-variable">$app</span>-><span class="code-function">post</span>(<span class="code-string">'/api/users'</span>, 
+    <span class="code-keyword">new</span> <span class="code-function">AuthMiddleware</span>(),
+    <span class="code-keyword">new</span> <span class="code-function">ValidationMiddleware</span>(),
+    <span class="code-keyword">function</span> (<span class="code-variable">$req</span>, <span class="code-variable">$res</span>) {
+        <span class="code-variable">$user</span> = <span class="code-function">User</span>::<span class="code-function">create</span>(<span class="code-variable">$req</span>-><span class="code-function">body</span>());
+        <span class="code-keyword">return</span> <span class="code-variable">$res</span>-><span class="code-function">status</span>(201)-><span class="code-function">json</span>(<span class="code-variable">$user</span>);
+    }
+);
+
+<span class="code-variable">$app</span>-><span class="code-function">run</span>();</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="home-features">
+  <div class="container">
+    <h2 class="text-center">Why Choose PivotPHP?</h2>
+    <p class="text-center mb-5" style="color: var(--pivot-gray); max-width: 600px; margin: 0 auto;">
+      PivotPHP represents a paradigm shift in PHP development - where rapid adaptation meets exceptional performance.
+    </p>
+    
+    <div class="home-features-grid">
+      <div class="home-feature">
+        <div class="home-feature-icon">🚀</div>
+        <h3>Blazing Fast</h3>
+        <p>52M+ operations per second for CORS, 2.57M ops/sec for response handling. Built for speed from the ground up.</p>
+      </div>
+      
+      <div class="home-feature">
+        <div class="home-feature-icon">🧬</div>
+        <h3>Evolutionary Design</h3>
+        <p>Adapt your application as requirements change. PivotPHP grows with your project, not against it.</p>
+      </div>
+      
+      <div class="home-feature">
+        <div class="home-feature-icon">🛡️</div>
+        <h3>Security First</h3>
+        <p>Built-in CSRF, XSS protection, rate limiting, and JWT authentication. Security by default, not afterthought.</p>
+      </div>
+      
+      <div class="home-feature">
+        <div class="home-feature-icon">🔧</div>
+        <h3>Zero Configuration</h3>
+        <p>Start building immediately. No complex setup, no boilerplate. Just composer install and go.</p>
+      </div>
+      
+      <div class="home-feature">
+        <div class="home-feature-icon">📦</div>
+        <h3>PSR Standards</h3>
+        <p>Full PSR-7, PSR-11, PSR-12, PSR-14, PSR-15 compliance. Use with your favorite PSR-compatible packages.</p>
+      </div>
+      
+      <div class="home-feature">
+        <div class="home-feature-icon">🧪</div>
+        <h3>Battle-Tested</h3>
+        <p>270+ tests, PHPStan Level 9, 100% PSR-12 compliant. Quality you can trust in production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Performance Section -->
+<section class="performance-section">
+  <div class="container">
+    <h2 class="text-center" style="color: var(--pivot-white);">Performance That Matters</h2>
+    <p class="text-center mb-5" style="opacity: 0.9; max-width: 600px; margin: 0 auto;">
+      Real-world benchmarks on production hardware. No synthetic tests, just facts.
+    </p>
+    
+    <div class="performance-grid">
+      <div class="performance-metric">
+        <span class="performance-value">52M</span>
+        <span class="performance-label">CORS ops/sec</span>
+      </div>
+      <div class="performance-metric">
+        <span class="performance-value">2.57M</span>
+        <span class="performance-label">Response ops/sec</span>
+      </div>
+      <div class="performance-metric">
+        <span class="performance-value">757K</span>
+        <span class="performance-label">Route ops/sec</span>
+      </div>
+      <div class="performance-metric">
+        <span class="performance-value">1.2MB</span>
+        <span class="performance-label">Memory usage</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Evolve Your PHP Development?</h2>
+    <p class="mb-4">Join developers building the next generation of PHP applications.</p>
+    
+    <div class="cta-buttons">
+      <a href="{{ '/docs/quickstart/' | relative_url }}" class="btn btn-secondary">
+        Quick Start Guide
+      </a>
+      <a href="{{ '/docs/' | relative_url }}" class="btn btn-secondary">
+        Read Documentation
+      </a>
+    </div>
+  </div>
 </section>
 
 {{ content }}

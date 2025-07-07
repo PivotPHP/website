@@ -6,7 +6,7 @@ permalink: /docs/validation/
 
 # Validation
 
-HelixPHP provides a powerful and flexible validation system for validating incoming data. The validator supports a wide variety of validation rules and allows you to easily validate form data, API requests, and more.
+PivotPHP provides a powerful and flexible validation system for validating incoming data. The validator supports a wide variety of validation rules and allows you to easily validate form data, API requests, and more.
 
 ## Basic Usage
 
@@ -36,7 +36,7 @@ $validated = $validator->validated();
 Create a validator instance manually:
 
 ```php
-use Helix\Validation\Validator;
+use PivotPHP\Validation\Validator;
 
 $validator = new Validator($data, [
     'title' => 'required|min:5|max:255',
@@ -176,7 +176,7 @@ Create reusable validation rule classes:
 ```php
 namespace App\Rules;
 
-use Helix\Contracts\Validation\Rule;
+use PivotPHP\Contracts\Validation\Rule;
 
 class Uppercase implements Rule
 {
@@ -184,7 +184,7 @@ class Uppercase implements Rule
     {
         return strtoupper($value) === $value;
     }
-    
+
     public function message(): string
     {
         return 'The :attribute must be uppercase.';
@@ -204,7 +204,7 @@ Rules that run even when the attribute is not present:
 ```php
 namespace App\Rules;
 
-use Helix\Contracts\Validation\ImplicitRule;
+use PivotPHP\Contracts\Validation\ImplicitRule;
 
 class RequiredIf implements ImplicitRule
 {
@@ -212,16 +212,16 @@ class RequiredIf implements ImplicitRule
         private string $field,
         private mixed $value
     ) {}
-    
+
     public function passes($attribute, $value): bool
     {
         if (request($this->field) === $this->value) {
             return !empty($value);
         }
-        
+
         return true;
     }
-    
+
     public function message(): string
     {
         return "The :attribute field is required when {$this->field} is {$this->value}.";
@@ -265,12 +265,12 @@ $validator->sometimes(['credit_card', 'cvv'], 'required', function ($input) {
 ### Complex Conditional Rules
 
 ```php
-use Helix\Validation\Rule;
+use PivotPHP\Validation\Rule;
 
 $rules = [
     'shipping_method' => 'required',
     'express_reason' => Rule::requiredIf(function () use ($request) {
-        return $request->shipping_method === 'express' 
+        return $request->shipping_method === 'express'
             && $request->total < 100;
     }),
 ];
@@ -371,7 +371,7 @@ Create dedicated request classes:
 ```php
 namespace App\Http\Requests;
 
-use Helix\Http\FormRequest;
+use PivotPHP\Http\FormRequest;
 
 class StoreUserRequest extends FormRequest
 {
@@ -379,7 +379,7 @@ class StoreUserRequest extends FormRequest
     {
         return $this->user()->can('create', User::class);
     }
-    
+
     public function rules(): array
     {
         return [
@@ -389,7 +389,7 @@ class StoreUserRequest extends FormRequest
             'role' => 'required|in:admin,user',
         ];
     }
-    
+
     public function messages(): array
     {
         return [
@@ -397,21 +397,21 @@ class StoreUserRequest extends FormRequest
             'password.confirmed' => 'Password confirmation does not match.',
         ];
     }
-    
+
     public function attributes(): array
     {
         return [
             'email' => 'email address',
         ];
     }
-    
+
     protected function prepareForValidation(): void
     {
         $this->merge([
             'slug' => Str::slug($this->name),
         ]);
     }
-    
+
     protected function passedValidation(): void
     {
         $this->replace([
@@ -425,7 +425,7 @@ public function store(StoreUserRequest $request)
 {
     // Validation is automatic
     $user = User::create($request->validated());
-    
+
     return response()->json($user, 201);
 }
 ```
@@ -490,14 +490,14 @@ class ApiValidator
     public function validate(array $data, array $rules): array
     {
         $validator = validate($data, $rules);
-        
+
         if ($validator->fails()) {
             throw new ValidationException(
                 'Validation failed',
                 $validator->errors()->toArray()
             );
         }
-        
+
         return $validator->validated();
     }
 }
@@ -511,7 +511,7 @@ $results = collect($users)->map(function ($userData) {
         'email' => 'required|email',
         'name' => 'required|string',
     ]);
-    
+
     return [
         'data' => $userData,
         'valid' => $validator->passes(),

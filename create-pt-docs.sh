@@ -14,7 +14,7 @@ lang: pt
 
 # Início Rápido
 
-Este guia mostrará como criar sua primeira aplicação HelixPHP. Vamos construir uma API REST simples para gerenciar tarefas.
+Este guia mostrará como criar sua primeira aplicação PivotPHP. Vamos construir uma API REST simples para gerenciar tarefas.
 
 ## Passo 1: Crie Sua Aplicação
 
@@ -32,7 +32,7 @@ $app = new Application();
 // Defina sua primeira rota
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'Bem-vindo ao HelixPHP!',
+        'message' => 'Bem-vindo ao PivotPHP!',
         'timestamp' => time()
     ]);
 });
@@ -67,27 +67,27 @@ $app->get('/tasks', function($req, $res) use (&$tasks) {
 // Obter uma tarefa específica
 $app->get('/tasks/{id}', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
-    
+
     if (!isset($tasks[$id])) {
         return $res->status(404)->json([
             'error' => 'Tarefa não encontrada'
         ]);
     }
-    
+
     return $res->json($tasks[$id]);
 });
 
 // Criar uma nova tarefa
 $app->post('/tasks', function($req, $res) use (&$tasks) {
     $data = $req->body();
-    
+
     // Validação simples
     if (empty($data['title'])) {
         return $res->status(400)->json([
             'error' => 'Título é obrigatório'
         ]);
     }
-    
+
     $id = uniqid();
     $task = [
         'id' => $id,
@@ -95,16 +95,16 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
         'completed' => false,
         'created_at' => date('Y-m-d H:i:s')
     ];
-    
+
     $tasks[$id] = $task;
-    
+
     return $res->status(201)->json($task);
 });
 ```
 
 ## O Que Vem a Seguir?
 
-Parabéns! Você construiu sua primeira aplicação HelixPHP. Para aprender mais:
+Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais:
 
 - Explore [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) para recursos avançados de roteamento
 - Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições

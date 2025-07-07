@@ -1,6 +1,6 @@
 {
-    "name": "HelixPHP",
-    "short_name": "HelixPHP",
+    "name": "PivotPHP",
+    "short_name": "PivotPHP",
     "description": "The Evolutionary PHP Microframework - Build modern APIs with Express.js-like syntax",
     "icons": [
         {

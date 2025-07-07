@@ -1,33 +1,40 @@
-<!-- Sidebar -->
-<aside class="docs-sidebar">
-    <h3>Getting Started</h3>
+<nav class="docs-nav">
+    <h4>Getting Started</h4>
     <ul>
-        <li><a href="{{ site.baseurl }}/docs/">Introduction</a></li>
-        <li><a href="{{ site.baseurl }}/docs/installation/">Installation</a></li>
-        <li><a href="{{ site.baseurl }}/docs/quickstart/">Quick Start</a></li>
-        <li><a href="{{ site.baseurl }}/docs/configuration/">Configuration</a></li>
+        <li><a href="{{ '/docs/' | relative_url }}" {% if page.url == '/docs/' %}class="active"{% endif %}>Introduction</a></li>
+        <li><a href="{{ '/docs/installation/' | relative_url }}" {% if page.url == '/docs/installation/' %}class="active"{% endif %}>Installation</a></li>
+        <li><a href="{{ '/docs/quickstart/' | relative_url }}" {% if page.url == '/docs/quickstart/' %}class="active"{% endif %}>Quick Start</a></li>
+        <li><a href="{{ '/docs/configuration/' | relative_url }}" {% if page.url == '/docs/configuration/' %}class="active"{% endif %}>Configuration</a></li>
+        <li><a href="{{ '/docs/why-pivotphp/' | relative_url }}" {% if page.url == '/docs/why-pivotphp/' %}class="active"{% endif %}>Why PivotPHP?</a></li>
     </ul>
     
-    <h3>Core Concepts</h3>
+    <h4>Core Concepts</h4>
     <ul>
-        <li><a href="{{ site.baseurl }}/docs/routing/">Routing</a></li>
-        <li><a href="{{ site.baseurl }}/docs/middleware/">Middleware</a></li>
-        <li><a href="{{ site.baseurl }}/docs/requests-responses/">Requests & Responses</a></li>
-        <li><a href="{{ site.baseurl }}/docs/container/">Service Container</a></li>
+        <li><a href="{{ '/docs/routing/' | relative_url }}" {% if page.url == '/docs/routing/' %}class="active"{% endif %}>Routing</a></li>
+        <li><a href="{{ '/docs/middleware/' | relative_url }}" {% if page.url == '/docs/middleware/' %}class="active"{% endif %}>Middleware</a></li>
+        <li><a href="{{ '/docs/requests-responses/' | relative_url }}" {% if page.url == '/docs/requests-responses/' %}class="active"{% endif %}>Requests & Responses</a></li>
+        <li><a href="{{ '/docs/container/' | relative_url }}" {% if page.url == '/docs/container/' %}class="active"{% endif %}>Service Container</a></li>
     </ul>
     
-    <h3>Features</h3>
+    <h4>Features</h4>
     <ul>
-        <li><a href="{{ site.baseurl }}/docs/security/">Security</a></li>
-        <li><a href="{{ site.baseurl }}/docs/events/">Events</a></li>
-        <li><a href="{{ site.baseurl }}/docs/validation/">Validation</a></li>
-        <li><a href="{{ site.baseurl }}/docs/database/">Database</a></li>
+        <li><a href="{{ '/docs/security/' | relative_url }}" {% if page.url == '/docs/security/' %}class="active"{% endif %}>Security</a></li>
+        <li><a href="{{ '/docs/events/' | relative_url }}" {% if page.url == '/docs/events/' %}class="active"{% endif %}>Events</a></li>
+        <li><a href="{{ '/docs/validation/' | relative_url }}" {% if page.url == '/docs/validation/' %}class="active"{% endif %}>Validation</a></li>
+        <li><a href="{{ '/docs/database/' | relative_url }}" {% if page.url == '/docs/database/' %}class="active"{% endif %}>Database</a></li>
     </ul>
     
-    <h3>Advanced</h3>
+    <h4>Advanced</h4>
     <ul>
-        <li><a href="{{ site.baseurl }}/docs/providers/">Service Providers</a></li>
-        <li><a href="{{ site.baseurl }}/docs/testing/">Testing</a></li>
-        <li><a href="{{ site.baseurl }}/docs/deployment/">Deployment</a></li>
+        <li><a href="{{ '/docs/providers/' | relative_url }}" {% if page.url == '/docs/providers/' %}class="active"{% endif %}>Service Providers</a></li>
+        <li><a href="{{ '/docs/testing/' | relative_url }}" {% if page.url == '/docs/testing/' %}class="active"{% endif %}>Testing</a></li>
+        <li><a href="{{ '/docs/deployment/' | relative_url }}" {% if page.url == '/docs/deployment/' %}class="active"{% endif %}>Deployment</a></li>
     </ul>
-</aside>
+    
+    <h4>Resources</h4>
+    <ul>
+        <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub →</a></li>
+        <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Changelog →</a></li>
+        <li><a href="https://packagist.org/packages/pivotphp/core" target="_blank">Packagist →</a></li>
+    </ul>
+</nav>

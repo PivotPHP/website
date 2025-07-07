@@ -6,22 +6,22 @@ permalink: /docs/providers/
 
 # Service Providers
 
-Service providers are the central place of all HelixPHP application bootstrapping. Your own application, as well as all of HelixPHP's core services, are bootstrapped via service providers.
+Service providers are the central place of all PivotPHP application bootstrapping. Your own application, as well as all of PivotPHP's core services, are bootstrapped via service providers.
 
 ## Introduction
 
-Service providers are the connection point between your package and HelixPHP. A service provider is responsible for binding things into HelixPHP's service container and informing HelixPHP where to load package resources such as views, configuration, and localization files.
+Service providers are the connection point between your package and PivotPHP. A service provider is responsible for binding things into PivotPHP's service container and informing PivotPHP where to load package resources such as views, configuration, and localization files.
 
 ## Writing Service Providers
 
-All service providers extend the `Helix\Core\ServiceProvider` class and contain two methods: `register` and `boot`.
+All service providers extend the `PivotPHP\Core\Core\ServiceProvider` class and contain two methods: `register` and `boot`.
 
 ### Basic Structure
 
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register bindings in the container
     }
-    
+
     /**
      * Bootstrap any application services.
      */
@@ -54,14 +54,14 @@ public function register(): void
     $this->app->bind('mailer', function ($app) {
         return new Mailer($app->make('config')->get('mail'));
     });
-    
+
     // Singleton binding
     $this->app->singleton(ConnectionInterface::class, function ($app) {
         return new DatabaseConnection(
             $app->make('config')->get('database')
         );
     });
-    
+
     // Instance binding
     $this->app->instance('api.client', new ApiClient(
         $_ENV['API_KEY']
@@ -78,18 +78,18 @@ public function boot(): void
 {
     // Register event listeners
     Event::listen(UserRegistered::class, SendWelcomeEmail::class);
-    
+
     // Register middleware
     $this->app->middleware(RateLimitMiddleware::class);
-    
+
     // Publish configuration
     $this->publishes([
         __DIR__.'/../config/services.php' => config_path('services.php'),
     ], 'config');
-    
+
     // Load routes
     $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
-    
+
     // Load views
     $this->loadViewsFrom(__DIR__.'/../resources/views', 'package');
 }
@@ -104,12 +104,12 @@ Register your service providers in the `config/app.php` configuration file:
 ```php
 'providers' => [
     /*
-     * HelixPHP Framework Service Providers...
+     * PivotPHP Framework Service Providers...
      */
-    Helix\Foundation\Providers\FoundationServiceProvider::class,
-    Helix\Routing\RoutingServiceProvider::class,
-    Helix\Session\SessionServiceProvider::class,
-    
+    PivotPHP\Foundation\Providers\FoundationServiceProvider::class,
+    PivotPHP\Routing\RoutingServiceProvider::class,
+    PivotPHP\Session\SessionServiceProvider::class,
+
     /*
      * Application Service Providers...
      */
@@ -127,7 +127,7 @@ If your provider is only registering bindings in the service container, you may 
 ```php
 namespace App\Providers;
 
-use Helix\Core\DeferredServiceProvider;
+use PivotPHP\Core\Core\DeferredServiceProvider;
 use App\Services\ImageProcessor;
 
 class ImageServiceProvider extends DeferredServiceProvider
@@ -144,7 +144,7 @@ class ImageServiceProvider extends DeferredServiceProvider
             );
         });
     }
-    
+
     /**
      * Get the services provided by the provider.
      */
@@ -162,8 +162,8 @@ class ImageServiceProvider extends DeferredServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Routing\Router;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -171,7 +171,7 @@ class RouteServiceProvider extends ServiceProvider
      * The path to the "home" route for your application.
      */
     public const HOME = '/dashboard';
-    
+
     /**
      * Define your route model bindings, pattern filters, etc.
      */
@@ -180,14 +180,14 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
         $this->defineRoutes();
     }
-    
+
     /**
      * Define the routes for the application.
      */
     protected function defineRoutes(): void
     {
         $router = $this->app->make(Router::class);
-        
+
         // API Routes
         $router->group([
             'prefix' => 'api',
@@ -195,7 +195,7 @@ class RouteServiceProvider extends ServiceProvider
         ], function ($router) {
             require base_path('routes/api.php');
         });
-        
+
         // Web Routes
         $router->group([
             'middleware' => ['web'],
@@ -203,7 +203,7 @@ class RouteServiceProvider extends ServiceProvider
             require base_path('routes/web.php');
         });
     }
-    
+
     /**
      * Configure the rate limiters for the application.
      */
@@ -212,7 +212,7 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function ($request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
-        
+
         RateLimiter::for('login', function ($request) {
             return Limit::perMinute(5)->by($request->ip());
         });
@@ -225,7 +225,7 @@ class RouteServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 use App\Services\Auth\JwtGuard;
 use App\Services\Auth\UserProvider;
 
@@ -243,7 +243,7 @@ class AuthServiceProvider extends ServiceProvider
                 $app->make(UserRepository::class)
             );
         });
-        
+
         // Register custom guard
         $this->app->singleton('auth.guard', function ($app) {
             return new JwtGuard(
@@ -253,7 +253,7 @@ class AuthServiceProvider extends ServiceProvider
             );
         });
     }
-    
+
     /**
      * Bootstrap any authentication / authorization services.
      */
@@ -263,11 +263,11 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update-post', function ($user, $post) {
             return $user->id === $post->user_id;
         });
-        
+
         Gate::define('admin', function ($user) {
             return $user->role === 'admin';
         });
-        
+
         // Register policies
         Gate::policy(Post::class, PostPolicy::class);
         Gate::policy(Comment::class, CommentPolicy::class);
@@ -280,8 +280,8 @@ class AuthServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Events\Dispatcher;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Events\Dispatcher;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -294,21 +294,21 @@ class EventServiceProvider extends ServiceProvider
             LogUserRegistration::class,
             UpdateUserStatistics::class,
         ],
-        
+
         OrderPlaced::class => [
             ProcessPayment::class,
             SendOrderConfirmation::class,
             UpdateInventory::class,
             NotifyWarehouse::class,
         ],
-        
+
         PaymentFailed::class => [
             NotifyCustomerOfFailure::class,
             LogFailedPayment::class,
             RevertOrderStatus::class,
         ],
     ];
-    
+
     /**
      * The subscribers to register.
      */
@@ -316,24 +316,24 @@ class EventServiceProvider extends ServiceProvider
         UserEventSubscriber::class,
         PaymentEventSubscriber::class,
     ];
-    
+
     /**
      * Register any events for your application.
      */
     public function boot(): void
     {
         parent::boot();
-        
+
         // Register model events
         User::observe(UserObserver::class);
         Post::observe(PostObserver::class);
-        
+
         // Register custom events
         Event::listen('cache.cleared', function () {
             Log::info('Application cache was cleared');
         });
     }
-    
+
     /**
      * Determine if events and listeners should be automatically discovered.
      */
@@ -341,7 +341,7 @@ class EventServiceProvider extends ServiceProvider
     {
         return true;
     }
-    
+
     /**
      * Get the listener directories that should be used to discover events.
      */
@@ -360,8 +360,8 @@ class EventServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\Broadcasting\BroadcastManager;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Broadcasting\BroadcastManager;
 
 class BroadcastServiceProvider extends ServiceProvider
 {
@@ -371,11 +371,11 @@ class BroadcastServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerChannels();
-        
+
         // Register broadcast routes
         require base_path('routes/channels.php');
     }
-    
+
     /**
      * Register broadcast channels.
      */
@@ -385,7 +385,7 @@ class BroadcastServiceProvider extends ServiceProvider
         Broadcast::channel('user.{id}', function ($user, $id) {
             return (int) $user->id === (int) $id;
         });
-        
+
         // Presence channel authorization
         Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
             if ($user->canJoinRoom($roomId)) {
@@ -396,7 +396,7 @@ class BroadcastServiceProvider extends ServiceProvider
                 ];
             }
         });
-        
+
         // Model broadcasting
         Broadcast::channel('App.Models.Order.{order}', function ($user, Order $order) {
             return $user->id === $order->user_id;
@@ -410,8 +410,8 @@ class BroadcastServiceProvider extends ServiceProvider
 ```php
 namespace App\Providers;
 
-use Helix\Core\ServiceProvider;
-use Helix\View\View;
+use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\View\View;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -422,7 +422,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
      * Bootstrap any application services.
      */
@@ -430,25 +430,25 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Register view composers
         View::composer('profile', ProfileComposer::class);
-        
+
         View::composer(['dashboard', 'analytics'], function ($view) {
             $view->with('stats', app(StatsService::class)->getStats());
         });
-        
+
         // Register view creators
         View::creator('notifications', function ($view) {
             $view->with('notifications', auth()->user()->unreadNotifications);
         });
-        
+
         // Share data with all views
         View::share('appName', config('app.name'));
         View::share('currentYear', date('Y'));
-        
+
         // Register custom directives
         Blade::directive('datetime', function ($expression) {
             return "<?php echo ($expression)->format('Y-m-d H:i:s'); ?>";
         });
-        
+
         Blade::if('env', function ($environment) {
             return app()->environment($environment);
         });
@@ -463,7 +463,7 @@ When creating packages, use service providers to register package resources:
 ```php
 namespace YourPackage\Providers;
 
-use Helix\Core\ServiceProvider;
+use PivotPHP\Core\Core\ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
 {
@@ -474,38 +474,38 @@ class PackageServiceProvider extends ServiceProvider
     {
         // Load package routes
         $this->loadRoutesFrom(__DIR__.'/../routes.php');
-        
+
         // Load package views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'package');
-        
+
         // Load package translations
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'package');
-        
+
         // Load package migrations
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        
+
         // Publish package resources
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/package.php' => config_path('package.php'),
             ], 'config');
-            
+
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/package'),
             ], 'views');
-            
+
             $this->publishes([
                 __DIR__.'/../resources/assets' => public_path('vendor/package'),
             ], 'assets');
         }
-        
+
         // Register commands
         $this->commands([
             InstallCommand::class,
             PublishCommand::class,
         ]);
     }
-    
+
     /**
      * Register the application services.
      */
@@ -515,7 +515,7 @@ class PackageServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/package.php', 'package'
         );
-        
+
         // Register package services
         $this->app->singleton('package', function ($app) {
             return new Package($app['config']['package']);
@@ -542,22 +542,22 @@ class CustomServiceProviderTest extends TestCase
             $this->app->make(CustomService::class)
         );
     }
-    
+
     public function test_bindings_are_correct()
     {
         $this->app->register(CustomServiceProvider::class);
-        
+
         $this->assertTrue($this->app->bound('custom.service'));
         $this->assertSame(
             $this->app->make('custom.service'),
             $this->app->make('custom.service')
         );
     }
-    
+
     public function test_configuration_is_published()
     {
         $provider = new CustomServiceProvider($this->app);
-        
+
         $this->assertArrayHasKey('config', $provider->pathsToPublish());
     }
 }

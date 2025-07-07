@@ -1,5 +1,5 @@
 ---
-layout: home-i18n
+layout: home
 title: The Evolutionary PHP Microframework
 lang: en
 ---

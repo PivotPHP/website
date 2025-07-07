@@ -6,14 +6,14 @@ permalink: /docs/database/
 
 # Database
 
-HelixPHP integrates seamlessly with Cycle ORM, providing a powerful and intuitive way to work with databases. Cycle ORM is a modern, schema-driven ORM that offers excellent performance and flexibility.
+PivotPHP integrates seamlessly with Cycle ORM, providing a powerful and intuitive way to work with databases. Cycle ORM is a modern, schema-driven ORM that offers excellent performance and flexibility.
 
 ## Installation
 
 Install the Cycle ORM integration:
 
 ```bash
-composer require helixphp/cycle-orm
+composer require pivotphp/cycle-orm
 ```
 
 ## Configuration
@@ -23,7 +23,7 @@ Configure your database connection in `config/database.php`:
 ```php
 return [
     'default' => env('DB_CONNECTION', 'mysql'),
-    
+
     'connections' => [
         'mysql' => [
             'driver' => 'mysql',
@@ -38,7 +38,7 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-        
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -52,7 +52,7 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
-        
+
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
@@ -80,50 +80,50 @@ class User
 {
     #[Cycle\Column(type: 'primary')]
     private ?int $id = null;
-    
+
     #[Cycle\Column(type: 'string')]
     private string $name;
-    
+
     #[Cycle\Column(type: 'string', unique: true)]
     private string $email;
-    
+
     #[Cycle\Column(type: 'string', nullable: true)]
     private ?string $avatar = null;
-    
+
     #[Cycle\Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
-    
+
     #[Cycle\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
-    
+
     public function __construct(string $name, string $email)
     {
         $this->name = $name;
         $this->email = $email;
         $this->createdAt = new \DateTime();
     }
-    
+
     // Getters and setters
     public function getId(): ?int
     {
         return $this->id;
     }
-    
+
     public function getName(): string
     {
         return $this->name;
     }
-    
+
     public function setName(string $name): void
     {
         $this->name = $name;
     }
-    
+
     public function getEmail(): string
     {
         return $this->email;
     }
-    
+
     public function setEmail(string $email): void
     {
         $this->email = $email;
@@ -181,17 +181,17 @@ class User
 {
     #[Cycle\Relation\HasMany(target: Post::class)]
     private Collection $posts;
-    
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
-    
+
     public function getPosts(): Collection
     {
         return $this->posts;
     }
-    
+
     public function addPost(Post $post): void
     {
         $this->posts->add($post);
@@ -204,12 +204,12 @@ class Post
 {
     #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
     private User $user;
-    
+
     public function getUser(): User
     {
         return $this->user;
     }
-    
+
     public function setUser(User $user): void
     {
         $this->user = $user;
@@ -230,19 +230,19 @@ class User
         throughOuterKey: 'role_id'
     )]
     private Collection $roles;
-    
+
     public function getRoles(): Collection
     {
         return $this->roles;
     }
-    
+
     public function addRole(Role $role): void
     {
         if (!$this->roles->contains($role)) {
             $this->roles->add($role);
         }
     }
-    
+
     public function removeRole(Role $role): void
     {
         $this->roles->removeElement($role);
@@ -267,7 +267,7 @@ class UserRole
 {
     #[Cycle\Column(type: 'primary')]
     private ?int $id = null;
-    
+
     #[Cycle\Column(type: 'datetime')]
     private \DateTimeInterface $assignedAt;
 }
@@ -285,12 +285,12 @@ class User
         cascade: true
     )]
     private ?Profile $profile = null;
-    
+
     public function getProfile(): ?Profile
     {
         return $this->profile;
     }
-    
+
     public function setProfile(Profile $profile): void
     {
         $this->profile = $profile;
@@ -321,10 +321,10 @@ class Address
 {
     #[Cycle\Column(type: 'string')]
     private string $street;
-    
+
     #[Cycle\Column(type: 'string')]
     private string $city;
-    
+
     #[Cycle\Column(type: 'string', length: 10)]
     private string $zipCode;
 }
@@ -347,7 +347,7 @@ class UserRepository extends Repository
             ->where('email', $email)
             ->fetchOne();
     }
-    
+
     public function findActive(): array
     {
         return $this->select()
@@ -355,7 +355,7 @@ class UserRepository extends Repository
             ->orderBy('created_at', 'DESC')
             ->fetchAll();
     }
-    
+
     public function findWithPosts(int $id): ?User
     {
         return $this->select()
@@ -363,7 +363,7 @@ class UserRepository extends Repository
             ->load('posts')
             ->fetchOne();
     }
-    
+
     public function searchByName(string $query): array
     {
         return $this->select()
@@ -418,7 +418,7 @@ class UserRepository extends Repository
     {
         $query = $this->select()
             ->orderBy('created_at', 'DESC');
-            
+
         return new Paginator($query, $page, $perPage);
     }
 }
@@ -528,7 +528,7 @@ class CreateUsersTable extends Migration
             ->addIndex(['email'], ['unique' => true])
             ->create();
     }
-    
+
     public function down(): void
     {
         $this->table('users')->drop();
@@ -573,20 +573,20 @@ php helix cycle:sync
 class User
 {
     use TimestampableEntity;
-    
+
     #[Cycle\Hooks\BeforeCreate]
     public function beforeCreate(): void
     {
         $this->createdAt = new DateTime();
         $this->generateApiToken();
     }
-    
+
     #[Cycle\Hooks\BeforeUpdate]
     public function beforeUpdate(): void
     {
         $this->updatedAt = new DateTime();
     }
-    
+
     #[Cycle\Hooks\AfterCreate]
     public function afterCreate(): void
     {
@@ -606,7 +606,7 @@ class EntityListener
             $entity->setCreatedBy(auth()->user());
         }
     }
-    
+
     public function updating($entity): void
     {
         if (method_exists($entity, 'setUpdatedBy')) {
@@ -680,7 +680,7 @@ abstract class Vehicle
 {
     #[Cycle\Column(type: 'primary')]
     protected ?int $id = null;
-    
+
     #[Cycle\Column(type: 'string')]
     protected string $brand;
 }

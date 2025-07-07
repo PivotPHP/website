@@ -6,7 +6,7 @@ permalink: /docs/requests-responses/
 
 # Requests & Responses
 
-HelixPHP uses PSR-7 compliant HTTP message objects for requests and responses, providing a consistent and interoperable interface for handling HTTP communication.
+PivotPHP uses PSR-7 compliant HTTP message objects for requests and responses, providing a consistent and interoperable interface for handling HTTP communication.
 
 ## The Request Object
 
@@ -18,25 +18,25 @@ The request object represents the HTTP request and provides methods to access re
 $app->post('/users', function($request, $response) {
     // Get all input data
     $all = $request->all();
-    
+
     // Get specific input with default value
     $name = $request->input('name', 'Anonymous');
     $email = $request->input('email');
-    
+
     // Get nested input using dot notation
     $city = $request->input('address.city');
-    
+
     // Get only specific fields
     $credentials = $request->only(['email', 'password']);
-    
+
     // Get all except specific fields
     $data = $request->except(['password', 'password_confirmation']);
-    
+
     // Check if input exists
     if ($request->has('email')) {
         // Process email
     }
-    
+
     // Check if multiple inputs exist
     if ($request->hasAny(['email', 'username'])) {
         // Process login
@@ -81,7 +81,7 @@ $app->get('/users/{id}/posts/{postId}', function($request, $response) {
     // Get route parameters
     $userId = $request->param('id');
     $postId = $request->param('postId');
-    
+
     // Get all route parameters
     $params = $request->params();
 });
@@ -166,24 +166,24 @@ $path = $request->path();           // users/123
 $app->post('/upload', function($request, $response) {
     // Get uploaded file
     $file = $request->file('avatar');
-    
+
     if ($file && $file->getError() === UPLOAD_ERR_OK) {
         // Get file info
         $filename = $file->getClientFilename();
         $size = $file->getSize();
         $type = $file->getClientMediaType();
-        
+
         // Move uploaded file
         $newPath = 'uploads/' . uniqid() . '_' . $filename;
         $file->moveTo($newPath);
-        
+
         return $response->json([
             'path' => $newPath,
             'size' => $size,
             'type' => $type
         ]);
     }
-    
+
     // Multiple files
     $files = $request->file('documents');
     foreach ($files as $file) {
@@ -351,13 +351,13 @@ return $response->file('/path/to/document.pdf', [
 // Stream large data
 return $response->stream(function() {
     $handle = fopen('large-file.csv', 'r');
-    
+
     while (!feof($handle)) {
         echo fread($handle, 1024);
         ob_flush();
         flush();
     }
-    
+
     fclose($handle);
 });
 
@@ -385,13 +385,13 @@ $app->post('/api/users', function($request, $response) {
     if (!$request->isJson()) {
         return $response->badRequest('Invalid content type');
     }
-    
+
     // Get JSON data
     $data = $request->json();
-    
+
     // Get specific field
     $email = $request->json('email');
-    
+
     // Validate JSON
     if (!$request->json()->has(['email', 'password'])) {
         return $response->unprocessable([
@@ -451,10 +451,10 @@ return $response->error('Invalid credentials', 401);
 ```php
 $app->get('/data', function($request, $response) {
     $data = ['name' => 'John', 'email' => 'john@example.com'];
-    
+
     // Check what client accepts
     $accept = $request->header('Accept');
-    
+
     if (str_contains($accept, 'application/xml')) {
         return $response->xml($data);
     } elseif (str_contains($accept, 'text/csv')) {
@@ -476,8 +476,8 @@ $app->get('/data', function($request, $response) {
 7. **Use type hints**: Type hint request and response parameters for better IDE support
 
 ```php
-use Helix\Http\Request;
-use Helix\Http\Response;
+use PivotPHP\Http\Request;
+use PivotPHP\Http\Response;
 
 $app->post('/users', function(Request $request, Response $response) {
     // Better IDE support and type safety

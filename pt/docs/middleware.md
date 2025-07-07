@@ -7,7 +7,7 @@ lang: pt
 
 # Middleware
 
-Middleware fornece um mecanismo conveniente para filtrar requisições HTTP que entram em sua aplicação. O HelixPHP implementa o padrão de middleware PSR-15, garantindo compatibilidade com o ecossistema PHP mais amplo.
+Middleware fornece um mecanismo conveniente para filtrar requisições HTTP que entram em sua aplicação. O PivotPHP implementa o padrão de middleware PSR-15, garantindo compatibilidade com o ecossistema PHP mais amplo.
 
 ## Entendendo Middleware
 
@@ -29,13 +29,13 @@ A maneira mais simples de criar middleware é usando uma closure:
 $app->middleware(function($request, $handler) {
     // Antes do processamento da requisição
     echo "Requisição chegando!\n";
-    
+
     // Passar para o próximo middleware/handler
     $response = $handler->handle($request);
-    
+
     // Após o processamento da requisição
     echo "Resposta saindo!\n";
-    
+
     return $response;
 });
 ```
@@ -60,27 +60,27 @@ class AuthMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         // Verificar se o usuário está autenticado
         $token = $request->getHeaderLine('Authorization');
-        
+
         if (!$this->isValidToken($token)) {
             // Retornar cedo com resposta de erro
             return new JsonResponse([
                 'erro' => 'Não autorizado'
             ], 401);
         }
-        
+
         // Adicionar usuário à requisição
         $request = $request->withAttribute('user', $this->getUserFromToken($token));
-        
+
         // Continuar para o próximo middleware
         return $handler->handle($request);
     }
-    
+
     private function isValidToken(string $token): bool
     {
         // Lógica de validação do token
         return !empty($token);
     }
-    
+
     private function getUserFromToken(string $token)
     {
         // Decodificar token e retornar usuário
@@ -144,7 +144,7 @@ $app->group('/api', function($group) {
 // Ou dentro do grupo
 $app->group('/admin', function($group) {
     $group->middleware(['auth', 'admin']);
-    
+
     $group->get('/dashboard', function($req, $res) {
         // Dashboard do admin
     });
@@ -153,12 +153,12 @@ $app->group('/admin', function($group) {
 
 ## Middleware Integrados
 
-O HelixPHP inclui várias classes de middleware integradas:
+O PivotPHP inclui várias classes de middleware integradas:
 
 ### Middleware CORS
 
 ```php
-use Helix\Middleware\CorsMiddleware;
+use PivotPHP\Middleware\CorsMiddleware;
 
 $app->middleware(new CorsMiddleware([
     'allowed_origins' => ['https://exemplo.com'],
@@ -173,7 +173,7 @@ $app->middleware(new CorsMiddleware([
 ### Limitação de Taxa
 
 ```php
-use Helix\Middleware\RateLimitMiddleware;
+use PivotPHP\Middleware\RateLimitMiddleware;
 
 $app->middleware(new RateLimitMiddleware([
     'max_attempts' => 60,
@@ -188,7 +188,7 @@ $app->middleware('throttle:60,1');
 ### Proteção CSRF
 
 ```php
-use Helix\Middleware\CsrfMiddleware;
+use PivotPHP\Middleware\CsrfMiddleware;
 
 $app->middleware(new CsrfMiddleware([
     'except' => ['/webhooks/*'], // Excluir caminhos
@@ -200,7 +200,7 @@ $app->middleware(new CsrfMiddleware([
 ### Log de Requisições
 
 ```php
-use Helix\Middleware\LoggingMiddleware;
+use PivotPHP\Middleware\LoggingMiddleware;
 
 $app->middleware(new LoggingMiddleware([
     'logger' => $logger, // Logger PSR-3
@@ -224,19 +224,19 @@ class CacheMiddleware implements MiddlewareInterface
 {
     private int $duration;
     private string $visibility;
-    
+
     public function __construct(int $duration = 60, string $visibility = 'private')
     {
         $this->duration = $duration;
         $this->visibility = $visibility;
     }
-    
+
     public function process($request, $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        
+
         return $response->withHeader(
-            'Cache-Control', 
+            'Cache-Control',
             "{$this->visibility}, max-age={$this->duration}"
         );
     }
@@ -281,7 +281,7 @@ class ConditionalMiddleware implements MiddlewareInterface
             // Aplicar lógica do middleware
             $request = $request->withHeader('X-API-Request', 'true');
         }
-        
+
         return $handler->handle($request);
     }
 }
@@ -314,13 +314,13 @@ class JwtAuthMiddleware implements MiddlewareInterface
 {
     private string $secret;
     private array $except = [];
-    
+
     public function __construct(string $secret, array $except = [])
     {
         $this->secret = $secret;
         $this->except = $except;
     }
-    
+
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
@@ -332,38 +332,38 @@ class JwtAuthMiddleware implements MiddlewareInterface
                 return $handler->handle($request);
             }
         }
-        
+
         // Extrair token
         $token = $this->extractToken($request);
         if (!$token) {
             return $this->unauthorizedResponse('Token não fornecido');
         }
-        
+
         try {
             // Decodificar token
             $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
-            
+
             // Adicionar usuário à requisição
             $request = $request->withAttribute('user', $decoded->user);
             $request = $request->withAttribute('token', $decoded);
-            
+
             return $handler->handle($request);
         } catch (\Exception $e) {
             return $this->unauthorizedResponse('Token inválido');
         }
     }
-    
+
     private function extractToken(ServerRequestInterface $request): ?string
     {
         $header = $request->getHeaderLine('Authorization');
-        
+
         if (preg_match('/Bearer\s+(.+)/', $header, $matches)) {
             return $matches[1];
         }
-        
+
         return null;
     }
-    
+
     private function unauthorizedResponse(string $message): ResponseInterface
     {
         return new JsonResponse([

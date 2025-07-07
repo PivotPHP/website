@@ -6,7 +6,7 @@ permalink: /docs/deployment/
 
 # Deployment
 
-This guide covers best practices and procedures for deploying HelixPHP applications to production environments.
+This guide covers best practices and procedures for deploying PivotPHP applications to production environments.
 
 ## Server Requirements
 
@@ -112,13 +112,13 @@ server {
     location ~ /\.(?!well-known).* {
         deny all;
     }
-    
+
     # Security headers
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    
+
     # Gzip compression
     gzip on;
     gzip_comp_level 5;
@@ -135,11 +135,11 @@ server {
 
     ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
-    
+
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
     ssl_prefer_server_ciphers on;
-    
+
     # ... rest of configuration same as above
 }
 ```
@@ -155,33 +155,33 @@ server {
     <Directory /var/www/example.com/public>
         AllowOverride All
         Require all granted
-        
+
         # Enable .htaccess
         Options -MultiViews -Indexes
-        
+
         RewriteEngine On
-        
+
         # Handle Authorization Header
         RewriteCond %{HTTP:Authorization} .
         RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-        
+
         # Redirect Trailing Slashes If Not A Folder...
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_URI} (.+)/$
         RewriteRule ^ %1 [L,R=301]
-        
+
         # Send Requests To Front Controller...
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^ index.php [L]
     </Directory>
-    
+
     # Security Headers
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    
+
     ErrorLog ${APACHE_LOG_DIR}/example.com-error.log
     CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined
 </VirtualHost>
@@ -452,19 +452,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: helixphp-app
-    container_name: helixphp-app
+    image: pivotphp-app
+    container_name: pivotphp-app
     restart: unless-stopped
     working_dir: /var/www
     volumes:
       - ./:/var/www
       - ./docker/php/php.ini:/usr/local/etc/php/conf.d/app.ini
     networks:
-      - helixphp
+      - pivotphp
 
   nginx:
     image: nginx:alpine
-    container_name: helixphp-nginx
+    container_name: pivotphp-nginx
     restart: unless-stopped
     ports:
       - "80:80"
@@ -473,31 +473,31 @@ services:
       - ./:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
     networks:
-      - helixphp
+      - pivotphp
 
   mysql:
     image: mysql:8.0
-    container_name: helixphp-mysql
+    container_name: pivotphp-mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: helixphp
+      MYSQL_DATABASE: pivotphp
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_PASSWORD: secret
-      MYSQL_USER: helixphp
+      MYSQL_USER: pivotphp
     volumes:
       - dbdata:/var/lib/mysql
     networks:
-      - helixphp
+      - pivotphp
 
   redis:
     image: redis:alpine
-    container_name: helixphp-redis
+    container_name: pivotphp-redis
     restart: unless-stopped
     networks:
-      - helixphp
+      - pivotphp
 
 networks:
-  helixphp:
+  pivotphp:
     driver: bridge
 
 volumes:
@@ -518,9 +518,9 @@ $app->get('/health', function() {
         'queue' => $this->checkQueue(),
         'storage' => $this->checkStorage(),
     ];
-    
+
     $healthy = !in_array(false, $checks);
-    
+
     return response()->json([
         'status' => $healthy ? 'healthy' : 'unhealthy',
         'checks' => $checks,
@@ -542,15 +542,15 @@ Configure proper logging for production:
         'level' => env('LOG_LEVEL', 'error'),
         'days' => 14,
     ],
-    
+
     'slack' => [
         'driver' => 'slack',
         'url' => env('LOG_SLACK_WEBHOOK_URL'),
-        'username' => 'HelixPHP Log',
+        'username' => 'PivotPHP Log',
         'emoji' => ':boom:',
         'level' => 'critical',
     ],
-    
+
     'papertrail' => [
         'driver' => 'monolog',
         'level' => 'debug',

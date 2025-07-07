@@ -21,7 +21,7 @@ window.LanguageRoutes = {
         '/docs/providers/': '/pt/docs/provedores/',
         '/docs/testing/': '/pt/docs/testes/',
         '/docs/deployment/': '/pt/docs/deploy/',
-        '/docs/why-helix/': '/pt/docs/why-helix/'
+        '/docs/why-pivotphp/': '/pt/docs/why-pivotphp/'
     },
 
     // Get the reverse mapping (PT -> EN)
@@ -119,7 +119,7 @@ window.LanguageRoutes = {
             '/docs/providers/',
             '/docs/testing/',
             '/docs/deployment/',
-            '/docs/why-helix/'
+            '/docs/why-pivotphp/'
         ],
         pt: [
             '/pt/',
@@ -138,7 +138,7 @@ window.LanguageRoutes = {
             '/pt/docs/provedores/',
             '/pt/docs/testes/',
             '/pt/docs/deploy/',
-            '/pt/docs/why-helix/'
+            '/pt/docs/why-pivotphp/'
         ]
     },
 

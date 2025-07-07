@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pivot Arrow - Top-Left to Center -->
+  <rect x="25" y="49" width="36" height="14" rx="4" transform="rotate(-45 25 56)" fill="white"/>
+  
+  <!-- Pivot Arrow - Center to Bottom-Right -->
+  <rect x="59" y="56" width="36" height="14" rx="4" transform="rotate(45 95 63)" fill="white"/>
+  
+  <!-- Center Pivot Point -->
+  <circle cx="60" cy="60" r="10" fill="white"/>
+  
+  <!-- Center Point Ring -->
+  <circle cx="60" cy="60" r="10" fill="none" stroke="white" stroke-width="4" opacity="0.2"/>
+</svg>

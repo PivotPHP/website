@@ -16,13 +16,13 @@ layout: default
 
         <div class="cta">
             {% assign docs_url = "/docs/" %}
-            {% assign why_url = "/docs/why-helix/" %}
+            {% assign why_url = "/docs/why-pivotphp/" %}
             {% if lang != site.default_lang %}
                 {% assign docs_url = "/" | append: lang | append: "/docs/" %}
                 {% if lang == "pt" %}
-                    {% assign why_url = "/" | append: lang | append: "/docs/why-helix/" %}
+                    {% assign why_url = "/" | append: lang | append: "/docs/why-pivotphp/" %}
                 {% else %}
-                    {% assign why_url = "/" | append: lang | append: "/docs/why-helix/" %}
+                    {% assign why_url = "/" | append: lang | append: "/docs/why-pivotphp/" %}
                 {% endif %}
             {% endif %}
             <a href="{{ docs_url | relative_url }}" class="btn btn-primary">
@@ -32,7 +32,7 @@ layout: default
                 {{ t.view_github }}
             </a>
             <a href="{{ why_url | relative_url }}" class="btn">
-                {% if lang == "pt" %}Por que HelixPHP?{% else %}Why HelixPHP?{% endif %}
+                {% if lang == "pt" %}Por que PivotPHP?{% else %}Why PivotPHP?{% endif %}
             </a>
         </div>
 
@@ -94,12 +94,12 @@ layout: default
 <section class="code-preview">
     <div class="container">
         <h3 class="code-header">{{ t.code_example_title }}</h3>
-        <pre><code>use Helix\Core\Application;
+        <pre><code>use PivotPHP\Core\Core\Application;
 
 $app = new Application();
 
 $app->get('/', function($req, $res) {
-    return $res->json(['message' => 'Welcome to HelixPHP']);
+    return $res->json(['message' => 'Welcome to PivotPHP']);
 });
 
 $app->post('/users', function($req, $res) {

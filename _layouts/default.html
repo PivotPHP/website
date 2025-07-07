@@ -4,10 +4,118 @@
 {% include head.html %}
 
 <body>
-    {{ content }}
-    
-    <!-- Mobile navigation script -->
-    <script src="{{ '/assets/js/mobile-nav.js' | relative_url }}"></script>
-</body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="{{ '/' | relative_url }}" class="navbar-brand">
+          <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo">
+          <span>PivotPHP</span>
+        </a>
+        
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <ul class="navbar-nav">
+          <li><a href="{{ '/docs/' | relative_url }}" {% if page.url contains '/docs/' %}class="active"{% endif %}>Documentation</a></li>
+          <li><a href="{{ '/docs/quickstart/' | relative_url }}">Quick Start</a></li>
+          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
+          <li>
+            <div class="language-switcher">
+              <select onchange="switchLanguage(this.value)">
+                <option value="en" {% if page.lang == 'en' %}selected{% endif %}>English</option>
+                <option value="pt" {% if page.lang == 'pt' %}selected{% endif %}>Português</option>
+              </select>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
+  <!-- Main Content -->
+  <main>
+    {{ content }}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div>
+          <div class="footer-brand">
+            <img src="{{ '/assets/images/pivotphp-logo-white.svg' | relative_url }}" alt="PivotPHP">
+            <span>PivotPHP</span>
+          </div>
+          <p>The Evolutionary PHP Microframework</p>
+          <p>Build high-performance APIs that adapt and evolve.</p>
+        </div>
+        
+        <div>
+          <h4>Documentation</h4>
+          <ul>
+            <li><a href="{{ '/docs/' | relative_url }}">Getting Started</a></li>
+            <li><a href="{{ '/docs/installation/' | relative_url }}">Installation</a></li>
+            <li><a href="{{ '/docs/routing/' | relative_url }}">Routing</a></li>
+            <li><a href="{{ '/docs/middleware/' | relative_url }}">Middleware</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
+            <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Releases</a></li>
+            <li><a href="{{ site.github_url }}/pivotphp-core/issues" target="_blank">Issues</a></li>
+            <li><a href="{{ '/docs/contributing/' | relative_url }}">Contributing</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://twitter.com/pivotphp" target="_blank">Twitter</a></li>
+            <li><a href="{{ site.github_url }}/pivotphp-core/discussions" target="_blank">Discussions</a></li>
+            <li><a href="https://discord.gg/pivotphp" target="_blank">Discord</a></li>
+            <li><a href="https://stackoverflow.com/questions/tagged/pivotphp" target="_blank">Stack Overflow</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; {{ 'now' | date: '%Y' }} PivotPHP. Released under the MIT License.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script src="{{ '/assets/js/mobile-nav.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/language-persistence.js' | relative_url }}"></script>
+  
+  <script>
+    // Language switching logic
+    function switchLanguage(lang) {
+      const currentPath = window.location.pathname;
+      let newPath;
+      
+      if (lang === 'en') {
+        // Remove language prefix for English
+        newPath = currentPath.replace(/^\/pt\//, '/');
+      } else {
+        // Add language prefix for other languages
+        if (!currentPath.startsWith(`/${lang}/`)) {
+          newPath = `/${lang}${currentPath}`;
+        } else {
+          newPath = currentPath;
+        }
+      }
+      
+      // Navigate to new path
+      window.location.pathname = newPath;
+    }
+  </script>
+</body>
 </html>

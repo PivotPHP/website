@@ -7,7 +7,7 @@ lang: pt
 
 # Roteamento
 
-O HelixPHP fornece um sistema de roteamento semelhante ao Express.js que é intuitivo e poderoso. As rotas são definidas usando métodos de verbos HTTP na instância da aplicação.
+O PivotPHP fornece um sistema de roteamento semelhante ao Express.js que é intuitivo e poderoso. As rotas são definidas usando métodos de verbos HTTP na instância da aplicação.
 
 ## Roteamento Básico
 
@@ -21,7 +21,7 @@ $app->get('/', function($request, $response) {
 
 ### Métodos de Roteador Disponíveis
 
-O HelixPHP suporta todos os verbos HTTP padrão:
+O PivotPHP suporta todos os verbos HTTP padrão:
 
 ```php
 $app->get($uri, $callback);
@@ -69,7 +69,7 @@ $app->get('/posts/{ano}/{mes}/{slug}', function($req, $res) {
     $ano = $req->param('ano');
     $mes = $req->param('mes');
     $slug = $req->param('slug');
-    
+
     // Encontrar post por ano, mês e slug
 });
 ```
@@ -81,7 +81,7 @@ Torne um parâmetro opcional adicionando um `?`:
 ```php
 $app->get('/posts/{id?}', function($req, $res) {
     $id = $req->param('id', 'recentes'); // Padrão para 'recentes'
-    
+
     if ($id === 'recentes') {
         // Retornar posts recentes
     } else {
@@ -118,15 +118,15 @@ Agrupe rotas relacionadas para compartilhar atributos comuns como middleware ou 
 ```php
 $app->group('/api', function($group) {
     // Todas as rotas neste grupo serão prefixadas com /api
-    
+
     $group->get('/usuarios', function($req, $res) {
         // Corresponde: GET /api/usuarios
     });
-    
+
     $group->post('/usuarios', function($req, $res) {
         // Corresponde: POST /api/usuarios
     });
-    
+
     // Grupos aninhados
     $group->group('/v1', function($v1) {
         $v1->get('/status', function($req, $res) {
@@ -148,7 +148,7 @@ $app->group('/admin', function($group) {
 // Ou aplique middleware dentro do grupo
 $app->group('/api', function($group) {
     $group->middleware('throttle:60,1');
-    
+
     $group->get('/usuarios', function($req, $res) {
         // Com limite de taxa
     });

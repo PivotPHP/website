@@ -1,18 +1,18 @@
 # Site settings
-title: HelixPHP
+title: PivotPHP
 tagline: The Evolutionary PHP Microframework
 description: Build modern APIs with Express.js-like syntax, 52M+ ops/sec performance, and zero configuration.
-url: "https://helixphp.github.io"
+url: "https://pivotphp.github.io"
 baseurl: "/website"
-logo: /assets/images/DarkLogo.png
+logo: /assets/images/pivotphp-logo.svg
 
 # Social Media
 social_image: /assets/images/social-share.png
-twitter_username: "@helixphp"
-github_username: helixphp
-linkedin_url: "https://www.linkedin.com/company/helixphp"
-facebook_url: "https://www.facebook.com/helixphp"
-author: HelixPHP Team
+twitter_username: "@pivotphp"
+github_username: pivotphp
+linkedin_url: "https://www.linkedin.com/company/pivotphp"
+facebook_url: "https://www.facebook.com/pivotphp"
+author: PivotPHP Team
 
 # Internationalization
 languages: ["en", "pt"]
@@ -61,10 +61,10 @@ defaults:
       layout: "docs-i18n"
 
 # Custom variables
-github_url: https://github.com/helixphp
-github_org: helixphp
-twitter_username: helixphp
-author: HelixPHP Team
+github_url: https://github.com/pivotphp
+github_org: pivotphp
+twitter_username: pivotphp
+author: PivotPHP Team
 
 # Navigation
 navigation:
@@ -73,14 +73,14 @@ navigation:
   - title: Documentation
     url: /docs/
   - title: GitHub
-    url: https://github.com/helixphp
+    url: https://github.com/pivotphp
     external: true
 
 # Footer
 footer:
   links:
     - title: GitHub
-      url: https://github.com/helixphp
+      url: https://github.com/pivotphp
     - title: Documentation
       url: /docs/
     - title: Examples

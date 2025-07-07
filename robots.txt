@@ -1,5 +1,5 @@
-# Robots.txt for HelixPHP Website
-# https://helixphp.github.io/website/
+# Robots.txt for PivotPHP Website
+# https://pivotphp.github.io/website/
 
 # Allow all crawlers
 User-agent: *
@@ -9,7 +9,7 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://helixphp.github.io/website/sitemap.xml
+Sitemap: https://pivotphp.github.io/website/sitemap.xml
 
 # Disallow temporary or build files
 Disallow: /.git/

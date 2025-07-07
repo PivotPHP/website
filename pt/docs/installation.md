@@ -9,7 +9,7 @@ lang: pt
 
 ## Requisitos
 
-Antes de instalar o HelixPHP, certifique-se de que seu sistema atenda aos seguintes requisitos:
+Antes de instalar o PivotPHP, certifique-se de que seu sistema atenda aos seguintes requisitos:
 
 - **PHP 8.1** ou superior
 - **Composer** (versão mais recente recomendada)
@@ -18,18 +18,18 @@ Antes de instalar o HelixPHP, certifique-se de que seu sistema atenda aos seguin
 
 ## Instalar via Composer
 
-A maneira recomendada de instalar o HelixPHP é através do [Composer](https://getcomposer.org/):
+A maneira recomendada de instalar o PivotPHP é através do [Composer](https://getcomposer.org/):
 
 ```bash
-composer require helixphp/framework
+composer require pivotphp/framework
 ```
 
 ## Criar um Novo Projeto
 
-Para criar um novo projeto HelixPHP com uma estrutura básica:
+Para criar um novo projeto PivotPHP com uma estrutura básica:
 
 ```bash
-composer create-project helixphp/helixphp meu-app
+composer create-project pivotphp/pivotphp meu-app
 cd meu-app
 ```
 
@@ -60,9 +60,9 @@ Se você preferir configurar seu projeto manualmente:
    ```bash
    composer init
    ```
-3. Requisite o HelixPHP:
+3. Requisite o PivotPHP:
    ```bash
-   composer require helixphp/framework
+   composer require pivotphp/framework
    ```
 4. Crie seu ponto de entrada:
    ```bash
@@ -72,19 +72,19 @@ Se você preferir configurar seu projeto manualmente:
 
 ## Verificar a Instalação
 
-Para verificar que o HelixPHP está instalado corretamente, crie um arquivo `index.php` simples:
+Para verificar que o PivotPHP está instalado corretamente, crie um arquivo `index.php` simples:
 
 ```php
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use Helix\Core\Application;
+use PivotPHP\Core\Core\Application;
 
 $app = new Application();
 
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'HelixPHP está funcionando!', // HelixPHP está rodando!
+        'message' => 'PivotPHP está funcionando!', // PivotPHP está rodando!
         'version' => Application::VERSION
     ]);
 });
@@ -98,8 +98,8 @@ Em seguida, inicie o servidor PHP integrado:
 php -S localhost:8000 -t public
 ```
 
-Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSON confirmando que o HelixPHP está funcionando.
+Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSON confirmando que o PivotPHP está funcionando.
 
 ## Próximos Passos
 
-Agora que você tem o HelixPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/inicio-rapido/' | relative_url }}) para aprender o básico.
+Agora que você tem o PivotPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/inicio-rapido/' | relative_url }}) para aprender o básico.

@@ -6,11 +6,11 @@ permalink: /docs/security/
 
 # Security
 
-HelixPHP takes security seriously and provides multiple layers of protection out of the box. This guide covers the security features available and best practices for keeping your application secure.
+PivotPHP takes security seriously and provides multiple layers of protection out of the box. This guide covers the security features available and best practices for keeping your application secure.
 
 ## Overview
 
-HelixPHP includes protection against common security vulnerabilities:
+PivotPHP includes protection against common security vulnerabilities:
 
 - **CSRF** (Cross-Site Request Forgery)
 - **XSS** (Cross-Site Scripting)
@@ -24,7 +24,7 @@ HelixPHP includes protection against common security vulnerabilities:
 
 ### How CSRF Protection Works
 
-HelixPHP generates unique tokens for each session to verify that authenticated requests are coming from your application:
+PivotPHP generates unique tokens for each session to verify that authenticated requests are coming from your application:
 
 ```php
 // Enable CSRF protection globally
@@ -35,7 +35,7 @@ $app->middleware(new CsrfMiddleware());
     <?= csrf_field() ?>
     <!-- or -->
     <input type="hidden" name="_token" value="<?= csrf_token() ?>">
-    
+
     <!-- form fields -->
 </form>
 
@@ -72,7 +72,7 @@ class CustomCsrfMiddleware extends CsrfMiddleware
     {
         $token = $this->getTokenFromRequest($request);
         $sessionToken = $request->session()->token();
-        
+
         return hash_equals($sessionToken, $token);
     }
 }
@@ -103,7 +103,7 @@ Set CSP headers to prevent XSS attacks:
 ```php
 $app->middleware(function($request, $handler) {
     $response = $handler->handle($request);
-    
+
     return $response->withHeader(
         'Content-Security-Policy',
         "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.example.com; style-src 'self' 'unsafe-inline';"
@@ -119,7 +119,7 @@ class SecurityHeadersMiddleware implements MiddlewareInterface
     public function process($request, $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        
+
         return $response
             ->withHeader('X-XSS-Protection', '1; mode=block')
             ->withHeader('X-Content-Type-Options', 'nosniff')
@@ -136,7 +136,7 @@ class SecurityHeadersMiddleware implements MiddlewareInterface
 Always hash passwords using secure algorithms:
 
 ```php
-use Helix\Security\Hash;
+use PivotPHP\Security\Hash;
 
 // Hash password
 $hashedPassword = Hash::make($request->input('password'));
@@ -161,20 +161,20 @@ class AuthController
     public function login(Request $request, Response $response)
     {
         $credentials = $request->only(['email', 'password']);
-        
+
         $user = User::where('email', $credentials['email'])->first();
-        
+
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return $response->unauthorized('Invalid credentials');
         }
-        
+
         // Generate secure token
         $token = bin2hex(random_bytes(32));
-        
+
         // Store token
         $user->api_token = hash('sha256', $token);
         $user->save();
-        
+
         return $response->json([
             'token' => $token,
             'user' => $user
@@ -192,12 +192,12 @@ use Firebase\JWT\Key;
 class JwtAuth
 {
     private string $secret;
-    
+
     public function __construct(string $secret)
     {
         $this->secret = $secret;
     }
-    
+
     public function generateToken(User $user): string
     {
         $payload = [
@@ -210,10 +210,10 @@ class JwtAuth
                 'email' => $user->email
             ]
         ];
-        
+
         return JWT::encode($payload, $this->secret, 'HS256');
     }
-    
+
     public function validateToken(string $token): ?object
     {
         try {
@@ -250,7 +250,7 @@ class CustomRateLimiter extends RateLimitMiddleware
         if ($user = $request->getAttribute('user')) {
             return 'user:' . $user->id;
         }
-        
+
         return 'ip:' . $request->getServerParams()['REMOTE_ADDR'];
     }
 }
@@ -322,18 +322,18 @@ class SessionSecurityMiddleware implements MiddlewareInterface
         if ($request->getUri()->getPath() === '/login' && $request->isPost()) {
             session_regenerate_id(true);
         }
-        
+
         // Check for session hijacking
         $sessionIp = $_SESSION['ip_address'] ?? null;
         $currentIp = $request->getServerParams()['REMOTE_ADDR'];
-        
+
         if ($sessionIp && $sessionIp !== $currentIp) {
             session_destroy();
             return response()->unauthorized('Session invalid');
         }
-        
+
         $_SESSION['ip_address'] = $currentIp;
-        
+
         return $handler->handle($request);
     }
 }
@@ -351,40 +351,40 @@ class FileUploadController
         $validator = validate($request->all(), [
             'file' => 'required|file|mimes:jpg,png,pdf|max:2048'
         ]);
-        
+
         if ($validator->fails()) {
             return $response->unprocessable($validator->errors());
         }
-        
+
         $file = $request->file('file');
-        
+
         // Additional validation
         if (!$this->isValidFile($file)) {
             return $response->badRequest('Invalid file');
         }
-        
+
         // Generate safe filename
         $filename = $this->generateSafeFilename($file);
-        
+
         // Store outside web root
         $path = storage_path('uploads/' . $filename);
         $file->moveTo($path);
-        
+
         return $response->json(['path' => $filename]);
     }
-    
+
     private function isValidFile($file): bool
     {
         // Check actual MIME type
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mimeType = finfo_file($finfo, $file->getStream()->getMetadata('uri'));
         finfo_close($finfo);
-        
+
         $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-        
+
         return in_array($mimeType, $allowedTypes);
     }
-    
+
     private function generateSafeFilename($file): string
     {
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
@@ -398,7 +398,7 @@ class FileUploadController
 ### Data Encryption
 
 ```php
-use Helix\Security\Encryption;
+use PivotPHP\Security\Encryption;
 
 // Encrypt data
 $encrypted = Encryption::encrypt($sensitiveData);
@@ -428,30 +428,30 @@ class SecurityHeadersMiddleware implements MiddlewareInterface
     public function process($request, $handler): ResponseInterface
     {
         $response = $handler->handle($request);
-        
+
         return $response
             // Prevent XSS
             ->withHeader('X-XSS-Protection', '1; mode=block')
-            
+
             // Prevent MIME sniffing
             ->withHeader('X-Content-Type-Options', 'nosniff')
-            
+
             // Prevent clickjacking
             ->withHeader('X-Frame-Options', 'DENY')
-            
+
             // Force HTTPS
             ->withHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
-            
+
             // Control referrer information
             ->withHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-            
+
             // Feature policy
             ->withHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
-            
+
             // Content Security Policy
             ->withHeader('Content-Security-Policy', $this->getCspPolicy());
     }
-    
+
     private function getCspPolicy(): string
     {
         return implode('; ', [
@@ -479,19 +479,19 @@ class ApiAuthMiddleware implements MiddlewareInterface
     public function process($request, $handler): ResponseInterface
     {
         $apiKey = $request->getHeaderLine('X-API-Key');
-        
+
         if (!$apiKey) {
             return response()->unauthorized('API key required');
         }
-        
+
         // Constant-time comparison to prevent timing attacks
         $validKey = hash('sha256', $_ENV['API_KEY']);
         $providedKey = hash('sha256', $apiKey);
-        
+
         if (!hash_equals($validKey, $providedKey)) {
             return response()->unauthorized('Invalid API key');
         }
-        
+
         return $handler->handle($request);
     }
 }
@@ -512,7 +512,7 @@ $app->middleware(new CorsMiddleware([
 
 ## Security Best Practices
 
-1. **Keep HelixPHP Updated**: Regularly update to get security patches
+1. **Keep PivotPHP Updated**: Regularly update to get security patches
 2. **Use HTTPS**: Always use SSL/TLS in production
 3. **Validate All Input**: Never trust user input
 4. **Principle of Least Privilege**: Give minimum necessary permissions

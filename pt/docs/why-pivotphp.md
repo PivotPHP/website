@@ -1,34 +1,34 @@
 ---
 layout: docs
-title: Why HelixPHP?
-permalink: /pt/docs/why-helix/
+title: Why PivotPHP?
+permalink: /pt/docs/why-pivotphp/
 ---
-# HelixPHP 🧬
+# PivotPHP 🧬
 
 **O Microframework PHP Evolutivo**
 *Rápido, sem opiniões, minimalista. Construído para performance, projetado para evoluir.*
 
-[![Última Versão](https://img.shields.io/packagist/v/helixphp/core.svg)](https://packagist.org/packages/helixphp/helixphp-core)
-[![Status Build](https://img.shields.io/github/actions/workflow/status/helixphp/helixphp-core/tests.yml?branch=main)](https://github.com/helixphp/helixphp-core/actions)
+[![Última Versão](https://img.shields.io/packagist/v/pivotphp/core.svg)](https://packagist.org/packages/pivotphp/pivotphp-core)
+[![Status Build](https://img.shields.io/github/actions/workflow/status/pivotphp/pivotphp-core/tests.yml?branch=main)](https://github.com/pivotphp/pivotphp-core/actions)
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Versão PHP](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
 [![Performance](https://img.shields.io/badge/performance-52M%2B%20ops%2Fsec-brightgreen.svg)](#performance)
 
 ---
 
-## 🎯 Por que HelixPHP?
+## 🎯 Por que PivotPHP?
 
-Depois de 6 anos construindo APIs de alta performance, sempre esbarrava na mesma parede com frameworks PHP—todos pareciam pesados, opinativos e restritivos. Vindo do Node.js, sentia falta da elegância do Express.js: simples, flexível e poderoso. Numa tarde, frustrado com mais um framework rígido me forçando a pensar do jeito dele, comecei a construir o que se tornaria o HelixPHP.
+Depois de 6 anos construindo APIs de alta performance, sempre esbarrava na mesma parede com frameworks PHP—todos pareciam pesados, opinativos e restritivos. Vindo do Node.js, sentia falta da elegância do Express.js: simples, flexível e poderoso. Numa tarde, frustrado com mais um framework rígido me forçando a pensar do jeito dele, comecei a construir o que se tornaria o PivotPHP.
 
-**O que começou como ExpressPHP virou algo maior.** Conforme o projeto evoluía, percebi que não era só sobre copiar o Express.js—era sobre criar um framework que realmente se adapta às suas necessidades. Como o DNA que se molda a diferentes ambientes, o HelixPHP se adapta ao seu projeto sem perder sua identidade central. Sem padrões forçados, sem recursos inchados, apenas PHP limpo que não atrapalha seu caminho.
+**O que começou como ExpressPHP virou algo maior.** Conforme o projeto evoluía, percebi que não era só sobre copiar o Express.js—era sobre criar um framework que realmente se adapta às suas necessidades. Como o DNA que se molda a diferentes ambientes, o PivotPHP se adapta ao seu projeto sem perder sua identidade central. Sem padrões forçados, sem recursos inchados, apenas PHP limpo que não atrapalha seu caminho.
 
-O HelixPHP não te diz como construir sua API. Em vez disso, te dá as ferramentas para construí-la **do seu jeito**.
+O PivotPHP não te diz como construir sua API. Em vez disso, te dá as ferramentas para construí-la **do seu jeito**.
 
 ```php
 <?php
 require 'vendor/autoload.php';
 
-use Helix\App;
+use PivotPHP\App;
 
 $app = new App();
 
@@ -59,7 +59,7 @@ $app->listen(8000);
 ## 🚀 Instalação
 
 ```bash
-composer require helixphp/helixphp-core
+composer require pivotphp/pivotphp-core
 ```
 
 **Requisitos:**
@@ -69,10 +69,10 @@ composer require helixphp/helixphp-core
 **Extensões Opcionais:**
 ```bash
 # Para integração com banco de dados
-composer require helixphp/helixphp-cycle-orm
+composer require pivotphp/pivotphp-cycle-orm
 
 # Para middleware adicional
-composer require helixphp/middleware-collection
+composer require pivotphp/middleware-collection
 ```
 
 ---
@@ -80,7 +80,7 @@ composer require helixphp/middleware-collection
 ## ✨ Recursos Principais
 
 ### 🧬 **Arquitetura Evolutiva**
-O HelixPHP se adapta às suas necessidades, não o contrário. Comece simples, escale complexo.
+O PivotPHP se adapta às suas necessidades, não o contrário. Comece simples, escale complexo.
 
 ```php
 // Comece simples
@@ -107,7 +107,7 @@ $app->get('/rapido/:id/dados/:tipo', function($req, $res) {
 ```
 
 ### 🎛️ **Sintaxe Inspirada no Express.js**
-Se você conhece Express.js, já conhece o HelixPHP.
+Se você conhece Express.js, já conhece o PivotPHP.
 
 ```php
 // Padrão de middleware familiar
@@ -156,26 +156,26 @@ $app = new App([
 
 ## 📊 Performance
 
-O HelixPHP entrega performance excepcional sem sacrificar a experiência do desenvolvedor:
+O PivotPHP entrega performance excepcional sem sacrificar a experiência do desenvolvedor:
 
 | Framework | Requests/seg | Uso Memória | Tempo Resposta |
 |-----------|-------------|-------------|----------------|
-| **HelixPHP** | **52.000+** | **8.2 MB** | **0.05ms** |
+| **PivotPHP** | **52.000+** | **8.2 MB** | **0.05ms** |
 | Framework A | 12.000 | 12.5 MB | 0.12ms |
 | Framework B | 15.000 | 10.1 MB | 0.08ms |
 | Framework C | 3.500 | 25.7 MB | 0.35ms |
 
-*Benchmarks executados no PHP 8.2, single-threaded, resposta JSON simples. [Ver benchmarks completos →](https://helixphp.github.io/benchmarks)*
+*Benchmarks executados no PHP 8.2, single-threaded, resposta JSON simples. [Ver benchmarks completos →](https://pivotphp.github.io/benchmarks)*
 
 ---
 
 ## 📚 Documentação
 
-- **[Guia de Início Rápido](https://helixphp.github.io/website/docs/getting-started/)** - Configure e rode em 5 minutos
-- **[Referência da API](https://helixphp.github.io/website/docs/api/)** - Documentação completa de métodos
-- **[Galeria de Exemplos](https://helixphp.github.io/website/docs/examples/)** - Aplicações do mundo real
-- **[Guia de Migração](https://helixphp.github.io/website/docs/migration/)** - Vindo de outros frameworks
-- **[Guia de Performance](https://helixphp.github.io/website/docs/performance/)** - Melhores práticas de otimização
+- **[Guia de Início Rápido](https://pivotphp.github.io/website/docs/getting-started/)** - Configure e rode em 5 minutos
+- **[Referência da API](https://pivotphp.github.io/website/docs/api/)** - Documentação completa de métodos
+- **[Galeria de Exemplos](https://pivotphp.github.io/website/docs/examples/)** - Aplicações do mundo real
+- **[Guia de Migração](https://pivotphp.github.io/website/docs/migration/)** - Vindo de outros frameworks
+- **[Guia de Performance](https://pivotphp.github.io/website/docs/performance/)** - Melhores práticas de otimização
 
 ---
 
@@ -184,8 +184,8 @@ O HelixPHP entrega performance excepcional sem sacrificar a experiência do dese
 ### API REST com Banco de Dados
 ```php
 <?php
-use Helix\App;
-use Helix\Database\DB;
+use PivotPHP\App;
+use PivotPHP\Database\DB;
 
 $app = new App();
 
@@ -208,8 +208,8 @@ $app->listen(8000);
 ### Microserviço com Autenticação
 ```php
 <?php
-use Helix\App;
-use Helix\Middleware\{Auth, CORS, RateLimit};
+use PivotPHP\App;
+use PivotPHP\Middleware\{Auth, CORS, RateLimit};
 
 $app = new App();
 
@@ -240,8 +240,8 @@ $app->listen(8000);
 ### API Real-time com WebSockets
 ```php
 <?php
-use Helix\App;
-use Helix\WebSocket\Server;
+use PivotPHP\App;
+use PivotPHP\WebSocket\Server;
 
 $app = new App();
 
@@ -252,7 +252,7 @@ $app->get('/health', fn() => ['status' => 'ok']);
 $ws = new Server($app);
 
 $ws->on('connection', function($socket) {
-    $socket->emit('welcome', ['mensagem' => 'Conectado ao HelixPHP']);
+    $socket->emit('welcome', ['mensagem' => 'Conectado ao PivotPHP']);
 });
 
 $ws->on('message', function($socket, $dados) {
@@ -263,44 +263,44 @@ $ws->on('message', function($socket, $dados) {
 $app->listen(8000, $ws);
 ```
 
-**[Mais Exemplos →](https://github.com/helixphp/examples)**
+**[Mais Exemplos →](https://github.com/pivotphp/examples)**
 
 ---
 
 ## 🌟 Ecossistema
 
 ### Pacotes Oficiais
-- **[helixphp/helixphp-cycle-orm](https://github.com/helixphp/helixphp-cycle-orm)** - Integração com banco de dados ORM
-- **[helixphp/middleware-collection](https://github.com/helixphp/middleware-collection)** - Middleware comum
-- **[helixphp/jwt-auth](https://github.com/helixphp/jwt-auth)** - Autenticação JWT
-- **[helixphp/cache](https://github.com/helixphp/cache)** - Cache multi-driver
+- **[pivotphp/pivotphp-cycle-orm](https://github.com/pivotphp/pivotphp-cycle-orm)** - Integração com banco de dados ORM
+- **[pivotphp/middleware-collection](https://github.com/pivotphp/middleware-collection)** - Middleware comum
+- **[pivotphp/jwt-auth](https://github.com/pivotphp/jwt-auth)** - Autenticação JWT
+- **[pivotphp/cache](https://github.com/pivotphp/cache)** - Cache multi-driver
 
 ### Pacotes da Comunidade
-- **[helixphp/testing](https://packagist.org/packages/helixphp/testing)** - Utilitários de teste
-- **[helixphp/swagger](https://packagist.org/packages/helixphp/swagger)** - Documentação OpenAPI
-- **[helixphp/queue](https://packagist.org/packages/helixphp/queue)** - Processamento de jobs em background
+- **[pivotphp/testing](https://packagist.org/packages/pivotphp/testing)** - Utilitários de teste
+- **[pivotphp/swagger](https://packagist.org/packages/pivotphp/swagger)** - Documentação OpenAPI
+- **[pivotphp/queue](https://packagist.org/packages/pivotphp/queue)** - Processamento de jobs em background
 
-**[Navegar por todos os pacotes →](https://packagist.org/packages/helixphp/)**
+**[Navegar por todos os pacotes →](https://packagist.org/packages/pivotphp/)**
 
 ---
 
 ## 🤝 Comunidade
 
-Junte-se à comunidade HelixPHP e ajude a moldar o futuro do desenvolvimento PHP:
+Junte-se à comunidade PivotPHP e ajude a moldar o futuro do desenvolvimento PHP:
 
-- **[GitHub Discussions](https://github.com/helixphp/helixphp-core/discussions)** - Perguntas, ideias e anúncios
-- **[Servidor Discord](https://discord.gg/helixphp)** - Chat da comunidade em tempo real
-- **[Twitter](https://twitter.com/helixphp)** - Atualizações e novidades
-- **[Stack Overflow](https://stackoverflow.com/questions/tagged/helixphp)** - Q&A técnico
+- **[GitHub Discussions](https://github.com/pivotphp/pivotphp-core/discussions)** - Perguntas, ideias e anúncios
+- **[Servidor Discord](https://discord.gg/pivotphp)** - Chat da comunidade em tempo real
+- **[Twitter](https://twitter.com/pivotphp)** - Atualizações e novidades
+- **[Stack Overflow](https://stackoverflow.com/questions/tagged/pivotphp)** - Q&A técnico
 
 ### Contribuindo
 
-O HelixPHP existe porque a comunidade PHP merece algo melhor. Seja corrigindo typos, reportando bugs ou propondo novos recursos, você está ajudando a tornar essa visão realidade.
+O PivotPHP existe porque a comunidade PHP merece algo melhor. Seja corrigindo typos, reportando bugs ou propondo novos recursos, você está ajudando a tornar essa visão realidade.
 
 ```bash
 # Faça fork e clone
-git clone https://github.com/helixphp/helixphp-core.git
-cd helixphp-core
+git clone https://github.com/pivotphp/pivotphp-core.git
+cd pivotphp-core
 
 # Instale dependências
 composer install
@@ -317,7 +317,7 @@ composer test
 
 ## 📄 Licença
 
-O HelixPHP é um software open-source licenciado sob a [licença MIT](LICENSE).
+O PivotPHP é um software open-source licenciado sob a [licença MIT](LICENSE).
 
 ---
 
@@ -328,26 +328,26 @@ O HelixPHP é um software open-source licenciado sob a [licença MIT](LICENSE).
 
 - **GitHub:** [@CAFernandes](https://github.com/CAFernandes)
 - **LinkedIn:** [caio-alberto-fernandes](https://www.linkedin.com/in/caio-alberto-fernandes/)
-- **HelixPHP Org:** [github.com/helixphp](https://github.com/helixphp)
+- **PivotPHP Org:** [github.com/pivotphp](https://github.com/pivotphp)
 
 ---
 
 ## 🔗 Links
 
-- **[Site Oficial](https://helixphp.github.io/website/)** - Site oficial do HelixPHP
-- **[Documentação](https://helixphp.github.io/website/docs/)** - Documentação completa
-- **[Packagist](https://packagist.org/packages/helixphp/helixphp-core)** - Pacote Composer
-- **[Benchmarks](https://helixphp.github.io/benchmarks/)** - Comparações de performance
+- **[Site Oficial](https://pivotphp.github.io/website/)** - Site oficial do PivotPHP
+- **[Documentação](https://pivotphp.github.io/website/docs/)** - Documentação completa
+- **[Packagist](https://packagist.org/packages/pivotphp/pivotphp-core)** - Pacote Composer
+- **[Benchmarks](https://pivotphp.github.io/benchmarks/)** - Comparações de performance
 
 ---
 
 ## Join the Evolution
 
-HelixPHP isn't just another framework. It's a return to simplicity, performance, and developer happiness. Whether you're building a simple API or a complex microservices architecture, HelixPHP adapts to your needs.
+PivotPHP isn't just another framework. It's a return to simplicity, performance, and developer happiness. Whether you're building a simple API or a complex microservices architecture, PivotPHP adapts to your needs.
 
 Ready to evolve your PHP development?
 
-[Get Started Now](/docs/installation/) | [View on GitHub](https://github.com/helixphp)
+[Get Started Now](/docs/installation/) | [View on GitHub](https://github.com/pivotphp)
 
 <div align="center">
 
@@ -355,6 +355,6 @@ Ready to evolve your PHP development?
 
 **Feito com ❤️ pela comunidade PHP, para a comunidade PHP.**
 
-*HelixPHP: O framework que evolui com seu projeto.*
+*PivotPHP: O framework que evolui com seu projeto.*
 
 </div>
