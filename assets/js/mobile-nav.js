@@ -4,9 +4,14 @@
 
     // Wait for DOM to be ready
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('PivotPHP: Mobile navigation script loaded');
+
         const mobileToggle = document.querySelector('.mobile-menu-toggle');
         const navMenu = document.querySelector('.navbar-nav');
         const overlay = createOverlay();
+
+        console.log('Mobile toggle found:', !!mobileToggle);
+        console.log('Nav menu found:', !!navMenu);
 
         if (mobileToggle && navMenu) {
             // Toggle mobile menu

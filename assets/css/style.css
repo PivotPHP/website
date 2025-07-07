@@ -669,6 +669,101 @@
   margin-bottom: 0;
 }
 
+/* Mobile Navigation Enhancements */
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+  }
+
+  .navbar-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--pivot-white);
+    flex-direction: column;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 16px 16px;
+    z-index: 1000;
+
+    /* Initially hidden */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-nav.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    display: flex;
+  }
+
+  .navbar-nav li {
+    margin: 0.75rem 0;
+  }
+
+  .navbar-nav a {
+    font-size: 1.125rem;
+    padding: 0.75rem 0;
+    display: block;
+    border-bottom: 1px solid var(--pivot-gray-lighter);
+  }
+
+  .navbar-nav a:last-child {
+    border-bottom: none;
+  }
+
+  .language-switcher {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .language-switcher select {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    background: var(--pivot-light);
+    border: 2px solid var(--pivot-gray-light);
+    border-radius: 8px;
+  }
+
+  /* Ensure mobile toggle is visible */
+  .mobile-menu-toggle {
+    display: block !important;
+    z-index: 1001;
+  }
+}
+
+/* Improved Mobile Stats Grid */
+@media (max-width: 480px) {
+  .home-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    justify-items: center;
+  }
+
+  .home-stat {
+    width: 100%;
+    max-width: 140px;
+  }
+}
+
+/* Better Mobile Performance Grid */
+@media (max-width: 480px) {
+  .performance-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .performance-metric {
+    padding: 2rem 1.5rem;
+  }
+}
+
 /* Responsive Design - Implementação completa */
 @media (max-width: 1024px) {
   .home-hero h1 {

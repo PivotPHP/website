@@ -12,13 +12,13 @@
           <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo">
           <span>PivotPHP</span>
         </a>
-        
+
         <button class="mobile-menu-toggle" aria-label="Toggle navigation">
           <span></span>
           <span></span>
           <span></span>
         </button>
-        
+
         <ul class="navbar-nav">
           <li><a href="{{ '/docs/' | relative_url }}" {% if page.url contains '/docs/' %}class="active"{% endif %}>Documentation</a></li>
           <li><a href="{{ '/docs/quickstart/' | relative_url }}">Quick Start</a></li>
@@ -53,7 +53,7 @@
           <p>The Evolutionary PHP Microframework</p>
           <p>Build high-performance APIs that adapt and evolve.</p>
         </div>
-        
+
         <div>
           <h4>Documentation</h4>
           <ul>
@@ -63,7 +63,7 @@
             <li><a href="{{ '/docs/middleware/' | relative_url }}">Middleware</a></li>
           </ul>
         </div>
-        
+
         <div>
           <h4>Resources</h4>
           <ul>
@@ -73,7 +73,7 @@
             <li><a href="{{ '/docs/contributing/' | relative_url }}">Contributing</a></li>
           </ul>
         </div>
-        
+
         <div>
           <h4>Community</h4>
           <ul>
@@ -84,37 +84,82 @@
           </ul>
         </div>
       </div>
-      
+
       <div class="footer-bottom">
         <p>&copy; {{ 'now' | date: '%Y' }} PivotPHP. Released under the MIT License.</p>
       </div>
     </div>
   </footer>
-  
+
   <!-- Scripts -->
   <script src="{{ '/assets/js/mobile-nav.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/language-persistence.js' | relative_url }}"></script>
-  
+
   <script>
-    // Language switching logic
+    // Language switching logic - Updated for proper baseurl support
     function switchLanguage(lang) {
-      const currentPath = window.location.pathname;
-      let newPath;
-      
-      if (lang === 'en') {
-        // Remove language prefix for English
-        newPath = currentPath.replace(/^\/pt\//, '/');
-      } else {
-        // Add language prefix for other languages
-        if (!currentPath.startsWith(`/${lang}/`)) {
-          newPath = `/${lang}${currentPath}`;
-        } else {
-          newPath = currentPath;
+      if (typeof window.LanguageRoutes !== 'undefined') {
+        // Use the centralized language routing system
+        const currentPath = window.location.pathname;
+        const baseUrl = '{{ site.baseurl | default: "" }}';
+
+        // Remove baseurl from current path for processing
+        let relativePath = currentPath;
+        if (baseUrl && currentPath.startsWith(baseUrl)) {
+          relativePath = currentPath.substring(baseUrl.length);
         }
+
+        let newPath;
+        if (lang === 'en') {
+          // Convert to English (remove language prefix)
+          if (relativePath.startsWith('/pt/')) {
+            const ptPath = relativePath;
+            newPath = window.LanguageRoutes.convertUrl(ptPath, 'pt', 'en');
+          } else {
+            newPath = relativePath;
+          }
+        } else if (lang === 'pt') {
+          // Convert to Portuguese
+          const enPath = relativePath.startsWith('/pt/') ? relativePath : relativePath;
+          newPath = window.LanguageRoutes.convertUrl(enPath, 'en', 'pt');
+        }
+
+        // Add baseurl back
+        const finalPath = baseUrl + newPath;
+
+        // Store language preference
+        if (lang !== 'en') {
+          localStorage.setItem('preferred-language', lang);
+        } else {
+          localStorage.removeItem('preferred-language');
+        }
+
+        // Navigate to new path
+        window.location.href = finalPath;
+      } else {
+        // Fallback for simple switching
+        console.warn('LanguageRoutes not available, using simple switching');
+        const currentPath = window.location.pathname;
+        const baseUrl = '{{ site.baseurl | default: "" }}';
+
+        let relativePath = currentPath;
+        if (baseUrl && currentPath.startsWith(baseUrl)) {
+          relativePath = currentPath.substring(baseUrl.length);
+        }
+
+        let newPath;
+        if (lang === 'en') {
+          newPath = relativePath.replace(/^\/pt\//, '/');
+        } else if (lang === 'pt') {
+          if (!relativePath.startsWith('/pt/')) {
+            newPath = '/pt' + relativePath;
+          } else {
+            newPath = relativePath;
+          }
+        }
+
+        window.location.href = baseUrl + newPath;
       }
-      
-      // Navigate to new path
-      window.location.pathname = newPath;
     }
   </script>
 </body>
