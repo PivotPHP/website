@@ -1,0 +1,194 @@
+/* Navigation and Logo Improvements */
+
+/* ===== Increase Logo Size in Navigation ===== */
+.docs-header .logo-small {
+    height: 85px !important; /* Increased from 70px */
+    width: auto;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Adjust header to accommodate larger logo */
+.docs-header {
+    min-height: 100px;
+    padding: 0.75rem 0;
+    background: var(--primary);
+}
+
+.docs-header .nav-logo {
+    padding: 0.5rem 0;
+    margin-right: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+/* ===== Fix Navigation Button Styles ===== */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: #ffffff !important;
+    background: transparent !important;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2);
+    opacity: 1 !important;
+    transform: translateY(-1px);
+}
+
+.nav-links a:active {
+    transform: translateY(0);
+}
+
+/* External link indicator */
+.nav-links a[target="_blank"]::after {
+    content: " ↗";
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+
+/* ===== Language Switcher in Nav ===== */
+.nav-links .language-switcher {
+    margin-left: 1rem;
+}
+
+.nav-links .language-switcher .lang-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+.nav-links .language-switcher .lang-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===== Mobile Adjustments ===== */
+@media screen and (max-width: 768px) {
+    .docs-header .logo-small {
+        height: 65px !important;
+    }
+    
+    .docs-header {
+        min-height: 80px;
+        padding: 0.5rem 0;
+    }
+    
+    .docs-header .nav-logo {
+        margin-right: 1.5rem;
+    }
+    
+    /* Hide nav links on mobile (mobile menu handles this) */
+    .nav-links {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .docs-header .logo-small {
+        height: 60px !important;
+    }
+    
+    .docs-header {
+        min-height: 75px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .docs-header .logo-small {
+        height: 55px !important;
+    }
+    
+    .docs-header {
+        min-height: 70px;
+    }
+}
+
+/* ===== Tablet Adjustments ===== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .docs-header .logo-small {
+        height: 75px !important;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-links a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ===== Large Screens ===== */
+@media screen and (min-width: 1400px) {
+    .docs-header .logo-small {
+        height: 90px !important;
+    }
+    
+    .docs-header {
+        min-height: 110px;
+    }
+}
+
+/* ===== Ensure Logo Quality at Larger Sizes ===== */
+.docs-header .logo-small {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Fix Any Background Issues ===== */
+.docs-header,
+.docs-header .container,
+.docs-header .docs-nav {
+    background: var(--primary) !important;
+}
+
+/* Remove any gray backgrounds from nav items */
+.nav-links a,
+.nav-links button,
+.nav-links .btn {
+    background-color: transparent !important;
+}
+
+.nav-links a:not(:hover),
+.nav-links button:not(:hover),
+.nav-links .btn:not(:hover) {
+    background: transparent !important;
+}
+
+/* ===== Active/Current Page Indicator ===== */
+.nav-links a.active,
+.nav-links a[aria-current="page"] {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+}
+
+/* ===== Focus States for Accessibility ===== */
+.nav-links a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== Smooth Hover Transitions ===== */
+@media (prefers-reduced-motion: no-preference) {
+    .docs-header .logo-small,
+    .nav-links a {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
