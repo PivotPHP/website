@@ -2,42 +2,35 @@
 layout: default
 ---
 
-<!-- Documentation Wrapper -->
-<div class="docs-wrapper">
-  <div class="container">
-    <div class="docs-wrapper">
-      <!-- Sidebar -->
-      <aside class="docs-sidebar">
-        <div class="docs-sidebar-sticky">
-          {% include docs-sidebar.html %}
+<!-- Documentation Content -->
+<main class="docs-main">
+    <div class="container docs-container">
+        {% include docs-sidebar.html %}
+
+        <!-- Content -->
+        <div class="docs-content">
+            <article>
+                <h1>{{ page.title }}</h1>
+                {{ content }}
+            </article>
+
+            <!-- Navigation Links -->
+            <div class="docs-nav-bottom">
+                {% if page.prev %}
+                <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost">
+                    ← {{ page.prev.title }}
+                </a>
+                {% endif %}
+
+                {% if page.next %}
+                <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost" style="margin-left: auto;">
+                    {{ page.next.title }} →
+                </a>
+                {% endif %}
+            </div>
         </div>
-      </aside>
-      
-      <!-- Main Content -->
-      <main class="docs-content">
-        <article>
-          <h1>{{ page.title }}</h1>
-          {{ content }}
-        </article>
-        
-        <!-- Navigation Links -->
-        <div class="docs-nav-bottom">
-          {% if page.prev %}
-          <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost">
-            ← {{ page.prev.title }}
-          </a>
-          {% endif %}
-          
-          {% if page.next %}
-          <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost" style="margin-left: auto;">
-            {{ page.next.title }} →
-          </a>
-          {% endif %}
-        </div>
-      </main>
     </div>
-  </div>
-</div>
+</main>
 
 <!-- Documentation Scripts -->
 <script src="{{ '/assets/js/active-nav.js' | relative_url }}"></script>
