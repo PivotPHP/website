@@ -1,13 +1,11 @@
-version: '3'
-
 services:
   jekyll:
-    image: jekyll/jekyll:latest
-    command: jekyll serve --watch --force_polling --incremental
+    image: jekyll/jekyll:4.2.2
+    command: jekyll serve --watch --force_polling --incremental --host 0.0.0.0
     ports:
       - "4000:4000"
+      - "35729:35729"
     volumes:
       - .:/srv/jekyll
-      - ./vendor/bundle:/usr/local/bundle
     environment:
       - JEKYLL_ENV=development
