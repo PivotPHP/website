@@ -32,62 +32,11 @@ layout: default
     </div>
 </main>
 
+<!-- Chart.js for benchmarks -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
 <!-- Documentation Scripts -->
 <script src="{{ '/assets/js/active-nav.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/transitions.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/docs-mobile.js' | relative_url }}"></script>
-}
-
-/* Improve code blocks in documentation */
-.docs-content pre {
-  margin: 1.5rem 0;
-}
-
-.docs-content h2 {
-  margin-top: 2.5rem;
-  padding-top: 1rem;
-}
-
-.docs-content h3 {
-  margin-top: 2rem;
-}
-
-.docs-content table {
-  width: 100%;
-  margin: 1.5rem 0;
-  border-collapse: collapse;
-}
-
-.docs-content table th,
-.docs-content table td {
-  text-align: left;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--pivot-gray-light);
-}
-
-.docs-content table th {
-  font-weight: 600;
-  background: var(--pivot-light);
-}
-
-.docs-content blockquote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  border-left: 4px solid var(--pivot-primary);
-  background: rgba(124, 58, 237, 0.05);
-  border-radius: var(--radius-md);
-}
-
-.docs-content blockquote p:last-child {
-  margin-bottom: 0;
-}
-
-/* Syntax highlighting improvements */
-.highlight {
-  margin: 1.5rem 0;
-}
-
-.highlight pre {
-  margin: 0;
-}
-</style>
+<script src="{{ '/assets/js/benchmark-charts.js' | relative_url }}"></script>

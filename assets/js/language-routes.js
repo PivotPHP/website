@@ -4,25 +4,30 @@ window.LanguageRoutes = {
     baseUrl: '/website',
 
     // Bi-directional mappings between English and Portuguese (relative paths)
-    // Mantendo URLs equivalentes para facilitar a troca de idiomas
+    // URLs corretas em português para navegação adequada
     mappings: {
         '/': '/pt/',
         '/docs/': '/pt/docs/',
-        '/docs/installation/': '/pt/docs/installation/',
-        '/docs/quickstart/': '/pt/docs/quickstart/',
-        '/docs/configuration/': '/pt/docs/configuration/',
-        '/docs/routing/': '/pt/docs/routing/',
+        '/docs/installation/': '/pt/docs/instalacao/',
+        '/docs/quickstart/': '/pt/docs/inicio-rapido/',
+        '/docs/configuration/': '/pt/docs/configuracao/',
+        '/docs/routing/': '/pt/docs/roteamento/',
         '/docs/middleware/': '/pt/docs/middleware/',
-        '/docs/requests-responses/': '/pt/docs/requests-responses/',
+        '/docs/requests-responses/': '/pt/docs/requisicoes-respostas/',
         '/docs/container/': '/pt/docs/container/',
-        '/docs/security/': '/pt/docs/security/',
-        '/docs/events/': '/pt/docs/events/',
-        '/docs/validation/': '/pt/docs/validation/',
-        '/docs/database/': '/pt/docs/database/',
-        '/docs/providers/': '/pt/docs/providers/',
-        '/docs/testing/': '/pt/docs/testing/',
-        '/docs/deployment/': '/pt/docs/deployment/',
-        '/docs/why-pivotphp/': '/pt/docs/why-pivotphp/'
+        '/docs/security/': '/pt/docs/seguranca/',
+        '/docs/events/': '/pt/docs/eventos/',
+        '/docs/validation/': '/pt/docs/validacao/',
+        '/docs/database/': '/pt/docs/banco-de-dados/',
+        '/docs/providers/': '/pt/docs/provedores/',
+        '/docs/testing/': '/pt/docs/testes/',
+        '/docs/deployment/': '/pt/docs/deploy/',
+        '/docs/why-pivotphp/': '/pt/docs/por-que-pivotphp/',
+        '/docs/benchmarks/': '/pt/docs/benchmarks/',
+        '/docs/authentication/': '/pt/docs/autenticacao/',
+        '/docs/orm/': '/pt/docs/orm/',
+        '/docs/api-reference/': '/pt/docs/referencia-api/',
+        '/docs/changelog/': '/pt/docs/historico-mudancas/'
     },
 
     // Get the reverse mapping (PT -> EN)
@@ -120,7 +125,12 @@ window.LanguageRoutes = {
             '/docs/providers/',
             '/docs/testing/',
             '/docs/deployment/',
-            '/docs/why-pivotphp/'
+            '/docs/why-pivotphp/',
+            '/docs/benchmarks/',
+            '/docs/authentication/',
+            '/docs/orm/',
+            '/docs/api-reference/',
+            '/docs/changelog/'
         ],
         pt: [
             '/pt/',
@@ -139,7 +149,12 @@ window.LanguageRoutes = {
             '/pt/docs/provedores/',
             '/pt/docs/testes/',
             '/pt/docs/deploy/',
-            '/pt/docs/why-pivotphp/'
+            '/pt/docs/por-que-pivotphp/',
+            '/pt/docs/benchmarks/',
+            '/pt/docs/autenticacao/',
+            '/pt/docs/orm/',
+            '/pt/docs/referencia-api/',
+            '/pt/docs/historico-mudancas/'
         ]
     },
 

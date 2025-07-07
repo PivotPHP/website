@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PivotPHP Design System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Core Brand Colors */
+            --pivot-purple-50: #FAF5FF;
+            --pivot-purple-100: #F3E8FF;
+            --pivot-purple-200: #E9D5FF;
+            --pivot-purple-300: #D8B4FE;
+            --pivot-purple-400: #C084FC;
+            --pivot-purple-500: #A855F7;
+            --pivot-purple-600: #9333EA;
+            --pivot-purple-700: #7C3AED;
+            --pivot-purple-800: #6B21A8;
+            --pivot-purple-900: #581C87;
+            --pivot-purple-950: #3B0764;
+
+            --pivot-pink-50: #FDF2F8;
+            --pivot-pink-100: #FCE7F3;
+            --pivot-pink-200: #FBCFE8;
+            --pivot-pink-300: #F9A8D4;
+            --pivot-pink-400: #F472B6;
+            --pivot-pink-500: #EC4899;
+            --pivot-pink-600: #DB2777;
+            --pivot-pink-700: #BE185D;
+            --pivot-pink-800: #9D174D;
+            --pivot-pink-900: #831843;
+            --pivot-pink-950: #500724;
+
+            --pivot-cyan-50: #ECFEFF;
+            --pivot-cyan-100: #CFFAFE;
+            --pivot-cyan-200: #A5F3FC;
+            --pivot-cyan-300: #67E8F9;
+            --pivot-cyan-400: #22D3EE;
+            --pivot-cyan-500: #06B6D4;
+            --pivot-cyan-600: #0891B2;
+            --pivot-cyan-700: #0E7490;
+            --pivot-cyan-800: #155E75;
+            --pivot-cyan-900: #164E63;
+            --pivot-cyan-950: #083344;
+
+            /* Neutral Colors */
+            --pivot-gray-50: #F8FAFC;
+            --pivot-gray-100: #F1F5F9;
+            --pivot-gray-200: #E2E8F0;
+            --pivot-gray-300: #CBD5E1;
+            --pivot-gray-400: #94A3B8;
+            --pivot-gray-500: #64748B;
+            --pivot-gray-600: #475569;
+            --pivot-gray-700: #334155;
+            --pivot-gray-800: #1E293B;
+            --pivot-gray-900: #0F172A;
+            --pivot-gray-950: #020617;
+
+            /* Semantic Colors */
+            --pivot-success-light: #34D399;
+            --pivot-success-main: #10B981;
+            --pivot-success-dark: #059669;
+
+            --pivot-warning-light: #FCD34D;
+            --pivot-warning-main: #F59E0B;
+            --pivot-warning-dark: #D97706;
+
+            --pivot-error-light: #FCA5A5;
+            --pivot-error-main: #EF4444;
+            --pivot-error-dark: #DC2626;
+
+            --pivot-info-light: #93C5FD;
+            --pivot-info-main: #3B82F6;
+            --pivot-info-dark: #1D4ED8;
+
+            /* Gradients */
+            --pivot-gradient-primary: linear-gradient(135deg, var(--pivot-purple-700) 0%, var(--pivot-pink-500) 50%, var(--pivot-cyan-500) 100%);
+            --pivot-gradient-subtle: linear-gradient(135deg, var(--pivot-purple-700) 0%, var(--pivot-purple-500) 100%);
+            --pivot-gradient-dark: linear-gradient(135deg, var(--pivot-purple-800) 0%, var(--pivot-pink-700) 50%, var(--pivot-cyan-700) 100%);
+
+            /* Typography Scale */
+            --font-family-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+            --text-xs: 0.75rem;     /* 12px */
+            --text-sm: 0.875rem;    /* 14px */
+            --text-base: 1rem;      /* 16px */
+            --text-lg: 1.125rem;    /* 18px */
+            --text-xl: 1.25rem;     /* 20px */
+            --text-2xl: 1.5rem;     /* 24px */
+            --text-3xl: 1.875rem;   /* 30px */
+            --text-4xl: 2.25rem;    /* 36px */
+            --text-5xl: 3rem;       /* 48px */
+
+            /* Spacing Scale */
+            --space-0: 0;
+            --space-1: 0.25rem;     /* 4px */
+            --space-2: 0.5rem;      /* 8px */
+            --space-3: 0.75rem;     /* 12px */
+            --space-4: 1rem;        /* 16px */
+            --space-5: 1.25rem;     /* 20px */
+            --space-6: 1.5rem;      /* 24px */
+            --space-8: 2rem;        /* 32px */
+            --space-10: 2.5rem;     /* 40px */
+            --space-12: 3rem;       /* 48px */
+            --space-16: 4rem;       /* 64px */
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;   /* 4px */
+            --radius-md: 0.375rem;  /* 6px */
+            --radius-lg: 0.5rem;    /* 8px */
+            --radius-xl: 0.75rem;   /* 12px */
+            --radius-2xl: 1rem;     /* 16px */
+            --radius-3xl: 1.5rem;   /* 24px */
+            --radius-full: 9999px;
+
+            /* Shadows - Light Mode */
+            --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Z-index Scale */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Light Theme (Default) */
+        [data-theme="light"] {
+            --color-background: var(--pivot-gray-50);
+            --color-surface: #FFFFFF;
+            --color-surface-hover: var(--pivot-gray-50);
+            --color-border: var(--pivot-gray-200);
+            --color-border-hover: var(--pivot-gray-300);
+
+            --color-text-primary: var(--pivot-gray-900);
+            --color-text-secondary: var(--pivot-gray-600);
+            --color-text-tertiary: var(--pivot-gray-500);
+            --color-text-disabled: var(--pivot-gray-400);
+
+            --shadow-card: var(--shadow-sm);
+            --shadow-card-hover: var(--shadow-md);
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --color-background: var(--pivot-gray-950);
+            --color-surface: var(--pivot-gray-900);
+            --color-surface-hover: var(--pivot-gray-800);
+            --color-border: var(--pivot-gray-800);
+            --color-border-hover: var(--pivot-gray-700);
+
+            --color-text-primary: var(--pivot-gray-50);
+            --color-text-secondary: var(--pivot-gray-300);
+            --color-text-tertiary: var(--pivot-gray-400);
+            --color-text-disabled: var(--pivot-gray-600);
+
+            /* Dark mode shadows with subtle glow */
+            --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+            --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3), 0 0 0 1px rgba(124, 58, 237, 0.1);
+
+            /* Ajustar cores vibrantes para dark mode */
+            --pivot-purple-700: #8B5CF6;
+            --pivot-pink-500: #EC4899;
+            --pivot-cyan-500: #06B6D4;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: var(--font-family-display);
+            background: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            transition: background-color var(--transition-base), color var(--transition-base);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--space-8);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-4);
+        }
+
+        h1 { font-size: var(--text-5xl); }
+        h2 { font-size: var(--text-3xl); }
+        h3 { font-size: var(--text-2xl); }
+        h4 { font-size: var(--text-xl); }
+
+        .section {
+            margin-bottom: var(--space-16);
+        }
+
+        .section-title {
+            font-size: var(--text-3xl);
+            margin-bottom: var(--space-8);
+            color: var(--color-text-primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: var(--space-4);
+            right: var(--space-4);
+            z-index: var(--z-fixed);
+        }
+
+        .theme-toggle button {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            color: var(--color-text-primary);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .theme-toggle button:hover {
+            border-color: var(--pivot-purple-500);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+        @media (max-width: 768px) {
+            .grid-cols-2,
+            .grid-cols-3,
+            .grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Component */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--color-border-hover);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Card com gradiente no hover */
+        .card-gradient {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--pivot-gradient-primary);
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .card-gradient:hover::before {
+            opacity: 1;
+        }
+
+        .card-gradient:hover {
+            border-color: var(--pivot-purple-200);
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .card-gradient:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        /* Card Variants */
+        .card-elevated {
+            border: none;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-elevated:hover {
+            box-shadow: var(--shadow-xl);
+        }
+
+        [data-theme="dark"] .card-elevated {
+            background: var(--pivot-gray-800);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+        }
+
+        .card-ghost {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            box-shadow: none;
+        }
+
+        .card-ghost:hover {
+            background: var(--color-surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Card Header */
+        .card-header {
+            margin-bottom: var(--space-4);
+            padding-bottom: var(--space-4);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .card-title {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .card-subtitle {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+
+        /* Card Content */
+        .card-content {
+            color: var(--color-text-secondary);
+        }
+
+        /* Card Footer */
+        .card-footer {
+            margin-top: var(--space-6);
+            padding-top: var(--space-4);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2) var(--space-4);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--pivot-gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--pivot-purple-500);
+            color: var(--pivot-purple-700);
+            box-shadow: var(--shadow-sm);
+        }
+
+        [data-theme="dark"] .btn-secondary:hover {
+            color: var(--pivot-purple-400);
+            border-color: var(--pivot-purple-400);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-text-secondary);
+        }
+
+        .btn-ghost:hover {
+            color: var(--color-text-primary);
+            background: var(--color-surface-hover);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            background: var(--pivot-purple-100);
+            color: var(--pivot-purple-700);
+        }
+
+        [data-theme="dark"] .badge {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--pivot-purple-400);
+        }
+
+        .badge-success {
+            background: var(--pivot-success-light);
+            color: var(--pivot-success-dark);
+        }
+
+        [data-theme="dark"] .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--pivot-success-light);
+        }
+
+        /* Color Palette Display */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
+        }
+
+        .color-swatch {
+            height: 120px;
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            color: white;
+            font-weight: 600;
+            font-size: var(--text-sm);
+            transition: transform var(--transition-base);
+            cursor: pointer;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.05);
+        }
+
+        .color-value {
+            font-family: var(--font-family-mono);
+            font-size: var(--text-xs);
+            opacity: 0.9;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--pivot-gray-900);
+            color: var(--pivot-gray-100);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            font-family: var(--font-family-mono);
+            font-size: var(--text-sm);
+            overflow-x: auto;
+            margin: var(--space-4) 0;
+        }
+
+        [data-theme="dark"] .code-block {
+            background: var(--pivot-gray-950);
+            border: 1px solid var(--pivot-gray-800);
+        }
+
+        /* Component Examples */
+        .example-container {
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            margin: var(--space-4) 0;
+        }
+
+        /* Stats Card */
+        .stats-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: all var(--transition-base);
+            box-shadow: var(--shadow-card);
+        }
+
+        .stats-value {
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            background: var(--pivot-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: var(--space-2);
+        }
+
+        .stats-label {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Feature Card with Icon */
+        .feature-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--pivot-gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-4);
+            color: white;
+            font-size: var(--text-2xl);
+        }
+
+        .feature-card:hover {
+            border-color: var(--pivot-purple-200);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        [data-theme="dark"] .feature-card:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3), 0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Pricing Card */
+        .pricing-card {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-8);
+            text-align: center;
+            transition: all var(--transition-base);
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--pivot-purple-500);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-xl);
+        }
+
+        [data-theme="dark"] .pricing-card.featured {
+            border-color: var(--pivot-purple-400);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 0 40px -10px rgba(139, 92, 246, 0.3);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pivot-gradient-primary);
+            color: white;
+            padding: var(--space-1) var(--space-4);
+            border-radius: var(--radius-full);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .pricing-price {
+            font-size: var(--text-5xl);
+            font-weight: 800;
+            margin: var(--space-4) 0;
+            background: var(--pivot-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive Elements */
+        .interactive-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            cursor: pointer;
+            transition: all var(--transition-slow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-card::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--pivot-gradient-primary);
+            opacity: 0.1;
+            transform: translate(-50%, -50%);
+            transition: width var(--transition-slow), height var(--transition-slow);
+        }
+
+        .interactive-card:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+
+        .interactive-card:hover {
+            border-color: var(--pivot-purple-400);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Glassmorphism Card (Dark Mode) */
+        [data-theme="dark"] .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        [data-theme="dark"] .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(30, 41, 59, 0.7);
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="theme-toggle">
+        <button onclick="toggleTheme()">🌓 Toggle Theme</button>
+    </div>
+
+    <div class="container">
+        <h1 style="background: var(--pivot-gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: var(--space-12);">
+            PivotPHP Design System
+        </h1>
+
+        <!-- Color System -->
+        <section class="section">
+            <h2 class="section-title">🎨 Color System</h2>
+
+            <h3>Brand Colors</h3>
+            <div class="color-grid">
+                <div class="color-swatch" style="background: var(--pivot-purple-700);">
+                    <div>Electric Purple</div>
+                    <div class="color-value">#7C3AED</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-pink-500);">
+                    <div>Vibrant Pink</div>
+                    <div class="color-value">#EC4899</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-cyan-500);">
+                    <div>Dynamic Cyan</div>
+                    <div class="color-value">#06B6D4</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-gradient-primary);">
+                    <div>Evolution Gradient</div>
+                    <div class="color-value">Primary</div>
+                </div>
+            </div>
+
+            <h3>Semantic Colors</h3>
+            <div class="color-grid">
+                <div class="color-swatch" style="background: var(--pivot-success-main);">
+                    <div>Success</div>
+                    <div class="color-value">#10B981</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-warning-main);">
+                    <div>Warning</div>
+                    <div class="color-value">#F59E0B</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-error-main);">
+                    <div>Error</div>
+                    <div class="color-value">#EF4444</div>
+                </div>
+                <div class="color-swatch" style="background: var(--pivot-info-main);">
+                    <div>Info</div>
+                    <div class="color-value">#3B82F6</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Card Components -->
+        <section class="section">
+            <h2 class="section-title">🎴 Card Components</h2>
+
+            <h3>Basic Cards</h3>
+            <div class="grid grid-cols-3">
+                <div class="card">
+                    <h4 class="card-title">Default Card</h4>
+                    <p class="card-content">
+                        Basic card with border and subtle shadow. Perfect for content sections.
+                    </p>
+                </div>
+
+                <div class="card-gradient">
+                    <h4 class="card-title">Gradient Hover Card</h4>
+                    <p class="card-content">
+                        Features a gradient accent on hover. Great for interactive elements.
+                    </p>
+                </div>
+
+                <div class="card-elevated">
+                    <h4 class="card-title">Elevated Card</h4>
+                    <p class="card-content">
+                        No border, stronger shadow. Ideal for important content.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Feature Cards</h3>
+            <div class="grid grid-cols-3">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4 class="card-title">Lightning Fast</h4>
+                    <p class="card-content">
+                        52M+ operations per second. Built for extreme performance.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h4 class="card-title">Evolutionary</h4>
+                    <p class="card-content">
+                        Adapts to your needs. Grows with your application.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h4 class="card-title">Developer First</h4>
+                    <p class="card-content">
+                        Express.js-inspired syntax. Minimal learning curve.
+                    </p>
+                </div>
+            </div>
+
+            <h3>Stats Cards</h3>
+            <div class="grid grid-cols-4">
+                <div class="stats-card">
+                    <div class="stats-value">52M+</div>
+                    <div class="stats-label">ops/sec</div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="stats-value">&lt;1ms</div>
+                    <div class="stats-label">response</div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="stats-value">100%</div>
+                    <div class="stats-label">Type Safe</div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="stats-value">0</div>
+                    <div class="stats-label">Config</div>
+                </div>
+            </div>
+
+            <h3>Complex Cards</h3>
+            <div class="grid grid-cols-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">API Endpoint</h4>
+                        <p class="card-subtitle">RESTful route definition</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="code-block">
+$app->get('/api/users/:id', function($req, $res) {
+    return $res->json(['user' => $req->params->id]);
+});
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="badge">GET</span>
+                        <button class="btn btn-primary">View Docs →</button>
+                    </div>
+                </div>
+
+                <div class="interactive-card">
+                    <h4 class="card-title">Interactive Card</h4>
+                    <p class="card-content">
+                        This card features a ripple effect on hover. Try hovering to see the smooth animation.
+                    </p>
+                    <div style="margin-top: var(--space-4);">
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Pricing Cards</h3>
+            <div class="grid grid-cols-3">
+                <div class="pricing-card">
+                    <h4>Starter</h4>
+                    <div class="pricing-price">Free</div>
+                    <p class="card-content">Perfect for small projects</p>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: var(--space-4);">Get Started</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <span class="pricing-badge">Popular</span>
+                    <h4>Pro</h4>
+                    <div class="pricing-price">$29</div>
+                    <p class="card-content">For professional developers</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-4);">Get Started</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h4>Enterprise</h4>
+                    <div class="pricing-price">Custom</div>
+                    <p class="card-content">Tailored for your needs</p>
+                    <button class="btn btn-secondary" style="width: 100%; margin-top: var(--space-4);">Contact Us</button>
+                </div>
+            </div>
+
+            <h3>Dark Mode Specific</h3>
+            <div class="grid grid-cols-2">
+                <div class="glass-card">
+                    <h4 class="card-title">Glassmorphism Card</h4>
+                    <p class="card-content">
+                        This card uses glassmorphism effect in dark mode. Switch to dark theme to see the effect.
+                    </p>
+                </div>
+
+                <div class="card-gradient">
+                    <h4 class="card-title">Neon Glow Card</h4>
+                    <p class="card-content">
+                        In dark mode, this card features a subtle neon glow on hover.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design Tokens -->
+        <section class="section">
+            <h2 class="section-title">📐 Design Tokens</h2>
+
+            <div class="grid grid-cols-2">
+                <div class="card">
+                    <h3>Spacing Scale</h3>
+                    <div class="code-block">
+--space-1: 0.25rem;   /* 4px */
+--space-2: 0.5rem;    /* 8px */
+--space-3: 0.75rem;   /* 12px */
+--space-4: 1rem;      /* 16px */
+--space-6: 1.5rem;    /* 24px */
+--space-8: 2rem;      /* 32px */
+--space-12: 3rem;     /* 48px */
+--space-16: 4rem;     /* 64px */
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Border Radius</h3>
+                    <div class="code-block">
+--radius-sm: 0.25rem;   /* 4px */
+--radius-md: 0.375rem;  /* 6px */
+--radius-lg: 0.5rem;    /* 8px */
+--radius-xl: 0.75rem;   /* 12px */
+--radius-2xl: 1rem;     /* 16px */
+--radius-3xl: 1.5rem;   /* 24px */
+--radius-full: 9999px;
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation Guide -->
+        <section class="section">
+            <h2 class="section-title">🛠️ Implementation Guide</h2>
+
+            <div class="card">
+                <h3>Dark Mode Card Guidelines</h3>
+                <div class="card-content">
+                    <h4>Key Principles:</h4>
+                    <ul style="margin-left: var(--space-6); margin-bottom: var(--space-4);">
+                        <li>Use <code>var(--pivot-gray-900)</code> for card backgrounds</li>
+                        <li>Apply subtle purple glow on hover: <code>0 0 0 1px rgba(139, 92, 246, 0.1)</code></li>
+                        <li>Increase shadow opacity for better depth perception</li>
+                        <li>Consider glassmorphism for special cards</li>
+                        <li>Ensure AA contrast ratio for all text</li>
+                    </ul>
+
+                    <h4>Example Implementation:</h4>
+                    <div class="code-block">
+/* Dark Mode Card */
+[data-theme="dark"] .card {
+    background: var(--pivot-gray-900);
+    border-color: var(--pivot-gray-800);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+}
+
+[data-theme="dark"] .card:hover {
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.3),
+        0 0 0 1px rgba(139, 92, 246, 0.1);
+}
+
+/* Glassmorphism Effect */
+[data-theme="dark"] .glass-card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+        }
+
+        // Copiar valores de cor ao clicar
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                const colorValue = this.querySelector('.color-value').textContent;
+                navigator.clipboard.writeText(colorValue);
+
+                // Feedback visual
+                const original = this.style.transform;
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = original;
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

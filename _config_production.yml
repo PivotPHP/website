@@ -1,0 +1,109 @@
+# Production configuration for PivotPHP website
+# Use this when deploying to production domain
+
+# Site settings
+title: PivotPHP
+tagline: The Evolutionary PHP Microframework  
+description: Build modern APIs with Express.js-like syntax, 13,374 req/sec performance, and zero configuration.
+url: "https://pivotphp.com"
+baseurl: ""
+logo: /assets/images/pivotphp-logo.svg
+
+# GitHub
+github_url: "https://github.com/pivotphp"
+github_username: pivotphp
+
+# Social Media
+social_image: /assets/images/social-share.png
+twitter_username: "@pivotphp"
+linkedin_url: "https://www.linkedin.com/company/pivotphp"
+facebook_url: "https://www.facebook.com/pivotphp"
+author: PivotPHP Team
+
+# Internationalization
+languages: ["en", "pt"]
+default_lang: "en"
+exclude_from_localization: ["assets", "CNAME"]
+parallel_localization: true
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Plugins (GitHub Pages compatible)
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-relative-links
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: "_docs"
+      type: "docs"
+    values:
+      layout: "docs"
+  - scope:
+      path: "pt"
+      type: "pages"
+    values:
+      layout: "docs-i18n"
+  - scope:
+      path: "pt/docs"
+      type: "pages"
+    values:
+      layout: "docs-i18n"
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Documentation
+    url: /docs/
+  - title: Examples
+    url: /examples/
+  - title: Benchmarks
+    url: /docs/benchmarks/
+  - title: GitHub
+    url: https://github.com/pivotphp
+    external: true
+
+# Footer
+footer:
+  links:
+    - title: GitHub
+      url: https://github.com/pivotphp
+    - title: Documentation
+      url: /docs/
+    - title: Examples
+      url: /examples/
+    - title: Packagist
+      url: https://packagist.org/packages/pivotphp/core
+
+# Include Portuguese pages
+include:
+  - pt
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .gitignore
+  - README.md
+  - CHECK_LINKS.md
+  - DESIGN_IDENTITY.html
+  - _config_production.yml

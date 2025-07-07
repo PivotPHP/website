@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const comparisonCtx = document.getElementById('comparisonChart');
     if (comparisonCtx) {
         new Chart(comparisonCtx, {
-            type: 'horizontalBar',
+            type: 'bar',
             data: {
                 labels: ['PivotPHP Core', 'PivotPHP ORM', 'Slim 4', 'Lumen', 'Flight'],
                 datasets: [
@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ]
             },
             options: {
+                indexAxis: 'y', // Make it horizontal
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
