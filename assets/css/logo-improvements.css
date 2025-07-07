@@ -1,0 +1,151 @@
+/* Logo improvements for better user experience */
+
+/* ===== Documentation Header Logo ===== */
+.docs-header .logo-small {
+    height: 55px !important; /* Increased from 40px */
+    width: auto;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.docs-header .nav-logo:hover .logo-small {
+    transform: scale(1.05);
+}
+
+/* Adjust nav-logo container after removing text */
+.docs-header .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    margin-right: 2rem;
+}
+
+/* Remove gap since there's no text */
+.nav-logo {
+    gap: 0 !important;
+}
+
+/* ===== Hero Section Logo (Home Page) ===== */
+.hero .logo {
+    height: 180px !important; /* Increased from 120px */
+    width: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.hero .logo:hover {
+    transform: scale(1.08); /* Slightly more pronounced hover effect */
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+/* ===== Mobile Responsiveness ===== */
+@media screen and (max-width: 768px) {
+    /* Documentation header logo on mobile */
+    .docs-header .logo-small {
+        height: 45px !important; /* Slightly smaller on mobile but still larger than before */
+    }
+    
+    /* Hero logo on mobile */
+    .hero .logo {
+        height: 120px !important; /* Increased from 80px */
+    }
+    
+    /* Adjust header padding for better logo spacing */
+    .docs-header {
+        padding: 0.75rem 1rem;
+    }
+    
+    .docs-header .nav-logo {
+        margin-right: 1rem;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    /* Very small devices */
+    .docs-header .logo-small {
+        height: 40px !important;
+    }
+    
+    .hero .logo {
+        height: 100px !important;
+    }
+}
+
+/* ===== Logo Loading Optimization ===== */
+.logo-dark,
+.logo-light {
+    /* Prevent layout shift during logo loading */
+    aspect-ratio: 820/237; /* Based on actual logo dimensions */
+    object-fit: contain;
+}
+
+/* ===== Dark Mode Transitions ===== */
+@media (prefers-color-scheme: dark) {
+    .logo-light {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .logo-dark {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .logo-dark {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .logo-light {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+}
+
+/* ===== Footer Logo (if exists) ===== */
+footer .logo {
+    height: 60px;
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+footer .logo:hover {
+    opacity: 1;
+}
+
+/* ===== Print Styles ===== */
+@media print {
+    .logo-small {
+        height: 40px !important;
+    }
+    
+    /* Hide dark logo variant in print */
+    .logo-dark {
+        display: none !important;
+    }
+    
+    /* Always show light logo in print */
+    .logo-light {
+        display: block !important;
+        opacity: 1 !important;
+    }
+}
+
+/* ===== High DPI Display Support ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo-small,
+    .logo {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* ===== Accessibility ===== */
+.nav-logo:focus .logo-small,
+.logo-container:focus-within .logo {
+    outline: 3px solid #007bff;
+    outline-offset: 4px;
+    border-radius: 4px;
+}

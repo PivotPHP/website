@@ -4,6 +4,9 @@
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
     
+    <!-- Social Media Meta Tags -->
+    {% include social-meta.html %}
+    
     <!-- DNS Prefetch for performance -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -25,6 +28,8 @@
     {% endif %}
     <link rel="stylesheet" href="{{ '/assets/css/mobile.css' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/mobile-overrides.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/logo-improvements.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/logo-final-touches.css' | relative_url }}">
     
     <!-- Prevent FOUC (Flash of Unstyled Content) -->
     <script>

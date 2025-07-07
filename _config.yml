@@ -6,6 +6,14 @@ url: "https://helixphp.github.io"
 baseurl: "/website"
 logo: /assets/images/DarkLogo.png
 
+# Social Media
+social_image: /assets/images/social-share.png
+twitter_username: "@helixphp"
+github_username: helixphp
+linkedin_url: "https://www.linkedin.com/company/helixphp"
+facebook_url: "https://www.facebook.com/helixphp"
+author: HelixPHP Team
+
 # Internationalization
 languages: ["en", "pt"]
 default_lang: "en"

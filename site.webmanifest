@@ -1,0 +1,26 @@
+{
+    "name": "HelixPHP",
+    "short_name": "HelixPHP",
+    "description": "The Evolutionary PHP Microframework - Build modern APIs with Express.js-like syntax",
+    "icons": [
+        {
+            "src": "/website/assets/images/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/website/assets/images/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#007bff",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "start_url": "/website/",
+    "scope": "/website/",
+    "lang": "en",
+    "dir": "ltr",
+    "orientation": "portrait-primary",
+    "categories": ["developer", "productivity", "utilities"]
+}

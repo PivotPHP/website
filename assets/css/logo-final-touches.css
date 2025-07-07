@@ -1,0 +1,101 @@
+/* Final touches for logo optimization */
+
+/* ===== Enhanced Logo Visibility ===== */
+.docs-header {
+    /* Adjust header height to accommodate larger logo */
+    min-height: 70px;
+}
+
+.docs-header .container {
+    height: 100%;
+}
+
+.docs-header .docs-nav {
+    height: 100%;
+    align-items: center;
+}
+
+/* Logo focus state for better accessibility */
+.nav-logo {
+    position: relative;
+    display: inline-flex;
+    border-radius: 8px;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    transition: background-color 0.2s ease;
+}
+
+.nav-logo:focus {
+    outline: none;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.nav-logo:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Ensure logo is always visible during page load */
+.logo-small,
+.logo {
+    min-height: 40px;
+    background: transparent;
+}
+
+/* Better alignment on very small screens */
+@media screen and (max-width: 480px) {
+    .docs-header .docs-nav {
+        justify-content: space-between;
+    }
+    
+    .docs-header .nav-logo {
+        margin-right: auto;
+    }
+}
+
+/* Optimize logo loading with fade-in effect */
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo-small,
+.logo {
+    animation: logoFadeIn 0.3s ease-out;
+}
+
+/* Ensure proper spacing when logo is the only element */
+.hero .logo-container {
+    margin-bottom: 2rem;
+}
+
+/* Better hover feedback */
+.nav-logo {
+    position: relative;
+}
+
+.nav-logo::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-logo:hover::after {
+    width: 100%;
+}
+
+/* Remove underline from logo link on hover */
+.nav-logo:hover {
+    text-decoration: none !important;
+}
