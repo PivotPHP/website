@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Banco de Dados
-permalink: /pt/docs/banco-de-dados/
+permalink: /pt/docs/database/
 lang: pt
 ---
 

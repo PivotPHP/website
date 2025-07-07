@@ -34,7 +34,7 @@ Compatibilidade total com PSR-7 (mensagens HTTP), PSR-15 (middleware) e PSR-12 (
 
 ## Começando
 
-Pronto para construir sua primeira aplicação PivotPHP? Vá para nosso [Guia de Início Rápido]({{ '/pt/docs/inicio-rapido/' | relative_url }}) para criar seu primeiro app em minutos.
+Pronto para construir sua primeira aplicação PivotPHP? Vá para nosso [Guia de Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }}) para criar seu primeiro app em minutos.
 
 ## Comunidade e Suporte
 

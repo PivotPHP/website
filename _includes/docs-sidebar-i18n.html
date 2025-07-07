@@ -10,59 +10,32 @@
     <h3>{{ t.nav.getting_started }}</h3>
     <ul>
         <li><a href="{{ lang_prefix | append: '/docs/' | relative_url }}">{{ t.nav.introduction }}</a></li>
-        {% if lang == 'pt' %}
-        <li><a href="{{ lang_prefix | append: '/docs/why-pivotphp/' | relative_url }}">Por que PivotPHP?</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/instalacao/' | relative_url }}">{{ t.nav.installation }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/inicio-rapido/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/configuracao/' | relative_url }}">{{ t.nav.configuration }}</a></li>
-        {% else %}
-        <li><a href="{{ lang_prefix | append: '/docs/why-pivotphp/' | relative_url }}">Why PivotPHP?</a></li>
+        <li><a href="{{ lang_prefix | append: '/docs/why-pivotphp/' | relative_url }}">{% if lang == 'pt' %}Por que PivotPHP?{% else %}Why PivotPHP?{% endif %}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/installation/' | relative_url }}">{{ t.nav.installation }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/quickstart/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/configuration/' | relative_url }}">{{ t.nav.configuration }}</a></li>
-        {% endif %}
     </ul>
 
     <h3>{{ t.nav.core_concepts }}</h3>
     <ul>
-        {% if lang == 'pt' %}
-        <li><a href="{{ lang_prefix | append: '/docs/roteamento/' | relative_url }}">{{ t.nav.routing }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/middleware/' | relative_url }}">{{ t.nav.middleware }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/requisicoes-respostas/' | relative_url }}">{{ t.nav.requests_responses }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/container/' | relative_url }}">{{ t.nav.container }}</a></li>
-        {% else %}
         <li><a href="{{ lang_prefix | append: '/docs/routing/' | relative_url }}">{{ t.nav.routing }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/middleware/' | relative_url }}">{{ t.nav.middleware }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/requests-responses/' | relative_url }}">{{ t.nav.requests_responses }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/container/' | relative_url }}">{{ t.nav.container }}</a></li>
-        {% endif %}
     </ul>
 
     <h3>{{ t.nav.features }}</h3>
     <ul>
-        {% if lang == 'pt' %}
-        <li><a href="{{ lang_prefix | append: '/docs/seguranca/' | relative_url }}">{{ t.nav.security }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/eventos/' | relative_url }}">{{ t.nav.events }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/validacao/' | relative_url }}">{{ t.nav.validation }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/banco-de-dados/' | relative_url }}">{{ t.nav.database }}</a></li>
-        {% else %}
         <li><a href="{{ lang_prefix | append: '/docs/security/' | relative_url }}">{{ t.nav.security }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/events/' | relative_url }}">{{ t.nav.events }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/validation/' | relative_url }}">{{ t.nav.validation }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/database/' | relative_url }}">{{ t.nav.database }}</a></li>
-        {% endif %}
     </ul>
 
     <h3>{{ t.nav.advanced }}</h3>
     <ul>
-        {% if lang == 'pt' %}
-        <li><a href="{{ lang_prefix | append: '/docs/provedores/' | relative_url }}">{{ t.nav.providers }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/testes/' | relative_url }}">{{ t.nav.testing }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/deploy/' | relative_url }}">{{ t.nav.deployment }}</a></li>
-        {% else %}
         <li><a href="{{ lang_prefix | append: '/docs/providers/' | relative_url }}">{{ t.nav.providers }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/testing/' | relative_url }}">{{ t.nav.testing }}</a></li>
         <li><a href="{{ lang_prefix | append: '/docs/deployment/' | relative_url }}">{{ t.nav.deployment }}</a></li>
-        {% endif %}
     </ul>
 </aside>

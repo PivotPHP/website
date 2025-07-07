@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Configuração
-permalink: /pt/docs/configuracao/
+permalink: /pt/docs/configuration/
 lang: pt
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Testes
-permalink: /pt/docs/testes/
+permalink: /pt/docs/testing/
 lang: pt
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Validação
-permalink: /pt/docs/validacao/
+permalink: /pt/docs/validation/
 lang: pt
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Roteamento
-permalink: /pt/docs/roteamento/
+permalink: /pt/docs/routing/
 lang: pt
 ---
 

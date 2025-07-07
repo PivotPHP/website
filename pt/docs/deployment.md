@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Deploy
-permalink: /pt/docs/deploy/
+permalink: /pt/docs/deployment/
 lang: pt
 ---
 

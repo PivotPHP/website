@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Início Rápido
-permalink: /pt/docs/inicio-rapido/
+permalink: /pt/docs/quickstart/
 lang: pt
 ---
 
@@ -236,7 +236,7 @@ $app->post('/tasks', [TaskController::class, 'store']);
 
 Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais:
 
-- Explore [Roteamento]({{ '/pt/docs/roteamento/' | relative_url }}) para recursos avançados de roteamento
+- Explore [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) para recursos avançados de roteamento
 - Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições
 - Entenda o [Container de Serviços]({{ '/pt/docs/container/' | relative_url }}) para injeção de dependência
 - Confira integração com [Banco de Dados]({{ '/pt/docs/banco-de-dados/' | relative_url }}) usando Cycle ORM

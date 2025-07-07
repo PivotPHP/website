@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Provedores de Serviços
-permalink: /pt/docs/provedores/
+permalink: /pt/docs/providers/
 lang: pt
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Eventos
-permalink: /pt/docs/eventos/
+permalink: /pt/docs/events/
 lang: pt
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Segurança
-permalink: /pt/docs/seguranca/
+permalink: /pt/docs/security/
 lang: pt
 ---
 

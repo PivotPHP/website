@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Instalação
-permalink: /pt/docs/instalacao/
+permalink: /pt/docs/installation/
 lang: pt
 ---
 
@@ -102,4 +102,4 @@ Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSO
 
 ## Próximos Passos
 
-Agora que você tem o PivotPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/inicio-rapido/' | relative_url }}) para aprender o básico.
+Agora que você tem o PivotPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }}) para aprender o básico.

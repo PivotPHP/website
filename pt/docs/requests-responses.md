@@ -1,7 +1,7 @@
 ---
 layout: docs-i18n
 title: Requisições e Respostas
-permalink: /pt/docs/requisicoes-respostas/
+permalink: /pt/docs/requests-responses/
 lang: pt
 ---
 
