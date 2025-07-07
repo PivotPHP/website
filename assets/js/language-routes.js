@@ -3,37 +3,7 @@ window.LanguageRoutes = {
     // Get the base URL from the current location
     baseUrl: '/website',
 
-    // Bi-directional mappings between English and Portuguese (relative paths)
-    // URLs corretas em português para navegação adequada
-    mappings: {
-        '/': '/pt/',
-        '/docs/': '/pt/docs/',
-        '/docs/installation/': '/pt/docs/instalacao/',
-        '/docs/quickstart/': '/pt/docs/inicio-rapido/',
-        '/docs/configuration/': '/pt/docs/configuracao/',
-        '/docs/routing/': '/pt/docs/roteamento/',
-        '/docs/middleware/': '/pt/docs/middleware/',
-        '/docs/requests-responses/': '/pt/docs/requisicoes-respostas/',
-        '/docs/container/': '/pt/docs/container/',
-        '/docs/security/': '/pt/docs/seguranca/',
-        '/docs/events/': '/pt/docs/eventos/',
-        '/docs/validation/': '/pt/docs/validacao/',
-        '/docs/database/': '/pt/docs/banco-de-dados/',
-        '/docs/providers/': '/pt/docs/provedores/',
-        '/docs/testing/': '/pt/docs/testes/',
-        '/docs/deployment/': '/pt/docs/deploy/',
-        '/docs/why-pivotphp/': '/pt/docs/por-que-pivotphp/',
-        '/docs/benchmarks/': '/pt/docs/benchmarks/',
-        '/docs/authentication/': '/pt/docs/autenticacao/',
-        '/docs/orm/': '/pt/docs/orm/',
-        '/docs/api-reference/': '/pt/docs/referencia-api/',
-        '/docs/changelog/': '/pt/docs/historico-mudancas/'
-    },
-
-    // Get the reverse mapping (PT -> EN)
-    reverseMappings: null,
-
-    // Initialize reverse mappings and detect base URL
+    // Initialize and detect base URL
     init: function() {
         // Auto-detect baseUrl from current location
         const path = window.location.pathname;
@@ -45,14 +15,9 @@ window.LanguageRoutes = {
         } else {
             this.baseUrl = '';
         }
-
-        this.reverseMappings = {};
-        for (const [en, pt] of Object.entries(this.mappings)) {
-            this.reverseMappings[pt] = en;
-        }
     },
 
-    // Convert URL from one language to another
+    // Convert URL from one language to another - Simplified
     convertUrl: function(url, fromLang, toLang) {
         // Remove baseUrl if present to work with relative paths
         let relativeUrl = url;
@@ -63,33 +28,27 @@ window.LanguageRoutes = {
         // Clean the URL
         relativeUrl = relativeUrl.replace(/\/$/, '') + '/';
 
-        // If converting from EN to PT
+        // For consistent routes, conversion is simple
         if (fromLang === 'en' && toLang === 'pt') {
-            // Direct mapping
-            if (this.mappings[relativeUrl]) {
-                return this.baseUrl + this.mappings[relativeUrl];
-            }
-            // If not found, add language prefix
-            if (!relativeUrl.includes('/pt/')) {
+            // Add /pt prefix if not already present
+            if (!relativeUrl.startsWith('/pt/')) {
+                // If it's the home page
+                if (relativeUrl === '/') {
+                    return this.baseUrl + '/pt/';
+                }
+                // For other pages, insert /pt after the base
                 return this.baseUrl + '/pt' + relativeUrl;
             }
-        }
-
-        // If converting from PT to EN
-        if (fromLang === 'pt' && toLang === 'en') {
-            // Use reverse mapping
-            if (this.reverseMappings[relativeUrl]) {
-                return this.baseUrl + this.reverseMappings[relativeUrl];
+            return this.baseUrl + relativeUrl;
+        } else if (fromLang === 'pt' && toLang === 'en') {
+            // Remove /pt prefix if present
+            if (relativeUrl.startsWith('/pt/')) {
+                return this.baseUrl + relativeUrl.substring(3);
             }
-            // If not found, remove language prefix
-            const cleanUrl = relativeUrl.replace(/^\/pt/, '');
-            return this.baseUrl + cleanUrl;
-        }
-
-        // For other language conversions (future support)
-        if (fromLang !== toLang) {
-            // Remove old language prefix and add new one
-            const cleanUrl = relativeUrl.replace(new RegExp(`^/${fromLang}`), '');
+            return this.baseUrl + relativeUrl;
+        } else if (fromLang !== toLang) {
+            // Generic conversion for future languages
+            const cleanUrl = relativeUrl.replace(new RegExp(`^/${fromLang}/`), '/');
             const newUrl = toLang === 'en' ? cleanUrl : `/${toLang}${cleanUrl}`;
             return this.baseUrl + newUrl;
         }
@@ -135,26 +94,26 @@ window.LanguageRoutes = {
         pt: [
             '/pt/',
             '/pt/docs/',
-            '/pt/docs/instalacao/',
-            '/pt/docs/inicio-rapido/',
-            '/pt/docs/configuracao/',
-            '/pt/docs/roteamento/',
+            '/pt/docs/installation/',
+            '/pt/docs/quickstart/',
+            '/pt/docs/configuration/',
+            '/pt/docs/routing/',
             '/pt/docs/middleware/',
-            '/pt/docs/requisicoes-respostas/',
+            '/pt/docs/requests-responses/',
             '/pt/docs/container/',
-            '/pt/docs/seguranca/',
-            '/pt/docs/eventos/',
-            '/pt/docs/validacao/',
-            '/pt/docs/banco-de-dados/',
-            '/pt/docs/provedores/',
-            '/pt/docs/testes/',
-            '/pt/docs/deploy/',
-            '/pt/docs/por-que-pivotphp/',
+            '/pt/docs/security/',
+            '/pt/docs/events/',
+            '/pt/docs/validation/',
+            '/pt/docs/database/',
+            '/pt/docs/providers/',
+            '/pt/docs/testing/',
+            '/pt/docs/deployment/',
+            '/pt/docs/why-pivotphp/',
             '/pt/docs/benchmarks/',
-            '/pt/docs/autenticacao/',
+            '/pt/docs/authentication/',
             '/pt/docs/orm/',
-            '/pt/docs/referencia-api/',
-            '/pt/docs/historico-mudancas/'
+            '/pt/docs/api-reference/',
+            '/pt/docs/changelog/'
         ]
     },
 
