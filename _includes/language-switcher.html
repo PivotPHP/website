@@ -13,68 +13,7 @@
     <div class="lang-dropdown">
         {% for lang in site.languages %}
             {% if lang != current_lang %}
-                {% comment %} Lógica de conversão de URL para troca de idioma {% endcomment %}
-                {% assign lang_url = page.url %}
-
-                {% comment %} Se estamos em inglês (padrão) indo para outro idioma {% endcomment %}
-                {% if current_lang == site.default_lang and lang != site.default_lang %}
-                    {% if page.url == "/" %}
-                        {% assign lang_url = "/" | append: lang | append: "/" %}
-                    {% else %}
-                        {% assign lang_url = "/" | append: lang | append: page.url %}
-                    {% endif %}
-                {% endif %}
-
-                {% comment %} Se estamos em outro idioma indo para inglês {% endcomment %}
-                {% if current_lang != site.default_lang and lang == site.default_lang %}
-                    {% assign clean_url = page.url | remove_first: "/" | remove_first: current_lang %}
-                    {% if clean_url == "/" or clean_url == "" %}
-                        {% assign lang_url = "/" %}
-                    {% else %}
-                        {% assign lang_url = clean_url %}
-                    {% endif %}
-                {% endif %}
-
-                {% comment %} Se estamos trocando entre idiomas não-padrão {% endcomment %}
-                {% if current_lang != site.default_lang and lang != site.default_lang %}
-                    {% assign lang_url = page.url | replace_first: current_lang, lang %}
-                {% endif %}
-
-                {% comment %} Mapeamento de slugs específicos para português {% endcomment %}
-                {% if lang == 'pt' %}
-                    {% assign lang_url = lang_url | replace: '/docs/installation/', '/docs/instalacao/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/quickstart/', '/docs/inicio-rapido/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/configuration/', '/docs/configuracao/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/routing/', '/docs/roteamento/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/requests-responses/', '/docs/requisicoes-respostas/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/security/', '/docs/seguranca/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/events/', '/docs/eventos/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/validation/', '/docs/validacao/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/database/', '/docs/banco-de-dados/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/providers/', '/docs/provedores/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/testing/', '/docs/testes/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/deployment/', '/docs/deploy/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/why-helix/' %}
-                {% endif %}
-
-                {% comment %} Mapeamento de slugs do português para inglês {% endcomment %}
-                {% if current_lang == 'pt' and lang == site.default_lang %}
-                    {% assign lang_url = lang_url | replace: '/docs/instalacao/', '/docs/installation/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/inicio-rapido/', '/docs/quickstart/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/configuracao/', '/docs/configuration/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/roteamento/', '/docs/routing/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/requisicoes-respostas/', '/docs/requests-responses/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/seguranca/', '/docs/security/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/eventos/', '/docs/events/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/validacao/', '/docs/validation/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/banco-de-dados/', '/docs/database/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/provedores/', '/docs/providers/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/testes/', '/docs/testing/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/deploy/', '/docs/deployment/' %}
-                    {% assign lang_url = lang_url | replace: '/docs/why-helix/', '/docs/why-helix/' %}
-                {% endif %}
-
-                <a href="{{ lang_url | relative_url }}" class="lang-option">
+                <a href="#" data-lang="{{ lang }}" class="lang-option lang-switch-link">
                     <span class="lang-flag">{{ translations[lang].lang_flag }}</span>
                     <span class="lang-name">{{ translations[lang].lang_name }}</span>
                 </a>
@@ -82,6 +21,47 @@
         {% endfor %}
     </div>
 </div>
+
+<script src="{{ '/assets/js/language-routes.js' | relative_url }}"></script>
+<script>
+(function() {
+    'use strict';
+    
+    // Handle language switching
+    document.querySelectorAll('.lang-switch-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetLang = this.getAttribute('data-lang');
+            const currentLang = LanguageRoutes.getCurrentLang();
+            const currentUrl = window.location.pathname;
+            
+            // Convert the current URL to the target language
+            const newUrl = LanguageRoutes.convertUrl(currentUrl, currentLang, targetLang);
+            
+            // Validate that the target URL exists
+            if (!LanguageRoutes.urlExists(newUrl, targetLang)) {
+                // If the specific page doesn't exist in the target language,
+                // redirect to the language's documentation home
+                const fallbackUrl = targetLang === 'en' ? '/docs/' : `/${targetLang}/docs/`;
+                console.warn(`URL ${newUrl} not found in ${targetLang}. Redirecting to ${fallbackUrl}`);
+                window.location.href = fallbackUrl;
+                return;
+            }
+            
+            // Store language preference
+            if (targetLang !== 'en') {
+                localStorage.setItem('preferred-language', targetLang);
+            } else {
+                localStorage.removeItem('preferred-language');
+            }
+            
+            // Navigate to the new URL
+            window.location.href = newUrl;
+        });
+    });
+})();
+</script>
 
 <style>
 .language-switcher {
@@ -151,6 +131,7 @@
     text-decoration: none;
     white-space: nowrap;
     transition: background 0.2s ease;
+    cursor: pointer;
 }
 
 .lang-option:hover {

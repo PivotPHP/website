@@ -2,75 +2,42 @@
 (function() {
     'use strict';
 
-    // Get current language from URL
-    function getCurrentLang() {
-        const path = window.location.pathname;
-        // Support both /pt/ and /website/pt/ patterns
-        const match = path.match(/^\/(?:website\/)?(pt|es|fr|de)\//);
-        return match ? match[1] : 'en';
+    // Ensure LanguageRoutes is loaded
+    if (typeof window.LanguageRoutes === 'undefined') {
+        console.error('LanguageRoutes not loaded. Make sure language-routes.js is included before this script.');
+        return;
     }
 
-    // Store current language
-    const currentLang = getCurrentLang();
+    // Get current language using the centralized system
+    const currentLang = LanguageRoutes.getCurrentLang();
+    
+    // Store current language preference
     if (currentLang !== 'en') {
         localStorage.setItem('preferred-language', currentLang);
     }
 
-    // URL slug mappings
-    const urlMappings = {
-        'pt': {
-            '/docs/installation/': '/docs/instalacao/',
-            '/docs/quickstart/': '/docs/inicio-rapido/',
-            '/docs/configuration/': '/docs/configuracao/',
-            '/docs/routing/': '/docs/roteamento/',
-            '/docs/requests-responses/': '/docs/requisicoes-respostas/',
-            '/docs/security/': '/docs/seguranca/',
-            '/docs/events/': '/docs/eventos/',
-            '/docs/validation/': '/docs/validacao/',
-            '/docs/database/': '/docs/banco-de-dados/',
-            '/docs/providers/': '/docs/provedores/',
-            '/docs/testing/': '/docs/testes/',
-            '/docs/deployment/': '/docs/deploy/',
-            '/docs/why-helix/': '/docs/why-helix/'
-        }
-    };
-
-    // Update all internal links to maintain language
+    // Update all internal links to maintain language consistency
     function updateLinks() {
-        const lang = getCurrentLang();
+        const lang = LanguageRoutes.getCurrentLang();
         if (lang === 'en') return;
 
-        // Update all docs links
-        document.querySelectorAll('a[href*="/docs/"]').forEach(link => {
+        // Get all internal links
+        const links = document.querySelectorAll('a[href^="/"], a[href^="./"], a[href^="../"]');
+        
+        links.forEach(link => {
             const href = link.getAttribute('href');
-
-            // Skip if already has language prefix
+            
+            // Skip if it's just an anchor link
+            if (href === '#' || href.startsWith('#')) return;
+            
+            // Skip if already has the current language prefix
             if (href.includes('/' + lang + '/')) return;
-
-            let newHref = href;
-
-            // Add language prefix
-            if (href.startsWith('/docs/')) {
-                newHref = '/' + lang + href;
-            } else if (href.includes('/docs/')) {
-                newHref = href.replace('/docs/', '/' + lang + '/docs/');
-            }
-
-            // Apply slug mappings for the language
-            if (urlMappings[lang]) {
-                Object.keys(urlMappings[lang]).forEach(englishSlug => {
-                    const targetSlug = urlMappings[lang][englishSlug];
-                    newHref = newHref.replace(englishSlug, targetSlug);
-                });
-            }
-
-            link.setAttribute('href', newHref);
-        });
-
-        // Update home links to docs
-        document.querySelectorAll('a[href="/docs/"], a[href="./docs/"]').forEach(link => {
-            if (lang !== 'en') {
-                link.setAttribute('href', '/' + lang + '/docs/');
+            
+            // Convert the URL to the current language
+            const newHref = LanguageRoutes.convertUrl(href, 'en', lang);
+            
+            if (newHref !== href) {
+                link.setAttribute('href', newHref);
             }
         });
     }
@@ -79,19 +46,41 @@
     updateLinks();
 
     // Run after any dynamic content changes
-    const observer = new MutationObserver(updateLinks);
+    const observer = new MutationObserver(function(mutations) {
+        // Debounce to avoid excessive updates
+        clearTimeout(observer.timeout);
+        observer.timeout = setTimeout(updateLinks, 100);
+    });
+    
     observer.observe(document.body, {
         childList: true,
         subtree: true
     });
 
-    // Redirect to preferred language on homepage
+    // Handle automatic language redirection on homepage
     const path = window.location.pathname;
-    if (path === '/' || path === '/website/' || path === '/website') {
+    const isHomepage = path === '/' || path === '/website/' || path === '/website';
+    
+    if (isHomepage) {
         const preferredLang = localStorage.getItem('preferred-language');
+        
+        // Only redirect if we have a preferred language that's not English
         if (preferredLang && preferredLang !== 'en') {
-            const basePath = path.includes('/website') ? '/website/' : '/';
-            window.location.href = basePath + preferredLang + '/';
+            // Validate that the language is supported
+            const supportedLangs = ['pt', 'es', 'fr', 'de']; // Add more as needed
+            
+            if (supportedLangs.includes(preferredLang)) {
+                const basePath = path.includes('/website') ? '/website/' : '/';
+                const targetUrl = basePath + preferredLang + '/';
+                
+                // Avoid redirect loops
+                if (window.location.pathname !== targetUrl) {
+                    window.location.href = targetUrl;
+                }
+            }
         }
     }
+
+    // Export updateLinks function for external use
+    window.updateLanguageLinks = updateLinks;
 })();
