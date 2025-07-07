@@ -1,53 +1,5 @@
-/* Import PivotPHP Design System */
-@import url('pivotphp.css');
-
-/* Additional Homepage Styles - Implementação do DESIGN_IDENTITY */
-.home-hero {
-  background: var(--pivot-gradient);
-  color: var(--pivot-white);
-  padding: 8rem 0 6rem;
-  position: relative;
-  overflow: hidden;
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-}
-
-/* Padrão geométrico de fundo como especificado no design */
-.home-hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  opacity: 0.1;
-  background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px),
-    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);
-}
-
-.home-hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* Logo no hero - implementação do design */
-.home-hero-logo {
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.hero-logo {
-  width: 120px;
-  height: 120px;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
-  animation: heroLogoFloat 6s ease-in-out infinite;
-}
+/* Import PivotPHP Unified Design System */
+@import url('pivotphp-unified.css');
 
 @keyframes heroLogoFloat {
   0%, 100% { transform: translateY(0px) rotate(0deg); }

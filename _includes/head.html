@@ -3,39 +3,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
     <meta name="description" content="{{ page.description | default: site.description }}">
-    
+
     <!-- Social Media Meta Tags -->
     {% include social-meta.html %}
-    
+
     <!-- DNS Prefetch for performance -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
     <link rel="alternate icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
-    
+
     <!-- Preload critical resources -->
-    <link rel="preload" href="{{ '/assets/css/style.css' | relative_url }}" as="style">
-    {% if page.layout == 'docs' or page.layout == 'docs-i18n' %}
-    <link rel="preload" href="{{ '/assets/css/docs.css' | relative_url }}" as="style">
+    <link rel="preload" href="{{ '/assets/css/pivotphp-unified.css' | relative_url }}" as="style">
+
+    <!-- CSS - Unified Design System -->
+    <link rel="stylesheet" href="{{ '/assets/css/pivotphp-unified.css' | relative_url }}">
+
+    <!-- Additional CSS for specific pages -->
+    {% if page.layout == 'docs-benchmarks' %}
+    <link rel="stylesheet" href="{{ '/assets/css/benchmarks.css' | relative_url }}">
     {% endif %}
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-    {% if page.layout == 'docs' or page.layout == 'docs-i18n' %}
-    <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/assets/css/docs-refinements.css' | relative_url }}">
-    {% endif %}
-    <link rel="stylesheet" href="{{ '/assets/css/brand-refinements.css' | relative_url }}">
-    
+
     <!-- Theme Color -->
     <meta name="theme-color" content="#7C3AED">
-    
+
     <!-- Prevent FOUC (Flash of Unstyled Content) -->
     <script>
         // Remove no-js class immediately

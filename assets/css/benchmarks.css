@@ -1,89 +1,74 @@
 /* Benchmark Page Styles - Following PivotPHP Design Identity */
+/* Main styles are inherited from pivotphp-unified.css */
 
-.benchmark-highlights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
-
-.stat-card {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
-    border: 1px solid rgba(124, 58, 237, 0.2);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
+/* Additional benchmark-specific styles */
+.benchmark-chart {
+    background: var(--pivot-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin: var(--space-xl) 0;
+    box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
 }
 
-.stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15);
-}
-
-.stat-value {
-    font-size: 3rem;
-    font-weight: 800;
-    background: var(--pivot-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    font-size: 1.125rem;
-    color: var(--pivot-gray);
-    margin-bottom: 0.25rem;
-}
-
-.stat-description {
-    font-size: 0.875rem;
-    color: var(--pivot-gray);
-    opacity: 0.8;
-}
-
-/* Benchmark Charts */
-.benchmark-chart {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.benchmark-chart:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .benchmark-chart canvas {
     max-height: 400px;
+    width: 100%;
+}
+
+.benchmark-chart h3 {
+    color: var(--pivot-primary);
+    margin-bottom: var(--space-lg);
+    font-size: 1.5rem;
 }
 
 /* Load Test Grid */
 .load-test-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin: 2rem 0;
+    gap: var(--space-xl);
+    margin: var(--space-xl) 0;
 }
 
 .load-test-card {
-    background: var(--pivot-light);
-    border-radius: 12px;
-    padding: 1.5rem;
-    border: 1px solid #E2E8F0;
+    background: var(--pivot-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    border: 1px solid var(--pivot-gray-light);
+    transition: all 0.3s ease;
+}
+
+.load-test-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--pivot-primary);
 }
 
 .load-test-card h4 {
     color: var(--pivot-primary);
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
     font-size: 1.125rem;
 }
 
 .benchmark-table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: var(--space-md);
 }
 
 .benchmark-table td {
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #E2E8F0;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--pivot-gray-light);
+}
+
+.benchmark-table td:first-child {
+    color: var(--pivot-gray-dark);
+    font-weight: 500;
 }
 
 .benchmark-table td:last-child {
@@ -96,6 +81,78 @@
 .benchmark-table tr:last-child td {
     border-bottom: none;
 }
+
+.benchmark-table tr:hover {
+    background: var(--pivot-gray-lighter);
+}
+
+/* Performance Comparison Section */
+.performance-comparison {
+    background: var(--pivot-white);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin: var(--space-xl) 0;
+    box-shadow: var(--shadow-md);
+}
+
+.framework-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
+.framework-card {
+    background: var(--pivot-gray-lighter);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.framework-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.framework-card.winner {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+    border: 2px solid var(--pivot-primary);
+}
+
+.framework-name {
+    font-weight: 800;
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+    color: var(--pivot-dark);
+}
+
+.framework-card.winner .framework-name {
+    color: var(--pivot-primary);
+}
+
+.framework-score {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    color: var(--pivot-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.framework-card.winner .framework-score {
+    background: var(--pivot-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.framework-metric {
+    font-size: 0.875rem;
+    color: var(--pivot-gray);
+    opacity: 0.8;
+}
+
+/* All other benchmark styles are inherited from pivotphp-unified.css */
 
 /* Component Grid */
 .component-grid {
@@ -211,23 +268,23 @@ table tr:hover {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .stat-value {
         font-size: 2.5rem;
     }
-    
+
     .load-test-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .component-grid {
         grid-template-columns: 1fr;
     }
-    
+
     table {
         font-size: 0.875rem;
     }
-    
+
     table th, table td {
         padding: 0.75rem 0.5rem;
     }
