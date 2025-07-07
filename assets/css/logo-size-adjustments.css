@@ -1,0 +1,162 @@
+/* Logo size adjustments for better visibility */
+
+/* ===== Home Page Hero Logo ===== */
+.hero .logo {
+    height: 240px !important; /* Increased from 180px */
+    width: auto;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.hero .logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.15));
+}
+
+/* ===== Documentation Header Logo ===== */
+.docs-header .logo-small {
+    height: 70px !important; /* Increased from 55px */
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.docs-header .nav-logo {
+    padding: 0.25rem 0;
+    margin-right: 3rem;
+}
+
+.docs-header .nav-logo:hover .logo-small {
+    transform: scale(1.03);
+}
+
+/* ===== Mobile Adjustments ===== */
+@media screen and (max-width: 768px) {
+    /* Hero logo on mobile */
+    .hero .logo {
+        height: 160px !important; /* Good size for mobile */
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Header logo on mobile */
+    .docs-header .logo-small {
+        height: 55px !important;
+    }
+    
+    .docs-header .nav-logo {
+        margin-right: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Smaller mobile devices */
+    .hero .logo {
+        height: 140px !important;
+    }
+    
+    .docs-header .logo-small {
+        height: 50px !important;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    /* Very small devices */
+    .hero .logo {
+        height: 120px !important;
+    }
+    
+    .docs-header .logo-small {
+        height: 45px !important;
+    }
+}
+
+/* ===== Tablet Adjustments ===== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .hero .logo {
+        height: 200px !important;
+    }
+    
+    .docs-header .logo-small {
+        height: 60px !important;
+    }
+}
+
+/* ===== Large Screens ===== */
+@media screen and (min-width: 1400px) {
+    .hero .logo {
+        height: 280px !important;
+    }
+    
+    .docs-header .logo-small {
+        height: 75px !important;
+    }
+}
+
+/* ===== Hero Section Spacing Adjustments ===== */
+.hero .logo-container {
+    margin-bottom: 1rem;
+}
+
+.hero .subtitle {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.hero .tagline {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .hero .subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .hero .tagline {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* ===== Header Height Adjustment for Larger Logo ===== */
+.docs-header {
+    min-height: 80px;
+    padding: 0.5rem 0;
+}
+
+.docs-header .container,
+.docs-header .docs-nav {
+    height: 100%;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    .docs-header {
+        min-height: 70px;
+    }
+}
+
+/* ===== Ensure Logo Quality ===== */
+.logo,
+.logo-small {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+/* ===== Loading State ===== */
+.logo-container {
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+    .logo-container {
+        min-height: 160px;
+    }
+}

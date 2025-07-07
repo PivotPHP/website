@@ -1,9 +1,6 @@
-// Centralized language route mappings with baseurl support
+// Centralized language route mappings
 window.LanguageRoutes = {
-    // Get the base URL from the current location
-    baseUrl: '/website',
-    
-    // Bi-directional mappings between English and Portuguese (relative paths)
+    // Bi-directional mappings between English and Portuguese
     mappings: {
         '/': '/pt/',
         '/docs/': '/pt/docs/',
@@ -27,19 +24,8 @@ window.LanguageRoutes = {
     // Get the reverse mapping (PT -> EN)
     reverseMappings: null,
 
-    // Initialize reverse mappings and detect base URL
+    // Initialize reverse mappings
     init: function() {
-        // Auto-detect baseUrl from current location
-        const path = window.location.pathname;
-        const match = path.match(/^(\/[^\/]+)?\/(pt|en|website)/);
-        if (path.includes('/website')) {
-            this.baseUrl = '/website';
-        } else if (match && match[1]) {
-            this.baseUrl = match[1];
-        } else {
-            this.baseUrl = '';
-        }
-        
         this.reverseMappings = {};
         for (const [en, pt] of Object.entries(this.mappings)) {
             this.reverseMappings[pt] = en;
@@ -48,44 +34,36 @@ window.LanguageRoutes = {
 
     // Convert URL from one language to another
     convertUrl: function(url, fromLang, toLang) {
-        // Remove baseUrl if present to work with relative paths
-        let relativeUrl = url;
-        if (this.baseUrl && url.startsWith(this.baseUrl)) {
-            relativeUrl = url.substring(this.baseUrl.length);
-        }
-        
         // Clean the URL
-        relativeUrl = relativeUrl.replace(/\/$/, '') + '/';
+        url = url.replace(/\/$/, '') + '/';
         
         // If converting from EN to PT
         if (fromLang === 'en' && toLang === 'pt') {
             // Direct mapping
-            if (this.mappings[relativeUrl]) {
-                return this.baseUrl + this.mappings[relativeUrl];
+            if (this.mappings[url]) {
+                return this.mappings[url];
             }
             // If not found, add language prefix
-            if (!relativeUrl.includes('/pt/')) {
-                return this.baseUrl + '/pt' + relativeUrl;
+            if (!url.includes('/pt/')) {
+                return '/pt' + url;
             }
         }
         
         // If converting from PT to EN
         if (fromLang === 'pt' && toLang === 'en') {
             // Use reverse mapping
-            if (this.reverseMappings[relativeUrl]) {
-                return this.baseUrl + this.reverseMappings[relativeUrl];
+            if (this.reverseMappings[url]) {
+                return this.reverseMappings[url];
             }
             // If not found, remove language prefix
-            const cleanUrl = relativeUrl.replace(/^\/pt/, '');
-            return this.baseUrl + cleanUrl;
+            return url.replace(/^\/pt/, '');
         }
         
         // For other language conversions (future support)
         if (fromLang !== toLang) {
             // Remove old language prefix and add new one
-            const cleanUrl = relativeUrl.replace(new RegExp(`^/${fromLang}`), '');
-            const newUrl = toLang === 'en' ? cleanUrl : `/${toLang}${cleanUrl}`;
-            return this.baseUrl + newUrl;
+            const cleanUrl = url.replace(new RegExp(`^/${fromLang}`), '');
+            return toLang === 'en' ? cleanUrl : `/${toLang}${cleanUrl}`;
         }
         
         return url;
@@ -94,13 +72,11 @@ window.LanguageRoutes = {
     // Get current language from URL
     getCurrentLang: function() {
         const path = window.location.pathname;
-        // Remove baseUrl if present
-        const cleanPath = this.baseUrl ? path.replace(this.baseUrl, '') : path;
-        const match = cleanPath.match(/^\/(pt|es|fr|de)\//);
+        const match = path.match(/^\/(?:website\/)?(pt|es|fr|de)\//);
         return match ? match[1] : 'en';
     },
 
-    // List of valid URLs for each language (with baseUrl)
+    // List of valid URLs for each language
     validUrls: {
         en: [
             '/',
@@ -144,20 +120,14 @@ window.LanguageRoutes = {
 
     // Check if a URL exists (for validation)
     urlExists: function(url, lang) {
-        // Remove baseUrl for validation
-        let checkUrl = url;
-        if (this.baseUrl && url.startsWith(this.baseUrl)) {
-            checkUrl = url.substring(this.baseUrl.length);
-        }
-        
         // Clean the URL
-        checkUrl = checkUrl.replace(/\/$/, '') + '/';
+        url = url.replace(/\/$/, '') + '/';
         
         // Get the language-specific valid URLs
         const langUrls = this.validUrls[lang || this.getCurrentLang()];
         
         // Check if the URL exists in the valid URLs list
-        return langUrls && langUrls.includes(checkUrl);
+        return langUrls && langUrls.includes(url);
     },
 
     // Update a single link element
