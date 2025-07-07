@@ -4,8 +4,6 @@ title: Quick Start
 permalink: /docs/quickstart/
 ---
 
-# Quick Start
-
 This guide will walk you through creating your first PivotPHP application. We'll build a simple REST API for managing tasks.
 
 ## Step 1: Create Your Application

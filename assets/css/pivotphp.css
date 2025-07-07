@@ -419,13 +419,16 @@ pre code {
 /* Documentation Layout */
 .docs-wrapper {
   display: flex;
+  flex-direction: row;
   gap: var(--space-2xl);
   padding: var(--space-2xl) 0;
+  min-height: calc(100vh - 120px);
 }
 
 .docs-sidebar {
   width: 280px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .docs-sidebar-sticky {
@@ -440,6 +443,8 @@ pre code {
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
 }
 
 .docs-nav h4 {
