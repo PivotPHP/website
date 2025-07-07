@@ -6,10 +6,13 @@ url: "https://pivotphp.github.io"
 baseurl: "/website"
 logo: /assets/images/pivotphp-logo.svg
 
+# GitHub
+github_url: "https://github.com/pivotphp"
+github_username: pivotphp
+
 # Social Media
 social_image: /assets/images/social-share.png
 twitter_username: "@pivotphp"
-github_username: pivotphp
 linkedin_url: "https://www.linkedin.com/company/pivotphp"
 facebook_url: "https://www.facebook.com/pivotphp"
 author: PivotPHP Team

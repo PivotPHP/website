@@ -6,21 +6,24 @@ layout: default
 <section class="home-hero">
   <div class="container">
     <div class="home-hero-content animate-fadeIn">
+      <div class="home-hero-logo">
+        <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo" class="hero-logo">
+      </div>
       <h1>PivotPHP</h1>
       <p class="tagline">The Evolutionary PHP Microframework</p>
       <p class="hero-description">
         Build high-performance APIs that adapt and evolve. Express.js-inspired syntax meets PHP's power.
       </p>
-      
+
       <div class="home-hero-buttons">
         <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
           Get Started →
         </a>
-        <a href="{{ site.github_url }}/pivotphp-core" class="btn btn-secondary">
+        <a href="{{ site.github_url | default: 'https://github.com/pivotphp' }}/pivotphp-core" class="btn btn-secondary">
           View on GitHub
         </a>
       </div>
-      
+
       <div class="home-hero-stats">
         <div class="home-stat">
           <span class="home-stat-value">52M+</span>
@@ -74,7 +77,7 @@ layout: default
 });
 
 <span class="code-comment">// Middleware support</span>
-<span class="code-variable">$app</span>-><span class="code-function">post</span>(<span class="code-string">'/api/users'</span>, 
+<span class="code-variable">$app</span>-><span class="code-function">post</span>(<span class="code-string">'/api/users'</span>,
     <span class="code-keyword">new</span> <span class="code-function">AuthMiddleware</span>(),
     <span class="code-keyword">new</span> <span class="code-function">ValidationMiddleware</span>(),
     <span class="code-keyword">function</span> (<span class="code-variable">$req</span>, <span class="code-variable">$res</span>) {
@@ -97,38 +100,38 @@ layout: default
     <p class="text-center mb-5" style="color: var(--pivot-gray); max-width: 600px; margin: 0 auto;">
       PivotPHP represents a paradigm shift in PHP development - where rapid adaptation meets exceptional performance.
     </p>
-    
+
     <div class="home-features-grid">
       <div class="home-feature">
         <div class="home-feature-icon">🚀</div>
         <h3>Blazing Fast</h3>
         <p>52M+ operations per second for CORS, 2.57M ops/sec for response handling. Built for speed from the ground up.</p>
       </div>
-      
+
       <div class="home-feature">
         <div class="home-feature-icon">🧬</div>
         <h3>Evolutionary Design</h3>
         <p>Adapt your application as requirements change. PivotPHP grows with your project, not against it.</p>
       </div>
-      
+
       <div class="home-feature">
         <div class="home-feature-icon">🛡️</div>
         <h3>Security First</h3>
         <p>Built-in CSRF, XSS protection, rate limiting, and JWT authentication. Security by default, not afterthought.</p>
       </div>
-      
+
       <div class="home-feature">
         <div class="home-feature-icon">🔧</div>
         <h3>Zero Configuration</h3>
         <p>Start building immediately. No complex setup, no boilerplate. Just composer install and go.</p>
       </div>
-      
+
       <div class="home-feature">
         <div class="home-feature-icon">📦</div>
         <h3>PSR Standards</h3>
         <p>Full PSR-7, PSR-11, PSR-12, PSR-14, PSR-15 compliance. Use with your favorite PSR-compatible packages.</p>
       </div>
-      
+
       <div class="home-feature">
         <div class="home-feature-icon">🧪</div>
         <h3>Battle-Tested</h3>
@@ -145,7 +148,7 @@ layout: default
     <p class="text-center mb-5" style="opacity: 0.9; max-width: 600px; margin: 0 auto;">
       Real-world benchmarks on production hardware. No synthetic tests, just facts.
     </p>
-    
+
     <div class="performance-grid">
       <div class="performance-metric">
         <span class="performance-value">52M</span>
@@ -172,7 +175,7 @@ layout: default
   <div class="container">
     <h2>Ready to Evolve Your PHP Development?</h2>
     <p class="mb-4">Join developers building the next generation of PHP applications.</p>
-    
+
     <div class="cta-buttons">
       <a href="{{ '/docs/quickstart/' | relative_url }}" class="btn btn-secondary">
         Quick Start Guide
