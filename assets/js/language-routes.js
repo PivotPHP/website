@@ -1,59 +1,81 @@
 // Centralized language route mappings with baseurl support
 window.LanguageRoutes = {
     // Get the base URL from the current location
-    baseUrl: '/website',
+    baseUrl: '',
 
     // Initialize and detect base URL
     init: function() {
-        // Auto-detect baseUrl from current location
-        const path = window.location.pathname;
-        const match = path.match(/^(\/[^\/]+)?\/(pt|en|website)/);
-        if (path.includes('/website')) {
-            this.baseUrl = '/website';
-        } else if (match && match[1]) {
-            this.baseUrl = match[1];
+        // Get base URL from meta tag or detect from current location
+        const metaBase = document.querySelector('meta[name="base-url"]');
+        if (metaBase) {
+            this.baseUrl = metaBase.content;
         } else {
-            this.baseUrl = '';
+            // Auto-detect baseUrl from current location
+            const path = window.location.pathname;
+            // Check if we're in a subdirectory (like /website)
+            if (path.includes('/website/')) {
+                this.baseUrl = '/website';
+            } else if (path.startsWith('/website')) {
+                this.baseUrl = '/website';
+            } else {
+                this.baseUrl = '';
+            }
         }
     },
 
     // Convert URL from one language to another - Simplified
     convertUrl: function(url, fromLang, toLang) {
-        // Remove baseUrl if present to work with relative paths
-        let relativeUrl = url;
-        if (this.baseUrl && url.startsWith(this.baseUrl)) {
-            relativeUrl = url.substring(this.baseUrl.length);
+        // Create a clean working URL without baseUrl
+        let workingUrl = url;
+        
+        // Remove multiple occurrences of baseUrl
+        while (this.baseUrl && workingUrl.includes(this.baseUrl + this.baseUrl)) {
+            workingUrl = workingUrl.replace(this.baseUrl + this.baseUrl, this.baseUrl);
         }
-
-        // Clean the URL
-        relativeUrl = relativeUrl.replace(/\/$/, '') + '/';
-
-        // For consistent routes, conversion is simple
-        if (fromLang === 'en' && toLang === 'pt') {
-            // Add /pt prefix if not already present
-            if (!relativeUrl.startsWith('/pt/')) {
-                // If it's the home page
-                if (relativeUrl === '/') {
-                    return this.baseUrl + '/pt/';
+        
+        // Remove single baseUrl to get relative path
+        if (this.baseUrl && workingUrl.startsWith(this.baseUrl)) {
+            workingUrl = workingUrl.substring(this.baseUrl.length);
+        }
+        
+        // Ensure URL starts with /
+        if (!workingUrl.startsWith('/')) {
+            workingUrl = '/' + workingUrl;
+        }
+        
+        // Clean the URL - ensure it ends with /
+        workingUrl = workingUrl.replace(/\/$/, '') + '/';
+        
+        let resultUrl;
+        
+        // Convert between languages
+        if (fromLang === 'pt' && toLang === 'en') {
+            // Remove /pt/ prefix if present
+            if (workingUrl.startsWith('/pt/')) {
+                resultUrl = workingUrl.substring(3);
+            } else {
+                resultUrl = workingUrl;
+            }
+        } else if (fromLang === 'en' && toLang === 'pt') {
+            // Add /pt/ prefix if not already present
+            if (!workingUrl.startsWith('/pt/')) {
+                if (workingUrl === '/') {
+                    resultUrl = '/pt/';
+                } else {
+                    resultUrl = '/pt' + workingUrl;
                 }
-                // For other pages, insert /pt after the base
-                return this.baseUrl + '/pt' + relativeUrl;
+            } else {
+                resultUrl = workingUrl;
             }
-            return this.baseUrl + relativeUrl;
-        } else if (fromLang === 'pt' && toLang === 'en') {
-            // Remove /pt prefix if present
-            if (relativeUrl.startsWith('/pt/')) {
-                return this.baseUrl + relativeUrl.substring(3);
-            }
-            return this.baseUrl + relativeUrl;
-        } else if (fromLang !== toLang) {
-            // Generic conversion for future languages
-            const cleanUrl = relativeUrl.replace(new RegExp(`^/${fromLang}/`), '/');
-            const newUrl = toLang === 'en' ? cleanUrl : `/${toLang}${cleanUrl}`;
-            return this.baseUrl + newUrl;
+        } else {
+            // For other language conversions
+            resultUrl = workingUrl;
         }
-
-        return url;
+        
+        // Add baseUrl back ONLY ONCE
+        const finalUrl = this.baseUrl + resultUrl;
+        
+        return finalUrl;
     },
 
     // Get current language from URL
@@ -89,7 +111,9 @@ window.LanguageRoutes = {
             '/docs/authentication/',
             '/docs/orm/',
             '/docs/api-reference/',
-            '/docs/changelog/'
+            '/docs/changelog/',
+            '/docs/extensions/',
+            '/docs/extensions/cycle-orm/'
         ],
         pt: [
             '/pt/',
@@ -113,16 +137,28 @@ window.LanguageRoutes = {
             '/pt/docs/authentication/',
             '/pt/docs/orm/',
             '/pt/docs/api-reference/',
-            '/pt/docs/changelog/'
+            '/pt/docs/changelog/',
+            '/pt/docs/extensions/',
+            '/pt/docs/extensions/cycle-orm/'
         ]
     },
 
     // Check if a URL exists (for validation)
     urlExists: function(url, lang) {
-        // Remove baseUrl for validation
+        // Remove multiple baseUrls if present
         let checkUrl = url;
-        if (this.baseUrl && url.startsWith(this.baseUrl)) {
-            checkUrl = url.substring(this.baseUrl.length);
+        while (this.baseUrl && checkUrl.includes(this.baseUrl + this.baseUrl)) {
+            checkUrl = checkUrl.replace(this.baseUrl + this.baseUrl, this.baseUrl);
+        }
+        
+        // Remove baseUrl for validation
+        if (this.baseUrl && checkUrl.startsWith(this.baseUrl)) {
+            checkUrl = checkUrl.substring(this.baseUrl.length);
+        }
+
+        // Ensure URL starts with /
+        if (!checkUrl.startsWith('/')) {
+            checkUrl = '/' + checkUrl;
         }
 
         // Clean the URL

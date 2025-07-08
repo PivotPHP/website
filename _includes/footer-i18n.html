@@ -36,6 +36,14 @@
             </div>
             
             <div class="footer-section">
+                <h3>{{ t.extensions | default: 'Extensions' }}</h3>
+                <ul>
+                    <li><a href="{{ site.data.i18n_routes[page.lang].extensions | default: '/docs/extensions/' | relative_url }}">{{ t.overview | default: 'Overview' }}</a></li>
+                    <li><a href="{{ site.data.i18n_routes[page.lang].extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' | relative_url }}">Cycle ORM</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
                 <h3>{{ t.resources }}</h3>
                 <ul>
                     <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub →</a></li>

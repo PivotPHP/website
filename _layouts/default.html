@@ -19,8 +19,8 @@
         </button>
 
         <ul class="navbar-nav">
-          <li><a href="{{ '/docs/' | relative_url }}" {% if page.url contains '/docs/' %}class="active font-medium"{% endif %} class="font-medium">Documentation</a></li>
-          <li><a href="{{ '/docs/quickstart/' | relative_url }}" class="font-medium">Quick Start</a></li>
+          <li><a href="{{ '/docs/' | relative_url }}" class="font-medium{% if page.url contains '/docs/' and page.url != '/docs/quickstart/' %} active{% endif %}">Documentation</a></li>
+          <li><a href="{{ '/docs/quickstart/' | relative_url }}" class="font-medium{% if page.url == '/docs/quickstart/' %} active{% endif %}">Quick Start</a></li>
           <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank" class="font-medium">GitHub</a></li>
           <li>
             <!-- Theme Toggle -->
@@ -106,46 +106,24 @@
   <script src="{{ '/assets/js/language-persistence.js' | relative_url }}"></script>
 
   <script>
-    // Language switching logic - Updated for proper baseurl support
+    // Language switching logic - Simplified
     function switchLanguage(lang) {
       if (typeof window.LanguageRoutes !== 'undefined') {
-        // Use the centralized language routing system
-        const currentPath = window.location.pathname;
-        const baseUrl = '{{ site.baseurl | default: "" }}';
-
-        // Remove baseurl from current path for processing
-        let relativePath = currentPath;
-        if (baseUrl && currentPath.startsWith(baseUrl)) {
-          relativePath = currentPath.substring(baseUrl.length);
-        }
-
-        let newPath;
-        if (lang === 'en') {
-          // Convert to English (remove language prefix)
-          if (relativePath.startsWith('/pt/')) {
-            const ptPath = relativePath;
-            newPath = window.LanguageRoutes.convertUrl(ptPath, 'pt', 'en');
-          } else {
-            newPath = relativePath;
-          }
-        } else if (lang === 'pt') {
-          // Convert to Portuguese
-          const enPath = relativePath.startsWith('/pt/') ? relativePath : relativePath;
-          newPath = window.LanguageRoutes.convertUrl(enPath, 'en', 'pt');
-        }
-
-        // Add baseurl back
-        const finalPath = baseUrl + newPath;
-
+        // Get current language
+        const currentLang = window.LanguageRoutes.getCurrentLang();
+        
+        // Convert URL using LanguageRoutes (it handles baseUrl internally)
+        const newUrl = window.LanguageRoutes.convertUrl(window.location.pathname, currentLang, lang);
+        
         // Store language preference
         if (lang !== 'en') {
           localStorage.setItem('preferred-language', lang);
         } else {
           localStorage.removeItem('preferred-language');
         }
-
-        // Navigate to new path
-        window.location.href = finalPath;
+        
+        // Navigate to new URL
+        window.location.href = newUrl;
       } else {
         // Fallback for simple switching
         console.warn('LanguageRoutes not available, using simple switching');

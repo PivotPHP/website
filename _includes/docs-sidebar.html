@@ -25,6 +25,12 @@
         <li><a href="{{ '/docs/database/' | relative_url }}" {% if page.url == '/docs/database/' %}class="active"{% endif %}>Database</a></li>
     </ul>
 
+    <h3>Extensions</h3>
+    <ul>
+        <li><a href="{{ '/docs/extensions/' | relative_url }}" {% if page.url == '/docs/extensions/' %}class="active"{% endif %}>Overview</a></li>
+        <li><a href="{{ '/docs/extensions/cycle-orm/' | relative_url }}" {% if page.url contains '/extensions/cycle-orm' %}class="active"{% endif %}>Cycle ORM</a></li>
+    </ul>
+
     <h3>Advanced</h3>
     <ul>
         <li><a href="{{ '/docs/providers/' | relative_url }}" {% if page.url == '/docs/providers/' %}class="active"{% endif %}>Service Providers</a></li>

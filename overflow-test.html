@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overflow Test - PivotPHP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, sans-serif;
+        }
+        .debug-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            background: rgba(124, 58, 237, 0.9);
+            color: white;
+            padding: 10px;
+            z-index: 9999;
+            font-size: 12px;
+            border-radius: 0 0 0 8px;
+        }
+        .overflow-detector {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            background: red;
+            color: white;
+            padding: 5px 10px;
+            transform: translateY(-50%);
+            display: none;
+            z-index: 9999;
+        }
+        .viewport-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        .viewport-lines::before,
+        .viewport-lines::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 0, 0, 0.5);
+            width: 1px;
+            height: 100%;
+            top: 0;
+        }
+        .viewport-lines::before {
+            left: 0;
+        }
+        .viewport-lines::after {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-overlay">
+        <div>Viewport: <span id="viewport-width">0</span>px × <span id="viewport-height">0</span>px</div>
+        <div>Document: <span id="doc-width">0</span>px × <span id="doc-height">0</span>px</div>
+        <div>Overflow: <span id="overflow-status">None</span></div>
+    </div>
+    
+    <div class="overflow-detector" id="overflow-detector">
+        ⚠️ Horizontal Overflow Detected!
+    </div>
+    
+    <div class="viewport-lines"></div>
+    
+    <iframe src="/" style="width: 100%; height: 100vh; border: none;"></iframe>
+    
+    <script>
+        function checkOverflow() {
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const dw = document.documentElement.scrollWidth;
+            const dh = document.documentElement.scrollHeight;
+            
+            document.getElementById('viewport-width').textContent = vw;
+            document.getElementById('viewport-height').textContent = vh;
+            document.getElementById('doc-width').textContent = dw;
+            document.getElementById('doc-height').textContent = dh;
+            
+            if (dw > vw) {
+                document.getElementById('overflow-status').textContent = `Horizontal (${dw - vw}px)`;
+                document.getElementById('overflow-status').style.color = '#ff4444';
+                document.getElementById('overflow-detector').style.display = 'block';
+                
+                // Find overflowing elements
+                findOverflowingElements();
+            } else {
+                document.getElementById('overflow-status').textContent = 'None';
+                document.getElementById('overflow-status').style.color = '#44ff44';
+                document.getElementById('overflow-detector').style.display = 'none';
+            }
+        }
+        
+        function findOverflowingElements() {
+            const all = document.querySelectorAll('*');
+            const vw = window.innerWidth;
+            
+            console.group('Overflowing Elements:');
+            all.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.right > vw || rect.left < 0) {
+                    console.log({
+                        element: el,
+                        tagName: el.tagName,
+                        className: el.className,
+                        width: rect.width,
+                        right: rect.right,
+                        overflow: rect.right - vw
+                    });
+                }
+            });
+            console.groupEnd();
+        }
+        
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow);
+        
+        // Test different viewport sizes
+        console.log('Testing different viewport sizes...');
+        const sizes = [320, 375, 414, 768, 1024, 1280];
+        sizes.forEach(size => {
+            console.log(`Testing ${size}px width...`);
+            // Would need to actually resize window or use puppeteer for real testing
+        });
+    </script>
+</body>
+</html>

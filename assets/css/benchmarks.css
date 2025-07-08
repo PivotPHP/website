@@ -404,6 +404,20 @@ table tr:hover {
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .benchmark-chart,
+    .latency-chart,
+    .comparison-chart {
+        min-height: 400px;
+    }
+    
+    .benchmark-chart canvas,
+    .latency-chart canvas,
+    .comparison-chart canvas {
+        height: 350px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .benchmark-highlights {
         grid-template-columns: 1fr;
@@ -411,7 +425,7 @@ table tr:hover {
     }
 
     .stat-value {
-        font-size: var(--text-4xl);
+        font-size: var(--text-3xl);
     }
 
     .load-test-grid {
@@ -424,6 +438,9 @@ table tr:hover {
 
     table {
         font-size: var(--text-sm);
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     table th, table td {
@@ -446,18 +463,70 @@ table tr:hover {
         padding: var(--space-6);
     }
     
+    .benchmark-chart canvas,
     .latency-chart canvas,
     .comparison-chart canvas {
         height: 300px !important;
     }
+}
+
+@media (max-width: 480px) {
+    .benchmark-chart,
+    .latency-chart,
+    .comparison-chart {
+        min-height: 300px;
+        padding: var(--space-4);
+        margin: var(--space-4) 0;
+    }
     
-    .benchmark-highlights {
-        grid-template-columns: 1fr;
-        gap: var(--space-4);
+    .benchmark-chart canvas,
+    .latency-chart canvas,
+    .comparison-chart canvas {
+        height: 250px !important;
     }
     
     .stat-value {
         font-size: var(--text-2xl);
+    }
+    
+    .framework-comparison {
+        grid-template-columns: 1fr;
+    }
+    
+    .framework-score {
+        font-size: var(--text-2xl);
+    }
+    
+    .component-card .metric {
+        font-size: var(--text-2xl);
+    }
+    
+    /* Ensure charts don't overflow on mobile */
+    .benchmark-chart,
+    .latency-chart,
+    .comparison-chart {
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 375px) {
+    .benchmark-chart h3,
+    .latency-chart h3,
+    .comparison-chart h3 {
+        font-size: var(--text-lg);
+    }
+    
+    .stat-card {
+        padding: var(--space-4);
+    }
+    
+    .stat-value {
+        font-size: var(--text-xl);
+    }
+    
+    table {
+        font-size: var(--text-xs);
     }
 }
 
@@ -465,9 +534,54 @@ table tr:hover {
 #requestTypeChart,
 #concurrencyChart,
 #latencyChart,
-#comparisonChart {
+#comparisonChart,
+#stress-test-chart,
+#concurrency-performance-chart,
+#comparison-radar-chart {
     max-width: 100%;
     height: auto !important;
+}
+
+/* Ensure chart wrapper responsiveness */
+.benchmark-chart,
+.latency-chart,
+.comparison-chart {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Chart.js responsive wrapper */
+.chartjs-size-monitor,
+.chartjs-size-monitor-expand,
+.chartjs-size-monitor-shrink {
+    position: absolute;
+    direction: ltr;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    visibility: hidden;
+    z-index: -1;
+}
+
+.chartjs-size-monitor-expand > div {
+    position: absolute;
+    width: 1000000px;
+    height: 1000000px;
+    left: 0;
+    top: 0;
+}
+
+.chartjs-size-monitor-shrink > div {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: 0;
+    top: 0;
 }
 
 /* Highlight Important Values */

@@ -16,6 +16,8 @@ default_routes:
   /docs/providers/: /docs/providers/
   /docs/testing/: /docs/testing/
   /docs/deployment/: /docs/deployment/
+  /docs/extensions/: /docs/extensions/
+  /docs/extensions/cycle-orm/: /docs/extensions/cycle-orm/
 
 pt_routes:
   /: /pt/
@@ -34,3 +36,49 @@ pt_routes:
   /docs/providers/: /pt/docs/provedores/
   /docs/testing/: /pt/docs/testes/
   /docs/deployment/: /pt/docs/implantacao/
+  /docs/extensions/: /pt/docs/extensions/
+  /docs/extensions/cycle-orm/: /pt/docs/extensions/cycle-orm/
+
+en:
+  home: /
+  docs: /docs/
+  why_pivotphp: /docs/why-pivotphp/
+  installation: /docs/installation/
+  quickstart: /docs/quickstart/
+  configuration: /docs/configuration/
+  routing: /docs/routing/
+  middleware: /docs/middleware/
+  requests_responses: /docs/requests-responses/
+  container: /docs/container/
+  security: /docs/security/
+  events: /docs/events/
+  validation: /docs/validation/
+  database: /docs/database/
+  providers: /docs/providers/
+  testing: /docs/testing/
+  deployment: /docs/deployment/
+  benchmarks: /docs/benchmarks/
+  extensions: /docs/extensions/
+  extensions_cycle_orm: /docs/extensions/cycle-orm/
+
+pt:
+  home: /pt/
+  docs: /pt/docs/
+  why_pivotphp: /pt/docs/why-pivotphp/
+  installation: /pt/docs/installation/
+  quickstart: /pt/docs/quickstart/
+  configuration: /pt/docs/configuration/
+  routing: /pt/docs/routing/
+  middleware: /pt/docs/middleware/
+  requests_responses: /pt/docs/requests-responses/
+  container: /pt/docs/container/
+  security: /pt/docs/security/
+  events: /pt/docs/events/
+  validation: /pt/docs/validation/
+  database: /pt/docs/database/
+  providers: /pt/docs/providers/
+  testing: /pt/docs/testing/
+  deployment: /pt/docs/deployment/
+  benchmarks: /pt/docs/benchmarks/
+  extensions: /pt/docs/extensions/
+  extensions_cycle_orm: /pt/docs/extensions/cycle-orm/

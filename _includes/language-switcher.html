@@ -43,7 +43,9 @@
             if (!LanguageRoutes.urlExists(newUrl, targetLang)) {
                 // If the specific page doesn't exist in the target language,
                 // redirect to the language's documentation home
-                const fallbackUrl = targetLang === 'en' ? '/docs/' : `/${targetLang}/docs/`;
+                const fallbackUrl = targetLang === 'en' 
+                    ? LanguageRoutes.baseUrl + '/docs/' 
+                    : LanguageRoutes.baseUrl + `/${targetLang}/docs/`;
                 console.warn(`URL ${newUrl} not found in ${targetLang}. Redirecting to ${fallbackUrl}`);
                 window.location.href = fallbackUrl;
                 return;

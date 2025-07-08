@@ -10,6 +10,8 @@ en:
   home: "Home"
   quick_start: "Quick Start"
   features: "Features"
+  extensions: "Extensions"
+  overview: "Overview"
   
   # Navigation
   nav:
@@ -28,6 +30,8 @@ en:
     events: "Events"
     validation: "Validation"
     database: "Database"
+    extensions: "Extensions"
+    overview: "Overview"
     advanced: "Advanced"
     providers: "Service Providers"
     testing: "Testing"
@@ -62,6 +66,22 @@ en:
   
   # Code example
   code_example_title: "Express.js-like Syntax for PHP Developers"
+  
+  # General navigation labels
+  getting_started: "Getting Started"
+  introduction: "Introduction"
+  installation: "Installation"
+  why_pivotphp: "Why PivotPHP?"
+  core_concepts: "Core Concepts"
+  routing: "Routing"
+  middleware: "Middleware"
+  requests_responses: "Requests & Responses"
+  service_container: "Service Container"
+  resources: "Resources"
+  security: "Security"
+  events: "Events"
+  validation: "Validation"
+  database: "Database"
 
 pt:
   lang_name: "Português"
@@ -74,6 +94,8 @@ pt:
   home: "Início"
   quick_start: "Início Rápido"
   features: "Recursos"
+  extensions: "Extensões"
+  overview: "Visão Geral"
   
   # Navigation
   nav:
@@ -92,6 +114,8 @@ pt:
     events: "Eventos"
     validation: "Validação"
     database: "Banco de Dados"
+    extensions: "Extensões"
+    overview: "Visão Geral"
     advanced: "Avançado"
     providers: "Provedores de Serviço"
     testing: "Testes"
@@ -126,3 +150,19 @@ pt:
   
   # Code example
   code_example_title: "Sintaxe similar ao Express.js para desenvolvedores PHP"
+  
+  # General navigation labels
+  getting_started: "Primeiros Passos"
+  introduction: "Introdução"
+  installation: "Instalação"
+  why_pivotphp: "Por que PivotPHP?"
+  core_concepts: "Conceitos Principais"
+  routing: "Roteamento"
+  middleware: "Middleware"
+  requests_responses: "Requisições e Respostas"
+  service_container: "Container de Serviços"
+  resources: "Recursos"
+  security: "Segurança"
+  events: "Eventos"
+  validation: "Validação"
+  database: "Banco de Dados"

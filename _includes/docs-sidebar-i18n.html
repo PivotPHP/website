@@ -1,42 +1,54 @@
 {% assign lang = page.lang | default: site.default_lang %}
 {% assign t = site.data.translations[lang] %}
-{% assign lang_prefix = "" %}
-{% if lang != site.default_lang %}
-    {% assign lang_prefix = "/" | append: lang %}
-{% endif %}
+{% assign routes = site.data.i18n_routes[lang] %}
+{% comment %}Build URLs with baseurl only once{% endcomment %}
+{% capture base_path %}{{ site.baseurl }}{% endcapture %}
 
 <!-- Sidebar -->
 <aside class="docs-sidebar">
     <h3>{{ t.nav.getting_started }}</h3>
     <ul>
-        <li><a href="{{ lang_prefix | append: '/docs/' | relative_url }}">{{ t.nav.introduction }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/why-pivotphp/' | relative_url }}">{% if lang == 'pt' %}Por que PivotPHP?{% else %}Why PivotPHP?{% endif %}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/installation/' | relative_url }}">{{ t.nav.installation }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/quickstart/' | relative_url }}">{{ t.nav.quick_start }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/configuration/' | relative_url }}">{{ t.nav.configuration }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.docs | default: '/docs/' }}" {% if page.url == routes.docs %}class="active"{% endif %}>{{ t.nav.introduction }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.why_pivotphp | default: '/docs/why-pivotphp/' }}" {% if page.url contains 'why-pivotphp' %}class="active"{% endif %}>{% if lang == 'pt' %}Por que PivotPHP?{% else %}Why PivotPHP?{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.installation | default: '/docs/installation/' }}" {% if page.url contains 'installation' %}class="active"{% endif %}>{{ t.nav.installation }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.quickstart | default: '/docs/quickstart/' }}" {% if page.url contains 'quickstart' %}class="active"{% endif %}>{{ t.nav.quick_start }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.configuration | default: '/docs/configuration/' }}" {% if page.url contains 'configuration' %}class="active"{% endif %}>{{ t.nav.configuration }}</a></li>
     </ul>
 
     <h3>{{ t.nav.core_concepts }}</h3>
     <ul>
-        <li><a href="{{ lang_prefix | append: '/docs/routing/' | relative_url }}">{{ t.nav.routing }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/middleware/' | relative_url }}">{{ t.nav.middleware }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/requests-responses/' | relative_url }}">{{ t.nav.requests_responses }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/container/' | relative_url }}">{{ t.nav.container }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.routing | default: '/docs/routing/' }}" {% if page.url contains 'routing' %}class="active"{% endif %}>{{ t.nav.routing }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.middleware | default: '/docs/middleware/' }}" {% if page.url contains 'middleware' %}class="active"{% endif %}>{{ t.nav.middleware }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.requests_responses | default: '/docs/requests-responses/' }}" {% if page.url contains 'requests-responses' %}class="active"{% endif %}>{{ t.nav.requests_responses }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.container | default: '/docs/container/' }}" {% if page.url contains 'container' %}class="active"{% endif %}>{{ t.nav.container }}</a></li>
     </ul>
 
     <h3>{{ t.nav.features }}</h3>
     <ul>
-        <li><a href="{{ lang_prefix | append: '/docs/security/' | relative_url }}">{{ t.nav.security }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/events/' | relative_url }}">{{ t.nav.events }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/validation/' | relative_url }}">{{ t.nav.validation }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/database/' | relative_url }}">{{ t.nav.database }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.security | default: '/docs/security/' }}" {% if page.url contains 'security' %}class="active"{% endif %}>{{ t.nav.security }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.events | default: '/docs/events/' }}" {% if page.url contains 'events' %}class="active"{% endif %}>{{ t.nav.events }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.validation | default: '/docs/validation/' }}" {% if page.url contains 'validation' %}class="active"{% endif %}>{{ t.nav.validation }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.database | default: '/docs/database/' }}" {% if page.url contains 'database' %}class="active"{% endif %}>{{ t.nav.database }}</a></li>
+    </ul>
+
+    <h3>{% if lang == 'pt' %}Extensões{% else %}Extensions{% endif %}</h3>
+    <ul>
+        <li><a href="{{ base_path }}{{ routes.extensions | default: '/docs/extensions/' }}" {% if page.url == routes.extensions %}class="active"{% endif %}>{% if lang == 'pt' %}Visão Geral{% else %}Overview{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' }}" {% if page.url contains '/extensions/cycle-orm' %}class="active"{% endif %}>Cycle ORM</a></li>
     </ul>
 
     <h3>{{ t.nav.advanced }}</h3>
     <ul>
-        <li><a href="{{ lang_prefix | append: '/docs/providers/' | relative_url }}">{{ t.nav.providers }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/testing/' | relative_url }}">{{ t.nav.testing }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/deployment/' | relative_url }}">{{ t.nav.deployment }}</a></li>
-        <li><a href="{{ lang_prefix | append: '/docs/benchmarks/' | relative_url }}">{% if lang == 'pt' %}Benchmarks de Performance{% else %}Performance Benchmarks{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.providers | default: '/docs/providers/' }}" {% if page.url contains 'providers' %}class="active"{% endif %}>{{ t.nav.providers }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.testing | default: '/docs/testing/' }}" {% if page.url contains 'testing' %}class="active"{% endif %}>{{ t.nav.testing }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.deployment | default: '/docs/deployment/' }}" {% if page.url contains 'deployment' %}class="active"{% endif %}>{{ t.nav.deployment }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.benchmarks | default: '/docs/benchmarks/' }}" {% if page.url contains 'benchmarks' %}class="active"{% endif %}>{% if lang == 'pt' %}Benchmarks de Performance{% else %}Performance Benchmarks{% endif %}</a></li>
+    </ul>
+
+    <h3>{% if lang == 'pt' %}Recursos{% else %}Resources{% endif %}</h3>
+    <ul>
+        <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub →</a></li>
+        <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Changelog →</a></li>
+        <li><a href="https://packagist.org/packages/pivotphp/core" target="_blank">Packagist →</a></li>
     </ul>
 </aside>
