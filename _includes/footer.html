@@ -1,7 +1,76 @@
 <!-- Footer -->
-<footer>
+<footer class="site-footer">
     <div class="container">
-        <p>Evolution over Convention • Performance in Every Strand • Structure meets Speed</p>
-        <p>© {{ 'now' | date: "%Y" }} {{ site.title }}. MIT Licensed.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                    Getting Started
+                </h3>
+                <ul>
+                    <li><a href="{{ '/docs/' | relative_url }}">Introduction</a></li>
+                    <li><a href="{{ '/docs/why-pivotphp/' | relative_url }}">Why PivotPHP?</a></li>
+                    <li><a href="{{ '/docs/installation/' | relative_url }}">Installation</a></li>
+                    <li><a href="{{ '/docs/quickstart/' | relative_url }}">Quick Start</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                        <path d="m20.5 7.5L16 12l4.5 4.5L16 12l4.5-4.5M3.5 7.5 8 12l-4.5 4.5L8 12 3.5 7.5"/>
+                    </svg>
+                    Core Concepts
+                </h3>
+                <ul>
+                    <li><a href="{{ '/docs/routing/' | relative_url }}">Routing</a></li>
+                    <li><a href="{{ '/docs/middleware/' | relative_url }}">Middleware</a></li>
+                    <li><a href="{{ '/docs/requests-responses/' | relative_url }}">Requests & Responses</a></li>
+                    <li><a href="{{ '/docs/container/' | relative_url }}">Service Container</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <path d="m3 11 18-5v12L3 14v-3z"/>
+                        <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>
+                    </svg>
+                    Features
+                </h3>
+                <ul>
+                    <li><a href="{{ '/docs/security/' | relative_url }}">Security</a></li>
+                    <li><a href="{{ '/docs/events/' | relative_url }}">Events</a></li>
+                    <li><a href="{{ '/docs/validation/' | relative_url }}">Validation</a></li>
+                    <li><a href="{{ '/docs/database/' | relative_url }}">Database</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    Resources
+                </h3>
+                <ul>
+                    <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub →</a></li>
+                    <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Changelog →</a></li>
+                    <li><a href="https://packagist.org/packages/pivotphp/core" target="_blank">Packagist →</a></li>
+                    <li><a href="{{ '/docs/benchmarks/' | relative_url }}">Benchmarks</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Evolution over Convention • Performance in Every Strand • Structure meets Speed</p>
+            <p>© {{ 'now' | date: "%Y" }} {{ site.title }}. MIT Licensed.</p>
+        </div>
     </div>
 </footer>

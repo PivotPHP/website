@@ -23,14 +23,27 @@ composer require pivotphp/core
 
 ## Create a New Project
 
-To create a new PivotPHP project with a basic structure:
+To create a new PivotPHP project, you'll need to set it up manually:
+
+> **Note**: A project template is in development and will be available soon via `composer create-project`.
 
 ```bash
-composer create-project pivotphp/pivotphp my-app
+# Create a new directory for your project
+mkdir my-app
 cd my-app
+
+# Initialize composer
+composer init
+
+# Install PivotPHP
+composer require pivotphp/core
+
+# Create the basic structure
+mkdir -p public src/{Controllers,Middleware,Providers} config tests
+touch public/index.php
 ```
 
-This will create a new directory called `my-app` with a basic project structure:
+This will create a basic project structure:
 
 ```
 my-app/
@@ -42,15 +55,14 @@ my-app/
 │   └── Providers/
 ├── config/
 ├── tests/
-├── .env.example
-├── .gitignore
+├── vendor/
 ├── composer.json
-└── README.md
+└── composer.lock
 ```
 
 ## Manual Installation
 
-If you prefer to set up your project manually:
+For more control over your project setup:
 
 1. Create a new directory for your project
 2. Initialize Composer:

@@ -27,7 +27,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'helix'),
+            'database' => env('DB_DATABASE', 'pivotphp'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
@@ -41,7 +41,7 @@ return [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'helix'),
+            'database' => env('DB_DATABASE', 'pivotphp'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
@@ -506,7 +506,7 @@ $userRepository->select()
 ### Creating Migrations
 
 ```bash
-php helix migrate:create CreateUsersTable
+php bin/console migrate:create CreateUsersTable
 ```
 
 ```php
@@ -538,16 +538,16 @@ class CreateUsersTable extends Migration
 
 ```bash
 # Run all pending migrations
-php helix migrate
+php bin/console migrate
 
 # Rollback last batch
-php helix migrate:rollback
+php bin/console migrate:rollback
 
 # Rollback all
-php helix migrate:reset
+php bin/console migrate:reset
 
 # Refresh (rollback all and re-run)
-php helix migrate:refresh
+php bin/console migrate:refresh
 ```
 
 ## Schema Generation
@@ -555,12 +555,20 @@ php helix migrate:refresh
 Generate database schema from entities:
 
 ```bash
-# Generate migration from entities
-php helix cycle:migrate
+# Check current schema status
+php bin/console cycle:status
 
-# Sync schema without migrations
-php helix cycle:sync
+# Generate migration from entities
+php bin/console cycle:migrate
+
+# Run pending migrations
+php bin/console cycle:migrate --run
+
+# Sync schema without migrations (development only)
+php bin/console cycle:sync
 ```
+
+> **Note**: The `cycle:sync` command should only be used in development as it directly modifies the database schema.
 
 ## Events and Hooks
 

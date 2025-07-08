@@ -21,7 +21,7 @@ APP_URL=http://localhost
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=helix
+DB_DATABASE=pivotphp
 DB_USERNAME=root
 DB_PASSWORD=
 
@@ -207,7 +207,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'helix'),
+            'database' => env('DB_DATABASE', 'pivotphp'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8mb4',
@@ -225,7 +225,7 @@ return [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'helix'),
+            'database' => env('DB_DATABASE', 'pivotphp'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
@@ -279,7 +279,7 @@ return [
         ],
     ],
 
-    'prefix' => env('CACHE_PREFIX', 'helix_cache'),
+    'prefix' => env('CACHE_PREFIX', 'pivotphp_cache'),
 ];
 ```
 
@@ -341,10 +341,10 @@ For production performance, cache your configuration:
 
 ```bash
 # Cache configuration
-php helix config:cache
+php bin/console config:cache
 
 # Clear configuration cache
-php helix config:clear
+php bin/console config:clear
 ```
 
 When configuration is cached:

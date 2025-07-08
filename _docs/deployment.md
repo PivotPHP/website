@@ -47,10 +47,10 @@ Cache your configuration files for better performance:
 
 ```bash
 # Cache configuration
-php helix config:cache
+php bin/console config:cache
 
 # Clear configuration cache
-php helix config:clear
+php bin/console config:clear
 ```
 
 ### Route Caching
@@ -59,10 +59,10 @@ Cache your routes for faster route resolution:
 
 ```bash
 # Cache routes
-php helix route:cache
+php bin/console route:cache
 
 # Clear route cache
-php helix route:clear
+php bin/console route:clear
 ```
 
 ### View Caching
@@ -71,10 +71,10 @@ If using a template engine:
 
 ```bash
 # Cache views
-php helix view:cache
+php bin/console view:cache
 
 # Clear view cache
-php helix view:clear
+php bin/console view:clear
 ```
 
 ## Web Server Configuration
@@ -270,13 +270,13 @@ env[APP_KEY] = "your-key"
 
 ```bash
 # Run migrations
-php helix migrate --force
+php bin/console migrate --force
 
 # With seeding (be careful in production!)
-php helix migrate --seed --force
+php bin/console migrate --seed --force
 
 # Rollback if needed
-php helix migrate:rollback --force
+php bin/console migrate:rollback --force
 ```
 
 ### Database Optimization
@@ -325,13 +325,13 @@ ln -nfs ${SHARED_DIR}/storage storage
 ln -nfs ${SHARED_DIR}/public/uploads public/uploads
 
 # Run deployment commands
-php helix migrate --force
-php helix config:cache
-php helix route:cache
-php helix view:cache
+php bin/console migrate --force
+php bin/console config:cache
+php bin/console route:cache
+php bin/console view:cache
 
 # Warm up cache
-php helix cache:warmup
+php bin/console cache:warmup
 
 # Switch symlink atomically
 ln -nfs $NEW_RELEASE_DIR $CURRENT_DIR
@@ -376,11 +376,11 @@ echo "Deployment completed successfully!"
 
     echo 'Running migrations'
     cd {% raw %}{{ $new_release_dir }}{% endraw %}
-    php helix migrate --force
+    php bin/console migrate --force
 
     echo 'Caching configuration'
-    php helix config:cache
-    php helix route:cache
+    php bin/console config:cache
+    php bin/console route:cache
 
     echo 'Linking current release'
     ln -nfs {% raw %}{{ $new_release_dir }}{% endraw %} {% raw %}{{ $app_dir }}{% endraw %}/current
