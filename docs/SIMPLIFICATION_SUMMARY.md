@@ -15,9 +15,9 @@
 - **Created**: `docs-unified.html` - Single layout for both default and i18n documentation
 - **Handles**: Language detection and conditional includes based on `page.lang`
 
-### 4. Include Files Unification
-- **Created**: `footer-unified.html` - Single footer handling both languages
-- **Created**: `docs-sidebar-unified.html` - Single sidebar for all languages
+### 4. Include Files Consolidation
+- **Updated**: `footer.html` - Single footer for all pages
+- **Kept**: `docs-sidebar.html` and `docs-sidebar-i18n.html` - Separate sidebars for English and i18n
 - **Uses**: Proper translation lookups with fallbacks
 
 ### 5. CSS Consolidation
@@ -49,8 +49,8 @@ To apply these simplifications:
 
 4. **Update includes**:
    ```liquid
-   {% include footer-unified.html %}
-   {% include docs-sidebar-unified.html %}
+   {% include footer.html %}
+   {% comment %}Sidebar is included conditionally in docs layout{% endcomment %}
    ```
 
 ## Benefits

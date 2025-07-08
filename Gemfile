@@ -6,6 +6,9 @@ gem "github-pages", "~> 228", group: :jekyll_plugins
 # Additional gems for local development
 gem "webrick", "~> 1.7"
 
+# Faraday retry gem for Faraday v2.0+
+gem "faraday-retry"
+
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
 platforms :mingw, :x64_mingw, :mswin, :jruby do
