@@ -4,12 +4,16 @@
 
 /* Additional benchmark-specific styles */
 .benchmark-chart {
-    background: var(--pivot-white);
+    background: var(--color-surface);
     border-radius: var(--radius-xl);
     padding: var(--space-xl);
     margin: var(--space-xl) 0;
     box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
+    border: 1px solid var(--color-border);
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
 }
 
 .benchmark-chart:hover {
@@ -20,6 +24,7 @@
 .benchmark-chart canvas {
     max-height: 400px;
     width: 100%;
+    flex: 1;
 }
 
 .benchmark-chart h3 {

@@ -348,6 +348,91 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Concurrent Performance Chart (duplicate for second section)
+    const concurrencyPerfCtx = document.getElementById('concurrency-performance-chart');
+    if (concurrencyPerfCtx) {
+        new Chart(concurrencyPerfCtx, {
+            type: 'line',
+            data: {
+                labels: ['1', '10', '50', '100'],
+                datasets: [
+                    {
+                        label: 'Simple API',
+                        data: [3931, 3325, 3033, 3991],
+                        borderColor: colors.primary,
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Data API',
+                        data: [1229, 129, 1163, 1057],
+                        borderColor: colors.secondary,
+                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Heavy Processing',
+                        data: [2647, 0, 1447, 1508],
+                        borderColor: colors.accent,
+                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: colors.text
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' req/s';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Concurrent Connections',
+                            color: colors.text
+                        },
+                        ticks: {
+                            color: colors.tickColor
+                        },
+                        grid: {
+                            color: colors.gridColor
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Requests per Second',
+                            color: colors.text
+                        },
+                        ticks: {
+                            color: colors.tickColor,
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: colors.gridColor
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
     // New: Concurrent Performance Radar Chart
     const concurrentRadarCtx = document.getElementById('comparison-radar-chart');
     if (concurrentRadarCtx) {

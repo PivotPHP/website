@@ -196,7 +196,7 @@ PivotPHP significantly outperforms established microframeworks:
 PivotPHP excels at handling concurrent requests with minimal performance degradation:
 
 <div class="benchmark-chart">
-  <canvas id="concurrencyChart"></canvas>
+  <canvas id="concurrency-performance-chart"></canvas>
 </div>
 
 ### Concurrent Request Handling
