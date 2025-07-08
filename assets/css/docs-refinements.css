@@ -388,6 +388,11 @@
         padding: 1rem;
     }
     
+    [data-theme="dark"] .docs-sidebar {
+        background: var(--color-surface);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
     .docs-sidebar.active {
         left: 0;
     }
@@ -485,6 +490,10 @@
     z-index: 998;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .docs-overlay {
+    background: rgba(0, 0, 0, 0.7);
 }
 
 .docs-overlay.active {

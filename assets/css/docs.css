@@ -112,6 +112,10 @@ body {
     overflow-y: auto;
 }
 
+[data-theme="dark"] .docs-sidebar {
+    background: transparent;
+}
+
 .docs-sidebar h3 {
     color: var(--pivot-purple-700);
     font-size: 0.9rem;
@@ -156,6 +160,17 @@ body {
 }
 
 [data-theme="dark"] .docs-sidebar a:hover {
+    color: var(--pivot-purple-400);
+    background: rgba(139, 92, 246, 0.2);
+}
+
+.docs-sidebar a.active {
+    color: var(--pivot-purple-700);
+    background: rgba(124, 58, 237, 0.1);
+    font-weight: 600;
+}
+
+[data-theme="dark"] .docs-sidebar a.active {
     color: var(--pivot-purple-400);
     background: rgba(139, 92, 246, 0.2);
 }
