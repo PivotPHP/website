@@ -1,15 +1,15 @@
 /* Benchmark Page Styles - Following PivotPHP Design Identity */
-/* Main styles are inherited from pivotphp-unified.css */
+/* Main styles are inherited from design-system.css */
 @import url('design-system.css');
 
 /* Additional benchmark-specific styles */
 .benchmark-chart {
     background: var(--color-surface);
     border-radius: var(--radius-xl);
-    padding: var(--space-xl);
-    margin: var(--space-xl) 0;
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
+    padding: var(--space-8);
+    margin: var(--space-8) 0;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-base);
     border: 1px solid var(--color-border);
     min-height: 450px;
     display: flex;
@@ -18,70 +18,86 @@
 
 .benchmark-chart:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-hover);
 }
 
 .benchmark-chart canvas {
-    max-height: 400px;
+    height: 400px !important;
     width: 100%;
     flex: 1;
 }
 
 .benchmark-chart h3 {
-    color: var(--pivot-primary);
-    margin-bottom: var(--space-lg);
-    font-size: 1.5rem;
+    color: var(--pivot-purple-700);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .benchmark-chart h3 {
+    color: var(--pivot-purple-400);
 }
 
 /* Load Test Grid */
 .load-test-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-xl);
-    margin: var(--space-xl) 0;
+    gap: var(--space-8);
+    margin: var(--space-8) 0;
 }
 
 .load-test-card {
-    background: var(--pivot-white);
+    background: var(--color-surface);
     border-radius: var(--radius-xl);
-    padding: var(--space-lg);
-    border: 1px solid var(--pivot-gray-light);
-    transition: all 0.3s ease;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-card);
 }
 
 .load-test-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--pivot-primary);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-hover);
 }
 
 .load-test-card h4 {
-    color: var(--pivot-primary);
-    margin-bottom: var(--space-md);
-    font-size: 1.125rem;
+    color: var(--pivot-purple-700);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .load-test-card h4 {
+    color: var(--pivot-purple-400);
 }
 
 .benchmark-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: var(--space-md);
+    margin-top: var(--space-4);
 }
 
 .benchmark-table td {
-    padding: var(--space-sm) 0;
-    border-bottom: 1px solid var(--pivot-gray-light);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .benchmark-table td:first-child {
-    color: var(--pivot-gray-dark);
-    font-weight: 500;
+    color: var(--color-text-primary);
+    font-weight: var(--font-medium);
 }
 
 .benchmark-table td:last-child {
     text-align: right;
-    font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--pivot-secondary);
+    font-family: var(--font-family-mono);
+    font-weight: var(--font-semibold);
+    color: var(--pivot-pink-600);
+}
+
+[data-theme="dark"] .benchmark-table td:last-child {
+    color: var(--pivot-pink-400);
 }
 
 .benchmark-table tr:last-child td {
@@ -89,42 +105,57 @@
 }
 
 .benchmark-table tr:hover {
-    background: var(--pivot-gray-lighter);
+    background: var(--color-surface-hover);
 }
 
 /* Performance Comparison Section */
 .performance-comparison {
-    background: var(--pivot-white);
+    background: var(--color-surface);
     border-radius: var(--radius-xl);
-    padding: var(--space-xl);
-    margin: var(--space-xl) 0;
-    box-shadow: var(--shadow-md);
+    padding: var(--space-8);
+    margin: var(--space-8) 0;
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
 }
 
 .framework-comparison {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
+    gap: var(--space-6);
+    margin: var(--space-6) 0;
 }
 
 .framework-card {
     background: var(--color-surface);
     border-radius: var(--radius-lg);
-    padding: var(--space-lg);
+    padding: var(--space-6);
     text-align: center;
-    transition: all 0.3s ease;
+    transition: var(--transition-base);
     border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-card);
 }
 
 .framework-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-hover);
 }
 
 .framework-card.winner {
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
     border: 2px solid var(--pivot-purple-600);
+    position: relative;
+    overflow: hidden;
+}
+
+.framework-card.winner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--pivot-gradient-primary);
 }
 
 [data-theme="dark"] .framework-card.winner {
@@ -133,9 +164,9 @@
 }
 
 .framework-name {
-    font-weight: 800;
-    font-size: 1.125rem;
-    margin-bottom: var(--space-sm);
+    font-weight: var(--font-extrabold);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
     color: var(--color-text-primary);
 }
 
@@ -148,11 +179,11 @@
 }
 
 .framework-score {
-    font-size: 2rem;
-    font-weight: 800;
-    font-family: var(--font-mono);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    font-family: var(--font-family-mono);
     color: var(--pivot-pink-600);
-    margin-bottom: var(--space-xs);
+    margin-bottom: var(--space-2);
 }
 
 [data-theme="dark"] .framework-score {
@@ -160,40 +191,39 @@
 }
 
 .framework-card.winner .framework-score {
-    background: var(--pivot-gradient);
+    background: var(--pivot-gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .framework-metric {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
     opacity: 0.8;
 }
-
-/* All other benchmark styles are inherited from pivotphp-unified.css */
 
 /* Component Grid */
 .component-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
 }
 
 .component-card {
     background: var(--color-surface);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: var(--space-8);
     text-align: center;
     border: 1px solid var(--color-border);
-    transition: all 0.3s ease;
+    transition: var(--transition-base);
+    box-shadow: var(--shadow-card);
 }
 
 .component-card:hover {
     border-color: var(--pivot-purple-600);
-    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-5px);
 }
 
@@ -203,67 +233,147 @@
 }
 
 .component-card h4 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
     color: var(--color-text-primary);
+    font-weight: var(--font-semibold);
 }
 
 .component-card .metric {
-    font-size: 2rem;
-    font-weight: 800;
-    background: var(--pivot-gradient);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    background: var(--pivot-gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0.5rem;
-    font-family: var(--font-mono);
+    margin-bottom: var(--space-2);
+    font-family: var(--font-family-mono);
 }
 
 .component-card .description {
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--color-text-secondary);
 }
 
 /* Latency Chart */
 .latency-chart {
     background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    margin: var(--space-8) 0;
+    border: 1px solid var(--color-border);
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Comparison Chart */
+.latency-chart canvas {
+    height: 400px !important;
+    width: 100%;
+    flex: 1;
+}
+
+.latency-chart h3 {
+    color: var(--pivot-purple-700);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .latency-chart h3 {
+    color: var(--pivot-purple-400);
+}
+
+/* Comparison Chart - Light Theme Default */
 .comparison-chart {
-    background: var(--pivot-dark);
-    color: white;
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    margin: var(--space-8) 0;
+    border: 1px solid var(--color-border);
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    position: relative;
+}
+
+.comparison-chart::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--pivot-gradient-primary);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.comparison-chart canvas {
+    height: 400px !important;
+    width: 100%;
+    flex: 1;
+}
+
+.comparison-chart h3 {
+    color: var(--pivot-cyan-600);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+}
+
+/* Dark Theme Specific */
+[data-theme="dark"] .comparison-chart {
+    background: var(--pivot-gray-900);
+    color: var(--pivot-gray-50);
+    border-color: var(--pivot-gray-800);
+}
+
+[data-theme="dark"] .comparison-chart h3 {
+    color: var(--pivot-cyan-400);
+}
+
+/* Light theme text for chart content */
+body:not([data-theme="dark"]) .comparison-chart {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    color: var(--color-text-primary);
+}
+
+body:not([data-theme="dark"]) .comparison-chart h3 {
+    color: var(--pivot-purple-700);
+}
+
+body:not([data-theme="dark"]) .comparison-chart p,
+body:not([data-theme="dark"]) .comparison-chart td,
+body:not([data-theme="dark"]) .comparison-chart th {
+    color: var(--color-text-primary);
 }
 
 /* Performance Tables */
 table {
     width: 100%;
-    margin: 1.5rem 0;
+    margin: var(--space-6) 0;
     border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-border);
 }
 
 table th {
-    background: var(--pivot-light);
-    padding: 1rem;
+    background: var(--color-surface-secondary);
+    padding: var(--space-4);
     text-align: left;
-    font-weight: 600;
-    color: var(--pivot-dark);
-    border-bottom: 2px solid var(--pivot-primary);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    border-bottom: 2px solid var(--pivot-purple-600);
 }
 
 table td {
-    padding: 1rem;
-    border-bottom: 1px solid #E2E8F0;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
 }
 
 table tr:last-child td {
@@ -271,35 +381,37 @@ table tr:last-child td {
 }
 
 table tr:hover {
-    background: rgba(124, 58, 237, 0.02);
+    background: var(--color-surface-hover);
 }
 
 /* Code Examples */
 .language-php {
-    background: var(--pivot-dark) !important;
-    border-radius: 8px;
-    padding: 1.5rem !important;
-    margin: 1.5rem 0;
+    background: var(--pivot-gray-900) !important;
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) !important;
+    margin: var(--space-6) 0;
     overflow-x: auto;
+    border: 1px solid var(--pivot-gray-800);
 }
 
 .language-bash {
-    background: #1a1a1a !important;
-    border-radius: 8px;
-    padding: 1.5rem !important;
-    margin: 1.5rem 0;
+    background: var(--pivot-gray-950) !important;
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) !important;
+    margin: var(--space-6) 0;
     overflow-x: auto;
+    border: 1px solid var(--pivot-gray-800);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .benchmark-highlights {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: var(--space-4);
     }
 
     .stat-value {
-        font-size: 2.5rem;
+        font-size: var(--text-4xl);
     }
 
     .load-test-grid {
@@ -311,11 +423,41 @@ table tr:hover {
     }
 
     table {
-        font-size: 0.875rem;
+        font-size: var(--text-sm);
     }
 
     table th, table td {
-        padding: 0.75rem 0.5rem;
+        padding: var(--space-3) var(--space-2);
+    }
+
+    .benchmark-chart,
+    .performance-comparison {
+        padding: var(--space-6);
+        margin: var(--space-6) 0;
+    }
+
+    .load-test-card {
+        padding: var(--space-4);
+    }
+    
+    .latency-chart,
+    .comparison-chart {
+        min-height: 350px;
+        padding: var(--space-6);
+    }
+    
+    .latency-chart canvas,
+    .comparison-chart canvas {
+        height: 300px !important;
+    }
+    
+    .benchmark-highlights {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+    
+    .stat-value {
+        font-size: var(--text-2xl);
     }
 }
 
@@ -330,20 +472,93 @@ table tr:hover {
 
 /* Highlight Important Values */
 .value {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--pivot-secondary);
+    font-family: var(--font-family-mono);
+    font-weight: var(--font-semibold);
+    color: var(--pivot-pink-600);
+}
+
+[data-theme="dark"] .value {
+    color: var(--pivot-pink-400);
+}
+
+/* Stress Test Section */
+.stress-test-section {
+    margin: var(--space-8) 0;
+}
+
+.stress-test-section .benchmark-chart {
+    min-height: 450px;
+}
+
+/* Benchmark Highlights Grid */
+.benchmark-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+}
+
+.stat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-base);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-border-hover);
+}
+
+.stat-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    background: var(--pivot-gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-family-mono);
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-1);
+}
+
+.stat-description {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    font-style: italic;
 }
 
 /* Performance Tips Section */
 .optimization-tips {
     background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
-    border-radius: 12px;
-    padding: 2rem;
-    margin: 2rem 0;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    margin: var(--space-8) 0;
+    border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .optimization-tips {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
 }
 
 .optimization-tips h3 {
-    color: var(--pivot-primary);
-    margin-bottom: 1rem;
+    color: var(--pivot-purple-700);
+    margin-bottom: var(--space-4);
+    font-weight: var(--font-semibold);
+}
+
+[data-theme="dark"] .optimization-tips h3 {
+    color: var(--pivot-purple-400);
 }

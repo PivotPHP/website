@@ -9,21 +9,28 @@ layout: default
 
         <!-- Content -->
         <div class="docs-content">
-            <article>
-                <h1>{{ page.title }}</h1>
+            <article class="benchmarks-article">
+                <div class="article-header">
+                    <h1>{{ page.title }}</h1>
+                    <p class="article-description">{{ page.description }}</p>
+                    <div class="performance-badge">
+                        <span class="badge-icon">⚡</span>
+                        <span>Performance in Every Strand</span>
+                    </div>
+                </div>
                 {{ content }}
             </article>
 
             <!-- Navigation Links -->
             <div class="docs-nav-bottom">
                 {% if page.prev %}
-                <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost">
+                <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost btn-lg">
                     ← {{ page.prev.title }}
                 </a>
                 {% endif %}
 
                 {% if page.next %}
-                <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost" style="margin-left: auto;">
+                <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost btn-lg" style="margin-left: auto;">
                     {{ page.next.title }} →
                 </a>
                 {% endif %}
@@ -31,6 +38,157 @@ layout: default
         </div>
     </div>
 </main>
+
+<!-- Benchmark specific styles -->
+<style>
+.benchmarks-article {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10);
+    box-shadow: var(--shadow-card);
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ensure proper theme inheritance */
+[data-theme="dark"] .benchmarks-article {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+.benchmarks-article::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--pivot-gradient-primary);
+}
+
+.article-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-8);
+    border-bottom: 2px solid var(--color-border);
+    position: relative;
+}
+
+.article-header h1 {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-black);
+    margin-bottom: var(--space-4);
+    background: var(--pivot-gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.article-description {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: var(--leading-relaxed);
+}
+
+[data-theme="dark"] .article-description {
+    color: var(--color-text-secondary);
+}
+
+.performance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--pivot-purple-700);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-full);
+    font-weight: var(--font-semibold);
+    font-size: var(--text-sm);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="dark"] .performance-badge {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--pivot-purple-400);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.badge-icon {
+    font-size: var(--text-base);
+}
+
+/* Enhanced chart containers */
+.benchmarks-article .benchmark-chart,
+.benchmarks-article .latency-chart,
+.benchmarks-article .comparison-chart {
+    margin: var(--space-10) 0;
+    position: relative;
+}
+
+.benchmarks-article .benchmark-chart::before,
+.benchmarks-article .latency-chart::before,
+.benchmarks-article .comparison-chart::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: var(--pivot-gradient-primary);
+    border-radius: calc(var(--radius-xl) + 10px);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* Responsive and theme consistency */
+@media (max-width: 768px) {
+    .article-header h1 {
+        font-size: var(--text-4xl);
+    }
+    
+    .article-description {
+        font-size: var(--text-lg);
+    }
+    
+    .benchmarks-article {
+        padding: var(--space-6);
+    }
+}
+
+/* Ensure all chart containers adapt to theme */
+.benchmarks-article .benchmark-chart,
+.benchmarks-article .latency-chart,
+.benchmarks-article .comparison-chart,
+.benchmarks-article .load-test-card,
+.benchmarks-article .component-card {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .benchmarks-article .benchmark-chart,
+[data-theme="dark"] .benchmarks-article .latency-chart,
+[data-theme="dark"] .benchmarks-article .load-test-card,
+[data-theme="dark"] .benchmarks-article .component-card {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+/* Special handling for comparison chart in dark theme */
+[data-theme="dark"] .benchmarks-article .comparison-chart {
+    background: var(--pivot-gray-900);
+    color: var(--pivot-gray-50);
+    border-color: var(--pivot-gray-800);
+}
+</style>
 
 <!-- Chart.js for benchmarks -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -40,3 +198,44 @@ layout: default
 <script src="{{ '/assets/js/transitions.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/docs-mobile.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/benchmark-charts.js' | relative_url }}"></script>
+
+<!-- Enhanced interactions for benchmark page -->
+<script>
+// Add smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+    
+    // Add loading animation for charts
+    const charts = document.querySelectorAll('.benchmark-chart, .latency-chart, .comparison-chart');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '0';
+                entry.target.style.transform = 'translateY(20px)';
+                entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, 100);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    charts.forEach(chart => observer.observe(chart));
+});
+</script>

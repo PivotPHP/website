@@ -348,51 +348,92 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Concurrent Performance Chart (duplicate for second section)
+    // Concurrent Performance Chart - Area Chart for better visualization
     const concurrencyPerfCtx = document.getElementById('concurrency-performance-chart');
     if (concurrencyPerfCtx) {
         new Chart(concurrencyPerfCtx, {
             type: 'line',
             data: {
-                labels: ['1', '10', '50', '100'],
+                labels: ['1 Connection', '10 Connections', '50 Connections', '100 Connections'],
                 datasets: [
                     {
                         label: 'Simple API',
                         data: [3931, 3325, 3033, 3991],
                         borderColor: colors.primary,
-                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
-                        tension: 0.3
+                        backgroundColor: 'rgba(124, 58, 237, 0.3)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: colors.primary,
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
                     },
                     {
                         label: 'Data API',
                         data: [1229, 129, 1163, 1057],
                         borderColor: colors.secondary,
-                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
-                        tension: 0.3
+                        backgroundColor: 'rgba(236, 72, 153, 0.3)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: colors.secondary,
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
                     },
                     {
                         label: 'Heavy Processing',
-                        data: [2647, 0, 1447, 1508],
+                        data: [2647, null, 1447, 1508], // null for missing data point
                         borderColor: colors.accent,
-                        backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                        tension: 0.3
+                        backgroundColor: 'rgba(6, 182, 212, 0.3)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: colors.accent,
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        spanGaps: true // Connect across null values
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: {
-                        position: 'bottom',
+                        position: 'top',
                         labels: {
-                            color: colors.text
+                            color: colors.text,
+                            font: {
+                                size: 14,
+                                weight: 500
+                            },
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
                         }
                     },
                     tooltip: {
+                        backgroundColor: colors.text === '#E2E8F0' ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                        titleColor: colors.text === '#E2E8F0' ? '#E2E8F0' : '#1E293B',
+                        bodyColor: colors.text === '#E2E8F0' ? '#CBD5E1' : '#475569',
+                        borderColor: colors.primary,
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        displayColors: true,
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + ' req/s';
+                                const value = context.parsed.y;
+                                return value ? context.dataset.label + ': ' + value.toLocaleString() + ' req/s' : context.dataset.label + ': No data';
                             }
                         }
                     }
@@ -401,32 +442,54 @@ document.addEventListener('DOMContentLoaded', function() {
                     x: {
                         title: {
                             display: true,
-                            text: 'Concurrent Connections',
-                            color: colors.text
+                            text: 'Concurrent Load Levels',
+                            color: colors.text,
+                            font: {
+                                size: 14,
+                                weight: 600
+                            }
                         },
                         ticks: {
-                            color: colors.tickColor
+                            color: colors.tickColor,
+                            font: {
+                                size: 12
+                            }
                         },
                         grid: {
-                            color: colors.gridColor
+                            color: colors.gridColor,
+                            drawBorder: false
                         }
                     },
                     y: {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Requests per Second',
-                            color: colors.text
+                            text: 'Performance (req/s)',
+                            color: colors.text,
+                            font: {
+                                size: 14,
+                                weight: 600
+                            }
                         },
                         ticks: {
                             color: colors.tickColor,
+                            font: {
+                                size: 12
+                            },
                             callback: function(value) {
                                 return value.toLocaleString();
                             }
                         },
                         grid: {
-                            color: colors.gridColor
+                            color: colors.gridColor,
+                            drawBorder: false
                         }
+                    }
+                },
+                elements: {
+                    point: {
+                        hoverBackgroundColor: '#ffffff',
+                        hoverBorderWidth: 3
                     }
                 }
             }

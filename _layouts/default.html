@@ -10,7 +10,7 @@
       <div class="navbar-inner">
         <a href="{{ '/' | relative_url }}" class="navbar-brand">
           <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo">
-          <span>PivotPHP</span>
+          <span class="font-semibold">PivotPHP</span>
         </a>
 
         <button class="mobile-menu-toggle" aria-label="Toggle navigation">
@@ -20,9 +20,9 @@
         </button>
 
         <ul class="navbar-nav">
-          <li><a href="{{ '/docs/' | relative_url }}" {% if page.url contains '/docs/' %}class="active"{% endif %}>Documentation</a></li>
-          <li><a href="{{ '/docs/quickstart/' | relative_url }}">Quick Start</a></li>
-          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
+          <li><a href="{{ '/docs/' | relative_url }}" {% if page.url contains '/docs/' %}class="active font-medium"{% endif %} class="font-medium">Documentation</a></li>
+          <li><a href="{{ '/docs/quickstart/' | relative_url }}" class="font-medium">Quick Start</a></li>
+          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank" class="font-medium">GitHub</a></li>
           <li>
             <!-- Theme Toggle -->
             <button class="theme-toggle-btn" data-theme-toggle aria-label="Toggle theme">
@@ -59,45 +59,45 @@
         <div>
           <div class="footer-brand">
             <img src="{{ '/assets/images/pivotphp-logo-white.svg' | relative_url }}" alt="PivotPHP">
-            <span>PivotPHP</span>
+            <span class="font-semibold">PivotPHP</span>
           </div>
-          <p>The Evolutionary PHP Microframework</p>
-          <p>Build high-performance APIs that adapt and evolve.</p>
+          <p class="text-base opacity-90">The Evolutionary PHP Microframework</p>
+          <p class="text-sm opacity-80">Evolution over Convention • Performance in Every Strand • Structure meets Speed</p>
         </div>
 
         <div>
-          <h4>Documentation</h4>
+          <h4 class="font-semibold mb-4">Documentation</h4>
           <ul>
-            <li><a href="{{ '/docs/' | relative_url }}">Getting Started</a></li>
-            <li><a href="{{ '/docs/installation/' | relative_url }}">Installation</a></li>
-            <li><a href="{{ '/docs/routing/' | relative_url }}">Routing</a></li>
-            <li><a href="{{ '/docs/middleware/' | relative_url }}">Middleware</a></li>
+            <li class="mb-2"><a href="{{ '/docs/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Getting Started</a></li>
+            <li class="mb-2"><a href="{{ '/docs/installation/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Installation</a></li>
+            <li class="mb-2"><a href="{{ '/docs/routing/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Routing</a></li>
+            <li class="mb-2"><a href="{{ '/docs/middleware/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Middleware</a></li>
           </ul>
         </div>
 
         <div>
-          <h4>Resources</h4>
+          <h4 class="font-semibold mb-4">Resources</h4>
           <ul>
-            <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
-            <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Releases</a></li>
-            <li><a href="{{ site.github_url }}/pivotphp-core/issues" target="_blank">Issues</a></li>
-            <li><a href="{{ '/docs/contributing/' | relative_url }}">Contributing</a></li>
+            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core" target="_blank" class="text-sm opacity-80 hover:opacity-100">GitHub</a></li>
+            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank" class="text-sm opacity-80 hover:opacity-100">Releases</a></li>
+            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/issues" target="_blank" class="text-sm opacity-80 hover:opacity-100">Issues</a></li>
+            <li class="mb-2"><a href="{{ '/docs/contributing/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Contributing</a></li>
           </ul>
         </div>
 
         <div>
-          <h4>Community</h4>
+          <h4 class="font-semibold mb-4">Community</h4>
           <ul>
-            <li><a href="https://twitter.com/pivotphp" target="_blank">Twitter</a></li>
-            <li><a href="{{ site.github_url }}/pivotphp-core/discussions" target="_blank">Discussions</a></li>
-            <li><a href="https://discord.gg/pivotphp" target="_blank">Discord</a></li>
-            <li><a href="https://stackoverflow.com/questions/tagged/pivotphp" target="_blank">Stack Overflow</a></li>
+            <li class="mb-2"><a href="https://twitter.com/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Twitter</a></li>
+            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/discussions" target="_blank" class="text-sm opacity-80 hover:opacity-100">Discussions</a></li>
+            <li class="mb-2"><a href="https://discord.gg/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Discord</a></li>
+            <li class="mb-2"><a href="https://stackoverflow.com/questions/tagged/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Stack Overflow</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; {{ 'now' | date: '%Y' }} PivotPHP. Released under the MIT License.</p>
+        <p class="text-sm opacity-75">&copy; 2025 PivotPHP. MIT Licensed.</p>
       </div>
     </div>
   </footer>
