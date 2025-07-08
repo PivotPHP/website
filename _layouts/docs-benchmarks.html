@@ -188,6 +188,29 @@ layout: default
     color: var(--pivot-gray-50);
     border-color: var(--pivot-gray-800);
 }
+
+/* Force docs-nav-bottom theme in benchmarks */
+.benchmarks-article + .docs-nav-bottom {
+    background: var(--color-surface) !important;
+    border-top-color: var(--color-border) !important;
+}
+
+[data-theme="dark"] .benchmarks-article + .docs-nav-bottom {
+    background: var(--pivot-gray-900) !important;
+    border-top-color: var(--pivot-gray-800) !important;
+}
+
+[data-theme="dark"] .benchmarks-article + .docs-nav-bottom .btn {
+    background: var(--pivot-gray-800) !important;
+    border-color: var(--pivot-gray-700) !important;
+    color: var(--pivot-gray-100) !important;
+}
+
+[data-theme="dark"] .benchmarks-article + .docs-nav-bottom .btn:hover {
+    background: var(--pivot-gray-700) !important;
+    border-color: var(--pivot-purple-500) !important;
+    color: var(--pivot-gray-50) !important;
+}
 </style>
 
 <!-- Chart.js for benchmarks -->

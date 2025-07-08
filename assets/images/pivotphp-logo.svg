@@ -1,27 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="280" height="100" viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="pivotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    <!-- Gradiente Evolution Principal -->
+    <linearGradient id="evolutionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1"/>
     </linearGradient>
+
+    <!-- Gradiente Radial para o centro -->
+    <radialGradient id="centerGradient">
+      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1"/>
+    </radialGradient>
+
+    <!-- Sombra suave -->
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dx="0" dy="1" result="offsetblur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.1"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  
-  <!-- Pivot Arrow - Top-Left to Center -->
-  <rect x="25" y="49" width="36" height="14" rx="4" transform="rotate(-45 25 56)" fill="url(#pivotGradient)"/>
-  
-  <!-- Pivot Arrow - Center to Bottom-Right -->
-  <rect x="59" y="56" width="36" height="14" rx="4" transform="rotate(45 95 63)" fill="url(#pivotGradient)"/>
-  
-  <!-- Center Pivot Point -->
-  <circle cx="60" cy="60" r="10" fill="#EC4899">
-    <animate attributeName="r" values="10;12;10" dur="3s" repeatCount="indefinite"/>
-  </circle>
-  
-  <!-- Center Point Glow Effect -->
-  <circle cx="60" cy="60" r="10" fill="none" stroke="#EC4899" stroke-width="4" opacity="0.2">
-    <animate attributeName="r" values="10;16;10" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.2;0.1;0.2" dur="3s" repeatCount="indefinite"/>
-  </circle>
+  <g transform="translate(20, 20)">
+    <!-- Logo menor -->
+    <g transform="scale(0.8)">
+      <path d="
+        M50,10
+        A40,40 0 0,0 10,50
+        L18,50
+        A32,32 0 0,1 50,18
+        Z"
+        fill="url(#evolutionGradient)"/>
+
+      <path d="
+        M50,90
+        A40,40 0 0,0 90,50
+        L82,50
+        A32,32 0 0,1 50,82
+        Z"
+        fill="url(#evolutionGradient)"/>
+
+      <circle cx="50" cy="50" r="6" fill="url(#centerGradient)"/>
+    </g>
+
+    <!-- Texto PivotPHP -->
+    <text x="100" y="55" font-family="Inter, -apple-system, sans-serif" font-size="36" font-weight="800" letter-spacing="-1">
+      <tspan fill="url(#evolutionGradient)">Pivot</tspan><tspan fill="#64748B">PHP</tspan>
+    </text>
+  </g>
 </svg>

@@ -49,7 +49,7 @@ $app->get('/users/:id', function($req, $res) {
 $app->listen(8000);
 ```
 
-**2 minutes. That's all you need to build your first production-ready API.**
+**2 minutes. That's all you need to build your first API for concept validation and local development.**
 
 ---
 
@@ -118,7 +118,7 @@ $app->use(function($req, $res, $next) {
 ```
 
 ### **Security by Design**
-Production-ready security without configuration overhead.
+Built-in security features for safe API development without configuration overhead.
 
 ```php
 // Auto-sanitization and validation

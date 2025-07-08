@@ -9,7 +9,6 @@ layout: default
       <div class="home-hero-logo">
         <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo" class="hero-logo">
       </div>
-      <h1>PivotPHP</h1>
       <p class="tagline">The Evolutionary PHP Microframework</p>
       <p class="hero-description">
         Evolution over Convention • Performance in Every Strand • Structure meets Speed
@@ -17,6 +16,14 @@ layout: default
       <p class="hero-description" style="font-size: var(--text-lg); opacity: 0.8;">
         Build high-performance APIs that adapt and evolve. Express.js-inspired syntax meets PHP's power.
       </p>
+      
+      <div class="development-notice" style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; text-align: center;">
+        <p style="margin: 0; color: var(--color-warning); font-size: var(--text-base);">
+          <strong>🚧 Project in Active Development</strong><br>
+          PivotPHP is currently under development with new features and extensions being added regularly.<br>
+          Perfect for concept validation and local API development.
+        </p>
+      </div>
 
       <div class="home-hero-buttons">
         <a href="{{ '/docs/' | relative_url }}" class="btn btn-primary">
@@ -193,7 +200,7 @@ layout: default
           </svg>
         </div>
         <h3>Battle-Tested</h3>
-        <p>270+ tests, PHPStan Level 9, 100% PSR-12 compliant. Quality you can trust in production.</p>
+        <p>270+ tests, PHPStan Level 9, 100% PSR-12 compliant. Ideal for concept validation and local API development.</p>
         <div class="feature-stats">
           <span class="stat-badge">270+ Tests</span>
           <span class="stat-badge">Level 9</span>

@@ -1,0 +1,178 @@
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" ns="http://www.w3.org/2000/svg"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <ref name="svgContent" />
+  </start>
+  <define name="svgContent">
+    <element name="svg">
+      <ref name="defsContent" />
+      <ref name="gContent" />
+    </element>
+  </define>
+  <define name="defsContent">
+    <element name="defs">
+      <ref name="linearGradientContent" />
+      <ref name="radialGradientContent" />
+      <ref name="filterContent" />
+    </element>
+  </define>
+  <define name="linearGradientContent">
+    <element name="linearGradient">
+      <oneOrMore>
+        <ref name="stopContent" />
+      </oneOrMore>
+      <attribute name="id" />
+      <attribute name="x1" />
+      <attribute name="y1" />
+      <attribute name="x2" />
+      <attribute name="y2" />
+    </element>
+  </define>
+  <define name="stopContent">
+    <element name="stop">
+      <attribute name="offset" />
+      <attribute name="style" />
+    </element>
+  </define>
+  <define name="radialGradientContent">
+    <element name="radialGradient">
+      <oneOrMore>
+        <ref name="stopContent" />
+      </oneOrMore>
+      <attribute name="id" />
+    </element>
+  </define>
+  <define name="stopContent">
+    <element name="stop">
+      <attribute name="offset" />
+      <attribute name="style" />
+    </element>
+  </define>
+  <define name="filterContent">
+    <element name="filter">
+      <ref name="feGaussianBlurContent" />
+      <ref name="feOffsetContent" />
+      <ref name="feFloodContent" />
+      <ref name="feCompositeContent" />
+      <ref name="feMergeContent" />
+      <attribute name="id" />
+      <attribute name="x" />
+      <attribute name="y" />
+      <attribute name="width" />
+      <attribute name="height" />
+    </element>
+  </define>
+  <define name="feGaussianBlurContent">
+    <element name="feGaussianBlur">
+      <attribute name="in" />
+      <attribute name="stdDeviation">
+        <data type="integer" />
+      </attribute>
+    </element>
+  </define>
+  <define name="feOffsetContent">
+    <element name="feOffset">
+      <attribute name="dx">
+        <data type="integer" />
+      </attribute>
+      <attribute name="dy">
+        <data type="integer" />
+      </attribute>
+      <attribute name="result" />
+    </element>
+  </define>
+  <define name="feFloodContent">
+    <element name="feFlood">
+      <attribute name="flood-color" />
+      <attribute name="flood-opacity">
+        <data type="decimal" />
+      </attribute>
+    </element>
+  </define>
+  <define name="feCompositeContent">
+    <element name="feComposite">
+      <attribute name="in2" />
+      <attribute name="operator" />
+    </element>
+  </define>
+  <define name="feMergeContent">
+    <element name="feMerge">
+      <oneOrMore>
+        <ref name="feMergeNodeContent" />
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="feMergeNodeContent">
+    <element name="feMergeNode">
+      <optional>
+        <attribute name="in" />
+      </optional>
+    </element>
+  </define>
+  <define name="gContent">
+    <element name="g">
+      <ref name="gContent" />
+      <ref name="textContent" />
+    </element>
+  </define>
+  <define name="gContent">
+    <element name="g">
+      <oneOrMore>
+        <ref name="pathContent" />
+      </oneOrMore>
+      <oneOrMore>
+        <ref name="circleContent" />
+      </oneOrMore>
+      <attribute name="transform" />
+    </element>
+  </define>
+  <define name="pathContent">
+    <element name="path">
+      <attribute name="d" />
+      <attribute name="fill" />
+    </element>
+  </define>
+  <define name="circleContent">
+    <element name="circle">
+      <attribute name="cx">
+        <data type="integer" />
+      </attribute>
+      <attribute name="cy">
+        <data type="integer" />
+      </attribute>
+      <attribute name="r">
+        <data type="integer" />
+      </attribute>
+      <attribute name="fill" />
+    </element>
+  </define>
+  <define name="textContent">
+    <element name="text">
+      <oneOrMore>
+        <ref name="tspanContent" />
+      </oneOrMore>
+      <attribute name="x">
+        <data type="integer" />
+      </attribute>
+      <attribute name="y">
+        <data type="integer" />
+      </attribute>
+      <attribute name="font-family" />
+      <attribute name="font-size">
+        <data type="integer" />
+      </attribute>
+      <attribute name="font-weight">
+        <data type="integer" />
+      </attribute>
+      <attribute name="letter-spacing">
+        <data type="integer" />
+      </attribute>
+    </element>
+  </define>
+  <define name="tspanContent">
+    <element name="tspan">
+      <text />
+      <attribute name="fill" />
+    </element>
+  </define>
+</grammar>

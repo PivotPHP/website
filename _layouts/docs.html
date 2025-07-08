@@ -160,25 +160,51 @@ layout: default
     left: 100%;
 }
 
-/* Dark theme specific adjustments */
-[data-theme="dark"] .docs-nav-bottom {
-    background: var(--color-surface);
-    border-top-color: var(--color-border);
+/* Force theme inheritance for docs-nav-bottom */
+body[data-theme="dark"] .docs-nav-bottom,
+html[data-theme="dark"] .docs-nav-bottom {
+    background: var(--color-surface) !important;
+    border-top-color: var(--color-border) !important;
+    color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .docs-nav-bottom .btn {
-    background: var(--color-surface-secondary);
-    border-color: var(--color-border);
-    color: var(--color-text-primary);
+body[data-theme="dark"] .docs-nav-bottom .btn,
+html[data-theme="dark"] .docs-nav-bottom .btn {
+    background: var(--color-surface-secondary) !important;
+    border-color: var(--color-border) !important;
+    color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .docs-nav-bottom .btn:hover {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
-    color: var(--color-text-primary);
+body[data-theme="dark"] .docs-nav-bottom .btn:hover,
+html[data-theme="dark"] .docs-nav-bottom .btn:hover {
+    background: var(--color-surface-hover) !important;
+    border-color: var(--color-border-hover) !important;
+    color: var(--color-text-primary) !important;
 }
 
-[data-theme="dark"] .docs-nav-bottom .btn::before {
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+body[data-theme="dark"] .docs-nav-bottom .btn::before,
+html[data-theme="dark"] .docs-nav-bottom .btn::before {
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent) !important;
+}
+
+/* Additional specific targeting */
+.docs-content[data-theme="dark"] .docs-nav-bottom,
+[data-theme="dark"] .docs-content .docs-nav-bottom {
+    background: var(--pivot-gray-900) !important;
+    border-top-color: var(--pivot-gray-800) !important;
+}
+
+.docs-content[data-theme="dark"] .docs-nav-bottom .btn,
+[data-theme="dark"] .docs-content .docs-nav-bottom .btn {
+    background: var(--pivot-gray-800) !important;
+    border-color: var(--pivot-gray-700) !important;
+    color: var(--pivot-gray-100) !important;
+}
+
+.docs-content[data-theme="dark"] .docs-nav-bottom .btn:hover,
+[data-theme="dark"] .docs-content .docs-nav-bottom .btn:hover {
+    background: var(--pivot-gray-700) !important;
+    border-color: var(--pivot-purple-500) !important;
+    color: var(--pivot-gray-50) !important;
 }
 </style>

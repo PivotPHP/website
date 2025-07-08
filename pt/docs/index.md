@@ -7,14 +7,19 @@ lang: pt
 
 <p class="lead">Bem-vindo ao PivotPHP - O microframework PHP evolutivo projetado para construir aplicações modernas de alta performance com overhead mínimo.</p>
 
+<div style="background: rgba(251, 191, 36, 0.1); border-left: 4px solid rgba(251, 191, 36, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+  <strong>🚧 Status de Desenvolvimento</strong><br>
+  PivotPHP está atualmente em desenvolvimento ativo. Novas funcionalidades e extensões estão sendo adicionadas regularmente. É perfeito para validação de conceitos e desenvolvimento de APIs localmente, mas ainda não é recomendado para uso em produção.
+</div>
+
 ## Por que PivotPHP?
 
 PivotPHP traz a simplicidade e elegância do Express.js para o ecossistema PHP, mantendo a performance e confiabilidade que os desenvolvedores PHP esperam. Com mais de 52 milhões de operações por segundo, zero requisitos de configuração e compatibilidade com PSR-15, o PivotPHP é perfeito para:
 
-- Desenvolvimento de APIs de alta performance
-- Arquitetura de microsserviços
-- Prototipagem rápida
-- Aplicações empresariais
+- Desenvolvimento e testes de APIs localmente
+- Validação de conceitos e prototipagem
+- Aprendizado de padrões modernos em PHP
+- Construção de aplicações proof-of-concept
 
 ## Recursos Principais
 

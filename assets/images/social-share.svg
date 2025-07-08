@@ -2,52 +2,110 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <!-- Background gradient -->
   <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0056b3;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#007bff;stop-opacity:1" />
-    </linearGradient>
     <filter id="shadow">
-      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.2"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.2" />
     </filter>
+    <!-- Gradiente Evolution Principal -->
+    <linearGradient id="evolutionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C3AED;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06B6D4;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Gradiente Radial para o centro -->
+    <radialGradient id="centerGradient">
+      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </radialGradient>
   </defs>
 
   <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  <rect width="1200" height="630" fill="url(#evolutionGradient)" />
 
   <!-- Pattern overlay -->
   <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-    <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.1"/>
+    <circle cx="20" cy="20" r="1" fill="#ffffff" opacity="0.1" />
   </pattern>
-  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#dots)" />
 
   <!-- Content area -->
-  <rect x="80" y="80" width="1040" height="470" rx="20" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="80" y="80" width="1040" height="470" rx="20" fill="#ffffff" filter="url(#shadow)" />
 
   <!-- Logo placeholder -->
-  <text x="600" y="200" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="#007bff">PivotPHP</text>
+  <g transform="translate(450, 125)">
+    <g transform="scale(0.8)">
+      <path
+        d="
+          M50,10
+          A40,40 0 0,0 10,50
+          L18,50
+          A32,32 0 0,1 50,18
+          Z"
+        fill="url(#evolutionGradient)" />
+
+      <path
+        d="
+          M50,90
+          A40,40 0 0,0 90,50
+          L82,50
+          A32,32 0 0,1 50,82
+          Z"
+        fill="url(#evolutionGradient)" />
+
+      <circle cx="50" cy="50" r="6" fill="url(#centerGradient)" />
+    </g>
+
+    <!-- Texto PivotPHP -->
+    <text x="100" y="55" font-family="Inter, -apple-system, sans-serif" font-size="36"
+      font-weight="800" letter-spacing="-1">
+      <tspan fill="url(#evolutionGradient)">Pivot</tspan>
+      <tspan fill="#64748B">PHP</tspan>
+    </text>
+  </g>
 
   <!-- Tagline -->
-  <text x="600" y="280" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="#666666">High-Performance PHP Microframework</text>
+   <text x="600" y="230" font-family="Inter, -apple-system, sans-serif" font-size="32"
+        text-anchor="middle" font-weight="500" fill="#64748B">
+    The Evolutionary PHP Microframework
+  </text>
+
+  <text x="600" y="280" font-family="Inter, -apple-system, sans-serif" font-size="24"
+        text-anchor="middle" font-weight="400" fill="#94A3B8">
+    Build high-performance APIs with Express.js-inspired syntax
+  </text>
 
   <!-- Performance metrics -->
-  <g transform="translate(300, 350)">
-    <rect x="0" y="0" width="200" height="80" rx="10" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
-    <text x="100" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#007bff">52M+</text>
-    <text x="100" y="60" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#666666">ops/sec</text>
+  <g transform="translate(210, 350)">
+    <!-- Card 1 -->
+    <rect x="0" y="0" width="240" height="90" rx="16"
+          fill="rgba(124,58,237,0.05)" stroke="rgba(124,58,237,0.2)" stroke-width="2" />
+    <text x="120" y="40" font-family="Inter, sans-serif" font-size="32" font-weight="700"
+          text-anchor="middle" fill="#7C3AED">52M+</text>
+    <text x="120" y="65" font-family="Inter, sans-serif" font-size="16" text-anchor="middle"
+          fill="#64748B">ops/sec</text>
   </g>
 
-  <g transform="translate(500, 350)">
-    <rect x="0" y="0" width="200" height="80" rx="10" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
-    <text x="100" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#007bff">PSR</text>
-    <text x="100" y="60" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#666666">Compliant</text>
+  <g transform="translate(480, 350)">
+    <!-- Card 2 -->
+    <rect x="0" y="0" width="240" height="90" rx="16"
+          fill="rgba(236,72,153,0.05)" stroke="rgba(236,72,153,0.2)" stroke-width="2" />
+    <text x="120" y="40" font-family="Inter, sans-serif" font-size="32" font-weight="700"
+          text-anchor="middle" fill="#EC4899">&lt;1ms</text>
+    <text x="120" y="65" font-family="Inter, sans-serif" font-size="16" text-anchor="middle"
+          fill="#64748B">response time</text>
   </g>
 
-  <g transform="translate(700, 350)">
-    <rect x="0" y="0" width="200" height="80" rx="10" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
-    <text x="100" y="35" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#007bff">Zero</text>
-    <text x="100" y="60" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#666666">Config</text>
+  <g transform="translate(750, 350)">
+    <!-- Card 3 -->
+    <rect x="0" y="0" width="240" height="90" rx="16"
+          fill="rgba(6,182,212,0.05)" stroke="rgba(6,182,212,0.2)" stroke-width="2" />
+    <text x="120" y="40" font-family="Inter, sans-serif" font-size="32" font-weight="700"
+          text-anchor="middle" fill="#06B6D4">Zero</text>
+    <text x="120" y="65" font-family="Inter, sans-serif" font-size="16" text-anchor="middle"
+          fill="#64748B">configuration</text>
   </g>
 
   <!-- URL -->
-  <text x="600" y="500" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#999999">pivotphp.github.io</text>
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="18" text-anchor="middle"
+    fill="url(#evolutionGradient)">pivotphp.github.io/website</text>
 </svg>

@@ -11,9 +11,17 @@ layout: default
       <div class="home-hero-logo">
         <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo" class="hero-logo">
       </div>
-      <h1>PivotPHP</h1>
       <p class="tagline">{{ t.tagline }}</p>
       <p class="hero-description">{{ t.hero_subtitle }}</p>
+      
+      <div class="development-notice" style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 8px; padding: 1rem; margin: 1.5rem 0; text-align: center;">
+        <p style="margin: 0; color: var(--color-warning); font-size: var(--text-base);">
+          <strong>🚧 {% if lang == 'pt' %}Projeto em Desenvolvimento Ativo{% else %}Project in Active Development{% endif %}</strong><br>
+          {% if lang == 'pt' %}PivotPHP está em desenvolvimento com novas funcionalidades e extensões sendo adicionadas regularmente.<br>
+          Perfeito para validação de conceitos e desenvolvimento de APIs localmente.{% else %}PivotPHP is currently under development with new features and extensions being added regularly.<br>
+          Perfect for concept validation and local API development.{% endif %}
+        </p>
+      </div>
 
       <div class="home-hero-buttons">
         {% assign docs_url = "/docs/" %}
@@ -139,7 +147,7 @@ layout: default
       <div class="home-feature">
         <div class="home-feature-icon">🧪</div>
         <h3>{% if lang == 'pt' %}Testado em Batalha{% else %}Battle-Tested{% endif %}</h3>
-        <p>{% if lang == 'pt' %}270+ testes, PHPStan Level 9, 100% compatível com PSR-12. Qualidade em que você pode confiar em produção.{% else %}270+ tests, PHPStan Level 9, 100% PSR-12 compliant. Quality you can trust in production.{% endif %}</p>
+        <p>{% if lang == 'pt' %}270+ testes, PHPStan Level 9, 100% compatível com PSR-12. Ideal para validação de conceitos e desenvolvimento de APIs localmente.{% else %}270+ tests, PHPStan Level 9, 100% PSR-12 compliant. Ideal for concept validation and local API development.{% endif %}</p>
       </div>
     </div>
   </div>

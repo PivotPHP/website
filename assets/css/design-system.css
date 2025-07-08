@@ -1015,6 +1015,97 @@ pre code {
     background-clip: text;
 }
 
+/* Documentation Navigation Bottom - Global Styles */
+.docs-nav-bottom {
+    background: var(--color-surface);
+    border-top: 2px solid var(--color-border);
+    color: var(--color-text-primary);
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-10);
+    margin-left: calc(-1 * var(--space-10));
+    margin-right: calc(-1 * var(--space-10));
+    margin-bottom: calc(-1 * var(--space-10));
+    padding-left: var(--space-10);
+    padding-right: var(--space-10);
+    border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.docs-nav-bottom::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: var(--space-10);
+    width: 60px;
+    height: 2px;
+    background: var(--pivot-gradient-primary);
+}
+
+.docs-nav-bottom .btn {
+    max-width: 45%;
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.docs-nav-bottom .btn:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+    color: var(--color-text-primary);
+}
+
+.docs-nav-bottom .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-surface-hover), transparent);
+    transition: left 0.5s;
+    opacity: 0.5;
+}
+
+.docs-nav-bottom .btn:hover::before {
+    left: 100%;
+}
+
+/* Dark Theme for docs-nav-bottom - More Specific */
+body[data-theme="dark"] .docs-nav-bottom,
+html[data-theme="dark"] .docs-nav-bottom,
+[data-theme="dark"] .docs-nav-bottom {
+    background: var(--pivot-gray-900) !important;
+    border-top-color: var(--pivot-gray-800) !important;
+    color: var(--pivot-gray-100) !important;
+}
+
+body[data-theme="dark"] .docs-nav-bottom .btn,
+html[data-theme="dark"] .docs-nav-bottom .btn,
+[data-theme="dark"] .docs-nav-bottom .btn {
+    background: var(--pivot-gray-800) !important;
+    border-color: var(--pivot-gray-700) !important;
+    color: var(--pivot-gray-100) !important;
+}
+
+body[data-theme="dark"] .docs-nav-bottom .btn:hover,
+html[data-theme="dark"] .docs-nav-bottom .btn:hover,
+[data-theme="dark"] .docs-nav-bottom .btn:hover {
+    background: var(--pivot-gray-700) !important;
+    border-color: var(--pivot-purple-500) !important;
+    color: var(--pivot-gray-50) !important;
+}
+
+body[data-theme="dark"] .docs-nav-bottom .btn::before,
+html[data-theme="dark"] .docs-nav-bottom .btn::before,
+[data-theme="dark"] .docs-nav-bottom .btn::before {
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent) !important;
+}
+
 /* Responsive Documentation Layout */
 @media (max-width: 1024px) {
     .docs-container {
@@ -1180,8 +1271,8 @@ pre code {
 }
 
 .navbar-brand img {
-    width: 32px;
-    height: 32px;
+    width: 180px;
+    height: auto;
     transition: var(--transition-base);
 }
 
@@ -1372,8 +1463,8 @@ pre code {
 }
 
 .hero-logo {
-    width: 120px;
-    height: 120px;
+    width: 320px;
+    height: auto;
     filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
     animation: heroLogoFloat 6s ease-in-out infinite;
 }

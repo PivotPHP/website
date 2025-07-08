@@ -6,6 +6,11 @@ permalink: /docs/quickstart/
 
 This guide will walk you through creating your first PivotPHP application. We'll build a simple REST API for managing tasks.
 
+<div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid rgba(59, 130, 246, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+  <strong>ℹ️ Development Status</strong><br>
+  PivotPHP is ideal for local development and API concept validation. The framework is under active development with new features being added regularly.
+</div>
+
 ## Step 1: Create Your Application
 
 First, create a new file `public/index.php`:

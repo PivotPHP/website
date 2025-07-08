@@ -4,7 +4,12 @@ title: Deployment
 permalink: /docs/deployment/
 ---
 
-This guide covers best practices and procedures for deploying PivotPHP applications to production environments.
+This guide covers deployment procedures for PivotPHP applications.
+
+<div style="background: rgba(251, 191, 36, 0.1); border-left: 4px solid rgba(251, 191, 36, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+  <strong>⚠️ Important Note</strong><br>
+  PivotPHP is currently in active development and not yet recommended for production use. This guide is provided for testing and development environments only. Use it for concept validation and local development.
+</div>
 
 ## Server Requirements
 
