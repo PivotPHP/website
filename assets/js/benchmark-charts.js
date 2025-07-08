@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     y: {
                         ticks: {
-                            color: 'white'
+                            color: colors.tickColor
                         },
                         grid: {
                             color: colors.gridColor
@@ -429,4 +429,8 @@ document.addEventListener('DOMContentLoaded', function() {
         card.style.transition = `all 0.6s ease ${index * 0.1}s`;
         observer.observe(card);
     });
+    }
+    
+    // Initialize charts when DOM is loaded
+    initCharts();
 });

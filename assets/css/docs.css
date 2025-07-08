@@ -1,9 +1,10 @@
 /* Documentation Specific Styles */
+@import url('design-system.css');
 
 /* Reset body background for docs */
 body {
-    background: var(--light);
-    color: var(--dark);
+    background: var(--color-background);
+    color: var(--color-text-primary);
     min-height: 100vh;
 }
 
@@ -30,13 +31,18 @@ body {
 
 /* Documentation Header */
 .docs-header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    color: var(--light);
+    background: var(--pivot-gradient);
+    color: var(--pivot-white);
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .docs-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .docs-nav {
@@ -50,9 +56,13 @@ body {
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-    color: var(--light);
+    color: var(--pivot-white);
     font-size: 1.5rem;
     font-weight: 700;
+}
+
+[data-theme="dark"] .nav-logo {
+    color: var(--color-text-primary);
 }
 
 .logo-small {
@@ -66,10 +76,14 @@ body {
 }
 
 .nav-links a {
-    color: var(--light);
+    color: var(--pivot-white);
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .nav-links a {
+    color: var(--color-text-primary);
 }
 
 .nav-links a:hover {
@@ -99,13 +113,17 @@ body {
 }
 
 .docs-sidebar h3 {
-    color: var(--primary);
+    color: var(--pivot-purple-700);
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin: 1.5rem 0 0.75rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .docs-sidebar h3 {
+    color: var(--pivot-purple-400);
 }
 
 .docs-sidebar h3:first-child {
@@ -123,18 +141,23 @@ body {
 }
 
 .docs-sidebar a {
-    color: var(--dark);
+    color: var(--color-text-primary);
     text-decoration: none;
     font-size: 0.95rem;
     transition: all 0.3s ease;
     display: block;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
 }
 
 .docs-sidebar a:hover {
-    color: var(--primary);
-    background: rgba(46, 134, 171, 0.1);
+    color: var(--pivot-purple-700);
+    background: rgba(124, 58, 237, 0.1);
+}
+
+[data-theme="dark"] .docs-sidebar a:hover {
+    color: var(--pivot-purple-400);
+    background: rgba(139, 92, 246, 0.2);
 }
 
 /* Content */
@@ -144,24 +167,36 @@ body {
 
 .docs-content h1 {
     font-size: 3rem;
-    color: var(--primary);
+    color: var(--pivot-purple-700);
     margin-bottom: 1rem;
     background: none;
     -webkit-text-fill-color: initial;
 }
 
+[data-theme="dark"] .docs-content h1 {
+    color: var(--pivot-purple-400);
+}
+
 .docs-content h2 {
     font-size: 2rem;
-    color: var(--primary);
+    color: var(--pivot-purple-700);
     margin: 3rem 0 1.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .docs-content h2 {
+    color: var(--pivot-purple-400);
 }
 
 .docs-content h3 {
     font-size: 1.5rem;
-    color: var(--secondary);
+    color: var(--pivot-pink-600);
     margin: 2rem 0 1rem;
+}
+
+[data-theme="dark"] .docs-content h3 {
+    color: var(--pivot-pink-400);
 }
 
 .docs-content h2:first-child {
@@ -173,12 +208,12 @@ body {
 .docs-content p {
     line-height: 1.8;
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--color-text-secondary);
 }
 
 .docs-content .lead {
     font-size: 1.25rem;
-    color: #555;
+    color: var(--color-text-secondary);
     font-weight: 300;
 }
 
@@ -193,27 +228,39 @@ body {
 
 /* Code Blocks */
 .docs-content pre {
-    background: #1e1e1e;
+    background: var(--pivot-gray-900);
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-lg);
     overflow-x: auto;
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
     line-height: 1.6;
+    border: 1px solid var(--color-border);
+}
+
+[data-theme="dark"] .docs-content pre {
+    background: var(--pivot-gray-950);
+    border-color: var(--pivot-gray-800);
 }
 
 .docs-content code {
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    color: #e6e6e6;
+    font-family: var(--font-mono);
+    color: var(--pivot-gray-100);
 }
 
 .docs-content p code, 
 .docs-content li code {
-    background: rgba(46, 134, 171, 0.1);
-    color: var(--primary);
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--pivot-purple-700);
     padding: 0.2rem 0.4rem;
-    border-radius: 3px;
+    border-radius: var(--radius-sm);
     font-size: 0.9em;
+}
+
+[data-theme="dark"] .docs-content p code,
+[data-theme="dark"] .docs-content li code {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--pivot-purple-400);
 }
 
 /* Sections */
@@ -223,12 +270,12 @@ body {
 
 /* Footer */
 .docs-footer {
-    background: #f8f9fa;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
     padding: 2rem 0;
     margin-top: 4rem;
     text-align: center;
-    color: #666;
+    color: var(--color-text-secondary);
 }
 
 /* Responsive */
@@ -269,43 +316,7 @@ body {
     }
 }
 
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-    body {
-        background: #1a1a1a;
-        color: #e0e0e0;
-    }
-    
-    .docs-sidebar a {
-        color: #e0e0e0;
-    }
-    
-    .docs-sidebar a:hover {
-        background: rgba(46, 134, 171, 0.2);
-    }
-    
-    .docs-content p {
-        color: #ccc;
-    }
-    
-    .docs-content .lead {
-        color: #aaa;
-    }
-    
-    .docs-footer {
-        background: #222;
-        border-top-color: #444;
-        color: #999;
-    }
-    
-    .docs-content h2 {
-        border-top-color: #444;
-    }
-    
-    .docs-sidebar h3 {
-        border-bottom-color: #444;
-    }
-}
+/* Remove old dark mode media query as we're using data-theme attribute */
 
 /* Smooth scrolling */
 html {
@@ -324,18 +335,13 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--light);
+    background: var(--color-background);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
     z-index: 9999;
 }
 
-@media (prefers-color-scheme: dark) {
-    .page-transition-overlay {
-        background: #1a1a1a;
-    }
-}
 
 body.page-transitioning .page-transition-overlay {
     opacity: 1;
@@ -400,8 +406,12 @@ body.page-transitioning::before {
     transform: translateY(-50%);
     width: 3px;
     height: 0;
-    background: var(--primary);
+    background: var(--pivot-purple-700);
     transition: height 0.2s ease;
+}
+
+[data-theme="dark"] .docs-sidebar a::before {
+    background: var(--pivot-purple-400);
 }
 
 .docs-sidebar a:hover::before,
@@ -426,7 +436,11 @@ img.loading {
 
 /* Better focus styles */
 a:focus-visible {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--pivot-purple-600);
     outline-offset: 4px;
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
+}
+
+[data-theme="dark"] a:focus-visible {
+    outline-color: var(--pivot-purple-400);
 }

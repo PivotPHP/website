@@ -1,4 +1,5 @@
 /* Documentation Refinements - Following PivotPHP Design Identity */
+@import url('design-system.css');
 
 /* ===== Documentation Layout Fixes ===== */
 .docs-wrapper {
@@ -45,23 +46,27 @@
 
 /* Navigation refinements */
 .docs-nav {
-    background: var(--pivot-white);
-    border-radius: 16px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(124, 58, 237, 0.08);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
 }
 
 .docs-nav h4 {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--pivot-primary);
+    color: var(--pivot-purple-700);
     margin-bottom: 0.75rem;
     margin-top: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+    border-bottom: 1px solid var(--color-border);
     font-weight: 700;
+}
+
+[data-theme="dark"] .docs-nav h4 {
+    color: var(--pivot-purple-400);
 }
 
 .docs-nav h4:first-child {
@@ -79,9 +84,9 @@
 }
 
 .docs-nav a {
-    color: var(--pivot-gray);
+    color: var(--color-text-primary);
     padding: 0.5rem 0.75rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: block;
     font-size: 0.95rem;
     transition: all 0.2s ease;
@@ -104,8 +109,13 @@
 
 .docs-nav a:hover {
     background: rgba(124, 58, 237, 0.05);
-    color: var(--pivot-primary);
+    color: var(--pivot-purple-700);
     padding-left: 1rem;
+}
+
+[data-theme="dark"] .docs-nav a:hover {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--pivot-purple-400);
 }
 
 .docs-nav a:hover::before {
@@ -117,6 +127,10 @@
     color: var(--pivot-white);
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+[data-theme="dark"] .docs-nav a.active {
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
 }
 
 .docs-nav a.active::before {
@@ -138,7 +152,7 @@
 .docs-content article {
     font-size: 1.0625rem;
     line-height: 1.75;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .docs-content h1 {
@@ -153,11 +167,15 @@
 
 .docs-content h2 {
     font-size: 2rem;
-    color: var(--pivot-dark);
+    color: var(--pivot-purple-700);
     margin: 3rem 0 1.5rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(124, 58, 237, 0.1);
+    border-top: 1px solid var(--color-border);
     position: relative;
+}
+
+[data-theme="dark"] .docs-content h2 {
+    color: var(--pivot-purple-400);
 }
 
 .docs-content h2::before {
@@ -183,18 +201,27 @@
 
 .docs-content h3 {
     font-size: 1.5rem;
-    color: var(--pivot-secondary);
+    color: var(--pivot-pink-600);
     margin: 2rem 0 1rem;
+}
+
+[data-theme="dark"] .docs-content h3 {
+    color: var(--pivot-pink-400);
 }
 
 /* Code blocks following design identity */
 .docs-content pre {
-    background: var(--pivot-dark);
-    border: 1px solid rgba(15, 23, 42, 0.1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: var(--pivot-gray-900);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
     margin: 1.5rem 0;
     position: relative;
     overflow: hidden;
+}
+
+[data-theme="dark"] .docs-content pre {
+    background: var(--pivot-gray-950);
+    border-color: var(--pivot-gray-800);
 }
 
 .docs-content pre::before {
@@ -211,20 +238,27 @@
 .docs-content p code,
 .docs-content li code {
     background: rgba(124, 58, 237, 0.08);
-    color: var(--pivot-primary);
+    color: var(--pivot-purple-700);
     padding: 0.2rem 0.5rem;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-size: 0.9em;
     font-weight: 500;
     border: 1px solid rgba(124, 58, 237, 0.15);
 }
 
+[data-theme="dark"] .docs-content p code,
+[data-theme="dark"] .docs-content li code {
+    background: rgba(139, 92, 246, 0.2);
+    color: var(--pivot-purple-400);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
 /* Tables */
 .docs-content table {
-    border: 1px solid var(--pivot-gray-light);
-    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-sm);
 }
 
 .docs-content table th {
@@ -249,7 +283,7 @@
 }
 
 .docs-content blockquote p {
-    color: var(--pivot-dark);
+    color: var(--color-text-primary);
     margin-bottom: 0;
 }
 
@@ -265,15 +299,24 @@
 
 /* Links */
 .docs-content a {
-    color: var(--pivot-primary);
+    color: var(--pivot-purple-700);
     text-decoration: none;
     border-bottom: 2px solid transparent;
     transition: all 0.2s ease;
 }
 
+[data-theme="dark"] .docs-content a {
+    color: var(--pivot-purple-400);
+}
+
 .docs-content a:hover {
-    border-bottom-color: var(--pivot-secondary);
-    color: var(--pivot-secondary);
+    border-bottom-color: var(--pivot-pink-500);
+    color: var(--pivot-pink-600);
+}
+
+[data-theme="dark"] .docs-content a:hover {
+    color: var(--pivot-pink-400);
+    border-bottom-color: var(--pivot-pink-400);
 }
 
 /* Navigation buttons */
@@ -286,21 +329,27 @@
 }
 
 .docs-nav-bottom .btn {
-    background: var(--pivot-white);
-    border: 2px solid var(--pivot-gray-light);
-    color: var(--pivot-dark);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    color: var(--color-text-primary);
     padding: 0.75rem 1.5rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-weight: 600;
     transition: all 0.2s ease;
     max-width: 45%;
 }
 
 .docs-nav-bottom .btn:hover {
-    border-color: var(--pivot-primary);
-    color: var(--pivot-primary);
+    border-color: var(--pivot-purple-600);
+    color: var(--pivot-purple-700);
     transform: translateX(0);
     box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+}
+
+[data-theme="dark"] .docs-nav-bottom .btn:hover {
+    border-color: var(--pivot-purple-400);
+    color: var(--pivot-purple-400);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
 }
 
 .docs-nav-bottom .btn:first-child:hover {
@@ -331,7 +380,7 @@
         left: -100%;
         width: 280px;
         height: calc(100vh - 60px);
-        background: var(--pivot-white);
+        background: var(--color-surface);
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         z-index: 999;
         transition: left 0.3s ease;
@@ -371,59 +420,7 @@
     }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    .docs-nav {
-        background: #1a1a1a;
-        border-color: #333;
-    }
-    
-    .docs-nav h4 {
-        color: var(--pivot-accent);
-        border-bottom-color: #333;
-    }
-    
-    .docs-nav a {
-        color: #ccc;
-    }
-    
-    .docs-nav a:hover {
-        background: rgba(124, 58, 237, 0.15);
-        color: var(--pivot-accent);
-    }
-    
-    .docs-content article {
-        color: #e0e0e0;
-    }
-    
-    .docs-content h2 {
-        color: #f0f0f0;
-        border-top-color: #333;
-    }
-    
-    .docs-content blockquote {
-        background: linear-gradient(to right, rgba(124, 58, 237, 0.15), transparent);
-    }
-    
-    .docs-content blockquote p {
-        color: #e0e0e0;
-    }
-    
-    .docs-nav-bottom .btn {
-        background: #2a2a2a;
-        border-color: #444;
-        color: #e0e0e0;
-    }
-    
-    .docs-nav-bottom .btn:hover {
-        border-color: var(--pivot-accent);
-        color: var(--pivot-accent);
-    }
-    
-    .docs-sidebar {
-        background: #1a1a1a;
-    }
-}
+/* Dark mode is now handled by data-theme attribute */
 
 /* Loading animation for page transitions */
 @keyframes slideIn {

@@ -43,7 +43,7 @@ layout: default
   justify-content: space-between;
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid var(--pivot-gray-light);
+  border-top: 1px solid var(--color-border);
 }
 
 .docs-nav-bottom .btn {
@@ -58,10 +58,20 @@ layout: default
 .docs-content h2 {
   margin-top: 2.5rem;
   padding-top: 1rem;
+  color: var(--pivot-purple-700);
+}
+
+[data-theme="dark"] .docs-content h2 {
+  color: var(--pivot-purple-400);
 }
 
 .docs-content h3 {
   margin-top: 2rem;
+  color: var(--pivot-pink-600);
+}
+
+[data-theme="dark"] .docs-content h3 {
+  color: var(--pivot-pink-400);
 }
 
 .docs-content table {
@@ -74,20 +84,26 @@ layout: default
 .docs-content table td {
   text-align: left;
   padding: 0.75rem;
-  border-bottom: 1px solid var(--pivot-gray-light);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .docs-content table th {
   font-weight: 600;
-  background: var(--pivot-light);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
 }
 
 .docs-content blockquote {
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
-  border-left: 4px solid var(--pivot-primary);
+  border-left: 4px solid var(--pivot-purple-600);
   background: rgba(124, 58, 237, 0.05);
   border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .docs-content blockquote {
+  background: rgba(139, 92, 246, 0.1);
+  border-left-color: var(--pivot-purple-400);
 }
 
 .docs-content blockquote p:last-child {
