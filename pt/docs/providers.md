@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Provedores de Serviços
 permalink: /pt/docs/providers/
 lang: pt

@@ -1,5 +1,5 @@
 ---
-layout: home-i18n
+layout: home
 title: O Microframework PHP Evolutivo
 lang: pt
 permalink: /pt/

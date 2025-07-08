@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Container de Serviços
 permalink: /pt/docs/container/
 lang: pt

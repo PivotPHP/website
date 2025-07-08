@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Eventos
 permalink: /pt/docs/events/
 lang: pt

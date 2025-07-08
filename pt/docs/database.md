@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Banco de Dados
 permalink: /pt/docs/database/
 lang: pt

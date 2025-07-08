@@ -1,16 +1,13 @@
 /* Benchmark Page Styles - Following PivotPHP Design Identity */
-/* Main styles are inherited from design-system.css */
-@import url('design-system.css');
-
 /* Additional benchmark-specific styles */
 .benchmark-chart {
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin: var(--space-8) 0;
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
     transition: var(--transition-base);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
     min-height: 450px;
     display: flex;
     flex-direction: column;
@@ -18,8 +15,8 @@
 
 .benchmark-chart:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-border-hover);
+    box-shadow: var(--theme-shadow-card-hover);
+    border-color: var(--theme-border-hover);
 }
 
 .benchmark-chart canvas {
@@ -48,18 +45,18 @@
 }
 
 .load-test-card {
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-xl);
     padding: var(--space-6);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
     transition: var(--transition-base);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
 }
 
 .load-test-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-border-hover);
+    box-shadow: var(--theme-shadow-card-hover);
+    border-color: var(--theme-border-hover);
 }
 
 .load-test-card h4 {
@@ -81,11 +78,11 @@
 
 .benchmark-table td {
     padding: var(--space-3) 0;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--theme-border);
 }
 
 .benchmark-table td:first-child {
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
     font-weight: var(--font-medium);
 }
 
@@ -105,17 +102,17 @@
 }
 
 .benchmark-table tr:hover {
-    background: var(--color-surface-hover);
+    background: var(--theme-surface-hover);
 }
 
 /* Performance Comparison Section */
 .performance-comparison {
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin: var(--space-8) 0;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-border);
+    box-shadow: var(--theme-shadow-card);
+    border: 1px solid var(--theme-border);
 }
 
 .framework-comparison {
@@ -126,19 +123,19 @@
 }
 
 .framework-card {
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-lg);
     padding: var(--space-6);
     text-align: center;
     transition: var(--transition-base);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow-card);
 }
 
 .framework-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-border-hover);
+    box-shadow: var(--theme-shadow-card-hover);
+    border-color: var(--theme-border-hover);
 }
 
 .framework-card.winner {
@@ -167,7 +164,7 @@
     font-weight: var(--font-extrabold);
     font-size: var(--text-lg);
     margin-bottom: var(--space-3);
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
 }
 
 .framework-card.winner .framework-name {
@@ -199,7 +196,7 @@
 
 .framework-metric {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: var(--theme-text-secondary);
     opacity: 0.8;
 }
 
@@ -212,18 +209,18 @@
 }
 
 .component-card {
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-lg);
     padding: var(--space-8);
     text-align: center;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
     transition: var(--transition-base);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
 }
 
 .component-card:hover {
     border-color: var(--pivot-purple-600);
-    box-shadow: var(--shadow-card-hover);
+    box-shadow: var(--theme-shadow-card-hover);
     transform: translateY(-5px);
 }
 
@@ -235,7 +232,7 @@
 .component-card h4 {
     font-size: var(--text-xl);
     margin-bottom: var(--space-4);
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
     font-weight: var(--font-semibold);
 }
 
@@ -252,7 +249,7 @@
 
 .component-card .description {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: var(--theme-text-secondary);
 }
 
 /* Latency Chart */
@@ -261,7 +258,7 @@
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin: var(--space-8) 0;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
     min-height: 500px;
     display: flex;
     flex-direction: column;
@@ -286,16 +283,16 @@
 
 /* Comparison Chart - Light Theme Default */
 .comparison-chart {
-    background: var(--color-surface);
-    color: var(--color-text-primary);
+    background: var(--theme-surface);
+    color: var(--theme-text-primary);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin: var(--space-8) 0;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
     min-height: 500px;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
     position: relative;
 }
 
@@ -337,7 +334,7 @@
 /* Light theme text for chart content */
 body:not([data-theme="dark"]) .comparison-chart {
     background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
 }
 
 body:not([data-theme="dark"]) .comparison-chart h3 {
@@ -347,7 +344,7 @@ body:not([data-theme="dark"]) .comparison-chart h3 {
 body:not([data-theme="dark"]) .comparison-chart p,
 body:not([data-theme="dark"]) .comparison-chart td,
 body:not([data-theme="dark"]) .comparison-chart th {
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
 }
 
 /* Performance Tables */
@@ -355,25 +352,25 @@ table {
     width: 100%;
     margin: var(--space-6) 0;
     border-collapse: collapse;
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-border);
+    box-shadow: var(--theme-shadow-card);
+    border: 1px solid var(--theme-border);
 }
 
 table th {
-    background: var(--color-surface-secondary);
+    background: var(--theme-surface-secondary);
     padding: var(--space-4);
     text-align: left;
     font-weight: var(--font-semibold);
-    color: var(--color-text-primary);
+    color: var(--theme-text-primary);
     border-bottom: 2px solid var(--pivot-purple-600);
 }
 
 table td {
     padding: var(--space-4);
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--theme-border);
 }
 
 table tr:last-child td {
@@ -381,7 +378,7 @@ table tr:last-child td {
 }
 
 table tr:hover {
-    background: var(--color-surface-hover);
+    background: var(--theme-surface-hover);
 }
 
 /* Code Examples */
@@ -613,19 +610,19 @@ table tr:hover {
 }
 
 .stat-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background: var(--theme-surface);
+    border: 1px solid var(--theme-border);
     border-radius: var(--radius-xl);
     padding: var(--space-6);
     text-align: center;
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
     transition: var(--transition-base);
 }
 
 .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-card-hover);
-    border-color: var(--color-border-hover);
+    box-shadow: var(--theme-shadow-card-hover);
+    border-color: var(--theme-border-hover);
 }
 
 .stat-value {
@@ -641,7 +638,7 @@ table tr:hover {
 
 .stat-label {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: var(--theme-text-secondary);
     font-weight: var(--font-medium);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wide);
@@ -650,7 +647,7 @@ table tr:hover {
 
 .stat-description {
     font-size: var(--text-xs);
-    color: var(--color-text-tertiary);
+    color: var(--theme-text-tertiary);
     font-style: italic;
 }
 
@@ -660,7 +657,7 @@ table tr:hover {
     border-radius: var(--radius-xl);
     padding: var(--space-8);
     margin: var(--space-8) 0;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--theme-border);
 }
 
 [data-theme="dark"] .optimization-tips {

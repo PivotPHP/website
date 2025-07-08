@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Configuração
 permalink: /pt/docs/configuration/
 lang: pt

@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Deploy
 permalink: /pt/docs/deployment/
 lang: pt

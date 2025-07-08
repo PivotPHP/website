@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Validação
 permalink: /pt/docs/validation/
 lang: pt

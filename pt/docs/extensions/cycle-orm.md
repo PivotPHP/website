@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Extensão Cycle ORM
 permalink: /pt/docs/extensions/cycle-orm/
 lang: pt

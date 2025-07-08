@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Início Rápido
 permalink: /pt/docs/quickstart/
 lang: pt

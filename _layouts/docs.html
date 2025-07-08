@@ -5,7 +5,11 @@ layout: default
 <!-- Documentation Content -->
 <main class="docs-main">
     <div class="container docs-container">
-        {% include docs-sidebar.html %}
+        {% if page.lang and page.lang != site.lang %}
+            {% include docs-sidebar-i18n.html %}
+        {% else %}
+            {% include docs-sidebar.html %}
+        {% endif %}
 
         <!-- Content -->
         <div class="docs-content">
@@ -89,16 +93,16 @@ layout: default
 .docs-content table {
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-border);
+    box-shadow: var(--theme-shadow-card);
+    border: 1px solid var(--theme-border);
 }
 
 .docs-content table thead tr {
-    background: var(--color-surface-secondary);
+    background: var(--theme-surface-secondary);
 }
 
 .docs-content table tbody tr:hover {
-    background: var(--color-surface-hover);
+    background: var(--theme-surface-hover);
 }
 
 /* Enhanced navigation */
@@ -106,9 +110,9 @@ layout: default
     display: flex;
     justify-content: space-between;
     padding-top: var(--space-8);
-    border-top: 2px solid var(--color-border);
+    border-top: 2px solid var(--theme-border);
     position: relative;
-    background: var(--color-surface);
+    background: var(--theme-surface);
     border-radius: 0 0 var(--radius-xl) var(--radius-xl);
     padding-left: var(--space-10);
     padding-right: var(--space-10);
@@ -129,15 +133,15 @@ layout: default
     max-width: 45%;
     position: relative;
     overflow: hidden;
-    background: var(--color-surface-secondary);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-primary);
+    background: var(--theme-surface-secondary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
 }
 
 .docs-nav-bottom .btn:hover {
-    background: var(--color-surface-hover);
-    border-color: var(--color-border-hover);
-    color: var(--color-text-primary);
+    background: var(--theme-surface-hover);
+    border-color: var(--theme-border-hover);
+    color: var(--theme-text-primary);
 }
 
 .docs-nav-bottom .btn::before {
@@ -147,7 +151,7 @@ layout: default
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, var(--color-surface-hover), transparent);
+    background: linear-gradient(90deg, transparent, var(--theme-surface-hover), transparent);
     transition: left 0.5s;
     opacity: 0.5;
 }
@@ -159,23 +163,23 @@ layout: default
 /* Force theme inheritance for docs-nav-bottom */
 body[data-theme="dark"] .docs-nav-bottom,
 html[data-theme="dark"] .docs-nav-bottom {
-    background: var(--color-surface) !important;
-    border-top-color: var(--color-border) !important;
-    color: var(--color-text-primary) !important;
+    background: var(--theme-surface) !important;
+    border-top-color: var(--theme-border) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 body[data-theme="dark"] .docs-nav-bottom .btn,
 html[data-theme="dark"] .docs-nav-bottom .btn {
-    background: var(--color-surface-secondary) !important;
-    border-color: var(--color-border) !important;
-    color: var(--color-text-primary) !important;
+    background: var(--theme-surface-secondary) !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 body[data-theme="dark"] .docs-nav-bottom .btn:hover,
 html[data-theme="dark"] .docs-nav-bottom .btn:hover {
-    background: var(--color-surface-hover) !important;
-    border-color: var(--color-border-hover) !important;
-    color: var(--color-text-primary) !important;
+    background: var(--theme-surface-hover) !important;
+    border-color: var(--theme-border-hover) !important;
+    color: var(--theme-text-primary) !important;
 }
 
 body[data-theme="dark"] .docs-nav-bottom .btn::before,

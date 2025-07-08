@@ -42,11 +42,11 @@ layout: default
 <!-- Benchmark specific styles -->
 <style>
 .benchmarks-article {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
+    background: var(--theme-surface);
+    border: 1px solid var(--theme-border);
     border-radius: var(--radius-xl);
     padding: var(--space-10);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--theme-shadow-card);
     min-height: 600px;
     position: relative;
     overflow: hidden;
@@ -54,9 +54,9 @@ layout: default
 
 /* Ensure proper theme inheritance */
 [data-theme="dark"] .benchmarks-article {
-    background: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text-primary);
+    background: var(--theme-surface);
+    border-color: var(--theme-border);
+    color: var(--theme-text-primary);
 }
 
 .benchmarks-article::before {
@@ -73,7 +73,7 @@ layout: default
     text-align: center;
     margin-bottom: var(--space-12);
     padding-bottom: var(--space-8);
-    border-bottom: 2px solid var(--color-border);
+    border-bottom: 2px solid var(--theme-border);
     position: relative;
 }
 
@@ -89,7 +89,7 @@ layout: default
 
 .article-description {
     font-size: var(--text-xl);
-    color: var(--color-text-secondary);
+    color: var(--theme-text-secondary);
     margin-bottom: var(--space-6);
     max-width: 600px;
     margin-left: auto;
@@ -98,7 +98,7 @@ layout: default
 }
 
 [data-theme="dark"] .article-description {
-    color: var(--color-text-secondary);
+    color: var(--theme-text-secondary);
 }
 
 .performance-badge {
@@ -168,18 +168,18 @@ layout: default
 .benchmarks-article .comparison-chart,
 .benchmarks-article .load-test-card,
 .benchmarks-article .component-card {
-    background: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text-primary);
+    background: var(--theme-surface);
+    border-color: var(--theme-border);
+    color: var(--theme-text-primary);
 }
 
 [data-theme="dark"] .benchmarks-article .benchmark-chart,
 [data-theme="dark"] .benchmarks-article .latency-chart,
 [data-theme="dark"] .benchmarks-article .load-test-card,
 [data-theme="dark"] .benchmarks-article .component-card {
-    background: var(--color-surface);
-    border-color: var(--color-border);
-    color: var(--color-text-primary);
+    background: var(--theme-surface);
+    border-color: var(--theme-border);
+    color: var(--theme-text-primary);
 }
 
 /* Special handling for comparison chart in dark theme */
@@ -191,8 +191,8 @@ layout: default
 
 /* Force docs-nav-bottom theme in benchmarks */
 .benchmarks-article + .docs-nav-bottom {
-    background: var(--color-surface) !important;
-    border-top-color: var(--color-border) !important;
+    background: var(--theme-surface) !important;
+    border-top-color: var(--theme-border) !important;
 }
 
 [data-theme="dark"] .benchmarks-article + .docs-nav-bottom {

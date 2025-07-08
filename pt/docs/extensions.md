@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Extensões
 permalink: /pt/docs/extensions/
 lang: pt

@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Documentação
 permalink: /pt/docs/
 lang: pt

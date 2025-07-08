@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Segurança
 permalink: /pt/docs/security/
 lang: pt

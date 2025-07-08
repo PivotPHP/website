@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Roteamento
 permalink: /pt/docs/routing/
 lang: pt

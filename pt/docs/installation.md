@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Instalação
 permalink: /pt/docs/installation/
 lang: pt

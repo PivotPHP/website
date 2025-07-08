@@ -19,9 +19,9 @@
         </button>
 
         <ul class="navbar-nav">
-          <li><a href="{{ '/docs/' | relative_url }}" class="font-medium{% if page.url contains '/docs/' and page.url != '/docs/quickstart/' %} active{% endif %}">Documentation</a></li>
-          <li><a href="{{ '/docs/quickstart/' | relative_url }}" class="font-medium{% if page.url == '/docs/quickstart/' %} active{% endif %}">Quick Start</a></li>
-          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank" class="font-medium">GitHub</a></li>
+          <li><a href="{{ '/docs/' | relative_url }}"{% if page.url contains '/docs/' and page.url != '/docs/quickstart/' %} class="active"{% endif %}>Documentation</a></li>
+          <li><a href="{{ '/docs/quickstart/' | relative_url }}"{% if page.url == '/docs/quickstart/' %} class="active"{% endif %}>Quick Start</a></li>
+          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
           <li>
             <!-- Theme Toggle -->
             <button class="theme-toggle-btn" data-theme-toggle aria-label="Toggle theme">
@@ -51,55 +51,7 @@
     {{ content }}
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div>
-          <div class="footer-brand">
-            <img src="{{ '/assets/images/pivotphp-logo-white.svg' | relative_url }}" alt="PivotPHP">
-            <span class="font-semibold">PivotPHP</span>
-          </div>
-          <p class="text-base opacity-90">The Evolutionary PHP Microframework</p>
-          <p class="text-sm opacity-80">Evolution over Convention • Performance in Every Strand • Structure meets Speed</p>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-4">Documentation</h4>
-          <ul>
-            <li class="mb-2"><a href="{{ '/docs/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Getting Started</a></li>
-            <li class="mb-2"><a href="{{ '/docs/installation/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Installation</a></li>
-            <li class="mb-2"><a href="{{ '/docs/routing/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Routing</a></li>
-            <li class="mb-2"><a href="{{ '/docs/middleware/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Middleware</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-4">Resources</h4>
-          <ul>
-            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core" target="_blank" class="text-sm opacity-80 hover:opacity-100">GitHub</a></li>
-            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank" class="text-sm opacity-80 hover:opacity-100">Releases</a></li>
-            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/issues" target="_blank" class="text-sm opacity-80 hover:opacity-100">Issues</a></li>
-            <li class="mb-2"><a href="{{ '/docs/contributing/' | relative_url }}" class="text-sm opacity-80 hover:opacity-100">Contributing</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-semibold mb-4">Community</h4>
-          <ul>
-            <li class="mb-2"><a href="https://twitter.com/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Twitter</a></li>
-            <li class="mb-2"><a href="{{ site.github_url }}/pivotphp-core/discussions" target="_blank" class="text-sm opacity-80 hover:opacity-100">Discussions</a></li>
-            <li class="mb-2"><a href="https://discord.gg/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Discord</a></li>
-            <li class="mb-2"><a href="https://stackoverflow.com/questions/tagged/pivotphp" target="_blank" class="text-sm opacity-80 hover:opacity-100">Stack Overflow</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p class="text-sm opacity-75">&copy; 2025 PivotPHP. MIT Licensed.</p>
-      </div>
-    </div>
-  </footer>
+  {% include footer.html %}
 
   <!-- Scripts -->
   <script src="{{ '/assets/js/mobile-nav.js' | relative_url }}"></script>
@@ -111,17 +63,17 @@
       if (typeof window.LanguageRoutes !== 'undefined') {
         // Get current language
         const currentLang = window.LanguageRoutes.getCurrentLang();
-        
+
         // Convert URL using LanguageRoutes (it handles baseUrl internally)
         const newUrl = window.LanguageRoutes.convertUrl(window.location.pathname, currentLang, lang);
-        
+
         // Store language preference
         if (lang !== 'en') {
           localStorage.setItem('preferred-language', lang);
         } else {
           localStorage.removeItem('preferred-language');
         }
-        
+
         // Navigate to new URL
         window.location.href = newUrl;
       } else {

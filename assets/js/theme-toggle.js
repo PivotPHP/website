@@ -24,7 +24,6 @@
      */
     function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        document.body.setAttribute('data-theme', theme);
         
         // Update any theme toggle buttons
         const toggleButtons = document.querySelectorAll('[data-theme-toggle]');

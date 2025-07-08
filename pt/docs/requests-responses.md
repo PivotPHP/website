@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Requisições e Respostas
 permalink: /pt/docs/requests-responses/
 lang: pt

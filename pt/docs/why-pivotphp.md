@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Por que PivotPHP?
 permalink: /pt/docs/why-pivotphp/
 lang: pt

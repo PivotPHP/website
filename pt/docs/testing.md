@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Testes
 permalink: /pt/docs/testing/
 lang: pt

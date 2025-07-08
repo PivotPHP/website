@@ -1,5 +1,5 @@
 ---
-layout: docs-i18n
+layout: docs
 title: Middleware
 permalink: /pt/docs/middleware/
 lang: pt
