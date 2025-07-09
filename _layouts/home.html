@@ -221,6 +221,79 @@ layout: default
   </div>
 </section>
 
+<!-- Ecosystem Section -->
+<section class="section">
+  <div class="container">
+    <div class="section-header-card">
+      <h2 class="text-center gradient-text">{% if lang == 'pt' %}Ecossistema Rico de Extensões{% else %}Rich Extension Ecosystem{% endif %}</h2>
+      <p class="text-center text-lg" style="color: var(--theme-text-secondary); max-width: 700px; margin: 0 auto;">
+        {% if lang == 'pt' %}Estenda o PivotPHP com pacotes poderosos que adicionam funcionalidades sem comprometer a performance.{% else %}Extend PivotPHP with powerful packages that add functionality without compromising performance.{% endif %}
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <rect x="7" y="12" width="3" height="9"></rect>
+            <rect x="14" y="8" width="3" height="13"></rect>
+          </svg>
+        </div>
+        <h3>Cycle ORM</h3>
+        <p>{% if lang == 'pt' %}ORM DataMapper poderoso com migrações automáticas e suporte a relacionamentos complexos.{% else %}Powerful DataMapper ORM with automatic migrations and complex relationship support.{% endif %}</p>
+        <div class="feature-stats">
+          <span class="stat-badge">Database</span>
+          <span class="stat-badge">ORM</span>
+        </div>
+        <a href="{{ '/docs/extensions/cycle-orm/' | relative_url }}" class="feature-link">{% if lang == 'pt' %}Saiba mais{% else %}Learn more{% endif %} →</a>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4m0 12v4m8-10h-4m-12 0H2"></path>
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="m15.5 8.5 2.8-2.8M8.5 8.5 5.7 5.7m9.8 12.8 2.8 2.8M8.5 15.5l-2.8 2.8"></path>
+          </svg>
+        </div>
+        <h3>ReactPHP</h3>
+        <p>{% if lang == 'pt' %}Runtime assíncrono para aplicações de longa duração com arquitetura orientada a eventos.{% else %}Async runtime for long-running applications with event-driven architecture.{% endif %}</p>
+        <div class="feature-stats">
+          <span class="stat-badge">Async</span>
+          <span class="stat-badge">Event Loop</span>
+        </div>
+        <a href="{{ '/docs/extensions/reactphp/' | relative_url }}" class="feature-link">{% if lang == 'pt' %}Saiba mais{% else %}Learn more{% endif %} →</a>
+      </div>
+
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+        </div>
+        <h3>{% if lang == 'pt' %}Mais Extensões{% else %}More Extensions{% endif %}</h3>
+        <p>{% if lang == 'pt' %}Sistema de filas, cache avançado, geração de documentação e muito mais da comunidade.{% else %}Queue system, advanced caching, documentation generation and more from the community.{% endif %}</p>
+        <div class="feature-stats">
+          <span class="stat-badge">Community</span>
+          <span class="stat-badge">Growing</span>
+        </div>
+        <a href="{{ '/docs/extensions/' | relative_url }}" class="feature-link">{% if lang == 'pt' %}Ver todas{% else %}View all{% endif %} →</a>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <p class="text-lg mb-4" style="color: var(--theme-text-secondary);">
+        {% if lang == 'pt' %}Instale extensões facilmente via Composer{% else %}Install extensions easily via Composer{% endif %}
+      </p>
+      <div class="code-inline">
+        <code>composer require pivotphp/cycle-orm</code>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Performance Section -->
 <section class="section-gradient">
   <div class="container">

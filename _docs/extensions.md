@@ -4,18 +4,61 @@ title: Extensions
 permalink: /docs/extensions/
 ---
 
-PivotPHP supports various extensions to enhance its functionality. These extensions are optional packages that integrate seamlessly with the core framework.
+PivotPHP has a rich ecosystem of extensions that add powerful features to the core framework. These modular packages allow you to pick exactly what you need for your project.
 
-## Available Extensions
+## Official Extensions
 
-### Official Extensions
+### Database & ORM
 
-- **[Cycle ORM](/docs/extensions/cycle-orm/)** - Full-featured ORM with schema generation, migrations, and relations
-- More extensions coming soon...
+#### [Cycle ORM](/docs/extensions/cycle-orm/)
+A powerful DataMapper ORM that provides a complete database solution.
 
-### Community Extensions
+```bash
+composer require pivotphp/cycle-orm
+```
 
-The PivotPHP community is actively developing extensions. Check our [GitHub organization]({{ site.github_url }}) for the latest packages.
+**Features:**
+- Automatic schema generation and migrations
+- Entity repositories with query builder
+- Relationships (HasOne, HasMany, BelongsTo, ManyToMany)
+- Transaction support
+- Multiple database connections
+
+### Async Runtime
+
+#### [ReactPHP Extension](/docs/extensions/reactphp/)
+High-performance continuous runtime using ReactPHP's event-driven architecture.
+
+```bash
+composer require pivotphp/reactphp
+```
+
+**Features:**
+- Continuous HTTP server without restarts
+- Event-driven, non-blocking I/O
+- WebSocket support (coming soon)
+- Async operations and promises
+- Timer and periodic tasks
+
+## Community Extensions
+
+The PivotPHP community is actively developing extensions:
+
+### Available Now
+
+- **pivotphp/swagger** - OpenAPI/Swagger documentation generator
+- **pivotphp/queue** - Background job processing system
+- **pivotphp/cache** - Multi-driver caching (Redis, Memcached, File)
+- **pivotphp/mail** - Email service abstraction
+
+### Coming Soon
+
+- **pivotphp/websocket** - Real-time WebSocket server
+- **pivotphp/graphql** - GraphQL server implementation
+- **pivotphp/admin** - Auto-admin panel generator
+- **pivotphp/testing** - Advanced testing utilities
+
+Check our [GitHub organization]({{ site.github_url }}) for the latest packages.
 
 ## Creating Extensions
 
