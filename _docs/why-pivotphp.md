@@ -287,7 +287,7 @@ $app->listen(8000, $ws);
 Join the PivotPHP community and help shape the future of PHP development:
 
 - **[GitHub Discussions](https://github.com/pivotphp/pivotphp-core/discussions)** - Questions, ideas, and announcements
-- **[Discord Server](https://discord.gg/pivotphp)** - Real-time community chat
+- **[Discord Server](https://discord.gg/DMtxsP7z)** - Real-time community chat
 - **[Twitter](https://twitter.com/pivotphp)** - Updates and news
 - **[Stack Overflow](https://stackoverflow.com/questions/tagged/pivotphp)** - Technical Q&A
 

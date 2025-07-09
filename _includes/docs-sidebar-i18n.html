@@ -35,6 +35,7 @@
     <ul>
         <li><a href="{{ base_path }}{{ routes.extensions | default: '/docs/extensions/' }}" {% if page.url == routes.extensions %}class="active"{% endif %}>{% if lang == 'pt' %}Visão Geral{% else %}Overview{% endif %}</a></li>
         <li><a href="{{ base_path }}{{ routes.extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' }}" {% if page.url contains '/extensions/cycle-orm' %}class="active"{% endif %}>Cycle ORM</a></li>
+        <li><a href="{{ base_path }}{{ routes.extensions_reactphp | default: '/docs/extensions/reactphp/' }}" {% if page.url contains '/extensions/reactphp' %}class="active"{% endif %}>ReactPHP</a></li>
     </ul>
 
     <h3>{{ t.nav.advanced }}</h3>

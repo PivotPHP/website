@@ -7,8 +7,8 @@ baseurl: "/website"
 logo: /assets/images/pivotphp-logo.svg
 
 # GitHub
-github_url: "https://github.com/pivotphp"
-github_username: pivotphp
+github_url: "https://github.com/PivotPHP"
+github_username: PivotPHP
 
 # Social Media
 social_image: /assets/images/social-share.svg

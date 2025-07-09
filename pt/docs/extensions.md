@@ -12,6 +12,7 @@ O PivotPHP suporta várias extensões para aprimorar sua funcionalidade. Estas e
 ### Extensões Oficiais
 
 - **[Cycle ORM](/pt/docs/extensions/cycle-orm/)** - ORM completo com geração de esquema, migrações e relações
+- **[ReactPHP](/pt/docs/extensions/reactphp/)** - Integração assíncrona de alta performance com Event Loop
 - Mais extensões em breve...
 
 ### Extensões da Comunidade

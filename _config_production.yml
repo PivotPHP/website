@@ -10,7 +10,7 @@ baseurl: ""
 logo: /assets/images/pivotphp-logo.svg
 
 # GitHub
-github_url: "https://github.com/pivotphp"
+github_url: "https://github.com/PivotPHP"
 github_username: pivotphp
 
 # Social Media
@@ -77,14 +77,14 @@ navigation:
   - title: Benchmarks
     url: /docs/benchmarks/
   - title: GitHub
-    url: https://github.com/pivotphp
+    url: https://github.com/PivotPHP
     external: true
 
 # Footer
 footer:
   links:
     - title: GitHub
-      url: https://github.com/pivotphp
+      url: https://github.com/PivotPHP
     - title: Documentation
       url: /docs/
     - title: Examples

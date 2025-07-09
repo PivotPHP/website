@@ -60,6 +60,7 @@ en:
   benchmarks: /docs/benchmarks/
   extensions: /docs/extensions/
   extensions_cycle_orm: /docs/extensions/cycle-orm/
+  extensions_reactphp: /docs/extensions/reactphp/
 
 pt:
   home: /pt/
@@ -82,3 +83,4 @@ pt:
   benchmarks: /pt/docs/benchmarks/
   extensions: /pt/docs/extensions/
   extensions_cycle_orm: /pt/docs/extensions/cycle-orm/
+  extensions_reactphp: /pt/docs/extensions/reactphp/

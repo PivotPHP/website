@@ -42,23 +42,28 @@ composer require pivotphp/reactphp
 
 ## Community Extensions
 
-The PivotPHP community is actively developing extensions:
+The PivotPHP ecosystem is designed to be extended! We're excited about the extensions that the community will create.
 
-### Available Now
+### Official Extensions Available
 
-- **pivotphp/swagger** - OpenAPI/Swagger documentation generator
-- **pivotphp/queue** - Background job processing system
-- **pivotphp/cache** - Multi-driver caching (Redis, Memcached, File)
-- **pivotphp/mail** - Email service abstraction
+- **[pivotphp/core](https://packagist.org/packages/pivotphp/core)** - Core framework ([GitHub](https://github.com/PivotPHP/pivotphp-core))
+- **[pivotphp/cycle-orm](https://packagist.org/packages/pivotphp/cycle-orm)** - Cycle ORM integration ([GitHub](https://github.com/PivotPHP/pivotphp-cycle-orm))
+- **[pivotphp/reactphp](https://packagist.org/packages/pivotphp/reactphp)** - ReactPHP async runtime ([GitHub](https://github.com/PivotPHP/pivotphp-reactphp))
 
-### Coming Soon
+### Planned Extensions
 
-- **pivotphp/websocket** - Real-time WebSocket server
-- **pivotphp/graphql** - GraphQL server implementation
-- **pivotphp/admin** - Auto-admin panel generator
-- **pivotphp/testing** - Advanced testing utilities
+We're planning to develop or support community development of:
 
-Check our [GitHub organization]({{ site.github_url }}) for the latest packages.
+- **OpenAPI/Swagger** - Automatic API documentation generation
+- **Queue System** - Background job processing with multiple drivers
+- **Advanced Caching** - Multi-driver caching (Redis, Memcached, File)
+- **Mail Service** - Email abstraction with provider support
+- **WebSocket Server** - Real-time bidirectional communication
+- **GraphQL** - Modern API query language support
+- **Admin Panel** - Auto-generated admin interfaces
+- **Testing Utilities** - Enhanced testing helpers and assertions
+
+Check our [GitHub organization]({{ site.github_url }}) and [Packagist](https://packagist.org/packages/pivotphp/) for updates on new extensions.
 
 ## Creating Extensions
 
