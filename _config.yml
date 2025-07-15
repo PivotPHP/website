@@ -1,7 +1,7 @@
 # Site settings
 title: PivotPHP
 tagline: The Evolutionary PHP Microframework
-description: Build modern APIs with Express.js-like syntax, 52M+ ops/sec performance, and zero configuration.
+description: Build modern APIs with Express.js-like syntax, 2.57M+ ops/sec performance, and zero configuration.
 url: "https://pivotphp.github.io"
 baseurl: "/website"
 logo: /assets/images/pivotphp-logo.svg
@@ -64,8 +64,8 @@ defaults:
       layout: "docs-i18n"
 
 # Custom variables
-github_url: https://github.com/pivotphp
-github_org: pivotphp
+github_url: https://github.com/PivotPHP
+github_org: PivotPHP
 twitter_username: pivotphp
 author: PivotPHP Team
 
@@ -76,14 +76,14 @@ navigation:
   - title: Documentation
     url: /docs/
   - title: GitHub
-    url: https://github.com/pivotphp
+    url: https://github.com/PivotPHP
     external: true
 
 # Footer
 footer:
   links:
     - title: GitHub
-      url: https://github.com/pivotphp
+      url: https://github.com/PivotPHP
     - title: Documentation
       url: /docs/
     - title: Examples

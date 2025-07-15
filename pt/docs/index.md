@@ -14,7 +14,7 @@ lang: pt
 
 ## Por que PivotPHP?
 
-PivotPHP traz a simplicidade e elegância do Express.js para o ecossistema PHP, mantendo a performance e confiabilidade que os desenvolvedores PHP esperam. Com mais de 52 milhões de operações por segundo, zero requisitos de configuração e compatibilidade com PSR-15, o PivotPHP é perfeito para:
+PivotPHP traz a simplicidade e elegância do Express.js para o ecossistema PHP, mantendo a performance e confiabilidade que os desenvolvedores PHP esperam. Com throughput impressionante de APIs (até 70,9 milhões de requisições/hora), zero requisitos de configuração e compatibilidade com PSR-15, o PivotPHP é perfeito para:
 
 - Desenvolvimento e testes de APIs localmente
 - Validação de conceitos e prototipagem
@@ -23,8 +23,15 @@ PivotPHP traz a simplicidade e elegância do Express.js para o ecossistema PHP, 
 
 ## Recursos Principais
 
-### 🚀 Performance Extrema
-Com mais de 52 milhões de operações por segundo, PivotPHP é um dos frameworks PHP mais rápidos disponíveis. Nossos benchmarks mostram performance consistente em várias cargas de trabalho.
+### 🚀 APIs de Alta Performance
+Com throughput de até 70,9 milhões de requisições/hora (variante ReactPHP), PivotPHP oferece velocidade excepcional para aplicações do mundo real. Nossos últimos benchmarks mostram:
+
+- **Framework Core**: 32,4M requisições/hora
+- **Com ORM**: 16,5M requisições/hora
+- **Runtime ReactPHP**: 70,9M requisições/hora
+- **Endpoints REST API**: 1,7M chamadas/hora
+
+*Benchmarks executados em containers Docker padronizados para garantir condições justas e reproduzíveis de teste em todas as variantes do framework.*
 
 ### 🛡️ Segurança em Primeiro Lugar
 Recursos de segurança integrados incluindo proteção CSRF, prevenção XSS, rate limiting e autenticação segura tornam suas aplicações seguras por padrão.

@@ -33,20 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function initCharts() {
         const colors = getThemeColors();
     
-    // Request Type Performance Chart - Updated with latest data
+    // Request Type Performance Chart - Updated with Docker v1.1.1 data
     const requestTypeCtx = document.getElementById('requestTypeChart');
     if (requestTypeCtx) {
         new Chart(requestTypeCtx, {
             type: 'bar',
             data: {
-                labels: ['Simple', 'JSON', 'Complex'],
+                labels: ['Request Parsing', 'Response Creation', 'Status Codes', 'Content Negotiation'],
                 datasets: [{
-                    label: 'Requests per Second',
-                    data: [13374, 2059, 2213],
+                    label: 'Operations per Second',
+                    data: [317847, 294110, 692472, 548849],
                     backgroundColor: [
                         colors.accent,
                         colors.primary,
-                        colors.secondary
+                        colors.secondary,
+                        colors.primary
                     ],
                     borderWidth: 0,
                     borderRadius: 8
@@ -87,6 +88,282 @@ document.addEventListener('DOMContentLoaded', function() {
                         grid: {
                             color: colors.gridColor
                         }
+                    }
+                }
+            }
+        });
+    }
+    
+    // PivotPHP v1.1.4 Performance Chart - Updated with Phase 3 results
+    const v114PerformanceCtx = document.getElementById('v114-performance-chart');
+    if (v114PerformanceCtx) {
+        new Chart(v114PerformanceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Application Creation', 'Array Callable', 'Route Registration', 'JSON Response', 'Multiple Routes'],
+                datasets: [
+                    {
+                        label: 'PivotPHP v1.1.4 Performance (ops/sec)',
+                        data: [84998, 28624, 20742, 13885, 4868],
+                        backgroundColor: [
+                            colors.primary,
+                            colors.secondary,
+                            colors.accent,
+                            '#22c55e',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: colors.text,
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14,
+                                weight: 500
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                let description = '';
+                                const labels = ['Application Creation', 'Array Callable', 'Route Registration', 'JSON Response', 'Multiple Routes'];
+                                const label = labels[context.dataIndex];
+                                
+                                switch(label) {
+                                    case 'Application Creation': description = ' (🚀 Revolutionary)'; break;
+                                    case 'Array Callable': description = ' (🔥 Outstanding - PHP 8.4+)'; break;
+                                    case 'Route Registration': description = ' (⚡ Exceptional)'; break;
+                                    case 'JSON Response': description = ' (💫 Excellent)'; break;
+                                    case 'Multiple Routes': description = ' (✨ Solid)'; break;
+                                }
+                                
+                                return label + ': ' + value.toLocaleString() + ' ops/s' + description;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'PivotPHP v1.1.4 Operations (Phase 3 Analysis)',
+                            color: colors.text,
+                            font: { size: 14, weight: 600 }
+                        },
+                        ticks: {
+                            color: colors.tickColor,
+                            font: { size: 12 }
+                        },
+                        grid: {
+                            color: colors.gridColor,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Operations per Second (v1.1.4)',
+                            color: colors.text,
+                            font: { size: 14, weight: 600 }
+                        },
+                        ticks: {
+                            color: colors.tickColor,
+                            font: { size: 12 },
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: colors.gridColor,
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Docker Cross-Framework Performance Chart - Updated with July 2025 Docker validation
+    const variantCtx = document.getElementById('variantCtx');
+    if (variantCtx) {
+        new Chart(variantCtx, {
+            type: 'bar',
+            data: {
+                labels: ['PivotPHP ReactPHP', 'Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'],
+                datasets: [
+                    {
+                        label: 'Cross-Framework Performance (req/sec)',
+                        data: [19707, 6881, 6322, 6227, 3179],
+                        backgroundColor: [
+                            '#7C3AED', // Purple for PivotPHP ReactPHP (winner)
+                            '#22c55e', // Green for Slim 4
+                            '#3b82f6', // Blue for Lumen
+                            '#EC4899', // Pink for PivotPHP Core
+                            '#ef4444'  // Red for Flight
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: colors.text,
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14,
+                                weight: 500
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: colors.text === '#E2E8F0' ? 'rgba(15, 23, 42, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                        titleColor: colors.text === '#E2E8F0' ? '#E2E8F0' : '#1E293B',
+                        bodyColor: colors.text === '#E2E8F0' ? '#CBD5E1' : '#475569',
+                        borderColor: colors.primary,
+                        borderWidth: 1,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                let ranking = '';
+                                const labels = ['PivotPHP ReactPHP', 'Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'];
+                                const label = labels[context.dataIndex];
+                                
+                                switch(label) {
+                                    case 'PivotPHP ReactPHP': ranking = ' (🚀 1st place - LEADER)'; break;
+                                    case 'Slim 4': ranking = ' (🥈 2nd place)'; break;
+                                    case 'Lumen': ranking = ' (🥉 3rd place)'; break;
+                                    case 'PivotPHP Core': ranking = ' (4th place)'; break;
+                                    case 'Flight': ranking = ' (5th place)'; break;
+                                }
+                                
+                                return label + ': ' + value.toLocaleString() + ' req/s' + ranking;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Cross-Framework Performance + ReactPHP (July 2025)',
+                            color: colors.text,
+                            font: {
+                                size: 14,
+                                weight: 600
+                            }
+                        },
+                        ticks: {
+                            color: colors.tickColor,
+                            font: {
+                                size: 12
+                            }
+                        },
+                        grid: {
+                            color: colors.gridColor,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Requests per Second (Docker + ReactPHP)',
+                            color: colors.text,
+                            font: {
+                                size: 14,
+                                weight: 600
+                            }
+                        },
+                        ticks: {
+                            color: colors.tickColor,
+                            font: {
+                                size: 12
+                            },
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: colors.gridColor,
+                            drawBorder: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // PivotPHP Ecosystem Specialized Performance Chart
+    const ecosystemCtx = document.getElementById('ecosystemChart');
+    if (ecosystemCtx) {
+        new Chart(ecosystemCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['ReactPHP (Async)', 'Core (API)', 'ORM (Database)'],
+                datasets: [{
+                    label: 'Specialized Performance (K ops/s)',
+                    data: [1970.7, 2186.0, 457.9],
+                    backgroundColor: [
+                        colors.accent,
+                        colors.primary,
+                        colors.secondary
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#ffffff',
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: colors.text,
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                size: 14,
+                                weight: 500
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return context.label + ': ' + value.toLocaleString() + 'K ops/s (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                elements: {
+                    arc: {
+                        borderWidth: 3
                     }
                 }
             }
@@ -226,21 +503,21 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(comparisonCtx, {
             type: 'bar',
             data: {
-                labels: ['PivotPHP Core', 'PivotPHP ORM', 'Slim 4', 'Lumen', 'Flight'],
+                labels: ['HTTP Performance', 'REST API', 'API Middleware'],
                 datasets: [
                     {
-                        label: 'Simple Route (req/s)',
-                        data: [13374, 8893, 4562, 2912, 0],
+                        label: 'PivotPHP Core v1.1.0',
+                        data: [605.3, 1120.4, 460.3],
                         backgroundColor: colors.primary
                     },
                     {
-                        label: 'JSON API (req/s)',
-                        data: [2059, 876, 4826, 2708, 0],
+                        label: 'Slim 4',
+                        data: [736.6, 1299.9, 460.7],
                         backgroundColor: colors.secondary
                     },
                     {
-                        label: 'Complex (req/s)',
-                        data: [2213, 2252, 1192, 0, 0],
+                        label: 'PivotPHP ReactPHP',
+                        data: [null, null, 1970.7],
                         backgroundColor: colors.accent
                     }
                 ]
@@ -259,7 +536,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.x.toLocaleString();
+                                const value = context.parsed.y || context.parsed.x;
+                                let gap = '';
+                                if (context.datasetIndex === 0 && context.dataset.label.includes('PivotPHP Core')) {
+                                    const slimData = context.chart.data.datasets.find(d => d.label === 'Slim 4');
+                                    if (slimData && slimData.data[context.dataIndex]) {
+                                        const slimValue = slimData.data[context.dataIndex];
+                                        const gapPercent = ((slimValue - value) / slimValue * 100).toFixed(1);
+                                        gap = ` (${gapPercent}% gap)`;
+                                    }
+                                }
+                                return context.dataset.label + ': ' + value.toLocaleString() + 'K ops/s' + gap;
                             }
                         }
                     }

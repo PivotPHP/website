@@ -20,6 +20,7 @@
         <li><a href="{{ base_path }}{{ routes.routing | default: '/docs/routing/' }}" {% if page.url contains 'routing' %}class="active"{% endif %}>{{ t.nav.routing }}</a></li>
         <li><a href="{{ base_path }}{{ routes.middleware | default: '/docs/middleware/' }}" {% if page.url contains 'middleware' %}class="active"{% endif %}>{{ t.nav.middleware }}</a></li>
         <li><a href="{{ base_path }}{{ routes.requests_responses | default: '/docs/requests-responses/' }}" {% if page.url contains 'requests-responses' %}class="active"{% endif %}>{{ t.nav.requests_responses }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.api_documentation | default: '/docs/api-documentation/' }}" {% if page.url contains 'api-documentation' %}class="active"{% endif %}>{{ t.nav.api_documentation }}</a></li>
         <li><a href="{{ base_path }}{{ routes.container | default: '/docs/container/' }}" {% if page.url contains 'container' %}class="active"{% endif %}>{{ t.nav.container }}</a></li>
     </ul>
 

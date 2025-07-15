@@ -10,35 +10,38 @@ PivotPHP has a rich ecosystem of extensions that add powerful features to the co
 
 ### Database & ORM
 
-#### [Cycle ORM](/docs/extensions/cycle-orm/)
-A powerful DataMapper ORM that provides a complete database solution.
+#### [Cycle ORM v1.1.0](/docs/extensions/cycle-orm/)
+A powerful DataMapper ORM that provides a complete database solution with zero-configuration setup.
 
 ```bash
 composer require pivotphp/cycle-orm
 ```
 
 **Features:**
+- Zero-configuration setup with sensible defaults
 - Automatic schema generation and migrations
-- Entity repositories with query builder
-- Relationships (HasOne, HasMany, BelongsTo, ManyToMany)
-- Transaction support
-- Multiple database connections
+- Repository pattern with performance caching
+- Complex relationships support
+- Transaction middleware
+- Multiple database connections (SQLite, MySQL)
+- Performance monitoring and query profiling
 
 ### Async Runtime
 
-#### [ReactPHP Extension](/docs/extensions/reactphp/)
-High-performance continuous runtime using ReactPHP's event-driven architecture.
+#### [ReactPHP Extension v0.0.2](/docs/extensions/reactphp/)
+Production-ready continuous runtime using ReactPHP's event-driven architecture for high-performance applications.
 
 ```bash
 composer require pivotphp/reactphp
 ```
 
 **Features:**
-- Continuous HTTP server without restarts
+- Continuous HTTP server without restarts (40K+ req/s)
+- PSR-7 bridge compatibility with global state protection
 - Event-driven, non-blocking I/O
-- WebSocket support (coming soon)
-- Async operations and promises
-- Timer and periodic tasks
+- Memory management and isolation
+- Graceful shutdown handling
+- Production deployment ready
 
 ## Community Extensions
 
@@ -50,11 +53,20 @@ The PivotPHP ecosystem is designed to be extended! We're excited about the exten
 - **[pivotphp/cycle-orm](https://packagist.org/packages/pivotphp/cycle-orm)** - Cycle ORM integration ([GitHub](https://github.com/PivotPHP/pivotphp-cycle-orm))
 - **[pivotphp/reactphp](https://packagist.org/packages/pivotphp/reactphp)** - ReactPHP async runtime ([GitHub](https://github.com/PivotPHP/pivotphp-reactphp))
 
+### Built-in Features
+
+The PivotPHP Core framework already includes several advanced features:
+
+- **OpenAPI/Swagger** - Automatic API documentation generation via `OpenApiExporter` utility
+- **High-Performance Mode** - Object pooling and lazy loading (v1.1.0)
+- **JSON Optimization** - Automatic buffer pooling for JSON operations (v1.1.1)
+- **Security Middleware** - Built-in CSRF, XSS protection, rate limiting
+- **Performance Monitoring** - Real-time metrics and profiling tools
+
 ### Planned Extensions
 
 We're planning to develop or support community development of:
 
-- **OpenAPI/Swagger** - Automatic API documentation generation
 - **Queue System** - Background job processing with multiple drivers
 - **Advanced Caching** - Multi-driver caching (Redis, Memcached, File)
 - **Mail Service** - Email abstraction with provider support

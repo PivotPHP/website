@@ -49,6 +49,7 @@ en:
   routing: /docs/routing/
   middleware: /docs/middleware/
   requests_responses: /docs/requests-responses/
+  api_documentation: /docs/api-documentation/
   container: /docs/container/
   security: /docs/security/
   events: /docs/events/
@@ -72,6 +73,7 @@ pt:
   routing: /pt/docs/routing/
   middleware: /pt/docs/middleware/
   requests_responses: /pt/docs/requests-responses/
+  api_documentation: /pt/docs/api-documentation/
   container: /pt/docs/container/
   security: /pt/docs/security/
   events: /pt/docs/events/

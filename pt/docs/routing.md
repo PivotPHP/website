@@ -54,7 +54,7 @@ $app->any('/api/*', function($req, $res) {
 Capture segmentos da URI usando parâmetros de rota:
 
 ```php
-$app->get('/usuario/{id}', function($req, $res) {
+$app->get('/usuario/:id', function($req, $res) {
     $userId = $req->param('id');
     return $res->json(['user_id' => $userId]);
 });
@@ -63,7 +63,7 @@ $app->get('/usuario/{id}', function($req, $res) {
 Você pode ter múltiplos parâmetros:
 
 ```php
-$app->get('/posts/{ano}/{mes}/{slug}', function($req, $res) {
+$app->get('/posts/:ano/:mes/:slug', function($req, $res) {
     $ano = $req->param('ano');
     $mes = $req->param('mes');
     $slug = $req->param('slug');
@@ -77,7 +77,7 @@ $app->get('/posts/{ano}/{mes}/{slug}', function($req, $res) {
 Torne um parâmetro opcional adicionando um `?`:
 
 ```php
-$app->get('/posts/{id?}', function($req, $res) {
+$app->get('/posts/:id?', function($req, $res) {
     $id = $req->param('id', 'recentes'); // Padrão para 'recentes'
 
     if ($id === 'recentes') {
@@ -94,17 +94,17 @@ Você pode restringir parâmetros de rota usando expressões regulares:
 
 ```php
 // Corresponder apenas IDs numéricos
-$app->get('/usuario/{id:[0-9]+}', function($req, $res) {
+$app->get('/usuario/:id<\d+>', function($req, $res) {
     // $id é garantidamente numérico
 });
 
 // Corresponder padrão específico
-$app->get('/posts/{slug:[a-z0-9-]+}', function($req, $res) {
+$app->get('/posts/:slug<[a-z0-9-]+>', function($req, $res) {
     // $slug corresponde a letras minúsculas, números e hífens
 });
 
 // Padrão UUID
-$app->get('/api/v1/recursos/{uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', function($req, $res) {
+$app->get('/api/v1/recursos/:uuid<[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}>', function($req, $res) {
     // Corresponde ao formato UUID
 });
 ```
@@ -161,9 +161,9 @@ Em vez de closures, você pode usar classes de controller:
 // Ação única
 $app->get('/usuarios', [UserController::class, 'index']);
 $app->post('/usuarios', [UserController::class, 'store']);
-$app->get('/usuarios/{id}', [UserController::class, 'show']);
-$app->put('/usuarios/{id}', [UserController::class, 'update']);
-$app->delete('/usuarios/{id}', [UserController::class, 'destroy']);
+$app->get('/usuarios/:id', [UserController::class, 'show']);
+$app->put('/usuarios/:id', [UserController::class, 'update']);
+$app->delete('/usuarios/:id', [UserController::class, 'destroy']);
 
 // Controller de recurso RESTful
 $app->resource('/posts', PostController::class);
@@ -176,10 +176,10 @@ O método `resource` cria as seguintes rotas:
 | GET | /posts | index | posts.index |
 | GET | /posts/create | create | posts.create |
 | POST | /posts | store | posts.store |
-| GET | /posts/{id} | show | posts.show |
-| GET | /posts/{id}/edit | edit | posts.edit |
-| PUT/PATCH | /posts/{id} | update | posts.update |
-| DELETE | /posts/{id} | destroy | posts.destroy |
+| GET | /posts/:id | show | posts.show |
+| GET | /posts/:id/edit | edit | posts.edit |
+| PUT/PATCH | /posts/:id | update | posts.update |
+| DELETE | /posts/:id | destroy | posts.destroy |
 
 ## Rotas Nomeadas
 
@@ -190,7 +190,7 @@ $app->get('/perfil', function($req, $res) {
     // Mostrar perfil
 })->name('perfil');
 
-$app->get('/posts/{id}', function($req, $res) {
+$app->get('/posts/:id', function($req, $res) {
     // Mostrar post
 })->name('posts.show');
 
@@ -205,7 +205,7 @@ Injete automaticamente instâncias de modelo em suas rotas:
 
 ```php
 // Vinculação implícita
-$app->get('/usuarios/{user}', function($req, $res, User $user) {
+$app->get('/usuarios/:user', function($req, $res, User $user) {
     return $res->json($user);
 });
 
@@ -214,7 +214,7 @@ $app->bind('user', function($value) {
     return User::where('slug', $value)->firstOrFail();
 });
 
-$app->get('/usuarios/{user}', function($req, $res, User $user) {
+$app->get('/usuarios/:user', function($req, $res, User $user) {
     // $user é resolvido por slug em vez de ID
 });
 ```

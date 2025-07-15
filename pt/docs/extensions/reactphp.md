@@ -1,303 +1,557 @@
 ---
 layout: docs
-title: Extensão ReactPHP
+title: Extensão ReactPHP v0.0.2
 permalink: /pt/docs/extensions/reactphp/
 lang: pt
 ---
 
-A Extensão ReactPHP fornece um runtime contínuo de alta performance para aplicações PivotPHP usando um modelo de I/O não-bloqueante orientado a eventos. Esta extensão permite que sua aplicação rode continuamente sem reiniciar entre requisições, melhorando drasticamente a performance.
+# Extensão PivotPHP ReactPHP v0.0.2
 
-## Instalação
+A extensão **pivotphp-reactphp** fornece recursos de runtime assíncrono para aplicações PivotPHP usando o modelo de I/O não-bloqueante orientado a eventos do ReactPHP. Esta extensão permite execução de runtime contínuo, eliminando overhead de bootstrap e mantendo estado persistente da aplicação.
+
+## 🚀 Recursos Principais
+
+- **Runtime Contínuo**: Sem overhead de reinicialização entre requisições
+- **Compatibilidade com Bridge PSR-7**: Integração perfeita com a camada HTTP do PivotPHP
+- **Arquitetura Orientada a Eventos**: Operações de I/O não-bloqueantes
+- **Gerenciamento de Memória**: Isolamento e limpeza de memória integrados
+- **Proteção de Estado Global**: Previne poluição de estado entre requisições
+- **Otimizado para Performance**: Ganhos significativos de performance para processos de longa duração
+
+## 📦 Instalação
 
 ```bash
 composer require pivotphp/reactphp
 ```
 
-## Recursos
+## 🔧 Início Rápido
 
-- **Runtime Contínuo**: Mantenha sua aplicação em memória entre requisições
-- **Arquitetura Orientada a Eventos**: I/O não-bloqueante para lidar com requisições concorrentes
-- **Compatível com PSR-7**: Compatibilidade total com a implementação PSR-7 do PivotPHP
-- **Alta Performance**: Elimine o overhead de bootstrap para cada requisição
-- **Suporte Assíncrono**: Suporte integrado para promises e operações assíncronas
-- **Pronto para WebSocket**: Base para comunicação em tempo real (em breve)
-
-## Configuração
-
-Registre o service provider do ReactPHP em sua aplicação:
+### 1. Registrar o Service Provider
 
 ```php
-use PivotPHP\ReactPHP\ReactServiceProvider;
+use PivotPHP\Core\Core\Application;
+use PivotPHP\ReactPHP\Providers\ReactPHPServiceProvider;
 
-$app->register(new ReactServiceProvider([
+$app = new Application();
+
+// Registrar service provider do ReactPHP
+$app->register(new ReactPHPServiceProvider($app));
+```
+
+### 2. Configuração de Ambiente
+
+Crie ou atualize seu arquivo `.env`:
+
+```env
+# Aplicação
+APP_NAME="Minha App ReactPHP"
+APP_ENV=production
+APP_DEBUG=false
+
+# Configuração do Servidor ReactPHP
+REACTPHP_HOST=0.0.0.0
+REACTPHP_PORT=8080
+REACTPHP_STREAMING=false
+REACTPHP_MAX_CONCURRENT_REQUESTS=100
+REACTPHP_REQUEST_BODY_SIZE_LIMIT=67108864  # 64MB
+REACTPHP_REQUEST_BODY_BUFFER_SIZE=8192     # 8KB
+```
+
+### 3. Configuração Básica do Servidor
+
+Crie `server.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use PivotPHP\Core\Core\Application;
+use PivotPHP\ReactPHP\Providers\ReactPHPServiceProvider;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Criar aplicação
+$app = new Application();
+
+// Registrar provider do ReactPHP
+$app->register(new ReactPHPServiceProvider($app));
+
+// Definir suas rotas
+$app->get('/', function($req, $res) {
+    return $res->json([
+        'message' => 'Servidor ReactPHP Rodando!',
+        'timestamp' => date('Y-m-d H:i:s'),
+        'server' => 'ReactPHP v0.0.2'
+    ]);
+});
+
+$app->get('/api/users/:id', function($req, $res) {
+    $id = $req->param('id');
+    
+    return $res->json([
+        'user_id' => $id,
+        'name' => 'Usuário ' . $id,
+        'server_time' => microtime(true)
+    ]);
+});
+
+// Iniciar o servidor ReactPHP
+echo "🚀 Iniciando servidor ReactPHP em http://localhost:8080\n";
+echo "Pressione Ctrl+C para parar o servidor\n\n";
+
+$app->runAsync(); // Isso inicia o loop de eventos do ReactPHP
+```
+
+### 4. Executando o Servidor
+
+```bash
+php server.php
+```
+
+Sua aplicação agora executará continuamente sem reiniciar entre requisições!
+
+## 🏗️ Configuração Avançada
+
+### Configuração Personalizada do Servidor
+
+```php
+use PivotPHP\ReactPHP\Providers\ReactPHPServiceProvider;
+
+$app = new Application();
+
+// Configurar ReactPHP com configurações personalizadas
+$app->register(new ReactPHPServiceProvider($app, [
     'server' => [
-        'host' => '0.0.0.0',
-        'port' => 8080,
-        'workers' => 4 // Opcional: número de processos worker
-    ],
-    'options' => [
-        'max_request_size' => '10M',
-        'timeout' => 30
+        'host' => '127.0.0.1',
+        'port' => 3000,
+        'debug' => true,
+        'streaming' => true,
+        'max_concurrent_requests' => 200,
+        'request_body_size_limit' => 134217728, // 128MB
     ]
 ]));
 ```
 
-## Uso Básico
+### Variáveis de Ambiente
 
-### Executando o Servidor Assíncrono
+| Variável | Padrão | Descrição |
+|----------|--------|-----------|
+| `REACTPHP_HOST` | `0.0.0.0` | Endereço de bind do servidor |
+| `REACTPHP_PORT` | `8080` | Porta do servidor |
+| `REACTPHP_STREAMING` | `false` | Habilitar requisições streaming |
+| `REACTPHP_MAX_CONCURRENT_REQUESTS` | `100` | Máximo de requisições concorrentes |
+| `REACTPHP_REQUEST_BODY_SIZE_LIMIT` | `67108864` | Tamanho máximo do corpo da requisição (64MB) |
+| `REACTPHP_REQUEST_BODY_BUFFER_SIZE` | `8192` | Tamanho do buffer de requisição (8KB) |
 
-Em vez de usar o tradicional `$app->run()`, use o runner assíncrono:
+## 🔄 Sistema de Bridge PSR-7
 
-```php
-// Servidor síncrono tradicional
-// $app->run();
+A extensão ReactPHP inclui um sistema sofisticado de bridge que converte entre a implementação PSR-7 do ReactPHP e a camada HTTP do PivotPHP:
 
-// Servidor assíncrono ReactPHP
-$app->runAsync();
-```
+### Bridge de Requisição
 
-Isso inicia um servidor HTTP contínuo que mantém sua aplicação em memória.
-
-### Handlers de Rota Assíncronos
-
-O ReactPHP permite usar handlers assíncronos com promises:
-
-```php
-use React\Promise\Promise;
-
-$app->get('/dados-async', function($req, $res) {
-    return new Promise(function($resolve) use ($res) {
-        // Simula operação assíncrona
-        \React\EventLoop\Loop::get()->addTimer(0.5, function() use ($resolve, $res) {
-            $resolve($res->json(['dados' => 'Carregado assincronamente!']));
-        });
-    });
-});
-```
-
-### Operações de Banco de Dados
-
-Combine com drivers de banco de dados assíncronos para queries não-bloqueantes:
+O `RequestBridge` manipula com segurança a manipulação de estado global:
 
 ```php
-$app->get('/usuarios', function($req, $res) use ($db) {
-    return $db->query('SELECT * FROM usuarios')
-        ->then(function($usuarios) use ($res) {
-            return $res->json($usuarios);
-        });
-});
-```
+// O bridge automaticamente manipula:
+// 1. Salvar estado original $_SERVER, $_GET, $_POST
+// 2. Popular globals para Request do PivotPHP
+// 3. Criar objeto Request do PivotPHP
+// 4. Restaurar estado global original
 
-## Recursos Avançados
-
-### Acesso ao Event Loop
-
-Acesse o event loop do ReactPHP para operações assíncronas avançadas:
-
-```php
-use React\EventLoop\Loop;
-
-$app->get('/resposta-atrasada', function($req, $res) {
-    $loop = Loop::get();
+// Suas rotas funcionam exatamente igual ao PHP tradicional:
+$app->post('/api/data', function($req, $res) {
+    $data = $req->getBody();      // Funciona perfeitamente
+    $query = $req->query('param'); // Estado global manipulado automaticamente
     
-    $loop->addTimer(2, function() use ($res) {
-        $res->json(['mensagem' => 'Resposta após 2 segundos']);
-    });
-    
-    return $res->async(); // Indica resposta assíncrona
+    return $res->json(['received' => $data]);
 });
 ```
 
-### Tarefas Periódicas
+### Bridge de Resposta
 
-Agende tarefas para executar periodicamente:
+O `ResponseBridge` converte respostas do PivotPHP para formato ReactPHP:
 
 ```php
-use React\EventLoop\Loop;
-
-// Executar limpeza a cada 60 segundos
-Loop::get()->addPeriodicTimer(60, function() {
-    // Limpar arquivos temporários
-    limparArquivosTemp();
+// Todos os métodos de resposta do PivotPHP funcionam:
+$app->get('/api/file', function($req, $res) {
+    return $res
+        ->header('Content-Type', 'application/pdf')
+        ->status(200)
+        ->stream($fileContent); // Streaming funciona automaticamente
 });
 ```
 
-### Processamento de Streams
+### Conversão de Headers
 
-Lide com uploads e downloads de arquivos eficientemente:
+O PivotPHP converte headers HTTP para formato camelCase automaticamente:
 
 ```php
-$app->post('/upload', function($req, $res) {
-    $body = $req->getBody();
+$app->get('/api/info', function($req, $res) {
+    // Headers são automaticamente convertidos:
+    $contentType = $req->header('contentType');     // Content-Type
+    $auth = $req->header('authorization');          // Authorization
+    $apiKey = $req->header('xApiKey');             // X-API-Key
+    $language = $req->header('acceptLanguage');     // Accept-Language
     
-    if ($body instanceof \React\Stream\ReadableStreamInterface) {
-        $output = new \React\Stream\WritableResourceStream(
-            fopen('uploads/arquivo.dat', 'w'),
-            Loop::get()
-        );
-        
-        $body->pipe($output);
-        
-        $output->on('close', function() use ($res) {
-            $res->json(['status' => 'enviado']);
-        });
-    }
-    
-    return $res->async();
+    return $res->json([
+        'headers_received' => $req->headers(),
+        'converted_format' => 'camelCase'
+    ]);
 });
 ```
 
-## Considerações de Performance
+## ⚡ Benefícios de Performance
+
+### Vantagens do Runtime Contínuo
+
+```php
+// Exemplo: Conexões de banco de dados persistem entre requisições
+use PivotPHP\CycleORM\CycleServiceProvider;
+
+$app = new Application();
+$app->register(new ReactPHPServiceProvider($app));
+$app->register(new CycleServiceProvider($app));
+
+// Conexão de banco é estabelecida uma vez e reutilizada
+$app->get('/api/users', function($req, $res) {
+    // Sem overhead de conexão - conexão já existe!
+    $users = User::all();
+    return $res->json($users);
+});
+```
 
 ### Gerenciamento de Memória
 
-Como a aplicação permanece em memória, a limpeza adequada é essencial:
+A extensão inclui gerenciamento automático de memória:
 
 ```php
-// Limpar caches periodicamente
-Loop::get()->addPeriodicTimer(300, function() use ($app) {
-    $app->getContainer()->get('cache')->clear();
-    gc_collect_cycles();
+// Isolamento de memória integrado previne vazamentos de memória
+$app->get('/api/heavy-operation', function($req, $res) {
+    // Processe grandes datasets sem se preocupar com vazamentos de memória
+    $largeData = processHugeDataset();
+    
+    // Memória é automaticamente limpa após a resposta
+    return $res->json(['processed' => count($largeData)]);
 });
 ```
 
-### Pool de Conexões
-
-O ReactPHP funciona bem com pool de conexões:
+### Monitoramento de Performance
 
 ```php
-$app->register(new DatabasePoolProvider([
-    'min_connections' => 5,
-    'max_connections' => 20
-]));
+$app->get('/debug/server-stats', function($req, $res) {
+    $container = $app->getContainer();
+    
+    if ($container->has('reactphp.server')) {
+        return $res->json([
+            'server_type' => 'ReactPHP',
+            'memory_usage' => memory_get_usage(true),
+            'memory_peak' => memory_get_peak_usage(true),
+            'uptime_seconds' => time() - $_SERVER['REQUEST_TIME_FLOAT'],
+            'requests_handled' => 'Runtime contínuo ativo'
+        ]);
+    }
+    
+    return $res->json(['error' => 'ReactPHP não ativo']);
+});
 ```
 
-## Suporte WebSocket (Em Breve)
+## 🛡️ Recursos de Segurança
 
-Versões futuras incluirão suporte WebSocket:
+### Proteção de Estado Global
+
+A extensão fornece isolamento completo de estado global:
 
 ```php
-// Chegando na v1.0
-$ws = $app->websocket('/ws');
+// Cada requisição tem estado global isolado
+$app->get('/api/state-test', function($req, $res) {
+    // $_POST, $_GET, $_SERVER são isolados com segurança por requisição
+    // Sem vazamento de dados entre requisições concorrentes
+    
+    return $res->json([
+        'request_id' => uniqid(),
+        'isolated_state' => true,
+        'concurrent_safe' => true
+    ]);
+});
+```
 
-$ws->on('connection', function($client) {
-    $client->on('message', function($msg) use ($client) {
-        $client->send('Echo: ' . $msg);
+### Proteção de Memória
+
+Guard de memória integrado previne processos descontrolados:
+
+```php
+// Monitoramento automático de memória e limpeza
+$app->get('/api/memory-intensive', function($req, $res) {
+    // Uso de memória é monitorado automaticamente
+    $result = performMemoryIntensiveOperation();
+    
+    // Limpeza acontece automaticamente após a resposta
+    return $res->json($result);
+});
+```
+
+## 🚀 Uso Avançado
+
+### Acesso ao Event Loop
+
+```php
+$app->get('/api/async-operation', function($req, $res) use ($app) {
+    $container = $app->getContainer();
+    $loop = $container->get(\React\EventLoop\LoopInterface::class);
+    
+    // Agendar operações assíncronas
+    $loop->addTimer(2.0, function() {
+        echo "Operação assíncrona completa!\n";
     });
+    
+    return $res->json(['async_scheduled' => true]);
 });
 ```
 
-## Executando em Produção
+### Respostas Streaming
 
-### Usando Supervisor
-
-Crie uma configuração do supervisor:
-
-```ini
-[program:pivotphp-reactphp]
-command=php /caminho/para/app/server.php
-autostart=true
-autorestart=true
-stderr_logfile=/var/log/pivotphp-reactphp.err.log
-stdout_logfile=/var/log/pivotphp-reactphp.out.log
+```php
+$app->get('/api/stream-data', function($req, $res) {
+    // Habilitar streaming para respostas grandes
+    return $res
+        ->header('Content-Type', 'application/json')
+        ->header('Transfer-Encoding', 'chunked')
+        ->stream(function() {
+            for ($i = 1; $i <= 100; $i++) {
+                yield json_encode(['chunk' => $i]) . "\n";
+                usleep(10000); // Simular tempo de processamento
+            }
+        });
+});
 ```
 
-### Usando PM2
+### Desligamento Gracioso
 
-Para gerenciamento de processos estilo Node.js:
+```php
+// O servidor manipula SIGTERM e SIGINT graciosamente
+// Conexões existentes são permitidas a completar
+// Novas conexões são rejeitadas durante o desligamento
 
-```json
-{
-  "apps": [{
-    "name": "pivotphp-app",
-    "script": "server.php",
-    "interpreter": "php",
-    "instances": 4,
-    "exec_mode": "cluster"
-  }]
+// Em seu server.php, adicione manipulação de sinais:
+if (function_exists('pcntl_signal')) {
+    pcntl_signal(SIGTERM, function() {
+        echo "\nRecebeu SIGTERM, desligando graciosamente...\n";
+        // Servidor completará requisições atuais e sairá
+    });
+    
+    pcntl_signal(SIGINT, function() {
+        echo "\nRecebeu SIGINT (Ctrl+C), desligando graciosamente...\n";
+        // Servidor completará requisições atuais e sairá
+    });
 }
 ```
 
-## Resolução de Problemas
+## 🔧 Deploy em Produção
 
-### Alto Uso de Memória
+### Gerenciamento de Processos com Supervisor
 
-Monitore e limite o uso de memória:
+Crie `/etc/supervisor/conf.d/pivotphp-reactphp.conf`:
 
-```php
-Loop::get()->addPeriodicTimer(10, function() {
-    $memoria = memory_get_usage(true) / 1024 / 1024;
-    if ($memoria > 500) { // Limite de 500MB
-        error_log("Alto uso de memória: {$memoria}MB");
-        // Acionar limpeza ou reinicialização
-    }
-});
+```ini
+[program:pivotphp-reactphp]
+command=php /caminho/para/seu/server.php
+directory=/caminho/para/sua/app
+user=www-data
+autostart=true
+autorestart=true
+startsecs=3
+startretries=3
+stdout_logfile=/var/log/supervisor/pivotphp-reactphp.log
+stderr_logfile=/var/log/supervisor/pivotphp-reactphp-error.log
 ```
 
-### Limites de Conexão
-
-Aumente os limites do sistema para produção:
+Iniciar com Supervisor:
 
 ```bash
-# Aumentar limites de descritores de arquivo
-ulimit -n 65536
-
-# Atualizar limites do sistema
-echo "* soft nofile 65536" >> /etc/security/limits.conf
-echo "* hard nofile 65536" >> /etc/security/limits.conf
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start pivotphp-reactphp
 ```
 
-## Melhores Práticas
+### Balanceamento de Carga
 
-1. **Design Stateless**: Mantenha os handlers de requisição stateless
-2. **Limpeza de Recursos**: Sempre feche recursos (arquivos, conexões)
-3. **Tratamento de Erros**: Implemente limites de erro adequados
-4. **Monitoramento**: Use verificações de saúde e métricas
-5. **Desligamento Gracioso**: Lide com sinais adequadamente
+Para aplicações de alto tráfego, execute múltiplas instâncias:
 
+```bash
+# Iniciar múltiplos servidores em portas diferentes
+php server.php --port=8080 &
+php server.php --port=8081 &
+php server.php --port=8082 &
+php server.php --port=8083 &
+```
+
+Configurar nginx para balancear carga:
+
+```nginx
+upstream pivotphp_backend {
+    server 127.0.0.1:8080;
+    server 127.0.0.1:8081;
+    server 127.0.0.1:8082;
+    server 127.0.0.1:8083;
+}
+
+server {
+    listen 80;
+    server_name seudominio.com;
+
+    location / {
+        proxy_pass http://pivotphp_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+### Deploy Docker
+
+Crie `Dockerfile`:
+
+```dockerfile
+FROM php:8.1-cli
+
+# Instalar extensões necessárias
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Copiar aplicação
+COPY . /app
+WORKDIR /app
+
+# Instalar dependências
+RUN composer install --no-dev --optimize-autoloader
+
+# Expor porta
+EXPOSE 8080
+
+# Iniciar servidor ReactPHP
+CMD ["php", "server.php"]
+```
+
+## 🐛 Solução de Problemas
+
+### Problemas Comuns
+
+**Vazamentos de Memória em Processos de Longa Duração**
 ```php
-// Desligamento gracioso
-$loop = Loop::get();
-$loop->addSignal(SIGTERM, function() use ($app, $loop) {
-    $app->shutdown();
-    $loop->stop();
+// Monitorar uso de memória
+$app->get('/debug/memory', function($req, $res) {
+    return $res->json([
+        'current' => memory_get_usage(true),
+        'peak' => memory_get_peak_usage(true),
+        'limit' => ini_get('memory_limit')
+    ]);
 });
 ```
 
-## Aplicação de Exemplo
+**Conflitos de Versão PSR-7**
+```bash
+# Verificar versão PSR-7
+composer show psr/http-message
 
-Servidor de exemplo completo:
-
-```php
-<?php
-require 'vendor/autoload.php';
-
-use PivotPHP\Core\Application;
-use PivotPHP\ReactPHP\ReactServiceProvider;
-
-$app = new Application();
-
-// Registrar ReactPHP
-$app->register(new ReactServiceProvider([
-    'server' => ['port' => 8080]
-]));
-
-// Rotas
-$app->get('/', fn($req, $res) => $res->json(['status' => 'rodando']));
-
-$app->get('/saude', fn($req, $res) => $res->json([
-    'status' => 'saudável',
-    'memoria' => memory_get_usage(true),
-    'uptime' => time() - $_SERVER['REQUEST_TIME']
-]));
-
-// Iniciar servidor assíncrono
-echo "Servidor rodando em http://localhost:8080\n";
-$app->runAsync();
+# Se necessário, use comutação de versão do PivotPHP (solução temporária)
+php vendor/pivotphp/core/scripts/switch-psr7-version.php 1
+composer update psr/http-message
 ```
 
-## Recursos
+**Problemas de Estado Global**
+```php
+// Se experimentando poluição de estado, verifique isolamento:
+$app->get('/debug/isolation', function($req, $res) {
+    return $res->json([
+        'server_vars' => count($_SERVER),
+        'get_vars' => count($_GET),
+        'post_vars' => count($_POST),
+        'request_isolated' => true
+    ]);
+});
+```
 
-- [Documentação ReactPHP](https://reactphp.org/)
-- [PivotPHP ReactPHP GitHub](https://github.com/pivotphp/pivotphp-reactphp)
-- [Guia de PHP Assíncrono](https://sergeyzhuk.me/reactphp-series)
+### Monitoramento de Performance
+
+```php
+$app->get('/debug/performance', function($req, $res) {
+    $startTime = microtime(true);
+    
+    // Simular algum trabalho
+    usleep(1000);
+    
+    $endTime = microtime(true);
+    $duration = ($endTime - $startTime) * 1000; // Converter para milissegundos
+    
+    return $res->json([
+        'request_duration_ms' => $duration,
+        'memory_usage_mb' => memory_get_usage(true) / 1024 / 1024,
+        'server_type' => 'Runtime Contínuo ReactPHP'
+    ]);
+});
+```
+
+## 📊 Comparação de Performance
+
+### PHP-FPM Tradicional vs ReactPHP
+
+| Métrica | PHP-FPM | ReactPHP |
+|---------|---------|----------|
+| Bootstrap por requisição | ✅ Sim | ❌ Não |
+| Memória por requisição | ~8-32MB | ~2-8MB |
+| Conexões concorrentes | Limitado | Alto |
+| Conexões de banco | Por requisição | Persistente |
+| Tempo de inicialização | ~50-200ms | ~0.1ms |
+
+### Resultados de Benchmark
+
+```php
+// ReactPHP pode manipular significativamente mais requisições concorrentes
+$app->get('/api/benchmark', function($req, $res) {
+    $start = microtime(true);
+    
+    // Simular trabalho típico de API
+    $data = [
+        'users' => range(1, 1000),
+        'timestamp' => time(),
+        'server' => 'ReactPHP'
+    ];
+    
+    $end = microtime(true);
+    
+    return $res->json([
+        'data' => $data,
+        'processing_time_ms' => ($end - $start) * 1000,
+        'memory_usage_mb' => memory_get_usage(true) / 1024 / 1024
+    ]);
+});
+```
+
+## 🔮 Recursos Futuros
+
+O roadmap da extensão ReactPHP inclui:
+
+- **Suporte a WebSocket**: Comunicação bidirecional em tempo real
+- **Suporte HTTP/2**: Recursos avançados de protocolo
+- **Clustering Integrado**: Utilização multi-core
+- **Server-Sent Events**: Streaming de eventos em tempo real
+- **Middleware Aprimorado**: Pipeline de middleware específico para ReactPHP
+
+## 📚 Documentação Relacionada
+
+- [Documentação Oficial do ReactPHP](https://reactphp.org/)
+- [Documentação Core do PivotPHP]({{ '/docs/' | relative_url }})
+- [Otimização de Performance]({{ '/docs/performance/' | relative_url }})
+- [Guia de Deploy]({{ '/docs/deployment/' | relative_url }})
+
+## 🤝 Suporte
+
+- **Issues no GitHub**: [Reportar problemas](https://github.com/PivotPHP/pivotphp-reactphp/issues)
+- **Comunidade Discord**: [Junte-se ao nosso Discord](https://discord.gg/DMtxsP7z)
+- **Documentação**: [Visão técnica](https://github.com/PivotPHP/pivotphp-reactphp/blob/main/docs/TECHNICAL-OVERVIEW.md)
+
+---
+
+*A extensão PivotPHP ReactPHP v0.0.2 está pronta para produção e fornece runtime contínuo estável para aplicações de alta performance.*

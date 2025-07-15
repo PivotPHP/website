@@ -14,31 +14,23 @@ The request object represents the HTTP request and provides methods to access re
 
 ```php
 $app->post('/users', function($request, $response) {
-    // Get all input data
-    $all = $request->all();
+    // Get parsed body data
+    $data = $request->getParsedBody();
 
-    // Get specific input with default value
-    $name = $request->input('name', 'Anonymous');
+    // Get specific input from body
+    $name = $request->input('name') ?? 'Anonymous';
     $email = $request->input('email');
 
-    // Get nested input using dot notation
-    $city = $request->input('address.city');
+    // Get query parameter
+    $page = $request->get('page', 1);
 
-    // Get only specific fields
-    $credentials = $request->only(['email', 'password']);
-
-    // Get all except specific fields
-    $data = $request->except(['password', 'password_confirmation']);
-
-    // Check if input exists
-    if ($request->has('email')) {
+    // Check if input exists in body
+    if (isset($data['email'])) {
         // Process email
     }
 
-    // Check if multiple inputs exist
-    if ($request->hasAny(['email', 'username'])) {
-        // Process login
-    }
+    // Access route parameters
+    $userId = $request->param('id');
 });
 ```
 
@@ -75,7 +67,7 @@ $queryString = $request->getUri()->getQuery();
 ### Route Parameters
 
 ```php
-$app->get('/users/{id}/posts/{postId}', function($request, $response) {
+$app->get('/users/:id/posts/:postId', function($request, $response) {
     // Get route parameters
     $userId = $request->param('id');
     $postId = $request->param('postId');

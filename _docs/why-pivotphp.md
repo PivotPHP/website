@@ -11,7 +11,7 @@ permalink: /docs/why-pivotphp/
 [![Build Status](https://img.shields.io/github/actions/workflow/status/pivotphp/pivotphp-core/tests.yml?branch=main)](https://github.com/pivotphp/pivotphp-core/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PHP Version](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
-[![Performance](https://img.shields.io/badge/performance-52M%2B%20ops%2Fsec-brightgreen.svg)](#performance)
+[![Performance](https://img.shields.io/badge/performance-2.57M%2B%20ops%2Fsec-brightgreen.svg)](#performance)
 
 ---
 
@@ -31,7 +31,7 @@ $app = new Application();
 
 // Simple route
 $app->get('/hello/:name', function($req, $res) {
-    $res->json(['message' => "Hello, {$req->params->name}!"]);
+    $res->json(['message' => "Hello, " . $req->param('name') . "!"]);
 });
 
 // Middleware that just works
@@ -42,11 +42,11 @@ $app->use('/api/*', function($req, $res, $next) {
 
 // RESTful resource
 $app->get('/users/:id', function($req, $res) {
-    $user = User::find($req->params->id);
+    $user = User::find($req->param('id'));
     $res->json($user);
 });
 
-$app->listen(8000);
+$app->run();
 ```
 
 **2 minutes. That's all you need to build your first API for concept validation and local development.**

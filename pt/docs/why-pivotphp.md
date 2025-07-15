@@ -11,7 +11,7 @@ lang: pt
 [![Status Build](https://img.shields.io/github/actions/workflow/status/pivotphp/pivotphp-core/tests.yml?branch=main)](https://github.com/pivotphp/pivotphp-core/actions)
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Versão PHP](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
-[![Performance](https://img.shields.io/badge/performance-52M%2B%20ops%2Fsec-brightgreen.svg)](#performance)
+[![Performance](https://img.shields.io/badge/performance-6.2K%20req%2Fsec%20Docker-brightgreen.svg)](#performance)
 
 ---
 
@@ -93,7 +93,7 @@ $app->group('/api/v1', function($group) {
 ```
 
 ### ⚡ **Performance Blazing**
-**52M+ operações/segundo.** Construído para velocidade desde o início.
+**6.227 req/segundo validado em Docker.** Performance competitiva com excelente experiência do desenvolvedor.
 
 ```php
 // Roteamento otimizado com cache zero-config
@@ -155,14 +155,14 @@ $app = new App([
 
 ## 📊 Performance
 
-O PivotPHP entrega performance excepcional sem sacrificar a experiência do desenvolvedor:
+O PivotPHP entrega performance competitiva (6.227 req/s Docker validado) sem sacrificar a experiência do desenvolvedor:
 
-| Framework | Requests/seg | Uso Memória | Tempo Resposta |
-|-----------|-------------|-------------|----------------|
-| **PivotPHP** | **52.000+** | **8.2 MB** | **0.05ms** |
-| Framework A | 12.000 | 12.5 MB | 0.12ms |
-| Framework B | 15.000 | 10.1 MB | 0.08ms |
-| Framework C | 3.500 | 25.7 MB | 0.35ms |
+| Framework | Req/seg (Docker) | Uso Memória | Tempo Resposta |
+|-----------|------------------|-------------|----------------|
+| **Slim 4** | **6.881** | ~12MB | **0.29ms** |
+| **Lumen** | **6.322** | ~15MB | **0.31ms** |
+| **PivotPHP** | **6.227** | **1.61MB** | **0.32ms** |
+| **Flight** | **3.179** | ~8MB | **10ms** |
 
 *Benchmarks executados no PHP 8.2, single-threaded, resposta JSON simples. [Ver benchmarks completos →](https://pivotphp.github.io/benchmarks)*
 

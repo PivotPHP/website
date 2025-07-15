@@ -50,10 +50,10 @@ $app->any('/api/*', function($req, $res) {
 
 ### Required Parameters
 
-Capture segments of the URI using route parameters:
+PivotPHP uses **Express.js-style** route parameters with the `:param` syntax:
 
 ```php
-$app->get('/user/{id}', function($req, $res) {
+$app->get('/user/:id', function($req, $res) {
     $userId = $req->param('id');
     return $res->json(['user_id' => $userId]);
 });
@@ -62,7 +62,7 @@ $app->get('/user/{id}', function($req, $res) {
 You can have multiple parameters:
 
 ```php
-$app->get('/posts/{year}/{month}/{slug}', function($req, $res) {
+$app->get('/posts/:year/:month/:slug', function($req, $res) {
     $year = $req->param('year');
     $month = $req->param('month');
     $slug = $req->param('slug');
@@ -73,10 +73,10 @@ $app->get('/posts/{year}/{month}/{slug}', function($req, $res) {
 
 ### Optional Parameters
 
-Make a parameter optional by adding a `?`:
+Optional parameters use the `?` suffix and can have default values:
 
 ```php
-$app->get('/posts/{id?}', function($req, $res) {
+$app->get('/posts/:id?', function($req, $res) {
     $id = $req->param('id', 'latest'); // Default to 'latest'
 
     if ($id === 'latest') {
@@ -87,26 +87,95 @@ $app->get('/posts/{id?}', function($req, $res) {
 });
 ```
 
-### Regular Expression Constraints
+### Parameter Constraints (PivotPHP Enhanced)
 
-You can constrain route parameters using regular expressions:
+PivotPHP extends Express.js routing with powerful parameter validation using the `<constraint>` syntax:
 
 ```php
 // Only match numeric IDs
-$app->get('/user/{id:[0-9]+}', function($req, $res) {
+$app->get('/user/:id<\d+>', function($req, $res) {
     // $id is guaranteed to be numeric
 });
 
-// Match specific pattern
-$app->get('/posts/{slug:[a-z0-9-]+}', function($req, $res) {
-    // $slug matches lowercase letters, numbers, and hyphens
+// Use built-in shortcuts (recommended)
+$app->get('/users/:id<int>', function($req, $res) {
+    // Same as <\d+> but more readable
+});
+
+// Match slug pattern
+$app->get('/posts/:slug<slug>', function($req, $res) {
+    // Matches lowercase letters, numbers, and hyphens
 });
 
 // UUID pattern
-$app->get('/api/v1/resources/{uuid:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}}', function($req, $res) {
+$app->get('/api/v1/resources/:uuid<uuid>', function($req, $res) {
     // Matches UUID format
 });
+
+// Multiple constraints
+$app->get('/archive/:year<year>/:month<month>/:day<day>', function($req, $res) {
+    return $res->json([
+        'year' => $req->param('year'),   // 4-digit year
+        'month' => $req->param('month'), // 2-digit month  
+        'day' => $req->param('day')      // 2-digit day
+    ]);
+});
+
+// File extensions with custom patterns
+$app->get('/files/:filename<[\w-]+>.:ext<jpg|png|gif|webp>', function($req, $res) {
+    return $res->json([
+        'filename' => $req->param('filename'),
+        'extension' => $req->param('ext')
+    ]);
+});
 ```
+
+#### Built-in Constraint Shortcuts
+
+| Shortcut | Pattern | Description | Example |
+|----------|---------|-------------|----------|
+| `int` | `\d+` | One or more digits | `:id<int>` |
+| `slug` | `[a-z0-9-]+` | URL-safe slug | `:slug<slug>` |
+| `alpha` | `[a-zA-Z]+` | Letters only | `:name<alpha>` |
+| `alnum` | `[a-zA-Z0-9]+` | Letters and numbers | `:code<alnum>` |
+| `uuid` | `[a-f0-9]{8}-[a-f0-9]{4}-...` | UUID format | `:id<uuid>` |
+| `date` | `\d{4}-\d{2}-\d{2}` | YYYY-MM-DD | `:date<date>` |
+| `year` | `\d{4}` | 4-digit year | `:year<year>` |
+| `month` | `\d{2}` | 2-digit month | `:month<month>` |
+| `day` | `\d{2}` | 2-digit day | `:day<day>` |
+
+#### Advanced Regex Patterns
+
+```php
+// API versioning
+$app->get('/api/:version<v\d+>/users', function($req, $res) {
+    $version = $req->param('version'); // e.g., "v1", "v2"
+    return $res->json(['api_version' => $version]);
+});
+
+// Email-like patterns
+$app->get('/contact/:email<[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+>', function($req, $res) {
+    // Basic email validation at route level
+});
+
+// Complex path matching with full regex
+$app->get('/archive/{^(\d{4})/(\d{2})/(.+)$}', function($req, $res) {
+    $captures = $req->captures(); // Array of captured groups
+    return $res->json([
+        'year' => $captures[0],
+        'month' => $captures[1], 
+        'slug' => $captures[2]
+    ]);
+});
+```
+
+#### Benefits of Parameter Constraints
+
+1. **Security**: Invalid requests are rejected at routing level
+2. **Performance**: No need for manual validation in handlers
+3. **Clean Code**: Validation logic is declarative in routes
+4. **Early Failure**: Bad requests fail fast without executing handlers
+5. **Documentation**: Route constraints serve as inline documentation
 
 ## Route Groups
 
@@ -160,9 +229,9 @@ Instead of closures, you can use controller classes:
 // Single action
 $app->get('/users', [UserController::class, 'index']);
 $app->post('/users', [UserController::class, 'store']);
-$app->get('/users/{id}', [UserController::class, 'show']);
-$app->put('/users/{id}', [UserController::class, 'update']);
-$app->delete('/users/{id}', [UserController::class, 'destroy']);
+$app->get('/users/:id', [UserController::class, 'show']);
+$app->put('/users/:id', [UserController::class, 'update']);
+$app->delete('/users/:id', [UserController::class, 'destroy']);
 
 // RESTful resource controller
 $app->resource('/posts', PostController::class);
@@ -175,10 +244,10 @@ The `resource` method creates the following routes:
 | GET | /posts | index | posts.index |
 | GET | /posts/create | create | posts.create |
 | POST | /posts | store | posts.store |
-| GET | /posts/{id} | show | posts.show |
-| GET | /posts/{id}/edit | edit | posts.edit |
-| PUT/PATCH | /posts/{id} | update | posts.update |
-| DELETE | /posts/{id} | destroy | posts.destroy |
+| GET | /posts/:id | show | posts.show |
+| GET | /posts/:id/edit | edit | posts.edit |
+| PUT/PATCH | /posts/:id | update | posts.update |
+| DELETE | /posts/:id | destroy | posts.destroy |
 
 ## Named Routes
 

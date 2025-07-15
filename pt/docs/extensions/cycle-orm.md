@@ -1,87 +1,318 @@
 ---
 layout: docs
-title: Extensão Cycle ORM
+title: Extensão Cycle ORM v1.0.1
 permalink: /pt/docs/extensions/cycle-orm/
 lang: pt
 ---
 
-O Cycle ORM é um poderoso ORM DataMapper para PHP que fornece uma solução completa para trabalhar com bancos de dados em aplicações PivotPHP.
+# Extensão PivotPHP Cycle ORM v1.0.1
 
-## Instalação
+A extensão **pivotphp-cycle-orm** fornece integração perfeita de banco de dados com o microframework PivotPHP usando o poderoso Cycle ORM. Esta extensão oferece configuração zero, migrações automáticas, padrão repository e recursos abrangentes de monitoramento.
+
+## 🚀 Recursos Principais
+
+- **Configuração Zero**: Funciona imediatamente com padrões sensatos
+- **Segurança de Tipos**: Segurança total de tipos com análise PHPStan Level 8+
+- **Padrão Repository**: Padrão repository integrado com cache
+- **Monitoramento de Performance**: Log de consultas e profiling de performance
+- **Migrações Automáticas**: Compilação de esquema e suporte a migrações
+- **Suporte a Múltiplos Bancos**: Conexões SQLite (padrão) e MySQL
+- **Middleware de Transação**: Manipulação automática de transações
+- **Verificações de Saúde**: Monitoramento de saúde do banco de dados
+
+## 📦 Instalação
 
 ```bash
 composer require pivotphp/cycle-orm
 ```
 
-## Configuração
+## 🔧 Início Rápido
 
-Após a instalação, registre o service provider em seu `config/app.php`:
+### 1. Registrar o Service Provider
 
 ```php
-'providers' => [
-    // ... outros providers
-    PivotPHP\CycleORM\Providers\CycleServiceProvider::class,
-],
+use PivotPHP\Core\Core\Application;
+use PivotPHP\CycleORM\CycleServiceProvider;
+
+$app = new Application();
+
+// Registrar service provider do Cycle ORM
+$app->register(new CycleServiceProvider($app));
 ```
 
-### Configuração do Banco de Dados
+### 2. Configuração de Ambiente
 
-Configure sua conexão de banco de dados no `.env`:
+Crie ou atualize seu arquivo `.env`:
 
 ```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=pivotphp
-DB_USERNAME=root
-DB_PASSWORD=
+# Aplicação
+APP_NAME="Meu Projeto"
+APP_ENV=development
+APP_DEBUG=true
+
+# Configuração do Banco de Dados
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+
+# Para MySQL:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=meu_banco
+# DB_USERNAME=root
+# DB_PASSWORD=secret
+
+# Configurações do Cycle ORM
+CYCLE_ENTITY_DIRS=src/Entities
+CYCLE_LOG_QUERIES=true
+CYCLE_PROFILE_QUERIES=true
 ```
 
-## Uso Básico
+### 3. Criar Sua Primeira Entidade
 
-### Definindo Entidades
+Crie `src/Entities/User.php`:
 
 ```php
+<?php
+
+declare(strict_types=1);
+
 namespace App\Entities;
 
-use Cycle\Annotated\Annotation\Entity;
 use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Table;
 
-#[Entity(table: 'users')]
+#[Entity(repository: \App\Repositories\UserRepository::class)]
+#[Table(name: 'users')]
 class User
 {
     #[Column(type: 'primary')]
-    private int $id;
-    
-    #[Column(type: 'string')]
+    private ?int $id = null;
+
+    #[Column(type: 'string', nullable: false)]
     private string $name;
-    
-    #[Column(type: 'string', unique: true)]
+
+    #[Column(type: 'string', nullable: false, unique: true)]
     private string $email;
-    
+
+    #[Column(type: 'string', nullable: false)]
+    private string $password;
+
     #[Column(type: 'datetime')]
     private \DateTimeInterface $createdAt;
-    
-    // Getters e setters...
+
+    #[Column(type: 'datetime')]
+    private \DateTimeInterface $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    // Getters
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    // Setters
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->updatedAt = new \DateTime();
+        return $this;
+    }
+
+    public function verifyPassword(string $password): bool
+    {
+        return password_verify($password, $this->password);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'created_at' => $this->createdAt->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updatedAt->format('Y-m-d H:i:s'),
+        ];
+    }
 }
 ```
 
-### Padrão Repository
+### 4. Usando em Rotas com Middleware Helper
+
+O PivotPHP Cycle ORM fornece um middleware personalizado que injeta serviços ORM diretamente em sua requisição:
 
 ```php
+// Em seu arquivo principal da aplicação (public/index.php)
+
+// ... após registrar o CycleServiceProvider
+
+// Middleware personalizado para acesso ao Cycle ORM
+$app->use(function ($req, $res, $next) use ($app) {
+    $container = $app->getContainer();
+
+    if (!$container->has('cycle.orm')) {
+        throw new \RuntimeException('Cycle ORM não registrado corretamente');
+    }
+
+    // Obter serviços do Cycle ORM
+    $orm = $container->get('cycle.orm');
+    $em = $container->get('cycle.em');
+    $db = $container->get('cycle.database');
+    $repository = $container->get('cycle.repository');
+
+    // Injetar serviços como atributos da requisição
+    $req->setAttribute('cycle.orm', $orm);
+    $req->setAttribute('cycle.em', $em);
+    $req->setAttribute('cycle.db', $db);
+    $req->setAttribute('cycle.repository', $repository);
+
+    // Métodos helper
+    $req->setAttribute('repository', function(string $entityClass) use ($repository) {
+        return $repository->getRepository($entityClass);
+    });
+
+    $req->setAttribute('entity', function(string $entityClass, array $data = []) use ($orm) {
+        return $orm->make($entityClass, $data);
+    });
+
+    $req->setAttribute('entityManager', function() use ($em) {
+        return $em;
+    });
+
+    $next($req, $res);
+});
+
+// Definir suas rotas
+$app->get('/api/users', function($req, $res) {
+    try {
+        // Obter helper de repository
+        $repositoryHelper = $req->getAttribute('repository');
+        $repository = $repositoryHelper(User::class);
+
+        // Buscar todos os usuários
+        $users = $repository->findAll();
+
+        // Converter para array
+        $userData = array_map(fn(User $user) => $user->toArray(), $users);
+
+        return $res->json([
+            'success' => true,
+            'data' => $userData,
+            'count' => count($userData)
+        ]);
+    } catch (\Exception $e) {
+        return $res->status(500)->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
+$app->post('/api/users', function($req, $res) {
+    try {
+        $data = $req->getBody();
+
+        // Validação básica
+        if (!isset($data['name'], $data['email'], $data['password'])) {
+            return $res->status(400)->json([
+                'success' => false,
+                'error' => 'Nome, email e senha são obrigatórios'
+            ]);
+        }
+
+        // Obter helpers
+        $repositoryHelper = $req->getAttribute('repository');
+        $entityManagerHelper = $req->getAttribute('entityManager');
+
+        $repository = $repositoryHelper(User::class);
+        $entityManager = $entityManagerHelper();
+
+        // Verificar se o email já existe
+        if ($repository->findOne(['email' => $data['email']])) {
+            return $res->status(409)->json([
+                'success' => false,
+                'error' => 'Email já existe'
+            ]);
+        }
+
+        // Criar novo usuário
+        $user = new User();
+        $user->setName($data['name']);
+        $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
+
+        // Persistir no banco de dados
+        $entityManager->persist($user);
+        $entityManager->run();
+
+        return $res->status(201)->json([
+            'success' => true,
+            'data' => $user->toArray()
+        ]);
+    } catch (\Exception $e) {
+        return $res->status(500)->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
+$app->run();
+```
+
+## 🏗️ Recursos Avançados
+
+### Repositórios Personalizados
+
+Crie `src/Repositories/UserRepository.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use Cycle\ORM\Select\Repository;
+use App\Entities\User;
 
 class UserRepository extends Repository
 {
     public function findByEmail(string $email): ?User
     {
-        return $this->select()
-            ->where('email', $email)
-            ->fetchOne();
+        return $this->findOne(['email' => $email]);
     }
-    
+
     public function findActive(): array
     {
         return $this->select()
@@ -89,260 +320,273 @@ class UserRepository extends Repository
             ->orderBy('created_at', 'DESC')
             ->fetchAll();
     }
-}
-```
 
-### Usando em Controllers
-
-```php
-use PivotPHP\Core\Http\Request;
-use PivotPHP\Core\Http\Response;
-use Cycle\ORM\ORMInterface;
-
-class UserController
-{
-    public function __construct(
-        private ORMInterface $orm
-    ) {}
-    
-    public function index(Request $request, Response $response): Response
+    public function findRecentUsers(int $days = 30): array
     {
-        $repository = $this->orm->getRepository(User::class);
-        $users = $repository->findAll();
+        $since = new \DateTime("-{$days} days");
         
-        return $response->json($users);
-    }
-    
-    public function store(Request $request, Response $response): Response
-    {
-        $user = new User();
-        $user->setName($request->input('name'));
-        $user->setEmail($request->input('email'));
-        $user->setCreatedAt(new \DateTime());
-        
-        $this->orm->persist($user);
-        $this->orm->run();
-        
-        return $response->json($user, 201);
+        return $this->select()
+            ->where('created_at', '>=', $since)
+            ->orderBy('created_at', 'DESC')
+            ->fetchAll();
     }
 }
 ```
 
-## Relações
+### Middleware de Transação
 
-### Um-para-Muitos
+Para manipulação automática de transações:
 
 ```php
-#[Entity(table: 'posts')]
-class Post
-{
-    #[Column(type: 'primary')]
-    private int $id;
+use PivotPHP\CycleORM\Middleware\TransactionMiddleware;
+
+$app->post('/api/orders', 
+    new TransactionMiddleware(),
+    function($req, $res) {
+        // Todas as operações de banco de dados são envolvidas em uma transação
+        $order = new Order();
+        $req->getAttribute('entityManager')()->persist($order);
+
+        // Se uma exceção ocorrer, a transação é revertida
+        foreach ($req->input('items') as $item) {
+            $orderItem = new OrderItem();
+            $req->getAttribute('entityManager')()->persist($orderItem);
+        }
+
+        return $res->json($order);
+    }
+);
+```
+
+### Monitoramento de Performance
+
+```php
+use PivotPHP\CycleORM\Monitoring\QueryLogger;
+use PivotPHP\CycleORM\Monitoring\PerformanceProfiler;
+
+// Habilitar log de consultas
+$app->get('/debug/queries', function($req, $res) use ($app) {
+    $logger = $app->getContainer()->get('cycle.query_logger');
+    $stats = $logger->getStatistics();
     
-    #[BelongsTo(target: User::class)]
-    private User $author;
+    return $res->json([
+        'total_queries' => $stats['total_queries'],
+        'total_time' => $stats['total_time'],
+        'queries' => $stats['queries']
+    ]);
+});
+
+// Profiling de performance
+$app->get('/debug/profile', function($req, $res) use ($app) {
+    $profiler = $app->getContainer()->get('cycle.profiler');
+    $profile = $profiler->getProfile();
     
-    #[HasMany(target: Comment::class)]
-    private Collection $comments;
+    return $res->json([
+        'duration' => $profile['duration'],
+        'memory_peak' => $profile['memory_peak'],
+        'queries_count' => $profile['queries_count']
+    ]);
+});
+```
+
+### Verificações de Saúde
+
+```php
+use PivotPHP\CycleORM\Health\CycleHealthCheck;
+
+$app->get('/health', function($req, $res) use ($app) {
+    $health = $app->getContainer()->get('cycle.health');
+    $status = $health->check();
+
+    return $res->json([
+        'status' => $status->isHealthy() ? 'healthy' : 'unhealthy',
+        'database' => $status->getData(),
+        'timestamp' => date('Y-m-d H:i:s')
+    ]);
+});
+```
+
+## 🛠️ Comandos de Console
+
+### Configurar Comandos de Console
+
+Crie `bin/console`:
+
+```php
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use PivotPHP\Core\Core\Application;
+use PivotPHP\CycleORM\CycleServiceProvider;
+use PivotPHP\CycleORM\Commands\SchemaCommand;
+use PivotPHP\CycleORM\Commands\MigrateCommand;
+use PivotPHP\CycleORM\Commands\StatusCommand;
+
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+chdir(dirname(__DIR__));
+
+// Configuração
+$_ENV['DB_CONNECTION'] = 'sqlite';
+$_ENV['DB_DATABASE'] = __DIR__ . '/../database/database.sqlite';
+$_ENV['CYCLE_ENTITY_DIRS'] = 'src/Entities';
+
+$app = new Application();
+$app->register(new CycleServiceProvider($app));
+$container = $app->getContainer();
+
+$command = $argv[1] ?? 'help';
+
+switch ($command) {
+    case 'cycle:schema:sync':
+        $schemaCommand = new SchemaCommand(['--sync' => true], $container);
+        $schemaCommand->handle();
+        break;
+
+    case 'cycle:migrate':
+        $migrateCommand = new MigrateCommand([], $container);
+        $migrateCommand->handle();
+        break;
+
+    case 'cycle:status':
+        $statusCommand = new StatusCommand([], $container);
+        $statusCommand->handle();
+        break;
+
+    case 'help':
+    default:
+        echo "Comandos disponíveis:\n";
+        echo "  cycle:schema:sync  Sincronizar esquema do banco\n";
+        echo "  cycle:migrate      Executar migrações\n";
+        echo "  cycle:status       Verificar status das migrações\n";
+        echo "  help              Mostrar esta mensagem de ajuda\n";
+        break;
 }
 ```
 
-### Muitos-para-Muitos
-
-```php
-#[Entity(table: 'users')]
-class User
-{
-    #[ManyToMany(target: Role::class, through: UserRole::class)]
-    private Collection $roles;
-}
-```
-
-## Migrações
-
-### Criando Migrações
+Torne-o executável:
 
 ```bash
-php bin/console cycle:migrate:create CreateUsersTable
+chmod +x bin/console
 ```
 
-### Exemplo de Migração
-
-```php
-use Cycle\Migrations\Migration;
-
-class CreateUsersTable extends Migration
-{
-    public function up(): void
-    {
-        $this->table('users')
-            ->addColumn('id', 'primary')
-            ->addColumn('name', 'string', ['length' => 255])
-            ->addColumn('email', 'string', ['length' => 255])
-            ->addColumn('password', 'string', ['length' => 255])
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime', ['nullable' => true])
-            ->addIndex(['email'], ['unique' => true])
-            ->create();
-    }
-    
-    public function down(): void
-    {
-        $this->table('users')->drop();
-    }
-}
-```
-
-### Executando Migrações
+### Usando Comandos de Console
 
 ```bash
-# Verificar status das migrações
-php bin/console cycle:migrate:status
+# Criar/atualizar esquema do banco de dados
+php bin/console cycle:schema:sync
 
-# Executar migrações pendentes
+# Verificar status
+php bin/console cycle:status
+
+# Executar migrações
 php bin/console cycle:migrate
-
-# Reverter última migração
-php bin/console cycle:migrate --rollback
-
-# Gerar migração a partir das entidades
-php bin/console cycle:migrate:generate
 ```
 
-## Gerenciamento de Esquema
+## 🔧 Opções de Configuração
 
-### Sincronizar Esquema (Apenas Desenvolvimento)
+A extensão Cycle ORM suporta várias opções de configuração via variáveis de ambiente:
 
-```bash
-# Sincronizar esquema do banco com as entidades
-php bin/console cycle:sync
+| Variável | Padrão | Descrição |
+|----------|--------|-----------|
+| `DB_CONNECTION` | `sqlite` | Driver do banco (sqlite, mysql) |
+| `DB_DATABASE` | `database/database.sqlite` | Nome/caminho do banco |
+| `DB_HOST` | `localhost` | Host do banco (MySQL) |
+| `DB_PORT` | `3306` | Porta do banco (MySQL) |
+| `DB_USERNAME` | `root` | Usuário do banco (MySQL) |
+| `DB_PASSWORD` | `` | Senha do banco (MySQL) |
+| `CYCLE_ENTITY_DIRS` | `src/Entities` | Diretórios de entidades |
+| `CYCLE_LOG_QUERIES` | `false` | Habilitar log de consultas |
+| `CYCLE_PROFILE_QUERIES` | `false` | Habilitar profiling de performance |
+
+## 🚀 Dicas de Performance
+
+### 1. Usar Cache de Repository
+O `RepositoryFactory` automaticamente faz cache dos repositories para melhor performance.
+
+### 2. Habilitar Profiling de Consultas
+Monitore consultas lentas em desenvolvimento:
+
+```env
+CYCLE_LOG_QUERIES=true
+CYCLE_PROFILE_QUERIES=true
 ```
 
-> **Aviso**: O comando `sync` modifica diretamente o esquema do seu banco de dados. Use migrações em produção.
-
-### Cache de Esquema
-
-Para produção, faça cache do seu esquema:
-
-```bash
-# Gerar cache do esquema
-php bin/console cycle:schema:cache
-
-# Limpar cache do esquema
-php bin/console cycle:schema:clear
-```
-
-## Recursos Avançados
-
-### Query Builder
+### 3. Otimizar Carregamento de Entidades
+Use eager loading para prevenir consultas N+1:
 
 ```php
-$query = $this->orm->getRepository(User::class)
-    ->select()
-    ->where('created_at', '>=', new \DateTime('-30 days'))
-    ->where(function($query) {
-        $query->where('role', 'admin')
-              ->orWhere('role', 'moderator');
-    })
-    ->orderBy('name', 'ASC')
-    ->limit(10)
-    ->offset(20);
-
-$users = $query->fetchAll();
+$users = $repository->select()
+    ->with('posts')
+    ->with('profile')
+    ->fetchAll();
 ```
 
-### Transações
+### 4. Usar Transações para Operações em Lote
+Para múltiplas operações, use transações:
 
 ```php
-$transaction = $this->orm->getTransaction();
+$em = $req->getAttribute('entityManager')();
 
 try {
-    $user = new User();
-    // ... definir dados do usuário
+    $em->getTransaction()->begin();
     
-    $profile = new Profile();
-    // ... definir dados do perfil
+    foreach ($items as $item) {
+        $entity = new Entity();
+        $em->persist($entity);
+    }
     
-    $this->orm->persist($user);
-    $this->orm->persist($profile);
-    
-    $transaction->run();
+    $em->run();
+    $em->getTransaction()->commit();
 } catch (\Exception $e) {
-    $transaction->rollback();
+    $em->getTransaction()->rollback();
     throw $e;
 }
 ```
 
-### Eventos de Entidade
+## 🐛 Solução de Problemas
 
-```php
-#[Entity(table: 'users')]
-class User
-{
-    #[Column(type: 'datetime')]
-    private \DateTimeInterface $updatedAt;
-    
-    #[PreUpdate]
-    public function beforeUpdate(): void
-    {
-        $this->updatedAt = new \DateTime();
-    }
-    
-    #[PostPersist]
-    public function afterCreate(): void
-    {
-        // Enviar email de boas-vindas
-        event(new UserCreated($this));
-    }
-}
-```
+### Problemas Comuns
 
-## Otimização de Performance
-
-### Carregamento Antecipado (Eager Loading)
-
-```php
-// Prevenir consultas N+1
-$posts = $repository->select()
-    ->with('author')
-    ->with('comments.author')
-    ->fetchAll();
-```
-
-### Cache de Consultas
-
-```php
-$users = $repository->select()
-    ->where('active', true)
-    ->cache(3600) // Cache por 1 hora
-    ->fetchAll();
-```
-
-## Comandos do Console
-
-A extensão Cycle ORM fornece vários comandos de console:
-
+**Erro: "O diretório não existe"**
 ```bash
-# Gerenciamento de entidades
-php bin/console cycle:entity:list
-php bin/console cycle:entity:sync
-
-# Comandos de migração
-php bin/console cycle:migrate
-php bin/console cycle:migrate:status
-php bin/console cycle:migrate:generate
-
-# Comandos de esquema
-php bin/console cycle:schema:cache
-php bin/console cycle:schema:clear
-php bin/console cycle:schema:render
-
-# Comandos de banco de dados
-php bin/console cycle:database:list
-php bin/console cycle:database:create
-php bin/console cycle:database:drop
+mkdir -p src/Entities
 ```
 
-## Mais Informações
+**Erro: "Cycle ORM não registrado corretamente"**
+```php
+// Certifique-se de registrar o service provider
+$app->register(new CycleServiceProvider($app));
+```
 
-Para informações mais detalhadas sobre os recursos do Cycle ORM, visite a [documentação oficial do Cycle ORM](https://cycle-orm.dev/).
+**Erro: "Falha na conexão com o banco de dados"**
+- Verifique sua configuração `.env`
+- Certifique-se de que o diretório do banco existe para SQLite
+- Verifique os detalhes de conexão MySQL
+
+### Modo Debug
+
+Habilite o modo debug para mensagens de erro detalhadas:
+
+```env
+APP_DEBUG=true
+```
+
+## 📚 Documentação Relacionada
+
+- [Documentação Oficial do Cycle ORM](https://cycle-orm.dev/)
+- [Documentação Core do PivotPHP]({{ '/docs/' | relative_url }})
+- [Configuração de Banco de Dados]({{ '/docs/database/' | relative_url }})
+- [Desenvolvimento de Extensões]({{ '/docs/extensions/' | relative_url }})
+
+## 🤝 Suporte
+
+- **Issues no GitHub**: [Reportar problemas](https://github.com/PivotPHP/pivotphp-cycle-orm/issues)
+- **Comunidade Discord**: [Junte-se ao nosso Discord](https://discord.gg/DMtxsP7z)
+- **Documentação**: [Guia completo](https://github.com/PivotPHP/pivotphp-cycle-orm/blob/main/docs/integration-guide.md)
+
+---
+
+*A extensão PivotPHP Cycle ORM está pronta para produção e totalmente testada com o ecossistema PivotPHP v1.1.0.*

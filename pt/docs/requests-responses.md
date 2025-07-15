@@ -76,7 +76,7 @@ $queryString = $request->getUri()->getQuery();
 ### Parâmetros de Rota
 
 ```php
-$app->get('/usuarios/{id}/posts/{postId}', function($request, $response) {
+$app->get('/usuarios/:id/posts/:postId', function($request, $response) {
     // Obter parâmetros de rota
     $usuarioId = $request->param('id');
     $postId = $request->param('postId');

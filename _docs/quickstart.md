@@ -60,7 +60,7 @@ $app->get('/tasks', function($req, $res) use (&$tasks) {
 });
 
 // Get a specific task
-$app->get('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->get('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
@@ -97,7 +97,7 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
 });
 
 // Update a task
-$app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->put('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
@@ -113,7 +113,7 @@ $app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
 });
 
 // Delete a task
-$app->delete('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->delete('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {

@@ -56,7 +56,7 @@ $app->get('/tasks', function($req, $res) use (&$tasks) {
 });
 
 // Obter uma tarefa específica
-$app->get('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->get('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
@@ -93,7 +93,7 @@ $app->post('/tasks', function($req, $res) use (&$tasks) {
 });
 
 // Atualizar uma tarefa
-$app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->put('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
@@ -109,7 +109,7 @@ $app->put('/tasks/{id}', function($req, $res) use (&$tasks) {
 });
 
 // Deletar uma tarefa
-$app->delete('/tasks/{id}', function($req, $res) use (&$tasks) {
+$app->delete('/tasks/:id', function($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
@@ -226,7 +226,7 @@ $app->singleton(TaskController::class);
 
 // Use o controller nas rotas
 $app->get('/tasks', [TaskController::class, 'index']);
-$app->get('/tasks/{id}', [TaskController::class, 'show']);
+$app->get('/tasks/:id', [TaskController::class, 'show']);
 $app->post('/tasks', [TaskController::class, 'store']);
 ```
 
