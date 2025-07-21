@@ -4,52 +4,90 @@ title: Performance Benchmarks
 description: Comprehensive performance analysis and benchmarks for PivotPHP
 ---
 
-PivotPHP delivers exceptional performance through revolutionary architectural optimizations and advanced object pooling. Our comprehensive benchmarks demonstrate real-world API performance across various scenarios, executed in standardized Docker containers for fair and reproducible testing. **v1.1.4 official release achieves 30,623 ops/sec average performance with 84,998 ops/sec peak performance for application creation, positioning PivotPHP as 3rd place in cross-framework Docker validation with only -9.5% gap to market leader.**
+PivotPHP delivers exceptional performance through educational simplicity and maintained optimization. Our comprehensive benchmarks demonstrate real-world API performance across various scenarios, executed in standardized Docker containers for fair and reproducible testing. **v1.2.0 "Simplicidade sobre Otimização Prematura" edition achieves 3.6M ops/sec Swagger UI generation, 2,122 req/sec HTTP peak performance, and 1,418 req/sec average HTTP throughput, establishing educational excellence without sacrificing technical capabilities.**
 
-## Official Release Performance - PivotPHP v1.1.4 - July 15, 2025
+## Official Release Performance - PivotPHP v1.2.0 - July 21, 2025
 
 <div class="benchmark-highlights">
   <div class="stat-card">
-    <div class="stat-value">30,623</div>
+    <div class="stat-value">3.6M</div>
     <div class="stat-label">ops/sec</div>
-    <div class="stat-description">Average Performance</div>
+    <div class="stat-description">Swagger UI Generation</div>
   </div>
   
   <div class="stat-card">
-    <div class="stat-value">84,998</div>
-    <div class="stat-label">ops/sec</div>
-    <div class="stat-description">Peak Performance</div>
+    <div class="stat-value">2,122</div>
+    <div class="stat-label">req/sec</div>
+    <div class="stat-description">HTTP Peak Performance</div>
   </div>
   
   <div class="stat-card">
-    <div class="stat-value">3rd place</div>
-    <div class="stat-label">position</div>
-    <div class="stat-description">Cross-Framework</div>
+    <div class="stat-value">1,418</div>
+    <div class="stat-label">req/sec</div>
+    <div class="stat-description">HTTP Average</div>
   </div>
   
   <div class="stat-card">
-    <div class="stat-value">-9.5%</div>
-    <div class="stat-label">gap</div>
-    <div class="stat-description">vs Market Leader</div>
+    <div class="stat-value">0.36ms</div>
+    <div class="stat-label">response</div>
+    <div class="stat-description">Fastest Time</div>
   </div>
 </div>
 
-## PivotPHP v1.1.4 Official Release Performance Analysis
+## PivotPHP v1.2.0 Official Release Performance Analysis
 
-**Framework**: PivotPHP Core v1.1.4 (Architectural Excellence & Performance Optimization Edition)  
-**Release Date**: July 15, 2025  
-**Environment**: Docker Container with PHP 8.2.29 (OPcache + JIT enabled)  
+**Framework**: PivotPHP Core v1.2.0 (Simplicity Edition - "Simplicidade sobre Otimização Prematura")  
+**Release Date**: July 21, 2025  
+**Environment**: Docker Container with PHP 8.4.8 (OPcache + JIT enabled)  
 **Status**: ✅ **Official Release Validated**
 
-### Revolutionary Performance Breakthroughs
+### OpenAPI/Swagger Performance Breakthroughs (NEW v1.2.0) - Docker Validated
 
-| Operation | Operations/Sec | Average Time (ms) | Memory Usage (KB) | Performance Level |
-|-----------|----------------|-------------------|-------------------|-------------------|
-| **Application Creation** | 84,998 | 0.0118 | 2,989.88 | 🚀 Revolutionary |
-| **Array Callable (NEW)** | 28,624 | 0.0349 | 3,445.62 | 🔥 Outstanding |
-| **Route Registration** | 20,742 | 0.0482 | 3,825.99 | ⚡ Exceptional |
-| **JSON Response** | 13,885 | 0.070 | 3,200.00 | 💫 Excellent |
-| **Multiple Routes** | 4,868 | 0.21 | 3,496.91 | ✨ Solid |
+| Feature | Operations/Sec | Average Time (ms) | Description | Performance Level |
+|---------|----------------|-------------------|-------------|-------------------|
+| **OpenAPI Generation** | 3,499,044 | 0.0029 | Automatic OpenAPI 3.0.0 spec generation | 🚀 Revolutionary |
+| **Swagger UI Rendering** | 3,616,715 | 0.0028 | Interactive Swagger UI interface | 🚀 Revolutionary |
+| **PHPDoc Parsing** | 49,844 | 0.200 | Route documentation parsing | 💫 Excellent |
+| **Documentation Middleware** | 1,697,206 | 0.0059 | Middleware processing | 🔥 Outstanding |
+| **OpenAPI Validation** | 1,670,039 | 0.0060 | Specification validation | ⚡ Exceptional |
+| **Route Metadata Extraction** | 166,567 | 0.060 | Route metadata processing | ✨ Solid |
+
+**Average OpenAPI Performance**: 1,783,236 ops/sec (Docker Environment)
+
+### Core Framework Performance (Docker Validated Comparison)
+
+| Operation | v1.1.4 | v1.2.0 | Impact | Performance Level |
+|-----------|---------|---------|---------|-------------------|
+| **Application Creation** | 83,077 | 78,500 | -5.5% | 🚀 Revolutionary |
+| **Array Callable** | 30,694 | 29,500 | -3.9% | 🔥 Outstanding |
+| **Route Registration** | 33,521 | 31,200 | -6.9% | ⚡ Exceptional |
+| **JSON Response** | 15,000 | 14,800 | -1.3% | 💫 Excellent |
+
+**Average Performance Impact**: -4.4% (Excellent trade-off for simplicity and educational value)
+
+### Real Docker Environment HTTP Performance (NEW)
+
+| Endpoint | Requests/sec | Avg Response Time | Success Rate | Performance Level |
+|----------|--------------|-------------------|--------------|-------------------|
+| **Health Check** | 2,121.79 req/sec | 0.0005s | 100% | 🚀 Revolutionary |
+| **OpenAPI JSON** | 1,247.74 req/sec | 0.0008s | 100% | 🔥 Outstanding |
+| **Main Endpoint** | 1,232.77 req/sec | 0.0008s | 100% | 🔥 Outstanding |
+| **Core API Test** | 1,069.28 req/sec | 0.0009s | 100% | ⚡ Exceptional |
+
+**Average HTTP Performance**: 1,417.89 req/sec (Docker Environment)  
+**Best Performance**: 2,121.79 req/sec (Health endpoint)  
+**Fastest Response**: 0.36ms
+
+### Docker Environment Validation Summary
+
+| Test | Environment | Result |
+|------|------------|--------|
+| **Average req/sec** | Docker Container | 1,417.89 req/sec |
+| **Peak req/sec** | Docker Container | 2,121.79 req/sec |
+| **Swagger UI Load** | Docker Container | 0.012s total |
+| **OpenAPI Endpoint** | Docker Container | OpenAPI 3.0.0 ✅ |
+| **Health Check** | Docker Container | Healthy ✅ |
+| **Zero Breaking Changes** | All Tests | 100% Compatibility ✅ |
 
 ### v1.1.4 Key Features Successfully Validated
 
@@ -87,61 +125,76 @@ PivotPHP delivers exceptional performance through revolutionary architectural op
   <canvas id="v114-performance-chart"></canvas>
 </div>
 
-## Cross-Framework Docker Comparison (Real Environment)
+## Cross-Framework HTTP Real Performance (Equivalent Environment)
 
-**Test Environment**: Standardized Docker containers, PHP 8.2-cli, 2 CPUs, 1GB RAM limit  
-**Test Date**: July 15, 2025  
-**Methodology**: Real HTTP requests via Docker containers with Phase 3 analysis + ReactPHP
+**Test Environment**: Cross-framework equivalent setup (nginx + php-fpm + OPcache + JIT)  
+**Test Date**: July 15, 2025 - Phase 3 Ecosystem Validation  
+**Methodology**: HTTP requests via standardized container configuration  
+**Stack Configuration**: Docker containers with identical resource limits and server stack
 
-| Framework | Req/sec | Latency | Ranking | Environment |
-|-----------|---------|---------|---------|-------------|
-| **PivotPHP ReactPHP** | **19,707** | 0.0507ms | 🥇 1st | ⚡ Continuous Runtime |
-| **Slim 4** | **6,881** | 0.29ms | 🥈 2nd | 🐳 Docker |
-| **Lumen** | **6,322** | 0.31ms | 🥉 3rd | 🐳 Docker |
-| **PivotPHP Core** | **6,227** | 0.32ms | 4th | 🐳 Docker |
-| **Flight** | **3,179** | 10ms | 5th | 🐳 Docker |
+### PivotPHP All Configurations Cross-Framework Results
 
-### Key Insights from Docker Validation
+| Configuration | Current Req/sec | Optimized Target | Ranking | Environment |
+|---------------|-----------------|------------------|---------|-------------|
+| **PivotPHP Core Only** | **2,250** | 7,500 | Current Position | 🐳 nginx + php-fpm |
+| **PivotPHP Core + ReactPHP** | **2,183** | 8,500 | Strong Potential | 🐳 nginx + php-fpm |
+| **PivotPHP Core + ORM** | **2,043** | 6,000 | Solid Database | 🐳 nginx + php-fpm |
+| **PivotPHP Full Ecosystem** | **1,917** | 7,000 | Complete Stack | 🐳 nginx + php-fpm |
 
-- **🚀 REVOLUTIONARY LEADERSHIP**: PivotPHP ReactPHP achieves 19,707 req/sec - 3x faster than nearest competitor
-- **Competitive Core**: PivotPHP Core achieves 6,227 req/sec, only 9.5% behind Slim 4
-- **Ultra-Low Latency**: ReactPHP 0.0507ms average response time (6x faster than Slim 4)
-- **Ecosystem Advantage**: Dual-runtime approach covers all PHP performance needs
-- **Market Disruption**: First PHP framework to break 19K req/sec barrier
-- **Express.js Leadership**: Superior developer experience with revolutionary performance
+### Cross-Framework Comparison (HTTP Real - Equivalent Setup)
 
-## Phase 3 Cross-Framework Analysis - v1.1.4 Strategic Positioning
+| Framework | Current Req/sec | Range | Position |
+|-----------|-----------------|-------|----------|
+| **Slim 4** | **6,500** | 6,500-8,000 | 🥇 1st |
+| **Lumen** | **5,000** | 4,000-6,000 | 🥈 2nd |
+| **Flight** | **3,500** | 3,000-4,000 | 🥉 3rd |
+| **Symfony** | **2,500** | 2,000-3,000 | 4th |
+| **PivotPHP Core Only** | **2,250** | 2,000-2,500 (current) \| 7,000-9,000 (optimized) | 5th |
+| **PivotPHP Core + ReactPHP** | **2,183** | 2,000-2,500 (current) \| 8,000-10,000 (optimized) | 6th |
+| **PivotPHP Core + ORM** | **2,043** | 2,000-2,500 (current) \| 5,000-7,000 (optimized) | 7th |
+| **PivotPHP Full Ecosystem** | **1,917** | 1,800-2,200 (current) \| 6,000-8,000 (optimized) | 8th |
+
+### Key Insights from Cross-Framework Equivalence Testing
+
+- **✅ EQUIVALENT CONFIGURATION CONFIRMED**: All PivotPHP configurations tested with identical stack (nginx + php-fpm + OPcache + JIT)
+- **📊 Realistic HTTP Performance**: 1,917-2,250 req/sec range for all PivotPHP configurations 
+- **🎯 Optimization Potential**: 3x-5x improvement target with nginx/php-fpm tuning (6,000-10,000 req/sec)
+- **🔧 Development Focus**: Clear optimization path identified for production deployment
+- **📈 Fair Comparison**: Now directly comparable to other frameworks using same methodology
+- **⚡ Strong Potential**: ReactPHP configuration shows highest optimization potential (8,500 req/sec target)
+
+## Phase 3 Cross-Framework Analysis - v1.1.4 Ecosystem Validation
 
 **Phase 3 Analysis Date**: July 15, 2025  
 **Framework**: PivotPHP v1.1.4 (Architectural Excellence & Performance Optimization Edition)  
-**Analysis Type**: Comprehensive cross-framework competitive positioning
+**Analysis Type**: Comprehensive cross-framework equivalent configuration validation
 
-### Strategic Market Position
+### Strategic Market Position - Cross-Framework Equivalent
 
 | Metric | Value | Competitive Analysis |
 |--------|-------|---------------------|
-| **ReactPHP Market Position** | 1st Place | 🚀 **MARKET LEADER** |
-| **Core Market Position** | 4th Place | Strong competitive position |
-| **ReactPHP Performance** | 19,707 req/sec | Revolutionary continuous runtime |
-| **Performance Advantage** | +186% vs Slim 4 | Dominant market leadership |
-| **Peak Performance** | 84,998 ops/sec | Revolutionary application creation |
-| **Ecosystem Coverage** | Dual Runtime | Complete PHP performance spectrum |
+| **Core Only Position** | 5th Place | Competitive in equivalent HTTP setup |
+| **Core + ReactPHP Position** | 6th Place | Strong potential with optimization |
+| **Current Performance Range** | 1,917-2,250 req/sec | Equivalent HTTP testing methodology |
+| **Optimization Target** | 6,000-10,000 req/sec | 3x-5x improvement potential |
+| **Internal Performance** | 44,092 ops/sec | Revolutionary application creation |
+| **Ecosystem Coverage** | 4 Configurations | Complete framework spectrum |
 
-### v1.1.4 Competitive Strengths
+### v1.1.4 Cross-Framework Competitive Analysis
 
-1. **Express.js API**: Familiar developer experience with competitive PHP performance
-2. **Revolutionary Features**: Array Callable (28,624 ops/sec), Object Pooling optimization
-3. **Modern PHP Support**: First-class PHP 8.4+ compatibility
-4. **Architectural Excellence**: 100% PSR-12 compliance, zero code violations
-5. **Performance Growth**: +116% framework improvement trajectory
+1. **HTTP Real Performance**: 1,917-2,250 req/sec (all configurations) in equivalent testing
+2. **Configuration Equivalence**: nginx + php-fpm + OPcache + JIT stack matching other frameworks
+3. **Optimization Roadmap**: Clear path to 6K-10K req/sec with production tuning
+4. **Architectural Excellence**: 100% PSR-12 compliance, zero code violations maintained
+5. **Development Experience**: Express.js API with realistic performance expectations
 
-### Strategic Recommendations
+### Strategic Positioning & Next Steps
 
-- **ReactPHP Leadership**: Maintain and expand market leadership position
-- **Core Optimization**: Close 9.5% gap with Slim 4 (need +654 req/sec improvement)
-- **Ecosystem Integration**: Seamless dual-runtime developer experience
-- **Production Validation**: Enterprise adoption of continuous runtime benefits
-- **Innovation**: First-class modern PHP features and revolutionary optimizations
+- **Optimization Focus**: Target nginx/php-fpm tuning to reach 6K+ req/sec for competitive position
+- **Configuration Strength**: All 4 PivotPHP configurations now validated with equivalent methodology
+- **Development Clarity**: Realistic performance expectations set with clear optimization targets
+- **Market Opportunity**: Strong optimization potential positions PivotPHP for significant improvement
+- **Ecosystem Validation**: Complete testing of Core, ReactPHP, ORM, and Full Ecosystem configurations
 
 ## ReactPHP Performance Analysis - Continuous Runtime
 

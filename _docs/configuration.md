@@ -4,7 +4,14 @@ title: Configuration
 permalink: /docs/configuration/
 ---
 
-PivotPHP uses a simple yet powerful configuration system that allows you to manage your application settings across different environments.
+PivotPHP v1.1.4 uses a simple yet powerful configuration system that allows you to manage your application settings across different environments, with performance optimizations and extension support.
+
+## Performance Configuration
+
+- **🚀 Object Pooling**: Automatic 100% Request and 99.9% Response reuse
+- **💫 JSON Optimization**: Automatic buffer pooling configuration
+- **⚡ ReactPHP Extension**: Continuous runtime configuration
+- **🎯 Cycle ORM**: Zero-configuration database setup
 
 ## Environment Configuration
 
@@ -13,22 +20,46 @@ PivotPHP uses a simple yet powerful configuration system that allows you to mana
 PivotPHP uses environment variables to manage configuration that varies between deployment environments. The `.env` file in your project root contains these variables:
 
 ```bash
-APP_NAME=PivotPHP
+# Application Settings
+APP_NAME="PivotPHP v1.1.4"
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://localhost
+APP_VERSION=1.1.4
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=pivotphp
-DB_USERNAME=root
-DB_PASSWORD=
+# Performance Settings (v1.1.4)
+OBJECT_POOLING_ENABLED=true
+JSON_BUFFER_POOLING=true
+JSON_POOL_SIZE=200
+JSON_BUFFER_SIZE=8192
 
+# ReactPHP Extension (19,707 req/sec)
+REACTPHP_ENABLED=false
+REACTPHP_HOST=0.0.0.0
+REACTPHP_PORT=8080
+REACTPHP_MAX_CONCURRENT_REQUESTS=100
+
+# Cycle ORM Extension (457,870 ops/sec)
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+CYCLE_ENTITY_DIRS=src/Entities
+CYCLE_LOG_QUERIES=true
+CYCLE_PROFILE_QUERIES=true
+
+# For MySQL:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=pivotphp
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Caching and Sessions
 CACHE_DRIVER=file
 SESSION_DRIVER=file
 QUEUE_DRIVER=sync
 
+# Mail Configuration
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.mailtrap.io
 MAIL_PORT=2525

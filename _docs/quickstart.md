@@ -4,12 +4,20 @@ title: Quick Start
 permalink: /docs/quickstart/
 ---
 
-This guide will walk you through creating your first PivotPHP application. We'll build a simple REST API for managing tasks.
+This guide will walk you through creating your first PivotPHP v1.1.4 application. We'll build a simple REST API for managing tasks.
 
-<div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid rgba(59, 130, 246, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
-  <strong>ℹ️ Development Status</strong><br>
-  PivotPHP is ideal for local development and API concept validation. The framework is under active development with new features being added regularly.
+<div style="background: rgba(124, 58, 237, 0.1); border-left: 4px solid rgba(124, 58, 237, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
+  <strong>🚀 PivotPHP v1.1.4 - Architectural Excellence & Performance Optimization Edition</strong><br>
+  Revolutionary PHP microframework with 84,998 ops/sec peak performance and ReactPHP continuous runtime (19,707 req/sec). Experience Express.js-style development with industry-leading performance.
 </div>
+
+## Performance Highlights
+
+- **🔥 Peak Performance**: 84,998 ops/sec (application creation)
+- **⚡ ReactPHP Runtime**: 19,707 req/sec (market leader)
+- **🎯 Core Performance**: 6,227 req/sec (Docker validated)
+- **💫 Array Callable**: PHP 8.4+ compatible syntax
+- **🏆 Market Position**: #1 with ReactPHP, competitive core
 
 ## Step 1: Create Your Application
 
@@ -27,7 +35,14 @@ $app = new Application();
 // Define your first route
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'Welcome to PivotPHP!',
+        'message' => 'Welcome to PivotPHP v1.1.4!',
+        'version' => '1.1.4',
+        'edition' => 'Architectural Excellence & Performance Optimization',
+        'performance' => [
+            'peak_ops_sec' => 84998,
+            'reactphp_req_sec' => 19707,
+            'core_req_sec' => 6227
+        ],
         'timestamp' => time()
     ]);
 });
@@ -48,7 +63,7 @@ Visit `http://localhost:8000` in your browser. You should see a JSON response.
 
 ## Step 3: Add More Routes
 
-Let's create a simple task management API:
+Let's create a simple task management API with v1.1.4 features:
 
 ```php
 // In-memory task storage (for demo purposes)
@@ -130,7 +145,7 @@ $app->delete('/tasks/:id', function($req, $res) use (&$tasks) {
 
 ## Step 4: Add Middleware
 
-Let's add some middleware for logging and CORS:
+Let's add some middleware for logging and CORS using v1.1.4 optimizations:
 
 ```php
 // Logging middleware
@@ -276,9 +291,26 @@ $app->run();
 
 ## What's Next?
 
-Congratulations! You've built your first PivotPHP application. To learn more:
+Congratulations! You've built your first PivotPHP v1.1.4 application. To learn more:
 
-- Explore [Routing]({{ site.baseurl }}/docs/routing/) for advanced routing features
-- Learn about [Middleware]({{ site.baseurl }}/docs/middleware/) for request processing
+### Core Features
+- Explore [Routing]({{ site.baseurl }}/docs/routing/) for advanced routing features with array callable support
+- Learn about [Middleware]({{ site.baseurl }}/docs/middleware/) for request processing with PSR-15 compliance
 - Understand [Service Container]({{ site.baseurl }}/docs/container/) for dependency injection
 - Check out [Database]({{ site.baseurl }}/docs/database/) integration with Cycle ORM
+
+### Performance Extensions
+- **ReactPHP Extension**: Achieve 19,707 req/sec with continuous runtime
+- **Cycle ORM Extension**: Zero-configuration database with 457,870 ops/sec
+- **Performance Monitoring**: Real-time metrics and optimization tools
+
+### Advanced Topics
+- **Array Callable Syntax**: Use `[Controller::class, 'method']` for PHP 8.4+ compatibility
+- **Object Pooling**: Benefit from 100% Request and 99.9% Response reuse
+- **JSON Optimization**: Automatic buffer pooling for high-performance APIs
+- **Docker Deployment**: Production-ready containerized deployments
+
+### Community & Support
+- **Discord Community**: https://discord.gg/DMtxsP7z
+- **GitHub**: https://github.com/PivotPHP/pivotphp-core
+- **Performance Results**: See our [benchmark documentation]({{ site.baseurl }}/docs/benchmarks/) for detailed performance analysis

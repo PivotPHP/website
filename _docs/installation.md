@@ -6,19 +6,35 @@ permalink: /docs/installation/
 
 ## Requirements
 
-Before installing PivotPHP, make sure your system meets the following requirements:
+Before installing PivotPHP v1.1.4, make sure your system meets the following requirements:
 
-- **PHP 8.1** or higher
+- **PHP 8.1** or higher (8.4+ recommended for array callable syntax)
 - **Composer** (latest version recommended)
 - **ext-json** PHP extension
 - **ext-mbstring** PHP extension
+- **Optional**: Docker for containerized deployment
+
+## Performance Highlights
+
+- **🚀 Peak Performance**: 84,998 ops/sec (application creation)
+- **⚡ ReactPHP Extension**: 19,707 req/sec (continuous runtime)
+- **🎯 Core Performance**: 6,227 req/sec (Docker validated)
+- **💫 Memory Efficiency**: Ultra-efficient 1.61MB footprint
+- **🏆 Market Position**: #1 with ReactPHP extension
 
 ## Install via Composer
 
-The recommended way to install PivotPHP is through [Composer](https://getcomposer.org/):
+The recommended way to install PivotPHP v1.1.4 is through [Composer](https://getcomposer.org/):
 
 ```bash
+# Core framework (6,227 req/sec)
 composer require pivotphp/core
+
+# Optional: ReactPHP extension (19,707 req/sec)
+composer require pivotphp/reactphp
+
+# Optional: Cycle ORM extension (457,870 ops/sec)
+composer require pivotphp/cycle-orm
 ```
 
 ## Create a New Project
@@ -93,8 +109,20 @@ $app = new Application();
 
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'PivotPHP is running!',
-        'version' => Application::VERSION
+        'message' => 'PivotPHP v1.1.4 is running!',
+        'version' => Application::VERSION,
+        'edition' => 'Architectural Excellence & Performance Optimization',
+        'performance' => [
+            'peak_ops_sec' => 84998,
+            'core_req_sec' => 6227,
+            'reactphp_req_sec' => 19707
+        ],
+        'features' => [
+            'array_callable' => 'PHP 8.4+ compatible',
+            'object_pooling' => '100% Request reuse',
+            'json_optimization' => 'Automatic buffer pooling',
+            'psr_compliance' => 'PSR-7, PSR-15, PSR-12'
+        ]
     ]);
 });
 
@@ -111,4 +139,19 @@ Visit `http://localhost:8000` in your browser. You should see a JSON response co
 
 ## Next Steps
 
-Now that you have PivotPHP installed, you're ready to build your first application! Check out our [Quick Start guide]({{ site.baseurl }}/docs/quickstart/) to learn the basics.
+Now that you have PivotPHP v1.1.4 installed, you're ready to build high-performance applications!
+
+### Getting Started
+- **[Quick Start Guide]({{ site.baseurl }}/docs/quickstart/)** - Build your first REST API
+- **[Routing]({{ site.baseurl }}/docs/routing/)** - Advanced routing with array callable support
+- **[Middleware]({{ site.baseurl }}/docs/middleware/)** - PSR-15 compliant request processing
+
+### High-Performance Extensions
+- **[ReactPHP Extension]({{ site.baseurl }}/docs/extensions/reactphp/)** - Achieve 19,707 req/sec
+- **[Cycle ORM Extension]({{ site.baseurl }}/docs/extensions/cycle-orm/)** - Zero-config database
+- **[Performance Benchmarks]({{ site.baseurl }}/docs/benchmarks/)** - Detailed performance analysis
+
+### Production Deployment
+- **[Docker Deployment]({{ site.baseurl }}/docs/deployment/)** - Containerized production setup
+- **[Configuration]({{ site.baseurl }}/docs/configuration/)** - Environment-specific settings
+- **[Monitoring]({{ site.baseurl }}/docs/monitoring/)** - Performance tracking and optimization

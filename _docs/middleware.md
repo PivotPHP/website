@@ -4,7 +4,36 @@ title: Middleware
 permalink: /docs/middleware/
 ---
 
-Middleware provides a convenient mechanism for filtering HTTP requests entering your application. PivotPHP implements the PSR-15 middleware standard, ensuring compatibility with the broader PHP ecosystem.
+Middleware provides a convenient mechanism for filtering HTTP requests entering your application. PivotPHP v1.1.4 implements the PSR-15 middleware standard with revolutionary performance optimizations and organized architecture.
+
+## Performance Highlights
+
+- **🚀 Middleware Processing**: Optimized PSR-15 implementation
+- **💫 Object Pooling**: 100% Request reuse, 99.9% Response reuse
+- **⚡ Zero Overhead**: Minimal performance impact
+- **🎯 Organized Structure**: Security, Performance, HTTP, and Core middleware categories
+
+## v1.1.4 Middleware Architecture
+
+Middleware is organized by responsibility for better maintainability:
+
+```
+src/Middleware/
+├── Security/              # Security-focused middlewares
+│   ├── AuthMiddleware.php
+│   ├── CsrfMiddleware.php
+│   ├── SecurityHeadersMiddleware.php
+│   └── XssMiddleware.php
+├── Performance/           # Performance-focused middlewares
+│   ├── CacheMiddleware.php
+│   └── RateLimitMiddleware.php
+├── Http/                 # HTTP protocol middlewares
+│   ├── CorsMiddleware.php
+│   └── ErrorMiddleware.php
+└── Core/                 # Base middleware infrastructure
+    ├── BaseMiddleware.php
+    └── MiddlewareInterface.php
+```
 
 ## Understanding Middleware
 
@@ -48,8 +77,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+// v1.1.4 organized structure
+use PivotPHP\Core\Middleware\Security\AuthMiddleware as BaseAuthMiddleware;
 
-class AuthMiddleware implements MiddlewareInterface
+class AuthMiddleware extends BaseAuthMiddleware implements MiddlewareInterface
 {
     public function process(
         ServerRequestInterface $request,

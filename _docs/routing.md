@@ -4,7 +4,14 @@ title: Routing
 permalink: /docs/routing/
 ---
 
-PivotPHP provides an Express.js-like routing system that's intuitive and powerful. Routes are defined using HTTP verb methods on the application instance.
+PivotPHP v1.1.4 provides an Express.js-like routing system that's intuitive and powerful, with revolutionary performance and PHP 8.4+ array callable support. Routes are defined using HTTP verb methods on the application instance.
+
+## Performance Highlights
+
+- **🚀 Route Registration**: 20,742 ops/sec (exceptional performance)
+- **💫 Array Callable**: PHP 8.4+ compatible syntax with 28,624 ops/sec
+- **⚡ Parameter Matching**: Advanced constraint validation
+- **🎯 Zero Overhead**: Optimized routing with object pooling
 
 ## Basic Routing
 
@@ -18,7 +25,7 @@ $app->get('/', function($request, $response) {
 
 ### Available Router Methods
 
-PivotPHP supports all standard HTTP verbs:
+PivotPHP v1.1.4 supports all standard HTTP verbs with enhanced performance:
 
 ```php
 $app->get($uri, $callback);
@@ -28,6 +35,28 @@ $app->patch($uri, $callback);
 $app->delete($uri, $callback);
 $app->options($uri, $callback);
 $app->head($uri, $callback);
+```
+
+### NEW: Array Callable Support (v1.1.4)
+
+PHP 8.4+ compatible array callable syntax with 28,624 ops/sec performance:
+
+```php
+// Array callable with class (NEW in v1.1.4)
+$app->get('/users', [UserController::class, 'index']);
+$app->post('/users', [UserController::class, 'store']);
+$app->put('/users/:id', [UserController::class, 'update']);
+$app->delete('/users/:id', [UserController::class, 'destroy']);
+
+// With instance
+$controller = new UserController();
+$app->get('/profile', [$controller, 'profile']);
+```
+
+### ❌ NOT Supported
+```php
+// String format Controller@method - DOES NOT WORK!
+$app->get('/users', 'UserController@index'); // TypeError!
 ```
 
 You can also match multiple verbs using the `match` method:
@@ -96,6 +125,9 @@ PivotPHP extends Express.js routing with powerful parameter validation using the
 $app->get('/user/:id<\d+>', function($req, $res) {
     // $id is guaranteed to be numeric
 });
+
+// Or use array callable (v1.1.4)
+$app->get('/user/:id<\d+>', [UserController::class, 'show']);
 
 // Use built-in shortcuts (recommended)
 $app->get('/users/:id<int>', function($req, $res) {
