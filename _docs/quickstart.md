@@ -15,7 +15,7 @@ This guide will walk you through creating your first PivotPHP v1.1.4 application
 
 - **🔥 Peak Performance**: 84,998 ops/sec (application creation)
 - **⚡ ReactPHP Runtime**: 19,707 req/sec (market leader)
-- **🎯 Core Performance**: 6,227 req/sec (Docker validated)
+- **🎯 Core Performance**: 2,122 req/sec Peak (Docker validated v1.2.0)
 - **💫 Array Callable**: PHP 8.4+ compatible syntax
 - **🏆 Market Position**: #1 with ReactPHP, competitive core
 
@@ -41,7 +41,7 @@ $app->get('/', function($request, $response) {
         'performance' => [
             'peak_ops_sec' => 84998,
             'reactphp_req_sec' => 19707,
-            'core_req_sec' => 6227
+            'core_req_sec' => 2122
         ],
         'timestamp' => time()
     ]);

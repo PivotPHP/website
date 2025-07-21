@@ -18,7 +18,7 @@ Before installing PivotPHP v1.1.4, make sure your system meets the following req
 
 - **🚀 Peak Performance**: 84,998 ops/sec (application creation)
 - **⚡ ReactPHP Extension**: 19,707 req/sec (continuous runtime)
-- **🎯 Core Performance**: 6,227 req/sec (Docker validated)
+- **🎯 Core Performance**: 2,122 req/sec Peak (Docker validated v1.2.0)
 - **💫 Memory Efficiency**: Ultra-efficient 1.61MB footprint
 - **🏆 Market Position**: #1 with ReactPHP extension
 
@@ -27,7 +27,7 @@ Before installing PivotPHP v1.1.4, make sure your system meets the following req
 The recommended way to install PivotPHP v1.1.4 is through [Composer](https://getcomposer.org/):
 
 ```bash
-# Core framework (6,227 req/sec)
+# Core framework (2,122 req/sec peak v1.2.0)
 composer require pivotphp/core
 
 # Optional: ReactPHP extension (19,707 req/sec)
@@ -114,7 +114,7 @@ $app->get('/', function($request, $response) {
         'edition' => 'Architectural Excellence & Performance Optimization',
         'performance' => [
             'peak_ops_sec' => 84998,
-            'core_req_sec' => 6227,
+            'core_req_sec' => 2122,
             'reactphp_req_sec' => 19707
         ],
         'features' => [

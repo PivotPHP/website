@@ -19,7 +19,7 @@ This guide covers deployment procedures for PivotPHP v1.1.4 applications with pe
 - **Deployment**: Continuous runtime with Supervisor
 
 ### 💫 **Core Framework** (Traditional HTTP)
-- **Performance**: 6,227 req/sec (Docker validated)
+- **Performance**: 2,122 req/sec Peak (Docker validated v1.2.0)
 - **Use Case**: REST APIs, microservices, serverless functions
 - **Deployment**: Standard web server (Nginx/Apache)
 
