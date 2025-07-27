@@ -231,19 +231,19 @@ ls -la *.json                     # Arquivos resultado timestamp
 - **Docker Validado**: Todos resultados verificáveis em ambiente isolado
 - **Transparência Total**: Código, configuração e dados publicly available
 
-## Resultados de Benchmark Internos - PivotPHP Core v1.1.1
+## Resultados de Benchmark Internos - PivotPHP Core v1.2.0
 
 ## Análise Cross-Framework
 
-Benchmarks abrangentes comparando PivotPHP com frameworks estabelecidos (Docker v1.1.1 - Gerado: 11/07/2025):
+Benchmarks abrangentes comparando PivotPHP com frameworks estabelecidos (Docker v1.2.0 - Gerado: 21/07/2025):
 
 <div class="benchmark-chart">
   <canvas id="variantChart"></canvas>
 </div>
 
-### PivotPHP Core v1.1.1 - Resultados Benchmark Docker
+### PivotPHP Core v1.2.0 - Resultados Benchmark Docker
 
-| Categoria Benchmark | PivotPHP Core v1.1.1 (Docker) | Uso Memória | Nível Performance |
+| Categoria Benchmark | PivotPHP Core v1.2.0 (Docker) | Uso Memória | Nível Performance |
 |---------------------|-------------------------------|-------------|-------------------|
 | **Parsing Request HTTP** | 317.847 ops/s | 14MB | Excelente |
 | **Criação Response HTTP** | 294.110 ops/s | 14MB | Excelente |
@@ -252,7 +252,7 @@ Benchmarks abrangentes comparando PivotPHP com frameworks estabelecidos (Docker 
 | **Processamento Headers** | 301.207 ops/s | 14MB | Excelente |
 | **Total Operações HTTP** | 2.154.485 ops/s | 14MB | 🚀 Alta Performance |
 
-### PivotPHP v1.1.1 Performance JSON (Docker)
+### PivotPHP v1.2.0 Performance JSON (Docker)
 
 | Tamanho Dataset JSON | Operations/Sec | Uso Memória | Nível Performance |
 |----------------------|----------------|-------------|-------------------|
@@ -266,7 +266,7 @@ Benchmarks abrangentes comparando PivotPHP com frameworks estabelecidos (Docker 
 | Variante do Framework | Caso de Uso Especializado | Operações/Seg | Memória | Vantagem Competitiva |
 |-----------------------|---------------------------|----------------|--------|-----------------------|
 | **ReactPHP v0.1.0** | Apps async/longa duração | **1.970.678 ops/s** | 12MB | **🚀 Domina cenários async** |
-| **Core v1.1.0** | APIs estilo Express.js | 2.185.982 ops/s | 20MB | Experiência do desenvolvedor |
+| **Core v1.2.0** | APIs estilo Express.js | 2.185.982 ops/s | 20MB | Experiência do desenvolvedor |
 | **ORM v1.0.1** | Operações de banco | 457.870 ops/s | **6MB** | **💾 Campeão de memória** |
 
 ## Performance de Concorrência
@@ -478,7 +478,7 @@ Todos os benchmarks foram conduzidos com containers Docker padronizados:
 - **Isolamento**: Cada variante do framework testada separadamente
 - **Reprodutibilidade**: Todos os testes podem ser replicados com `docker-compose up`
 - **Métricas**: Operações/segundo, requisições/hora, uso de memória
-- **Variantes Testadas**: Core v1.1.0, ORM v1.0.1, ReactPHP v0.1.0
+- **Variantes Testadas**: Core v1.2.0, ORM v1.0.1, ReactPHP v0.1.0
 
 ## Entendendo Nossas Métricas de Benchmark
 
@@ -515,7 +515,7 @@ php scripts/run-comparative-analysis.php
 
 Baseado em análise cross-framework abrangente (Julho 2025):
 
-### 🏆 Onde PivotPHP v1.1.1 se Destaca
+### 🏆 Onde PivotPHP v1.2.0 se Destaca
 - **Experiência do Desenvolvedor**: Sintaxe estilo Express.js com performance competitiva
 - **Eficiência de Memória**: Ultra-eficiente com pegada de 1,61MB
 - **Latência**: Excelente tempo médio de resposta de 0,32ms no Docker
@@ -545,7 +545,7 @@ O PivotPHP não afirma ser o framework PHP mais rápido. Em vez disso, oferece:
 4. **Otimização de Memória**: Variante ORM para deploys com restrição de recursos
 5. **Abordagem de Ecossistema**: Ferramenta certa para o trabalho certo
 
-**Escolha PivotPHP v1.1.1 quando você precisa de performance competitiva (6.227 req/s) em ambientes Docker reais, experiência de desenvolvimento estilo Express.js, e otimização JSON moderna com excelente eficiência de memória (pegada de 1,61MB).**
+**Escolha PivotPHP v1.2.0 quando você precisa de performance competitiva com simplicidade educacional, experiência de desenvolvimento estilo Express.js, e geração abrangente de documentação OpenAPI com excelente eficiência de memória.**
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ '/assets/js/benchmark-charts.js' | relative_url }}"></script>

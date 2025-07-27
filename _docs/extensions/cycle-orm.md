@@ -606,4 +606,4 @@ APP_DEBUG=true
 
 ---
 
-*The PivotPHP Cycle ORM extension is production-ready and fully tested with the PivotPHP ecosystem v1.1.0.*
+*The PivotPHP Cycle ORM extension is production-ready and fully tested with the PivotPHP ecosystem v1.2.0.*

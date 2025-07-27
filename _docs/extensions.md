@@ -10,7 +10,7 @@ PivotPHP has a rich ecosystem of extensions that add powerful features to the co
 
 ### Database & ORM
 
-#### [Cycle ORM v1.1.0](/docs/extensions/cycle-orm/)
+#### [Cycle ORM v1.0.1](/docs/extensions/cycle-orm/)
 A powerful DataMapper ORM that provides a complete database solution with zero-configuration setup.
 
 ```bash
@@ -58,8 +58,8 @@ The PivotPHP ecosystem is designed to be extended! We're excited about the exten
 The PivotPHP Core framework already includes several advanced features:
 
 - **OpenAPI/Swagger** - Automatic API documentation generation via `OpenApiExporter` utility
-- **High-Performance Mode** - Object pooling and lazy loading (v1.1.0)
-- **JSON Optimization** - Automatic buffer pooling for JSON operations (v1.1.1)
+- **High-Performance Mode** - Object pooling and lazy loading (v1.2.0)
+- **JSON Optimization** - Automatic buffer pooling for JSON operations (v1.2.0)
 - **Security Middleware** - Built-in CSRF, XSS protection, rate limiting
 - **Performance Monitoring** - Real-time metrics and profiling tools
 

@@ -227,11 +227,11 @@ PivotPHP delivers exceptional performance through educational simplicity and mai
 - Serverless functions (stateless operations)
 - Express.js-style development (familiar API)
 
-## Internal Benchmark Results - PivotPHP Core v1.1.1
+## Internal Benchmark Results - PivotPHP Core v1.2.0
 
-## PivotPHP Core v1.1.1 Performance Analysis
+## PivotPHP Core v1.2.0 Performance Analysis
 
-**Framework**: PivotPHP Core v1.1.1 Revolutionary JSON Edition  
+**Framework**: PivotPHP Core v1.2.0 Simplicity Edition  
 **Test Date**: July 11, 2025  
 **Environment**: Linux WSL2 with PHP 8.2+ (OPcache + JIT enabled)  
 **Test Type**: Simple Realistic Benchmark
@@ -281,9 +281,9 @@ Comprehensive benchmarks comparing PivotPHP with established frameworks (Updated
   <canvas id="ecosystemChart"></canvas>
 </div>
 
-### PivotPHP Core v1.1.1 - Docker Benchmark Results
+### PivotPHP Core v1.2.0 - Docker Benchmark Results
 
-| Benchmark Category | PivotPHP Core v1.1.1 (Docker) | Memory Usage | Performance Level |
+| Benchmark Category | PivotPHP Core v1.2.0 (Docker) | Memory Usage | Performance Level |
 |--------------------|-------------------------------|--------------|-------------------|
 | **HTTP Request Parsing** | 317,847 ops/s | 14MB | Excellent |
 | **HTTP Response Creation** | 294,110 ops/s | 14MB | Excellent |
@@ -292,7 +292,7 @@ Comprehensive benchmarks comparing PivotPHP with established frameworks (Updated
 | **Header Processing** | 301,207 ops/s | 14MB | Excellent |
 | **Total HTTP Operations** | 2,154,485 ops/s | 14MB | 🚀 High Performance |
 
-### PivotPHP v1.1.1 JSON Performance (Docker)
+### PivotPHP v1.2.0 JSON Performance (Docker)
 
 | JSON Dataset Size | Operations/Sec | Memory Usage | Performance Level |
 |-------------------|----------------|--------------|-------------------|
@@ -392,7 +392,7 @@ PivotPHP maintains excellent performance under various concurrent load levels:
 
 ## API-Specific Performance
 
-Real-world API operations benchmarked in Docker containers v1.1.1:
+Real-world API operations benchmarked in Docker containers v1.2.0:
 
 <div class="component-grid">
   <div class="component-card">
@@ -428,7 +428,7 @@ PivotPHP maintains consistent low latency across percentiles:
   <canvas id="latencyChart"></canvas>
 </div>
 
-| Endpoint Type | P50 | P95 | P99 | Docker v1.1.1 |
+| Endpoint Type | P50 | P95 | P99 | Docker v1.2.0 |
 |---------------|-----|-----|-----|---------------|
 | Request Parsing | 3.15μs | 6.3μs | 12.6μs | 317K ops/sec |
 | Response Creation | 3.40μs | 6.8μs | 13.6μs | 294K ops/sec |
@@ -443,11 +443,11 @@ PivotPHP's ecosystem approach provides specialized performance profiles:
   <canvas id="comparisonChart"></canvas>
 </div>
 
-### Performance by Use Case (2025-07-11 Docker v1.1.1 Analysis)
+### Performance by Use Case (2025-07-21 Docker v1.2.0 Analysis)
 
 | Framework | Best Use Case | Operations/Sec | Memory | Competitive Position |
 |-----------|---------------|----------------|--------|-----------------------|
-| **PivotPHP Core v1.1.1** | HTTP Operations | **2,154,485 ops/s** | 14MB | **🚀 High Performance** |
+| **PivotPHP Core v1.2.0** | HTTP Operations | **2,154,485 ops/s** | 14MB | **🚀 High Performance** |
 | **PivotPHP JSON Small** | Small JSON APIs | **161,171 ops/s** | 0MB | **📦 JSON Leader** |
 | **PivotPHP JSON Medium** | Medium JSON APIs | **17,618 ops/s** | 0.03MB | **🔄 Optimized** |
 | **PivotPHP Status Codes** | HTTP Status Handling | **692,472 ops/s** | 14MB | **⚡ Ultra Fast** |
@@ -458,11 +458,11 @@ PivotPHP's ecosystem approach provides specialized performance profiles:
 - **Iterations**: 1,000-5,000 per benchmark for statistical accuracy
 - **Categories**: HTTP performance, REST API, JSON operations, status codes, content negotiation
 - **Containerization**: Docker-based isolation for fair and reproducible comparison
-- **Version**: PivotPHP Core v1.1.1 (JSON Optimization Edition)
+- **Version**: PivotPHP Core v1.2.0 (Simplicity Edition)
 
 ### When to Choose Each Framework
 
-#### Choose PivotPHP Core v1.1.1 When:
+#### Choose PivotPHP Core v1.2.0 When:
 - Building high-performance HTTP APIs
 - Need excellent status code handling (692K ops/sec)
 - Want superior content negotiation (548K ops/sec)
@@ -506,7 +506,7 @@ PivotPHP excels at handling concurrent requests with minimal performance degrada
 
 ## Scaling Behavior
 
-PivotPHP v1.1.1 demonstrates excellent scaling characteristics:
+PivotPHP v1.2.0 demonstrates excellent scaling characteristics:
 
 - **HTTP Operations**: Maintains 2.15M ops/sec across different operation types
 - **JSON Processing**: Scales from 161K ops/sec (small) to 1.7K ops/sec (large)
@@ -576,7 +576,7 @@ All benchmarks were conducted with standardized Docker containers:
 - **Isolation**: Each framework variant tested separately
 - **Reproducibility**: All tests can be replicated with `docker-compose up`
 - **Metrics**: Operations/second, requests/hour, memory usage
-- **Variants Tested**: Core v1.1.0, ORM v1.0.1, ReactPHP v0.1.0
+- **Variants Tested**: Core v1.2.0, ORM v1.0.1, ReactPHP v0.1.0
 
 ## Running Your Own Benchmarks
 
@@ -603,7 +603,7 @@ php generate-reports.php
 
 Based on comprehensive cross-framework analysis (July 2025):
 
-### 🏆 Where PivotPHP v1.1.1 Excels
+### 🏆 Where PivotPHP v1.2.0 Excels
 - **Developer Experience**: Express.js-style syntax with competitive performance
 - **Memory Efficiency**: Ultra-efficient 1.61MB memory footprint
 - **Latency**: Excellent 0.32ms average response time in Docker
@@ -619,13 +619,13 @@ Based on comprehensive cross-framework analysis (July 2025):
 
 ### 📊 Benchmark Transparency
 - **Methodology**: Standardized Docker containers, 1K-5K iterations
-- **Docker Environment**: v1.1.1 tested in isolated containers
+- **Docker Environment**: v1.2.0 tested in isolated containers
 - **Test Date**: July 11, 2025
 - **Environment**: PHP 8.1+ with OPcache and JIT enabled
 
 ### 🎯 Strategic Positioning
 
-PivotPHP v1.1.1 offers documented, Docker-validated performance:
+PivotPHP v1.2.0 offers documented, Docker-validated performance:
 
 1. **Status Code Excellence**: Industry-leading 692K ops/sec performance
 2. **HTTP Operations**: Strong 2.15M combined ops/sec across all operations
@@ -633,7 +633,7 @@ PivotPHP v1.1.1 offers documented, Docker-validated performance:
 4. **Memory Efficiency**: Only 14MB for HTTP operations, minimal for JSON
 5. **Developer Experience**: Express.js patterns with excellent performance
 
-**Choose PivotPHP v1.1.1 when you need competitive performance (6,227 req/sec) in real Docker environments, Express.js-style development experience, and modern JSON optimization with excellent memory efficiency (1.61MB footprint).**
+**Choose PivotPHP v1.2.0 when you need competitive performance with educational simplicity, Express.js-style development experience, and comprehensive OpenAPI documentation generation with excellent memory efficiency.**
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ '/assets/js/benchmark-charts.js' | relative_url }}"></script>

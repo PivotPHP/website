@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function initCharts() {
         const colors = getThemeColors();
     
-    // Request Type Performance Chart - Updated with Docker v1.1.1 data
+    // Request Type Performance Chart - Updated with Docker v1.2.0 data
     const requestTypeCtx = document.getElementById('requestTypeChart');
     if (requestTypeCtx) {
         new Chart(requestTypeCtx, {
@@ -506,7 +506,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 labels: ['HTTP Performance', 'REST API', 'API Middleware'],
                 datasets: [
                     {
-                        label: 'PivotPHP Core v1.1.0',
+                        label: 'PivotPHP Core v1.2.0',
                         data: [605.3, 1120.4, 460.3],
                         backgroundColor: colors.primary
                     },

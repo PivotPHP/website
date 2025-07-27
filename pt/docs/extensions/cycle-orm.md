@@ -589,4 +589,4 @@ APP_DEBUG=true
 
 ---
 
-*A extensão PivotPHP Cycle ORM está pronta para produção e totalmente testada com o ecossistema PivotPHP v1.1.0.*
+*A extensão PivotPHP Cycle ORM está pronta para produção e totalmente testada com o ecossistema PivotPHP v1.2.0.*
