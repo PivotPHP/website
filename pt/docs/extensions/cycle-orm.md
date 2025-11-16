@@ -324,7 +324,7 @@ class UserRepository extends Repository
     public function findRecentUsers(int $days = 30): array
     {
         $since = new \DateTime("-{$days} days");
-        
+
         return $this->select()
             ->where('created_at', '>=', $since)
             ->orderBy('created_at', 'DESC')
@@ -340,7 +340,7 @@ Para manipulação automática de transações:
 ```php
 use PivotPHP\CycleORM\Middleware\TransactionMiddleware;
 
-$app->post('/api/orders', 
+$app->post('/api/orders',
     new TransactionMiddleware(),
     function($req, $res) {
         // Todas as operações de banco de dados são envolvidas em uma transação
@@ -368,7 +368,7 @@ use PivotPHP\CycleORM\Monitoring\PerformanceProfiler;
 $app->get('/debug/queries', function($req, $res) use ($app) {
     $logger = $app->getContainer()->get('cycle.query_logger');
     $stats = $logger->getStatistics();
-    
+
     return $res->json([
         'total_queries' => $stats['total_queries'],
         'total_time' => $stats['total_time'],
@@ -380,7 +380,7 @@ $app->get('/debug/queries', function($req, $res) use ($app) {
 $app->get('/debug/profile', function($req, $res) use ($app) {
     $profiler = $app->getContainer()->get('cycle.profiler');
     $profile = $profiler->getProfile();
-    
+
     return $res->json([
         'duration' => $profile['duration'],
         'memory_peak' => $profile['memory_peak'],
@@ -532,12 +532,12 @@ $em = $req->getAttribute('entityManager')();
 
 try {
     $em->getTransaction()->begin();
-    
+
     foreach ($items as $item) {
         $entity = new Entity();
         $em->persist($entity);
     }
-    
+
     $em->run();
     $em->getTransaction()->commit();
 } catch (\Exception $e) {
@@ -584,7 +584,6 @@ APP_DEBUG=true
 ## 🤝 Suporte
 
 - **Issues no GitHub**: [Reportar problemas](https://github.com/PivotPHP/pivotphp-cycle-orm/issues)
-- **Comunidade Discord**: [Junte-se ao nosso Discord](https://discord.gg/DMtxsP7z)
 - **Documentação**: [Guia completo](https://github.com/PivotPHP/pivotphp-cycle-orm/blob/main/docs/integration-guide.md)
 
 ---

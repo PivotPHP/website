@@ -239,10 +239,10 @@ $app->use(new ApiDocumentationMiddleware([
 
 ## 📚 Documentation
 
-- **Migration Guide:** [Complete migration instructions](https://github.com/HelixPHP/helixphp-core/blob/main/docs/releases/v2.0.0/MIGRATION_GUIDE_v2.0.0.md)
-- **Framework Overview:** [Technical deep dive](https://github.com/HelixPHP/helixphp-core/blob/main/docs/releases/v2.0.0/FRAMEWORK_OVERVIEW.md)
-- **Release Notes:** [Detailed changelog](https://github.com/HelixPHP/helixphp-core/blob/main/docs/releases/v2.0.0/RELEASE_NOTES.md)
-- **Changelog:** [Full version history](https://github.com/HelixPHP/helixphp-core/blob/main/CHANGELOG.md)
+- **Migration Guide:** [Complete migration instructions](https://github.com/PivotPHP/pivotphp-core/blob/main/docs/releases/v2.0.0/MIGRATION_GUIDE_v2.0.0.md)
+- **Framework Overview:** [Technical deep dive](https://github.com/PivotPHP/pivotphp-core/blob/main/docs/releases/v2.0.0/FRAMEWORK_OVERVIEW.md)
+- **Release Notes:** [Detailed changelog](https://github.com/PivotPHP/pivotphp-core/blob/main/docs/releases/v2.0.0/RELEASE_NOTES.md)
+- **Changelog:** [Full version history](https://github.com/PivotPHP/pivotphp-core/blob/main/CHANGELOG.md)
 
 ---
 
@@ -268,9 +268,8 @@ $app->use(new ApiDocumentationMiddleware([
 
 ## 💬 Support
 
-- **Issues:** [GitHub Issues](https://github.com/HelixPHP/helixphp-core/issues)
-- **Discussions:** [Community Forum](https://github.com/HelixPHP/helixphp-core/discussions)
-- **Discord:** [Join our server](https://discord.gg/DMtxsP7z)
+- **Issues:** [GitHub Issues](https://github.com/PivotPHP/pivotphp-core/issues)
+- **Discussions:** [Community Forum](https://github.com/PivotPHP/pivotphp-core/discussions)
 
 ---
 

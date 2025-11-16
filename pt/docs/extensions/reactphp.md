@@ -88,7 +88,7 @@ $app->get('/', function($req, $res) {
 
 $app->get('/api/users/:id', function($req, $res) {
     $id = $req->param('id');
-    
+
     return $res->json([
         'user_id' => $id,
         'name' => 'Usuário ' . $id,
@@ -163,7 +163,7 @@ O `RequestBridge` manipula com segurança a manipulação de estado global:
 $app->post('/api/data', function($req, $res) {
     $data = $req->getBody();      // Funciona perfeitamente
     $query = $req->query('param'); // Estado global manipulado automaticamente
-    
+
     return $res->json(['received' => $data]);
 });
 ```
@@ -193,7 +193,7 @@ $app->get('/api/info', function($req, $res) {
     $auth = $req->header('authorization');          // Authorization
     $apiKey = $req->header('xApiKey');             // X-API-Key
     $language = $req->header('acceptLanguage');     // Accept-Language
-    
+
     return $res->json([
         'headers_received' => $req->headers(),
         'converted_format' => 'camelCase'
@@ -230,7 +230,7 @@ A extensão inclui gerenciamento automático de memória:
 $app->get('/api/heavy-operation', function($req, $res) {
     // Processe grandes datasets sem se preocupar com vazamentos de memória
     $largeData = processHugeDataset();
-    
+
     // Memória é automaticamente limpa após a resposta
     return $res->json(['processed' => count($largeData)]);
 });
@@ -241,7 +241,7 @@ $app->get('/api/heavy-operation', function($req, $res) {
 ```php
 $app->get('/debug/server-stats', function($req, $res) {
     $container = $app->getContainer();
-    
+
     if ($container->has('reactphp.server')) {
         return $res->json([
             'server_type' => 'ReactPHP',
@@ -251,7 +251,7 @@ $app->get('/debug/server-stats', function($req, $res) {
             'requests_handled' => 'Runtime contínuo ativo'
         ]);
     }
-    
+
     return $res->json(['error' => 'ReactPHP não ativo']);
 });
 ```
@@ -267,7 +267,7 @@ A extensão fornece isolamento completo de estado global:
 $app->get('/api/state-test', function($req, $res) {
     // $_POST, $_GET, $_SERVER são isolados com segurança por requisição
     // Sem vazamento de dados entre requisições concorrentes
-    
+
     return $res->json([
         'request_id' => uniqid(),
         'isolated_state' => true,
@@ -285,7 +285,7 @@ Guard de memória integrado previne processos descontrolados:
 $app->get('/api/memory-intensive', function($req, $res) {
     // Uso de memória é monitorado automaticamente
     $result = performMemoryIntensiveOperation();
-    
+
     // Limpeza acontece automaticamente após a resposta
     return $res->json($result);
 });
@@ -299,12 +299,12 @@ $app->get('/api/memory-intensive', function($req, $res) {
 $app->get('/api/async-operation', function($req, $res) use ($app) {
     $container = $app->getContainer();
     $loop = $container->get(\React\EventLoop\LoopInterface::class);
-    
+
     // Agendar operações assíncronas
     $loop->addTimer(2.0, function() {
         echo "Operação assíncrona completa!\n";
     });
-    
+
     return $res->json(['async_scheduled' => true]);
 });
 ```
@@ -339,7 +339,7 @@ if (function_exists('pcntl_signal')) {
         echo "\nRecebeu SIGTERM, desligando graciosamente...\n";
         // Servidor completará requisições atuais e sairá
     });
-    
+
     pcntl_signal(SIGINT, function() {
         echo "\nRecebeu SIGINT (Ctrl+C), desligando graciosamente...\n";
         // Servidor completará requisições atuais e sairá
@@ -478,13 +478,13 @@ $app->get('/debug/isolation', function($req, $res) {
 ```php
 $app->get('/debug/performance', function($req, $res) {
     $startTime = microtime(true);
-    
+
     // Simular algum trabalho
     usleep(1000);
-    
+
     $endTime = microtime(true);
     $duration = ($endTime - $startTime) * 1000; // Converter para milissegundos
-    
+
     return $res->json([
         'request_duration_ms' => $duration,
         'memory_usage_mb' => memory_get_usage(true) / 1024 / 1024,
@@ -511,16 +511,16 @@ $app->get('/debug/performance', function($req, $res) {
 // ReactPHP pode manipular significativamente mais requisições concorrentes
 $app->get('/api/benchmark', function($req, $res) {
     $start = microtime(true);
-    
+
     // Simular trabalho típico de API
     $data = [
         'users' => range(1, 1000),
         'timestamp' => time(),
         'server' => 'ReactPHP'
     ];
-    
+
     $end = microtime(true);
-    
+
     return $res->json([
         'data' => $data,
         'processing_time_ms' => ($end - $start) * 1000,
@@ -549,7 +549,6 @@ O roadmap da extensão ReactPHP inclui:
 ## 🤝 Suporte
 
 - **Issues no GitHub**: [Reportar problemas](https://github.com/PivotPHP/pivotphp-reactphp/issues)
-- **Comunidade Discord**: [Junte-se ao nosso Discord](https://discord.gg/DMtxsP7z)
 - **Documentação**: [Visão técnica](https://github.com/PivotPHP/pivotphp-reactphp/blob/main/docs/TECHNICAL-OVERVIEW.md)
 
 ---

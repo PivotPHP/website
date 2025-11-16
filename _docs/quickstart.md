@@ -313,6 +313,5 @@ Congratulations! You've built your first PivotPHP v1.1.4 application. To learn m
 - **Docker Deployment**: Production-ready containerized deployments
 
 ### Community & Support
-- **Discord Community**: https://discord.gg/DMtxsP7z
 - **GitHub**: https://github.com/PivotPHP/pivotphp-core
 - **Performance Results**: See our [benchmark documentation]({{ site.baseurl }}/docs/benchmarks/) for detailed performance analysis

@@ -243,6 +243,5 @@ Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais
 
 ### Recursos Adicionais
 
-- [Repositório GitHub](https://github.com/pivotphp/framework)
-- [Exemplos Completos](https://github.com/pivotphp/examples)
-- [Comunidade Discord](https://discord.gg/pivotphp)
+- [Repositório GitHub](https://github.com/PivotPHP)
+- [Exemplos Completos](https://github.com/PivotPHP/pivotphp-core)

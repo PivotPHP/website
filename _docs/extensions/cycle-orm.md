@@ -341,7 +341,7 @@ class UserRepository extends Repository
     public function findRecentUsers(int $days = 30): array
     {
         $since = new \DateTime("-{$days} days");
-        
+
         return $this->select()
             ->where('created_at', '>=', $since)
             ->orderBy('created_at', 'DESC')
@@ -357,7 +357,7 @@ For automatic transaction handling:
 ```php
 use PivotPHP\CycleORM\Middleware\TransactionMiddleware;
 
-$app->post('/api/orders', 
+$app->post('/api/orders',
     new TransactionMiddleware(),
     function($req, $res) {
         // All database operations are wrapped in a transaction
@@ -385,7 +385,7 @@ use PivotPHP\CycleORM\Monitoring\PerformanceProfiler;
 $app->get('/debug/queries', function($req, $res) use ($app) {
     $logger = $app->getContainer()->get('cycle.query_logger');
     $stats = $logger->getStatistics();
-    
+
     return $res->json([
         'total_queries' => $stats['total_queries'],
         'total_time' => $stats['total_time'],
@@ -397,7 +397,7 @@ $app->get('/debug/queries', function($req, $res) use ($app) {
 $app->get('/debug/profile', function($req, $res) use ($app) {
     $profiler = $app->getContainer()->get('cycle.profiler');
     $profile = $profiler->getProfile();
-    
+
     return $res->json([
         'duration' => $profile['duration'],
         'memory_peak' => $profile['memory_peak'],
@@ -549,12 +549,12 @@ $em = $req->getAttribute('entityManager')();
 
 try {
     $em->getTransaction()->begin();
-    
+
     foreach ($items as $item) {
         $entity = new Entity();
         $em->persist($entity);
     }
-    
+
     $em->run();
     $em->getTransaction()->commit();
 } catch (\Exception $e) {
@@ -601,7 +601,6 @@ APP_DEBUG=true
 ## 🤝 Support
 
 - **GitHub Issues**: [Report issues](https://github.com/PivotPHP/pivotphp-cycle-orm/issues)
-- **Discord Community**: [Join our Discord](https://discord.gg/DMtxsP7z)
 - **Documentation**: [Complete guide](https://github.com/PivotPHP/pivotphp-cycle-orm/blob/main/docs/integration-guide.md)
 
 ---

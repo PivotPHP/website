@@ -404,10 +404,9 @@ curl http://localhost:8000/docs
 
 ## Need Help?
 
-- **Full Migration Guide:** [GitHub Documentation](https://github.com/HelixPHP/helixphp-core/blob/main/docs/releases/v2.0.0/MIGRATION_GUIDE_v2.0.0.md)
-- **Issues:** [Report problems](https://github.com/HelixPHP/helixphp-core/issues)
-- **Discord:** [Get help from community](https://discord.gg/DMtxsP7z)
-- **Discussions:** [Ask questions](https://github.com/HelixPHP/helixphp-core/discussions)
+- **Full Migration Guide:** [GitHub Documentation](https://github.com/PivotPHP/pivotphp-core/blob/main/docs/releases/v2.0.0/MIGRATION_GUIDE_v2.0.0.md)
+- **Issues:** [Report problems](https://github.com/PivotPHP/pivotphp-core/issues)
+- **Discussions:** [Ask questions](https://github.com/PivotPHP/pivotphp-core/discussions)
 
 ---
 
