@@ -23,16 +23,16 @@ PivotPHP brings the simplicity and elegance of Express.js to the PHP ecosystem w
 ## Key Features
 
 ### 🚀 High-Performance APIs
-With exceptional API performance, PivotPHP delivers outstanding speed for real-world applications. Our latest v1.2.0 benchmarks show:
+With exceptional API performance, PivotPHP delivers outstanding speed for real-world applications. Our latest v2.0.0 benchmarks show:
 
-- **OpenAPI Generation**: 3.5M operations/sec (Docker validated flagship feature)
-- **Swagger UI Rendering**: 3.6M operations/sec (Interactive interface)
-- **Application Creation**: 78,500 operations/sec (Maintained from v1.1.4)
+- **HTTP Throughput**: 44,092 operations/sec (Maintained from v1.2.0)
+- **Autoload Performance**: 59% faster (Zero aliases overhead)
+- **Memory Footprint**: 1.45MB (10% reduction from v1.2.0)
+- **Application Bootstrap**: ~6ms (59% faster than v1.2.0)
 - **Documentation Middleware**: 1.7M operations/sec (ApiDocumentationMiddleware)
-- **ReactPHP Runtime**: 1.97M operations/sec specialized for async
-- **Educational Focus**: Maintained performance with simplified architecture
+- **Clean Architecture**: 18% code reduction (11,871 lines removed)
 
-*Benchmarks validated in real Docker containers with v1.2.0 "Simplicidade sobre Otimização Prematura" edition.*
+*v2.0.0 "Legacy Cleanup Edition" - Simplicity through Elimination*
 
 ### 🛡️ Security First
 Built-in security features including CSRF protection, XSS prevention, rate limiting, and secure authentication make your applications safe by default.
@@ -43,7 +43,7 @@ Start building immediately with sensible defaults. No complex configuration file
 ### 📦 PSR Compliant
 Full compliance with PSR-7 (HTTP messages), PSR-15 (middleware), and PSR-12 (coding standards) ensures compatibility with the PHP ecosystem.
 
-### 📝 Automatic OpenAPI/Swagger Documentation (NEW in v1.2.0)
+### 📝 Automatic OpenAPI/Swagger Documentation
 Zero-configuration API documentation with interactive testing interface:
 
 ```php
@@ -53,17 +53,18 @@ $app->use(new ApiDocumentationMiddleware());
 // ✅ Access: http://localhost:8080/docs (OpenAPI JSON)
 ```
 
-### 🎓 Educational Architecture (NEW in v1.2.0)
-- **Simplicidade sobre Otimização Prematura**: Simple over complex implementations
-- **15+ Automatic Aliases**: Zero breaking changes guaranteed
-- **Educational Focus**: Perfect for learning microframework concepts
-- **Legacy Namespace**: Advanced features still available
+### 🧹 Clean Architecture (NEW in v2.0.0)
+- **18% Code Reduction**: Removed 11,871 lines of legacy code
+- **Zero Deprecated Code**: All v1.1.x aliases eliminated
+- **Modern Namespaces**: Cleaner, more intuitive structure
+- **Modular Routing**: Extracted to external package
+- **Educational Focus**: Simpler codebase, easier to learn
 
 ### 💫 Array Callable Support
 PHP 8.4+ compatible array callable syntax maintained from v1.1.4:
 
 ```php
-// Array callable syntax 
+// Array callable syntax
 $app->get('/users', [UserController::class, 'index']);
 $app->post('/users', [UserController::class, 'store']);
 ```

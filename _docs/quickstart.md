@@ -4,20 +4,21 @@ title: Quick Start
 permalink: /docs/quickstart/
 ---
 
-This guide will walk you through creating your first PivotPHP v1.1.4 application. We'll build a simple REST API for managing tasks.
+This guide will walk you through creating your first PivotPHP v2.0.0 application. We'll build a simple REST API for managing tasks.
 
 <div style="background: rgba(124, 58, 237, 0.1); border-left: 4px solid rgba(124, 58, 237, 0.8); padding: 1rem; margin: 1rem 0; border-radius: 4px;">
-  <strong>🚀 PivotPHP v1.1.4 - Architectural Excellence & Performance Optimization Edition</strong><br>
-  Revolutionary PHP microframework with 84,998 ops/sec peak performance and ReactPHP continuous runtime (19,707 req/sec). Experience Express.js-style development with industry-leading performance.
+  <strong>🚀 PivotPHP v2.0.0 - Legacy Cleanup Edition</strong><br>
+  Clean, modern microframework with 18% code reduction. Experience simplified architecture with modern namespaces and zero deprecated code. Educational focus with professional performance.
 </div>
 
-## Performance Highlights
+## Architecture Highlights
 
-- **🔥 Peak Performance**: 84,998 ops/sec (application creation)
-- **⚡ ReactPHP Runtime**: 19,707 req/sec (market leader)
-- **🎯 Core Performance**: 2,122 req/sec Peak (Docker validated v1.2.0)
-- **💫 Array Callable**: PHP 8.4+ compatible syntax
-- **🏆 Market Position**: #1 with ReactPHP, competitive core
+- **🧹 18% Cleaner**: 11,871 lines of legacy code removed
+- **⚡ 59% Faster Autoload**: Zero alias overhead
+- **🎯 100% Tests Passing**: 5,548 comprehensive tests
+- **💫 Modern Namespaces**: Cleaner, more intuitive structure
+- **🔌 Modular Routing**: External package architecture
+- **🎓 Educational Focus**: Perfect for learning and POCs
 
 ## Step 1: Create Your Application
 
@@ -35,13 +36,14 @@ $app = new Application();
 // Define your first route
 $app->get('/', function($request, $response) {
     return $response->json([
-        'message' => 'Welcome to PivotPHP v1.1.4!',
-        'version' => '1.1.4',
-        'edition' => 'Architectural Excellence & Performance Optimization',
-        'performance' => [
-            'peak_ops_sec' => 84998,
-            'reactphp_req_sec' => 19707,
-            'core_req_sec' => 2122
+        'message' => 'Welcome to PivotPHP v2.0.0!',
+        'version' => '2.0.0',
+        'edition' => 'Legacy Cleanup Edition',
+        'improvements' => [
+            'code_reduction' => '18%',
+            'autoload_improvement' => '59% faster',
+            'deprecated_code' => '0',
+            'tests_passing' => 5548
         ],
         'timestamp' => time()
     ]);

@@ -4,18 +4,18 @@ title: Middleware
 permalink: /docs/middleware/
 ---
 
-Middleware provides a convenient mechanism for filtering HTTP requests entering your application. PivotPHP v1.1.4 implements the PSR-15 middleware standard with revolutionary performance optimizations and organized architecture.
+Middleware provides a convenient mechanism for filtering HTTP requests entering your application. PivotPHP v2.0.0 implements the PSR-15 middleware standard with clean, modern architecture and zero deprecated code.
 
-## Performance Highlights
+## Architecture Highlights
 
-- **🚀 Middleware Processing**: Optimized PSR-15 implementation
-- **💫 Object Pooling**: 100% Request reuse, 99.9% Response reuse
+- **🧹 Clean Namespaces**: Modern, intuitive structure
 - **⚡ Zero Overhead**: Minimal performance impact
-- **🎯 Organized Structure**: Security, Performance, HTTP, and Core middleware categories
+- **🎯 Organized by Purpose**: Security, Performance, HTTP categories
+- **📦 PSR-15 Compliant**: Full standard compliance
 
-## v1.1.4 Middleware Architecture
+## v2.0.0 Middleware Architecture
 
-Middleware is organized by responsibility for better maintainability:
+Middleware is organized by responsibility with modern namespaces:
 
 ```
 src/Middleware/
@@ -29,10 +29,21 @@ src/Middleware/
 │   └── RateLimitMiddleware.php
 ├── Http/                 # HTTP protocol middlewares
 │   ├── CorsMiddleware.php
-│   └── ErrorMiddleware.php
+│   ├── ErrorMiddleware.php
+│   └── ApiDocumentationMiddleware.php
 └── Core/                 # Base middleware infrastructure
     ├── BaseMiddleware.php
     └── MiddlewareInterface.php
+```
+
+### ⚠️ Breaking Changes from v1.x
+
+```php
+// ❌ OLD (v1.x) - Legacy PSR-15 namespace
+use PivotPHP\Core\Http\Psr15\Middleware\AuthMiddleware;
+
+// ✅ NEW (v2.0.0) - Modern namespace
+use PivotPHP\Core\Middleware\Security\AuthMiddleware;
 ```
 
 ## Understanding Middleware
