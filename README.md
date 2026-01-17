@@ -1,75 +1,136 @@
 # PivotPHP Website
 
-This is the official website and documentation for PivotPHP, built with Jekyll for GitHub Pages.
+Site oficial e documentação do PivotPHP, construído com Jekyll para GitHub Pages.
 
-## Local Development
+## 🐳 Desenvolvimento com Docker (Recomendado)
 
-### Prerequisites
+Não requer instalação de Ruby no sistema!
 
-- Ruby 2.7 or higher
-- Bundler (`gem install bundler`)
+### Quick Start
+
+```bash
+# Ver comandos disponíveis
+make help
+
+# Iniciar servidor de desenvolvimento
+make docker-serve
+
+# Validar site completo
+make docker-validate
+```
+
+### Comandos Docker
+
+```bash
+# Desenvolvimento com hot-reload
+make docker-serve           # http://localhost:4000
+
+# Build de produção
+make docker-build
+
+# Testar build de produção
+make docker-prod
+
+# Validar redirects e links
+make docker-validate
+
+# Limpar cache
+make docker-clean
+```
+
+## 💎 Desenvolvimento Local (Alternativo)
+
+Requer Ruby 2.7+ instalado no sistema.
+
+### Pré-requisitos
+
+```bash
+# Instalar Ruby e Bundler
+sudo apt-get install ruby-full build-essential
+gem install bundler
+```
 
 ### Setup
 
-1. Install dependencies:
-   ```bash
-   bundle install
-   ```
-
-2. Run the development server:
-   ```bash
-   bundle exec jekyll serve
-   ```
-
-3. Open http://localhost:4000 in your browser
-
-### Building for Production
-
 ```bash
-bundle exec jekyll build
+# Instalar dependências
+make install
+
+# Servidor de desenvolvimento
+make serve
+
+# Build
+make build
 ```
 
-The static site will be generated in the `_site` directory.
-
-## Structure
+## 📁 Estrutura
 
 ```
 website/
-├── _config.yml          # Jekyll configuration
-├── _layouts/            # Page layouts
-├── _includes/           # Reusable components
-├── _docs/               # Documentation pages
-├── _sass/               # SCSS styles
-├── assets/              # Images, CSS, JS
-│   ├── css/
-│   └── images/
-├── index.md             # Homepage
-└── Gemfile              # Ruby dependencies
+├── _config.yml              # Configuração Jekyll
+├── _layouts/                # Layouts de página
+├── _includes/               # Componentes reutilizáveis
+├── pt/
+│   └── docs/               # Documentação PT-BR (principal)
+├── _sass/                   # Estilos SCSS
+├── assets/                  # Imagens, CSS, JS
+├── docker-compose.yml       # Configuração Docker
+├── validate-site.sh         # Script de validação
+└── Makefile                 # Comandos make
 ```
 
-## Adding Documentation
+## ✍️ Adicionando Documentação
 
-1. Create a new markdown file in `_docs/`
-2. Add front matter with layout and permalink
-3. Update `_includes/docs-sidebar.html` to add navigation
+1. Criar arquivo markdown em `pt/docs/`
+2. Adicionar front matter com layout e permalink
+3. Configurar redirects se necessário
 
-Example:
+Exemplo:
 ```markdown
 ---
 layout: docs
-title: Your Page Title
-permalink: /docs/your-page/
+title: Título da Página
+permalink: /pt/docs/sua-pagina/
+redirect_from:
+  - /docs/sua-pagina/
+  - /en/docs/your-page/
 ---
 
-# Your Page Title
+# Título da Página
 
-Your content here...
+Seu conteúdo aqui...
 ```
 
-## Deployment
+## 🔄 Redirects
 
-The site is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+O site usa `jekyll-redirect-from` para manter compatibilidade com URLs antigas:
 
-## License
+```yaml
+redirect_from:
+  - /docs/old-url/
+  - /en/docs/old-url/
+```
 
-MIT License - see the main project LICENSE file.
+## 🚀 Deploy
+
+Deploy automático para GitHub Pages ao fazer push na branch main.
+
+### Validação Pré-Deploy
+
+```bash
+# Validar antes de commit
+make docker-validate
+
+# Verificar output
+ls -la _site/pt/docs/
+```
+
+## 🌐 Documentação
+
+- **Documentação Principal**: `pt/docs/` (PT-BR)
+- **Internacionalização**: Planejada para futuras versões
+- **Versão Atual**: v2.0.0
+
+## 📝 License
+
+MIT License - veja o arquivo LICENSE do projeto principal.

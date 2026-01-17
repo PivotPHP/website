@@ -1,0 +1,19 @@
+# Git
+.git/
+.gitignore
+
+# Build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

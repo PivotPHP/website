@@ -1,11 +1,38 @@
 services:
+  # Serviço para desenvolvimento com hot-reload
   jekyll:
-    image: jekyll/jekyll:latest
-    command: jekyll serve --watch --force_polling --incremental --host 0.0.0.0
+    build: .
+    command: bundle exec jekyll serve --watch --force_polling --incremental --host 0.0.0.0
     ports:
       - "4000:4000"
       - "35729:35729"
     volumes:
       - .:/srv/jekyll
+      - bundle_cache:/usr/local/bundle
     environment:
       - JEKYLL_ENV=development
+
+  # Serviço para build de produção e testes
+  jekyll-build:
+    build: .
+    command: bundle exec jekyll build --verbose
+    volumes:
+      - .:/srv/jekyll
+      - bundle_cache:/usr/local/bundle
+    environment:
+      - JEKYLL_ENV=production
+
+  # Serviço para servir build de produção
+  jekyll-production:
+    build: .
+    command: bundle exec jekyll serve --no-watch --host 0.0.0.0
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/srv/jekyll
+      - bundle_cache:/usr/local/bundle
+    environment:
+      - JEKYLL_ENV=production
+
+volumes:
+  bundle_cache:
