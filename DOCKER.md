@@ -93,6 +93,37 @@ ls -la _site/pt/docs/
 find _site -name "*.html" -path "*docs*" | wc -l
 ```
 
+### Configuração de DNS do Docker (Importante)
+
+DNS para baixar imagens base não pode ser configurado via Dockerfile. Ele é responsabilidade do daemon do Docker no host.
+
+Use o script de configuração:
+
+```bash
+cd website/
+sudo ./setup-docker-dns.sh
+
+# Opcional: definir servidores DNS
+sudo DNS_LIST="1.1.1.1,8.8.8.8" ./setup-docker-dns.sh
+
+# Depois, re-tente o build
+docker-compose build
+```
+
+Se preferir, configure manualmente em `/etc/docker/daemon.json`:
+
+```json
+{
+  "dns": ["8.8.8.8", "8.8.4.4"]
+}
+```
+
+Reinicie o serviço:
+
+```bash
+sudo systemctl restart docker || sudo service docker restart
+```
+
 ## 🐛 Troubleshooting
 
 ### Build Lento

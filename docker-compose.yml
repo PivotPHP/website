@@ -3,6 +3,9 @@ services:
   jekyll:
     build: .
     command: bundle exec jekyll serve --watch --force_polling --incremental --host 0.0.0.0
+    # Em Linux, usar network_mode: host pode ajudar em ambientes restritos de DNS
+    # (não funciona em Docker Desktop para Mac/Windows)
+    network_mode: host
     ports:
       - "4000:4000"
       - "35729:35729"
@@ -16,6 +19,7 @@ services:
   jekyll-build:
     build: .
     command: bundle exec jekyll build --verbose
+    network_mode: host
     volumes:
       - .:/srv/jekyll
       - bundle_cache:/usr/local/bundle
@@ -26,6 +30,7 @@ services:
   jekyll-production:
     build: .
     command: bundle exec jekyll serve --no-watch --host 0.0.0.0
+    network_mode: host
     ports:
       - "4000:4000"
     volumes:
