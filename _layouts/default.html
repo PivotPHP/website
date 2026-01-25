@@ -4,12 +4,13 @@
 {% include head.html %}
 
 <body>
-  <!-- Navigation -->
+  <!-- Navigation Simplificada -->
   <nav class="navbar">
     <div class="container">
       <div class="navbar-inner">
-        <a href="{{ '/' | relative_url }}" class="navbar-brand">
+        <a href="{{ '/pt/docs/' | relative_url }}" class="navbar-brand">
           <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP Logo">
+          <span class="navbar-brand-text">PivotPHP</span>
         </a>
 
         <button class="mobile-menu-toggle" aria-label="Toggle navigation">
@@ -19,9 +20,6 @@
         </button>
 
         <ul class="navbar-nav">
-          <li><a href="{{ '/docs/' | relative_url }}"{% if page.url contains '/docs/' and page.url != '/docs/quickstart/' %} class="active"{% endif %}>Documentation</a></li>
-          <li><a href="{{ '/docs/quickstart/' | relative_url }}"{% if page.url == '/docs/quickstart/' %} class="active"{% endif %}>Quick Start</a></li>
-          <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub</a></li>
           <li>
             <!-- Theme Toggle -->
             <button class="theme-toggle-btn" data-theme-toggle aria-label="Toggle theme">
@@ -34,10 +32,13 @@
             </button>
           </li>
           <li>
+            {% include version-switcher.html %}
+            </li>
+            <li>
             <div class="language-switcher">
               <select onchange="switchLanguage(this.value)">
-                <option value="en" {% if page.lang == 'en' %}selected{% endif %}>English</option>
-                <option value="pt" {% if page.lang == 'pt' %}selected{% endif %}>Português</option>
+                <option value="pt" {% if page.lang=='pt' %}selected{% endif %}>🇧🇷 PT</option>
+                <option value="en" {% if page.lang=='en' %}selected{% endif %}>🇺🇸 EN</option>
               </select>
             </div>
           </li>
@@ -51,11 +52,14 @@
     {{ content }}
   </main>
 
+  {% include cookie-consent-modal.html %}
   {% include footer.html %}
 
   <!-- Scripts -->
+  <script src="{{ '/assets/js/cookie-manager.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/mobile-nav.js' | relative_url }}"></script>
   <script src="{{ '/assets/js/language-persistence.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/banner-persistence.js' | relative_url }}"></script>
 
   <script>
     // Language switching logic - Simplified
@@ -101,6 +105,43 @@
         window.location.href = baseUrl + newPath;
       }
     }
-  </script>
-</body>
-</html>
+
+  // Cookie consent (funcional apenas)
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('cookie-consent');
+    if (!modal) return;
+
+    const storedMode = (() => {
+      try { return localStorage.getItem('pivotphp-cookies-mode'); } catch (e) { return null; }
+    })();
+
+    const showModal = !storedMode;
+    if (showModal) {
+      modal.hidden = false;
+    }
+
+    const acceptBtn = modal.querySelector('[data-consent="accept"]');
+    const fallbackBtn = modal.querySelector('[data-consent="fallback"]');
+
+    const acceptCookies = () => {
+      if (window.CookieManager) {
+        window.CookieManager.setCookiesMode(window.CookieManager.MODES.COOKIES);
+        window.CookieManager.setCookie('pivotphp-consent', 'true', 180);
+        window.CookieManager.scheduleRenewal('pivotphp-consent', 7, 3);
+      } else {
+        try { localStorage.setItem('pivotphp-cookies-mode', 'cookies'); } catch (e) { }
+      }
+      modal.remove();
+    };
+
+    const fallback = () => {
+      try { localStorage.setItem('pivotphp-cookies-mode', 'localStorage'); } catch (e) { }
+      modal.remove();
+    };
+
+    if (acceptBtn) acceptBtn.addEventListener('click', acceptCookies);
+    if (fallbackBtn) fallbackBtn.addEventListener('click', fallback);
+  });
+</script>
+
+

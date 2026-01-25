@@ -1,45 +1,137 @@
 <!-- Footer -->
-<footer style="background: var(--pivot-dark); color: var(--pivot-white); padding: var(--space-20) 0 var(--space-8); margin-top: var(--space-20);">
+<footer style="
+    background: var(--pivot-dark);
+    color: var(--pivot-white);
+    padding: var(--space-20) 0 var(--space-8);
+    margin-top: var(--space-20);
+  ">
   <div class="container">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-12); margin-bottom: var(--space-12);">
+    <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
+          ">
       <div>
-        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6);">
-          <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP" style="height: 64px; width: auto;">
+        <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: var(--space-4);
+                    margin-bottom: var(--space-6);
+                  ">
+          <img src="{{ '/assets/images/pivotphp-logo.svg' | relative_url }}" alt="PivotPHP" style="height: 64px; width: auto" />
         </div>
-        <p style="font-size: var(--text-base); opacity: 0.9; margin-bottom: var(--space-2);">The Evolutionary PHP Microframework</p>
-        <p style="font-size: var(--text-sm); opacity: 0.8;">Evolution over Convention • Performance in Every Strand • Structure meets Speed</p>
+        <p style="
+                    font-size: var(--text-base);
+                    opacity: 0.9;
+                    margin-bottom: var(--space-2);
+                  ">
+          O Microframework PHP Evolutivo
+        </p>
+        <p style="font-size: var(--text-sm); opacity: 0.8">
+          Evolução sobre Convenção • Performance em Cada Strand • Estrutura
+          encontra Velocidade
+        </p>
       </div>
 
       <div>
-        <h4 style="font-weight: var(--font-semibold); margin-bottom: var(--space-4);">Documentation</h4>
-        <ul style="list-style: none;">
-          <li style="margin-bottom: var(--space-2);"><a href="{{ '/docs/' | relative_url }}" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Getting Started</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ '/docs/installation/' | relative_url }}" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Installation</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ '/docs/routing/' | relative_url }}" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Routing</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ '/docs/middleware/' | relative_url }}" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Middleware</a></li>
+        <h4 style="
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-4);
+                  ">
+          Recursos Externos
+        </h4>
+        <ul style="list-style: none">
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://github.com/pivotphp/pivotphp-core" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">GitHub</a>
+          </li>
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://github.com/pivotphp/pivotphp-core/blob/main/CHANGELOG.md" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">Changelog</a>
+          </li>
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://packagist.org/packages/pivotphp/core" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">Packagist</a>
+          </li>
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://github.com/pivotphp/pivotphp-core/releases" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">Releases</a>
+          </li>
         </ul>
       </div>
 
       <div>
-        <h4 style="font-weight: var(--font-semibold); margin-bottom: var(--space-4);">Resources</h4>
-        <ul style="list-style: none;">
-          <li style="margin-bottom: var(--space-2);"><a href="{{ site.github_url }}/pivotphp-core" target="_blank" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">GitHub</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Releases</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ site.github_url }}/pivotphp-core/issues" target="_blank" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Issues</a></li>
-          <li style="margin-bottom: var(--space-2);"><a href="{{ '/docs/contributing/' | relative_url }}" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Contributing</a></li>
+        <h4 style="
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-4);
+                  ">
+          Comunidade
+        </h4>
+        <ul style="list-style: none">
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://github.com/pivotphp/pivotphp-core/discussions" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">Discussões</a>
+          </li>
+          <li style="margin-bottom: var(--space-2)">
+            <a href="https://github.com/pivotphp/pivotphp-core/issues" target="_blank" rel="noopener" style="
+                        font-size: var(--text-sm);
+                        opacity: 0.8;
+                        color: var(--pivot-white);
+                        text-decoration: none;
+                        transition: opacity 0.2s ease;
+                      ">Issues</a>
+          </li>
         </ul>
       </div>
 
       <div>
-        <h4 style="font-weight: var(--font-semibold); margin-bottom: var(--space-4);">Community</h4>
-        <ul style="list-style: none;">
-          <li style="margin-bottom: var(--space-2);"><a href="{{ site.github_url }}/pivotphp-core/discussions" target="_blank" style="font-size: var(--text-sm); opacity: 0.8; color: var(--pivot-white); text-decoration: none; transition: opacity 0.2s ease;">Discussions</a></li>
-        </ul>
+        <h4 style="
+                    font-weight: var(--font-semibold);
+                    margin-bottom: var(--space-4);
+                  ">
+          Sobre
+        </h4>
+        <p style="font-size: var(--text-sm); opacity: 0.8; line-height: 1.6">
+          Framework desenvolvido no Brasil com foco em simplicidade, performance
+          e documentação automática OpenAPI/Swagger.
+        </p>
       </div>
     </div>
 
-    <div style="border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: var(--space-6); text-align: center;">
-      <p style="font-size: var(--text-sm); opacity: 0.75;">&copy; 2025 PivotPHP. MIT Licensed.</p>
+    <div style="
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: var(--space-6);
+            text-align: center;
+          ">
+      <p style="font-size: var(--text-sm); opacity: 0.75">
+        &copy; 2025 PivotPHP. MIT Licensed.
+      </p>
     </div>
   </div>
 </footer>

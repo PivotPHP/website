@@ -1,0 +1,29 @@
+{% assign versions = site.data.versions.versions %} {% assign current_version =
+page.version %} {% if current_version == nil %} {% assign match_version =
+versions | where_exp: "v", "page.url contains v.docs_path" | first %} {% if
+match_version %} {% assign current_version = match_version.number %} {% endif %}
+{% endif %}
+
+<div class="version-switcher">
+  <select
+    class="version-switcher__select"
+    id="version-select"
+    onchange="if(this.value) window.VersionRoutes.switchVersionBySelect(this.value, '{{ current_version }}')"
+  >
+    <option value="" disabled selected>📦 Versão</option>
+    {% for version in versions %}
+    <option
+      value="{{ version.number }}"
+      {%
+      if
+      version.number=""
+      ="current_version"
+      %}selected{%
+      endif
+      %}
+    >
+      v{{ version.number }} — {{ version.label }}
+    </option>
+    {% endfor %}
+  </select>
+</div>

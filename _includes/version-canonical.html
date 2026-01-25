@@ -1,0 +1,16 @@
+{% assign canonical = site.data.versions.versions | where_exp: "v",
+"v.is_canonical" | first %} {% if canonical %} {% assign canonical_path =
+canonical.docs_path %} {% assign page_path = page.url %} {% comment %}Remove
+qualquer prefixo de versão da URL atual{% endcomment %} {% assign page_path =
+page_path | replace: '/pt/docs/v1/', '' | replace: '/pt/docs/v2/', '' | replace:
+'/en/docs/v1/', '' | replace: '/en/docs/v2/', '' %} {% comment %}Se a página é o
+index de uma versão, remover /pt/docs/ também{% endcomment %} {% assign
+page_path = page_path | replace: '/pt/docs/', '' | replace: '/en/docs/', '' %}
+{% comment %}Garantir que page_path começa com /{% endcomment %} {% if page_path
+== '' or page_path == nil %} {% assign page_path = '/' %} {% endif %} {% assign
+canonical_url = canonical_path | append: page_path %}
+<link
+  rel="canonical"
+  href="{{ canonical_url | replace: '//', '/' | prepend: site.baseurl | prepend: site.url }}"
+/>
+{% endif %}

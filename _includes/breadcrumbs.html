@@ -1,0 +1,40 @@
+{% comment %} Breadcrumbs com suporte a versioning Exibe: PivotPHP > v{{
+page.version }} (Status) > {{ page.title }} {% endcomment %} {% assign versions
+= site.data.versions.versions %} {% assign current_version = page.version %} {%
+comment %}Se page.version não está definido, tenta detectar da URL{% endcomment
+%} {% if current_version == nil %} {% assign match_version = versions |
+where_exp: "v", "page.url contains v.docs_path" | first %} {% if match_version
+%} {% assign current_version = match_version.number %} {% endif %} {% endif %}
+{% assign version_entry = versions | where: "number", current_version | first %}
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ul class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a href="{{ site.baseurl }}/pt/docs/" class="breadcrumbs__link">
+        🏠 PivotPHP
+      </a>
+    </li>
+
+    {% if version_entry %}
+    <li class="breadcrumbs__separator">›</li>
+    <li class="breadcrumbs__item">
+      <a
+        href="{{ site.baseurl }}{{ version_entry.docs_path }}"
+        class="breadcrumbs__link"
+      >
+        <span class="breadcrumbs__version">v{{ version_entry.number }}</span>
+        <span
+          class="breadcrumbs__status badge badge--{{ version_entry.badge_color }}"
+        >
+          {{ version_entry.label }}
+        </span>
+      </a>
+    </li>
+    {% endif %}
+
+    <li class="breadcrumbs__separator">›</li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current">{{ page.title }}</span>
+    </li>
+  </ul>
+</nav>

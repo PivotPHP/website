@@ -4,53 +4,80 @@
 {% comment %}Build URLs with baseurl only once{% endcomment %}
 {% capture base_path %}{{ site.baseurl }}{% endcapture %}
 
-<!-- Sidebar -->
+<!-- Sidebar - Navegação Simplificada Top-Down -->
 <aside class="docs-sidebar">
-    <h3>{{ t.nav.getting_started }}</h3>
+    <h3>{% if lang == 'pt' %}📚 Introdução{% else %}📚 Introduction{% endif %}</h3>
     <ul>
-        <li><a href="{{ base_path }}{{ routes.docs | default: '/docs/' }}" {% if page.url == routes.docs %}class="active"{% endif %}>{{ t.nav.introduction }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.why_pivotphp | default: '/docs/why-pivotphp/' }}" {% if page.url contains 'why-pivotphp' %}class="active"{% endif %}>{% if lang == 'pt' %}Por que PivotPHP?{% else %}Why PivotPHP?{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.docs | default: '/docs/' }}" {% if page.url==routes.docs %}class="active" {% endif
+                %}>{% if lang == 'pt' %}Bem-vindo{% else %}Welcome{% endif %}</a></li>
+        </ul>
+        
+        <h3>{% if lang == 'pt' %}🚀 Primeiros Passos{% else %}🚀 Getting Started{% endif %}</h3>
+        <ul>
         <li><a href="{{ base_path }}{{ routes.installation | default: '/docs/installation/' }}" {% if page.url contains 'installation' %}class="active"{% endif %}>{{ t.nav.installation }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.quickstart | default: '/docs/quickstart/' }}" {% if page.url contains 'quickstart' %}class="active"{% endif %}>{{ t.nav.quick_start }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.configuration | default: '/docs/configuration/' }}" {% if page.url contains 'configuration' %}class="active"{% endif %}>{{ t.nav.configuration }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.quickstart | default: '/docs/quickstart/' }}" {% if page.url contains 'quickstart'
+                %}class="active" {% endif %}>{% if lang == 'pt' %}Primeiro Projeto{% else %}Quick Start{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.configuration | default: '/docs/configuration/' }}" {% if page.url
+                contains 'configuration' %}class="active" {% endif %}>{% if lang == 'pt' %}Configuração Básica{% else %}Basic
+                Configuration{% endif %}</a></li>
     </ul>
 
-    <h3>{{ t.nav.core_concepts }}</h3>
+    <h3>{% if lang == 'pt' %}📖 Fundamentos{% else %}📖 Core Concepts{% endif %}</h3>
     <ul>
         <li><a href="{{ base_path }}{{ routes.routing | default: '/docs/routing/' }}" {% if page.url contains 'routing' %}class="active"{% endif %}>{{ t.nav.routing }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.requests_responses | default: '/docs/requests-responses/' }}" {% if page.url
+                contains 'requests-responses' %}class="active" {% endif %}>{% if lang == 'pt' %}Requisições & Respostas{% else
+                %}Requests & Responses{% endif %}</a></li>
         <li><a href="{{ base_path }}{{ routes.middleware | default: '/docs/middleware/' }}" {% if page.url contains 'middleware' %}class="active"{% endif %}>{{ t.nav.middleware }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.requests_responses | default: '/docs/requests-responses/' }}" {% if page.url contains 'requests-responses' %}class="active"{% endif %}>{{ t.nav.requests_responses }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.api_documentation | default: '/docs/api-documentation/' }}" {% if page.url contains 'api-documentation' %}class="active"{% endif %}>{{ t.nav.api_documentation }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.container | default: '/docs/container/' }}" {% if page.url contains 'container' %}class="active"{% endif %}>{{ t.nav.container }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.container | default: '/docs/container/' }}" {% if page.url contains 'container'
+                %}class="active" {% endif %}>{% if lang == 'pt' %}Injeção de Dependência{% else %}Dependency Injection{% endif
+                %}</a></li>
     </ul>
 
-    <h3>{{ t.nav.features }}</h3>
+    <h3>{% if lang == 'pt' %}🔧 Recursos{% else %}🔧 Features{% endif %}</h3>
     <ul>
+        <li><a href="{{ base_path }}{{ routes.api_documentation | default: '/docs/api-documentation/' }}" {% if page.url
+                contains 'api-documentation' %}class="active" {% endif %}>{% if lang == 'pt' %}Documentação de API{% else %}API
+                Documentation{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.validation | default: '/docs/validation/' }}" {% if page.url contains 'validation'
+                %}class="active" {% endif %}>{{ t.nav.validation }}</a></li>
         <li><a href="{{ base_path }}{{ routes.security | default: '/docs/security/' }}" {% if page.url contains 'security' %}class="active"{% endif %}>{{ t.nav.security }}</a></li>
         <li><a href="{{ base_path }}{{ routes.events | default: '/docs/events/' }}" {% if page.url contains 'events' %}class="active"{% endif %}>{{ t.nav.events }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.validation | default: '/docs/validation/' }}" {% if page.url contains 'validation' %}class="active"{% endif %}>{{ t.nav.validation }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.database | default: '/docs/database/' }}" {% if page.url contains 'database' %}class="active"{% endif %}>{{ t.nav.database }}</a></li>
+        <li><a href="{{ base_path }}{{ routes.providers | default: '/docs/providers/' }}" {% if page.url contains 'providers'
+                %}class="active" {% endif %}>{% if lang == 'pt' %}Service Providers{% else %}Service Providers{% endif %}</a>
+        </li>
     </ul>
 
-    <h3>{% if lang == 'pt' %}Extensões{% else %}Extensions{% endif %}</h3>
+    <h3>{% if lang == 'pt' %}🗃️ Banco de Dados{% else %}🗃️ Database{% endif %}</h3>
     <ul>
-        <li><a href="{{ base_path }}{{ routes.extensions | default: '/docs/extensions/' }}" {% if page.url == routes.extensions %}class="active"{% endif %}>{% if lang == 'pt' %}Visão Geral{% else %}Overview{% endif %}</a></li>
-        <li><a href="{{ base_path }}{{ routes.extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' }}" {% if page.url contains '/extensions/cycle-orm' %}class="active"{% endif %}>Cycle ORM</a></li>
-        <li><a href="{{ base_path }}{{ routes.extensions_reactphp | default: '/docs/extensions/reactphp/' }}" {% if page.url contains '/extensions/reactphp' %}class="active"{% endif %}>ReactPHP</a></li>
+        <li><a href="{{ base_path }}{{ routes.database | default: '/docs/database/' }}" {% if page.url contains 'database'
+                %}class="active" {% endif %}>{% if lang == 'pt' %}Configuração{% else %}Configuration{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' }}" {% if page.url
+                contains '/extensions/cycle-orm' %}class="active" {% endif %}>{% if lang == 'pt' %}Extensão Cycle ORM{% else
+                %}Cycle ORM Extension{% endif %}</a></li>
     </ul>
 
-    <h3>{{ t.nav.advanced }}</h3>
+    <h3>{% if lang == 'pt' %}🧪 Testes & Deploy{% else %}🧪 Testing & Deploy{% endif %}</h3>
     <ul>
-        <li><a href="{{ base_path }}{{ routes.providers | default: '/docs/providers/' }}" {% if page.url contains 'providers' %}class="active"{% endif %}>{{ t.nav.providers }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.testing | default: '/docs/testing/' }}" {% if page.url contains 'testing' %}class="active"{% endif %}>{{ t.nav.testing }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.deployment | default: '/docs/deployment/' }}" {% if page.url contains 'deployment' %}class="active"{% endif %}>{{ t.nav.deployment }}</a></li>
-        <li><a href="{{ base_path }}{{ routes.benchmarks | default: '/docs/benchmarks/' }}" {% if page.url contains 'benchmarks' %}class="active"{% endif %}>{% if lang == 'pt' %}Benchmarks de Performance{% else %}Performance Benchmarks{% endif %}</a></li>
+        <li><a href="{{ base_path }}{{ routes.testing | default: '/docs/testing/' }}" {% if page.url contains 'testing'
+                %}class="active" {% endif %}>{% if lang == 'pt' %}Testes Automatizados{% else %}Automated Testing{% endif %}</a>
+        </li>
+        <li><a href="{{ base_path }}{{ routes.deployment | default: '/docs/deployment/' }}" {% if page.url contains 'deployment'
+                %}class="active" {% endif %}>{{ t.nav.deployment }}</a></li>
     </ul>
 
-    <h3>{% if lang == 'pt' %}Recursos{% else %}Resources{% endif %}</h3>
+    <h3>{% if lang == 'pt' %}📊 Performance{% else %}📊 Performance{% endif %}</h3>
     <ul>
-        <li><a href="{{ site.github_url }}/pivotphp-core" target="_blank">GitHub →</a></li>
-        <li><a href="{{ site.github_url }}/pivotphp-core/releases" target="_blank">Changelog →</a></li>
-        <li><a href="https://packagist.org/packages/pivotphp/core" target="_blank">Packagist →</a></li>
+        <li><a href="{{ base_path }}{{ routes.benchmarks | default: '/docs/benchmarks/' }}" {% if page.url contains 'benchmarks'
+                %}class="active" {% endif %}>Benchmarks</a></li>
+        </ul>
+        
+        <h3>{% if lang == 'pt' %}🔌 Extensões{% else %}🔌 Extensions{% endif %}</h3>
+        <ul>
+            <li><a href="{{ base_path }}{{ routes.extensions | default: '/docs/extensions/' }}" {% if
+                    page.url==routes.extensions %}class="active" {% endif %}>{% if lang == 'pt' %}Visão Geral{% else
+                    %}Overview{% endif %}</a></li>
+            <li><a href="{{ base_path }}{{ routes.extensions_reactphp | default: '/docs/extensions/reactphp/' }}" {% if page.url
+                    contains '/extensions/reactphp' %}class="active" {% endif %}>ReactPHP (Async)</a></li>
     </ul>
 </aside>

@@ -1,0 +1,56 @@
+{% assign versions = site.data.versions.versions %} {% assign current_version =
+page.version %} {% if current_version == nil %} {% assign match_version =
+versions | where_exp: "v", "page.url contains v.docs_path" | first %} {% if
+match_version %} {% assign current_version = match_version.number %} {% endif %}
+{% endif %} {% assign version_entry = versions | where: "number",
+current_version | first %} {% assign canonical = versions | where_exp: "v",
+"v.is_canonical" | first %} {% if version_entry and version_entry.banner_type
+and version_entry.banner_type != 'none' %} {% assign banner_type =
+version_entry.banner_type %}
+<div
+  class="version-banner banner-{{ banner_type }}"
+  data-version="{{ version_entry.number }}"
+>
+  <div class="version-banner__content">
+    {% case banner_type %} {% when 'eol' %}
+    <div class="version-banner__title">⛔ Versão descontinuada</div>
+    <div class="version-banner__text">
+      Esta versão saiu de suporte{% if version_entry.eol_date %} em {{
+      version_entry.eol_date }}{% endif %}. Migre para v{{ canonical.number }}.
+    </div>
+    {% when 'maintenance' %}
+    <div class="version-banner__title">⚠️ Versão em manutenção</div>
+    <div class="version-banner__text">
+      Apenas correções críticas. Recomendamos atualizar para v{{
+      canonical.number }}.
+    </div>
+    {% when 'stable-outdated' %}
+    <div class="version-banner__title">
+      ✨ Versão estável, mas desatualizada
+    </div>
+    <div class="version-banner__text">
+      Uma versão mais recente (v{{ canonical.number }}) está disponível com
+      melhorias.
+    </div>
+    {% when 'beta' %}
+    <div class="version-banner__title">🚧 Versão beta</div>
+    <div class="version-banner__text">
+      Em desenvolvimento ativo. Para estabilidade, use v{{ canonical.number }}.
+    </div>
+    {% endcase %} {% if version_entry.show_upgrade_banner and
+    version_entry.upgrade_banner_message %}
+    <div class="version-banner__upgrade">
+      {{ version_entry.upgrade_banner_message }}
+    </div>
+    {% endif %}
+  </div>
+  <button
+    class="version-banner__dismiss"
+    type="button"
+    data-version-dismiss="{{ version_entry.number }}"
+    aria-label="Dispensar aviso"
+  >
+    ×
+  </button>
+</div>
+{% endif %}

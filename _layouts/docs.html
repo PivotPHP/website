@@ -4,36 +4,34 @@ layout: default
 
 <!-- Documentation Content -->
 <main class="docs-main">
-    <div class="container docs-container">
-        {% if page.lang and page.lang != site.lang %}
-            {% include docs-sidebar-i18n.html %}
-        {% else %}
-            {% include docs-sidebar.html %}
+<div class="container docs-container">
+    {% if page.lang and page.lang != site.lang %} {% include
+    docs-sidebar-i18n.html %} {% else %} {% include docs-sidebar.html %} {%
+    endif %}
+
+    <!-- Content -->
+    <div class="docs-content">
+    {% include version-deprecation-banner.html %} {% include breadcrumbs.html
+    %}
+    <article>
+        <h1>{{ page.title }}</h1>
+        {{ content }}
+    </article>
+
+    <!-- Navigation Links -->
+    <div class="docs-nav-bottom">
+        {% if page.prev %}
+        <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost btn-lg">
+            ← {{ page.prev.title }}
+        </a>
+        {% endif %} {% if page.next %}
+        <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost btn-lg" style="margin-left: auto">
+            {{ page.next.title }} →
+        </a>
         {% endif %}
-
-        <!-- Content -->
-        <div class="docs-content">
-            <article>
-                <h1>{{ page.title }}</h1>
-                {{ content }}
-            </article>
-
-            <!-- Navigation Links -->
-            <div class="docs-nav-bottom">
-                {% if page.prev %}
-                <a href="{{ page.prev.url | relative_url }}" class="btn btn-ghost btn-lg">
-                    ← {{ page.prev.title }}
-                </a>
-                {% endif %}
-
-                {% if page.next %}
-                <a href="{{ page.next.url | relative_url }}" class="btn btn-ghost btn-lg" style="margin-left: auto;">
-                    {{ page.next.title }} →
-                </a>
-                {% endif %}
-            </div>
         </div>
-    </div>
+        </div>
+        </div>
 </main>
 
 <!-- Documentation Scripts -->
@@ -43,14 +41,14 @@ layout: default
 
 <!-- Additional Styles for Documentation -->
 <style>
-/* Enhanced documentation content styles */
-.docs-content h2 {
+  /* Enhanced documentation content styles */
+  .docs-content h2 {
     position: relative;
     scroll-margin-top: var(--space-8);
-}
+  }
 
-.docs-content h2::before {
-    content: '';
+  .docs-content h2::before {
+    content: "";
     position: absolute;
     left: calc(-1 * var(--space-10));
     top: 50%;
@@ -60,53 +58,53 @@ layout: default
     background: var(--pivot-gradient-primary);
     border-radius: var(--radius-sm);
     opacity: 0.7;
-}
+  }
 
-.docs-content h3::before {
-    content: '▸';
+  .docs-content h3::before {
+    content: "▸";
     color: var(--pivot-pink-600);
     margin-right: var(--space-2);
     font-weight: normal;
-}
+  }
 
-[data-theme="dark"] .docs-content h3::before {
+  [data-theme="dark"] .docs-content h3::before {
     color: var(--pivot-pink-400);
-}
+  }
 
-/* Enhanced code blocks */
-.docs-content pre {
+  /* Enhanced code blocks */
+  .docs-content pre {
     position: relative;
     overflow: hidden;
-}
+  }
 
-.docs-content pre::before {
-    content: '';
+  .docs-content pre::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 3px;
     background: var(--pivot-gradient-primary);
-}
+  }
 
-/* Enhanced tables */
-.docs-content table {
+  /* Enhanced tables */
+  .docs-content table {
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--theme-shadow-card);
     border: 1px solid var(--theme-border);
-}
+  }
 
-.docs-content table thead tr {
+  .docs-content table thead tr {
     background: var(--theme-surface-secondary);
-}
+  }
 
-.docs-content table tbody tr:hover {
+  .docs-content table tbody tr:hover {
     background: var(--theme-surface-hover);
-}
+  }
 
-/* Enhanced navigation */
-.docs-nav-bottom {
+  /* Enhanced navigation */
+  .docs-nav-bottom {
     display: flex;
     justify-content: space-between;
     padding-top: var(--space-8);
@@ -117,94 +115,104 @@ layout: default
     padding-left: var(--space-10);
     padding-right: var(--space-10);
     padding-bottom: var(--space-10);
-}
+  }
 
-.docs-nav-bottom::before {
-    content: '';
+  .docs-nav-bottom::before {
+    content: "";
     position: absolute;
     top: -2px;
     left: var(--space-10);
     width: 60px;
     height: 2px;
     background: var(--pivot-gradient-primary);
-}
+  }
 
-.docs-nav-bottom .btn {
+  .docs-nav-bottom .btn {
     max-width: 45%;
     position: relative;
     overflow: hidden;
     background: var(--theme-surface-secondary);
     border: 1px solid var(--theme-border);
     color: var(--theme-text-primary);
-}
+  }
 
-.docs-nav-bottom .btn:hover {
+  .docs-nav-bottom .btn:hover {
     background: var(--theme-surface-hover);
     border-color: var(--theme-border-hover);
     color: var(--theme-text-primary);
-}
+  }
 
-.docs-nav-bottom .btn::before {
-    content: '';
+  .docs-nav-bottom .btn::before {
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, var(--theme-surface-hover), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--theme-surface-hover),
+      transparent
+    );
     transition: left 0.5s;
     opacity: 0.5;
-}
+  }
 
-.docs-nav-bottom .btn:hover::before {
+  .docs-nav-bottom .btn:hover::before {
     left: 100%;
-}
+  }
 
-/* Force theme inheritance for docs-nav-bottom */
-body[data-theme="dark"] .docs-nav-bottom,
-html[data-theme="dark"] .docs-nav-bottom {
+  /* Force theme inheritance for docs-nav-bottom */
+  body[data-theme="dark"] .docs-nav-bottom,
+  html[data-theme="dark"] .docs-nav-bottom {
     background: var(--theme-surface) !important;
     border-top-color: var(--theme-border) !important;
     color: var(--theme-text-primary) !important;
-}
+  }
 
-body[data-theme="dark"] .docs-nav-bottom .btn,
-html[data-theme="dark"] .docs-nav-bottom .btn {
+  body[data-theme="dark"] .docs-nav-bottom .btn,
+  html[data-theme="dark"] .docs-nav-bottom .btn {
     background: var(--theme-surface-secondary) !important;
     border-color: var(--theme-border) !important;
     color: var(--theme-text-primary) !important;
-}
+  }
 
-body[data-theme="dark"] .docs-nav-bottom .btn:hover,
-html[data-theme="dark"] .docs-nav-bottom .btn:hover {
+  body[data-theme="dark"] .docs-nav-bottom .btn:hover,
+  html[data-theme="dark"] .docs-nav-bottom .btn:hover {
     background: var(--theme-surface-hover) !important;
     border-color: var(--theme-border-hover) !important;
     color: var(--theme-text-primary) !important;
-}
+  }
 
-body[data-theme="dark"] .docs-nav-bottom .btn::before,
-html[data-theme="dark"] .docs-nav-bottom .btn::before {
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent) !important;
-}
+  body[data-theme="dark"] .docs-nav-bottom .btn::before,
+  html[data-theme="dark"] .docs-nav-bottom .btn::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(139, 92, 246, 0.2),
+      transparent
+    ) !important;
+  }
 
-/* Additional specific targeting */
-.docs-content[data-theme="dark"] .docs-nav-bottom,
-[data-theme="dark"] .docs-content .docs-nav-bottom {
+  /* Additional specific targeting */
+  .docs-content[data-theme="dark"] .docs-nav-bottom,
+  [data-theme="dark"] .docs-content .docs-nav-bottom {
     background: var(--pivot-gray-900) !important;
     border-top-color: var(--pivot-gray-800) !important;
-}
+  }
 
-.docs-content[data-theme="dark"] .docs-nav-bottom .btn,
-[data-theme="dark"] .docs-content .docs-nav-bottom .btn {
+  .docs-content[data-theme="dark"] .docs-nav-bottom .btn,
+  [data-theme="dark"] .docs-content .docs-nav-bottom .btn {
     background: var(--pivot-gray-800) !important;
     border-color: var(--pivot-gray-700) !important;
     color: var(--pivot-gray-100) !important;
-}
+  }
 
-.docs-content[data-theme="dark"] .docs-nav-bottom .btn:hover,
-[data-theme="dark"] .docs-content .docs-nav-bottom .btn:hover {
+  .docs-content[data-theme="dark"] .docs-nav-bottom .btn:hover,
+  [data-theme="dark"] .docs-content .docs-nav-bottom .btn:hover {
     background: var(--pivot-gray-700) !important;
     border-color: var(--pivot-purple-500) !important;
     color: var(--pivot-gray-50) !important;
-}
+  }
 </style>
