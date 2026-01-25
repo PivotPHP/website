@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/benchmarks/
-  - /pt/docs/benchmarks/
   - /en/docs/benchmarks/
   - /en/benchmarks/
 layout: docs-benchmarks

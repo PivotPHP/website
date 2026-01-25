@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/validation/
-  - /pt/docs/validation/
   - /en/docs/validation/
   - /en/validation/
 layout: docs

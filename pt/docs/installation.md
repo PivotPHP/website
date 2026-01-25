@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/installation/
-  - /pt/docs/installation/
   - /en/docs/installation/
   - /en/installation/
 layout: docs

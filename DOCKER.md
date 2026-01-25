@@ -16,15 +16,22 @@ docker-compose up jekyll
 
 ## 📋 Comandos Disponíveis
 
-### Desenvolvimento
+### Desenvolvimento com Hot-Reload
 
 ```bash
-# Servidor com hot-reload (recomendado para desenvolvimento)
+# Servidor com hot-reload e livereload (recomendado)
+docker-compose down  # Parar containers anteriores
 docker-compose up jekyll
 
 # Acesse: http://localhost:4000
-# LiveReload na porta 35729
+# Alterações no código recarregam automaticamente no navegador
 ```
+
+**Nota sobre configuração:**
+- O serviço `jekyll` usa `_config.yml,_config.dev.yml`
+- `_config.dev.yml` sobrescreve `url` para `http://localhost:4000` e `baseurl` para vazio
+- Isso evita redirects absolutos e mantém links relativos funcionais localmente
+- A produção continua usando `url: https://pivotphp.github.io` e `baseurl: /website`
 
 ### Build e Validação
 

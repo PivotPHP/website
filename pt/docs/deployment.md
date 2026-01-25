@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/deployment/
-  - /pt/docs/deployment/
   - /en/docs/deployment/
   - /en/deployment/
 layout: docs

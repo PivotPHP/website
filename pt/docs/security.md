@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/security/
-  - /pt/docs/security/
   - /en/docs/security/
   - /en/security/
 layout: docs

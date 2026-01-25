@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/database/
-  - /pt/docs/database/
   - /en/docs/database/
   - /en/database/
 layout: docs

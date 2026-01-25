@@ -27,27 +27,27 @@ window.LanguageRoutes = {
     convertUrl: function(url, fromLang, toLang) {
         // Create a clean working URL without baseUrl
         let workingUrl = url;
-        
+
         // Remove multiple occurrences of baseUrl
         while (this.baseUrl && workingUrl.includes(this.baseUrl + this.baseUrl)) {
             workingUrl = workingUrl.replace(this.baseUrl + this.baseUrl, this.baseUrl);
         }
-        
+
         // Remove single baseUrl to get relative path
         if (this.baseUrl && workingUrl.startsWith(this.baseUrl)) {
             workingUrl = workingUrl.substring(this.baseUrl.length);
         }
-        
+
         // Ensure URL starts with /
         if (!workingUrl.startsWith('/')) {
             workingUrl = '/' + workingUrl;
         }
-        
+
         // Clean the URL - ensure it ends with /
         workingUrl = workingUrl.replace(/\/$/, '') + '/';
-        
+
         let resultUrl;
-        
+
         // Convert between languages
         if (fromLang === 'pt' && toLang === 'en') {
             // Remove /pt/ prefix if present
@@ -71,10 +71,10 @@ window.LanguageRoutes = {
             // For other language conversions
             resultUrl = workingUrl;
         }
-        
+
         // Add baseUrl back ONLY ONCE
         const finalUrl = this.baseUrl + resultUrl;
-        
+
         return finalUrl;
     },
 
@@ -91,29 +91,32 @@ window.LanguageRoutes = {
     validUrls: {
         en: [
             '/',
-            '/docs/',
-            '/docs/installation/',
-            '/docs/quickstart/',
-            '/docs/configuration/',
-            '/docs/routing/',
-            '/docs/middleware/',
-            '/docs/requests-responses/',
-            '/docs/container/',
-            '/docs/security/',
-            '/docs/events/',
-            '/docs/validation/',
-            '/docs/database/',
-            '/docs/providers/',
-            '/docs/testing/',
-            '/docs/deployment/',
-            '/docs/why-pivotphp/',
-            '/docs/benchmarks/',
-            '/docs/authentication/',
-            '/docs/orm/',
-            '/docs/api-reference/',
-            '/docs/changelog/',
-            '/docs/extensions/',
-            '/docs/extensions/cycle-orm/'
+            '/en/',
+            '/en/docs/',
+            '/en/docs/installation/',
+            '/en/docs/quickstart/',
+            '/en/docs/configuration/',
+            '/en/docs/routing/',
+            '/en/docs/middleware/',
+            '/en/docs/requests-responses/',
+            '/en/docs/container/',
+            '/en/docs/security/',
+            '/en/docs/events/',
+            '/en/docs/validation/',
+            '/en/docs/database/',
+            '/en/docs/providers/',
+            '/en/docs/testing/',
+            '/en/docs/deployment/',
+            '/en/docs/why-pivotphp/',
+            '/en/docs/benchmarks/',
+            '/en/docs/authentication/',
+            '/en/docs/orm/',
+            '/en/docs/api-reference/',
+            '/en/docs/changelog/',
+            '/en/docs/extensions/',
+            '/en/docs/extensions/cycle-orm/',
+            '/en/docs/api-documentation/',
+            '/en/docs/extensions/reactphp/'
         ],
         pt: [
             '/pt/',
@@ -139,7 +142,9 @@ window.LanguageRoutes = {
             '/pt/docs/api-reference/',
             '/pt/docs/changelog/',
             '/pt/docs/extensions/',
-            '/pt/docs/extensions/cycle-orm/'
+            '/pt/docs/extensions/cycle-orm/',
+            '/pt/docs/api-documentation/',
+            '/pt/docs/extensions/reactphp/'
         ]
     },
 
@@ -150,7 +155,7 @@ window.LanguageRoutes = {
         while (this.baseUrl && checkUrl.includes(this.baseUrl + this.baseUrl)) {
             checkUrl = checkUrl.replace(this.baseUrl + this.baseUrl, this.baseUrl);
         }
-        
+
         // Remove baseUrl for validation
         if (this.baseUrl && checkUrl.startsWith(this.baseUrl)) {
             checkUrl = checkUrl.substring(this.baseUrl.length);

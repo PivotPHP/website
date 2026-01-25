@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/middleware/
-  - /pt/docs/middleware/
   - /en/docs/middleware/
   - /en/middleware/
 layout: docs

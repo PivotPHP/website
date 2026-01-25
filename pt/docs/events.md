@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/events/
-  - /pt/docs/events/
   - /en/docs/events/
   - /en/events/
 layout: docs

@@ -2,7 +2,7 @@ services:
   # Serviço para desenvolvimento com hot-reload
   jekyll:
     build: .
-    command: bundle exec jekyll serve --watch --force_polling --incremental --host 0.0.0.0
+    command: bundle exec jekyll serve --config _config.yml,_config.dev.yml --watch --force_polling --incremental --livereload --host 0.0.0.0
     # Em Linux, usar network_mode: host pode ajudar em ambientes restritos de DNS
     # (não funciona em Docker Desktop para Mac/Windows)
     network_mode: host

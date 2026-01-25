@@ -1,23 +1,27 @@
 # Route mappings for different languages
 default_routes:
   /: /
-  /docs/: /docs/
-  /docs/installation/: /docs/installation/
-  /docs/quickstart/: /docs/quickstart/
-  /docs/configuration/: /docs/configuration/
-  /docs/routing/: /docs/routing/
-  /docs/middleware/: /docs/middleware/
-  /docs/requests-responses/: /docs/requests-responses/
-  /docs/container/: /docs/container/
-  /docs/security/: /docs/security/
-  /docs/events/: /docs/events/
-  /docs/validation/: /docs/validation/
-  /docs/database/: /docs/database/
-  /docs/providers/: /docs/providers/
-  /docs/testing/: /docs/testing/
-  /docs/deployment/: /docs/deployment/
-  /docs/extensions/: /docs/extensions/
-  /docs/extensions/cycle-orm/: /docs/extensions/cycle-orm/
+  /docs/: /en/docs/
+  /en/: /en/
+  /en/docs/: /en/docs/
+  /en/docs/installation/: /en/docs/installation/
+  /en/docs/quickstart/: /en/docs/quickstart/
+  /en/docs/configuration/: /en/docs/configuration/
+  /en/docs/routing/: /en/docs/routing/
+  /en/docs/middleware/: /en/docs/middleware/
+  /en/docs/requests-responses/: /en/docs/requests-responses/
+  /en/docs/container/: /en/docs/container/
+  /en/docs/security/: /en/docs/security/
+  /en/docs/events/: /en/docs/events/
+  /en/docs/validation/: /en/docs/validation/
+  /en/docs/database/: /en/docs/database/
+  /en/docs/providers/: /en/docs/providers/
+  /en/docs/testing/: /en/docs/testing/
+  /en/docs/deployment/: /en/docs/deployment/
+  /en/docs/extensions/: /en/docs/extensions/
+  /en/docs/extensions/cycle-orm/: /en/docs/extensions/cycle-orm/
+  /en/docs/api-documentation/: /en/docs/api-documentation/
+  /en/docs/extensions/reactphp/: /en/docs/extensions/reactphp/
 
 pt_routes:
   /: /pt/
@@ -40,28 +44,28 @@ pt_routes:
   /docs/extensions/cycle-orm/: /pt/docs/extensions/cycle-orm/
 
 en:
-  home: /
-  docs: /docs/
-  why_pivotphp: /docs/why-pivotphp/
-  installation: /docs/installation/
-  quickstart: /docs/quickstart/
-  configuration: /docs/configuration/
-  routing: /docs/routing/
-  middleware: /docs/middleware/
-  requests_responses: /docs/requests-responses/
-  api_documentation: /docs/api-documentation/
-  container: /docs/container/
-  security: /docs/security/
-  events: /docs/events/
-  validation: /docs/validation/
-  database: /docs/database/
-  providers: /docs/providers/
-  testing: /docs/testing/
-  deployment: /docs/deployment/
-  benchmarks: /docs/benchmarks/
-  extensions: /docs/extensions/
-  extensions_cycle_orm: /docs/extensions/cycle-orm/
-  extensions_reactphp: /docs/extensions/reactphp/
+  home: /en/
+  docs: /en/docs/
+  why_pivotphp: /en/docs/why-pivotphp/
+  installation: /en/docs/installation/
+  quickstart: /en/docs/quickstart/
+  configuration: /en/docs/configuration/
+  routing: /en/docs/routing/
+  middleware: /en/docs/middleware/
+  requests_responses: /en/docs/requests-responses/
+  api_documentation: /en/docs/api-documentation/
+  container: /en/docs/container/
+  security: /en/docs/security/
+  events: /en/docs/events/
+  validation: /en/docs/validation/
+  database: /en/docs/database/
+  providers: /en/docs/providers/
+  testing: /en/docs/testing/
+  deployment: /en/docs/deployment/
+  benchmarks: /en/docs/benchmarks/
+  extensions: /en/docs/extensions/
+  extensions_cycle_orm: /en/docs/extensions/cycle-orm/
+  extensions_reactphp: /en/docs/extensions/reactphp/
 
 pt:
   home: /pt/

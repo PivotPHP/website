@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/providers/
-  - /pt/docs/providers/
   - /en/docs/providers/
   - /en/providers/
 layout: docs

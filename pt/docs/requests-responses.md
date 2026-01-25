@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/requests-responses/
-  - /pt/docs/requests-responses/
   - /en/docs/requests-responses/
   - /en/requests-responses/
 layout: docs

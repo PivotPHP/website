@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/configuration/
-  - /pt/docs/configuration/
   - /en/docs/configuration/
   - /en/configuration/
 layout: docs

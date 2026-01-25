@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/index/
-  - /pt/docs/index/
   - /en/docs/index/
   - /en/index/
 layout: docs

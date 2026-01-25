@@ -1,0 +1,9 @@
+# Development configuration - overrides _config.yml
+url: "http://localhost:4000"
+baseurl: ""
+
+# Disable analytics in development
+google_analytics: false
+
+# Enable incremental build for faster reloads
+incremental: true

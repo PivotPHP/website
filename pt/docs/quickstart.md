@@ -1,7 +1,6 @@
 ---
 redirect_from:
   - /docs/quickstart/
-  - /pt/docs/quickstart/
   - /en/docs/quickstart/
   - /en/quickstart/
 layout: docs
