@@ -33,6 +33,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
   - jekyll-relative-links
+  - jekyll-redirect-from
 
 # Collections
 collections:
@@ -63,11 +64,6 @@ defaults:
     values:
       layout: "docs-i18n"
 
-# Custom variables
-github_url: https://github.com/PivotPHP
-github_org: PivotPHP
-twitter_username: pivotphp
-author: PivotPHP Team
 
 # Navigation
 navigation:

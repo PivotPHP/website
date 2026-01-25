@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/container/
+  - /pt/docs/container/
+  - /en/docs/container/
+  - /en/container/
 layout: docs
 title: Container de Serviços
 permalink: /pt/docs/container/

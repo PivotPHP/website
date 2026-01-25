@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/api-documentation/
+  - /pt/docs/api-documentation/
+  - /en/docs/api-documentation/
+  - /en/api-documentation/
 layout: docs
 title: Documentação de API com OpenAPI/Swagger
 description: Gere documentação interativa de API automaticamente com OpenAPI 3.0 e Swagger UI

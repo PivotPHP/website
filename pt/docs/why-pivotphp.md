@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/why-pivotphp/
+  - /pt/docs/why-pivotphp/
+  - /en/docs/why-pivotphp/
+  - /en/why-pivotphp/
 layout: docs
 title: Por que PivotPHP?
 permalink: /pt/docs/why-pivotphp/

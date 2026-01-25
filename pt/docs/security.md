@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/security/
+  - /pt/docs/security/
+  - /en/docs/security/
+  - /en/security/
 layout: docs
 title: Segurança
 permalink: /pt/docs/security/

@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/testing/
+  - /pt/docs/testing/
+  - /en/docs/testing/
+  - /en/testing/
 layout: docs
 title: Testes
 permalink: /pt/docs/testing/

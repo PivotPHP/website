@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/deployment/
+  - /pt/docs/deployment/
+  - /en/docs/deployment/
+  - /en/deployment/
 layout: docs
 title: Deploy
 permalink: /pt/docs/deployment/

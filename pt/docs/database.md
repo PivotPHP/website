@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/database/
+  - /pt/docs/database/
+  - /en/docs/database/
+  - /en/database/
 layout: docs
 title: Banco de Dados
 permalink: /pt/docs/database/

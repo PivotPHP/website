@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/extensions/
+  - /pt/docs/extensions/
+  - /en/docs/extensions/
+  - /en/extensions/
 layout: docs
 title: Extensões
 permalink: /pt/docs/extensions/

@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/routing/
+  - /pt/docs/routing/
+  - /en/docs/routing/
+  - /en/routing/
 layout: docs
 title: Roteamento
 permalink: /pt/docs/routing/

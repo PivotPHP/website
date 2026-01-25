@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/providers/
+  - /pt/docs/providers/
+  - /en/docs/providers/
+  - /en/providers/
 layout: docs
 title: Provedores de Serviços
 permalink: /pt/docs/providers/

@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/benchmarks/
+  - /pt/docs/benchmarks/
+  - /en/docs/benchmarks/
+  - /en/benchmarks/
 layout: docs-benchmarks
 title: Benchmarks de Performance
 description: Análise abrangente de performance e benchmarks do PivotPHP

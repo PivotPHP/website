@@ -1,4 +1,9 @@
 ---
+redirect_from:
+  - /docs/quickstart/
+  - /pt/docs/quickstart/
+  - /en/docs/quickstart/
+  - /en/quickstart/
 layout: docs
 title: Início Rápido
 permalink: /pt/docs/quickstart/
