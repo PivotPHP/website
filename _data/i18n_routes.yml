@@ -23,26 +23,6 @@ default_routes:
   /en/docs/api-documentation/: /en/docs/api-documentation/
   /en/docs/extensions/reactphp/: /en/docs/extensions/reactphp/
 
-pt_routes:
-  /: /pt/
-  /docs/: /pt/docs/
-  /docs/installation/: /pt/docs/instalacao/
-  /docs/quickstart/: /pt/docs/inicio-rapido/
-  /docs/configuration/: /pt/docs/configuracao/
-  /docs/routing/: /pt/docs/roteamento/
-  /docs/middleware/: /pt/docs/middleware/
-  /docs/requests-responses/: /pt/docs/requisicoes-respostas/
-  /docs/container/: /pt/docs/container/
-  /docs/security/: /pt/docs/seguranca/
-  /docs/events/: /pt/docs/eventos/
-  /docs/validation/: /pt/docs/validacao/
-  /docs/database/: /pt/docs/banco-de-dados/
-  /docs/providers/: /pt/docs/provedores/
-  /docs/testing/: /pt/docs/testes/
-  /docs/deployment/: /pt/docs/implantacao/
-  /docs/extensions/: /pt/docs/extensions/
-  /docs/extensions/cycle-orm/: /pt/docs/extensions/cycle-orm/
-
 en:
   home: /en/
   docs: /en/docs/

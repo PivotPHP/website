@@ -1,22 +1,22 @@
-current_version: "2.0.0"
+current_version: "2.1.1"
 versions:
-  - number: "2.0.0"
-    status: "beta"
-    is_canonical: false
-    banner_type: "beta"
-    label: "Beta"
-    badge_color: "blue"
-    badge_text: "Beta"
-    docs_path: "/pt/docs/v2/"
-    release_date: "2025-11-15"
-    show_upgrade_banner: false
-  - number: "1.2.0"
+  - number: "2.1.1"
     status: "stable"
     is_canonical: true
     banner_type: "none"
     label: "Estável"
     badge_color: "green"
     badge_text: "Stable"
+    docs_path: "/pt/docs/v2/"
+    release_date: "2026-07-15"
+    show_upgrade_banner: false
+  - number: "1.2.0"
+    status: "stable"
+    is_canonical: false
+    banner_type: "none"
+    label: "Legado"
+    badge_color: "yellow"
+    badge_text: "Legacy"
     docs_path: "/pt/docs/v1/"
     release_date: "2025-07-21"
     show_upgrade_banner: false
@@ -32,4 +32,4 @@ versions:
     support_until: "2026-03-01"
     eol_date: "2026-03-01"
     show_upgrade_banner: true
-    upgrade_banner_message: "Atualize para v1.2.0 (estável) ou v2.0.0 (beta) para recursos mais recentes"
+    upgrade_banner_message: "Atualize para v2.1.1 (estável, recomendada) para recursos mais recentes"

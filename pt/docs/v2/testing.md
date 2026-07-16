@@ -4,7 +4,7 @@ layout: docs
 title: Testes
 permalink: /pt/docs/v2/testing/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP é construído com testes em mente. O framework fornece uma suíte de testes poderosa baseada no PHPUnit, com ajudantes e asserções adicionais para tornar os testes de sua aplicação muito fáceis.

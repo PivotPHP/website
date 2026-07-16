@@ -4,7 +4,7 @@ layout: docs
 title: Início Rápido
 permalink: /pt/docs/v2/quickstart/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 Este guia mostrará como criar sua primeira aplicação PivotPHP. Vamos construir uma API REST simples para gerenciar tarefas.
@@ -239,9 +239,9 @@ Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais
 - Explore [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) para recursos avançados de roteamento
 - Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições
 - Entenda o [Container de Serviços]({{ '/pt/docs/container/' | relative_url }}) para injeção de dependência
-- Confira integração com [Banco de Dados]({{ '/pt/docs/banco-de-dados/' | relative_url }}) usando Cycle ORM
-- Implemente [Segurança]({{ '/pt/docs/seguranca/' | relative_url }}) para proteger suas rotas
-- Adicione [Validação]({{ '/pt/docs/validacao/' | relative_url }}) para garantir integridade dos dados
+- Confira integração com [Banco de Dados]({{ '/pt/docs/database/' | relative_url }}) usando Cycle ORM
+- Implemente [Segurança]({{ '/pt/docs/security/' | relative_url }}) para proteger suas rotas
+- Adicione [Validação]({{ '/pt/docs/validation/' | relative_url }}) para garantir integridade dos dados
 
 ### Recursos Adicionais
 

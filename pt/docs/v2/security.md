@@ -4,7 +4,7 @@ layout: docs
 title: Segurança
 permalink: /pt/docs/v2/security/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP leva a segurança a sério e fornece múltiplas camadas de proteção prontas para uso. Este guia cobre os recursos de segurança disponíveis e as melhores práticas para manter sua aplicação segura.

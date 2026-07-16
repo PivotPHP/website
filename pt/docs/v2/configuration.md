@@ -4,7 +4,7 @@ layout: docs
 title: Configuração
 permalink: /pt/docs/v2/configuration/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP usa um sistema de configuração simples, mas poderoso, que permite gerenciar as configurações da sua aplicação em diferentes ambientes.

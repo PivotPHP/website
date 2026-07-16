@@ -1,26 +1,26 @@
 ---
 layout: docs
-title: Bem-vindo ao PivotPHP v2.0 Beta
+title: Bem-vindo ao PivotPHP v2
 permalink: /pt/docs/v2/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 <div style="text-align: center; margin: 2rem 0 3rem;">
-  <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🚀 PivotPHP v2.0.0 (Beta)</h1>
-  <p class="lead" style="font-size: 1.25rem; color: var(--pivot-primary);">A próxima geração do microframework PHP evolutivo</p>
+  <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">🚀 PivotPHP v2</h1>
+  <p class="lead" style="font-size: 1.25rem; color: var(--pivot-primary);">A geração atual do microframework PHP evolutivo</p>
   <p style="font-size: 1.1rem; opacity: 0.85;">Melhorias Arquiteturais • Recursos Aprimorados • Performance Otimizada</p>
 </div>
 
-<div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.05) 100%); border-left: 4px solid rgba(59, 130, 246, 0.8); padding: 1.5rem; margin: 2rem 0; border-radius: 8px;">
-  <h3 style="margin-top: 0;">🚧 Versão Beta - Em Desenvolvimento</h3>
-  <p><strong>Lançamento: 15 de novembro de 2025</strong> - Esta é uma versão beta com novos recursos e melhorias arquiteturais. Para uso em produção, recomendamos a versão estável <strong>v1.2.0</strong>.</p>
-  <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.85;">ℹ️ Esta documentação está em desenvolvimento. Algumas funcionalidades podem mudar antes do lançamento final.</p>
+<div style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%); border-left: 4px solid rgba(34, 197, 94, 0.8); padding: 1.5rem; margin: 2rem 0; border-radius: 8px;">
+  <h3 style="margin-top: 0;">✅ Versão Estável — Recomendada para Produção</h3>
+  <p><strong>Lançamento inicial da linha 2.x: 15 de novembro de 2025</strong> (v2.0.0). A versão atual é a <strong>v2.1.1</strong>, que inclui uma correção de compatibilidade com <code>psr/http-message</code> 2.0. A linha v2.x é agora a versão estável recomendada para novos projetos e produção.</p>
+  <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.85;">ℹ️ Para o histórico completo de mudanças entre v2.0.0 e v2.1.1, veja o <a href="https://github.com/PivotPHP/pivotphp-core/blob/main/CHANGELOG.md">CHANGELOG do pivotphp-core</a>.</p>
 </div>
 
-## 💡 O Que Há de Novo em v2.0?
+## 💡 O Que Há de Novo na Linha v2?
 
-v2.0.0 traz melhorias significativas mantendo a simplicidade que você ama:
+A v2.0.0 trouxe melhorias significativas mantendo a simplicidade que você ama:
 
 - **🏗️ Arquitetura Reimaginada**: Estrutura melhorada para projetos maiores
 - **⚡ Performance Aprimorada**: Otimizações em cache e execução
@@ -32,13 +32,13 @@ v2.0.0 traz melhorias significativas mantendo a simplicidade que você ama:
 
 ## 🎯 Migração de v1.2.0
 
-Se você está usando v1.2.0 e quer experimentar v2.0 beta:
+Se você está usando v1.2.0 e quer atualizar para a linha v2:
 
 ```bash
-composer require pivotphp/core:^2.0@beta
+composer require pivotphp/core:^2.0
 ```
 
-**Nota**: Alterações podem ocorrer durante o desenvolvimento beta. Veja o [Guia de Migração]({{ '/pt/docs/v2/migration/' | relative_url }}) para mais detalhes.
+**Nota**: Ainda não existe um guia de migração dedicado. Consulte o [CHANGELOG do pivotphp-core](https://github.com/PivotPHP/pivotphp-core/blob/main/CHANGELOG.md) para a lista completa de mudanças entre v1.2.0 e v2.x.
 
 ---
 
@@ -68,15 +68,15 @@ Todos os recursos de v1.2.0, mais:
 
 ## 📝 Documentação
 
-Esta documentação acompanha o desenvolvimento beta de v2.0. As páginas indicam as mudanças em relação a v1.2.0 quando aplicável.
+Esta documentação cobre a linha v2.x (versão atual: v2.1.1). As páginas indicam as mudanças em relação a v1.2.0 quando aplicável.
 
-**Para v1.2.0 (Estável)**: [Acesse a documentação estável]({{ '/pt/docs/v1/' | relative_url }})
+**Para v1.2.0 (linha legada)**: [Acesse a documentação da v1.2.0]({{ '/pt/docs/v1/' | relative_url }})
 
 ---
 
 ## 🤝 Feedback & Contribuições
 
-Como essa é uma versão beta, seu feedback é valioso:
+Seu feedback é valioso para a evolução contínua do PivotPHP:
 
 - **Reportar Bugs**: [GitHub Issues](https://github.com/pivotphp/pivotphp-core/issues)
 - **Discussões**: [GitHub Discussions](https://github.com/pivotphp/pivotphp-core/discussions)

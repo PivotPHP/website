@@ -4,7 +4,7 @@ layout: docs
 title: Deploy
 permalink: /pt/docs/v2/deployment/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 Este guia cobre as melhores práticas e procedimentos para fazer deploy de aplicações PivotPHP em ambientes de produção.

@@ -4,7 +4,7 @@ layout: docs
 title: Banco de Dados
 permalink: /pt/docs/v2/database/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP integra-se perfeitamente com o Cycle ORM, fornecendo uma maneira poderosa e intuitiva de trabalhar com bancos de dados. O Cycle ORM é um ORM moderno e orientado por esquema que oferece excelente desempenho e flexibilidade.

@@ -23,12 +23,10 @@ layout: default
         Build high-performance APIs that adapt and evolve. Express.js-inspired syntax meets PHP's power.
       </p>
 
-      <div class="development-notice" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: var(--radius-lg); padding: var(--space-6); margin: var(--space-8) 0; text-align: center; backdrop-filter: blur(10px);">
+      <div class="development-notice" style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: var(--radius-lg); padding: var(--space-6); margin: var(--space-8) 0; text-align: center; backdrop-filter: blur(10px);">
         <p style="margin: 0; color: var(--pivot-white); font-size: var(--text-base); line-height: var(--leading-relaxed);">
-          <strong style="color: #3b82f6;">🧪 {% if lang == 'pt' %}v1.2.0 Simplicity Edition{% else %}v1.2.0 Simplicity Edition{% endif %}</strong><br>
-          <span style="color: rgba(255, 255, 255, 0.9);">{% if lang == 'pt' %}Framework experimental em desenvolvimento ativo. Ideal para prototipagem e validação de conceitos.<br>
-          Não recomendado para uso em produção.{% else %}Experimental framework under active development. Perfect for prototyping and concept validation.<br>
-          Not recommended for production use.{% endif %}</span>
+          <strong style="color: #22c55e;">✅ v2.1.1</strong><br>
+          <span style="color: rgba(255, 255, 255, 0.9);">{% if lang == 'pt' %}Versão estável, recomendada para novos projetos e produção.{% else %}Stable version, recommended for new projects and production use.{% endif %}</span>
         </p>
       </div>
 
@@ -67,6 +65,9 @@ layout: default
           <div class="stats-trend">ultra-efficient</div>
         </div>
       </div>
+      <p style="font-size: var(--text-sm); opacity: 0.65; margin-top: var(--space-2);">
+        {% if lang == 'pt' %}Benchmarks da v1.2.0, ainda não revalidados para a linha 2.x.{% else %}v1.2.0 benchmarks, not yet re-validated for the 2.x line.{% endif %}
+      </p>
     </div>
   </div>
 </section>
@@ -343,6 +344,7 @@ layout: default
     <h2 class="text-center section-title" style="color: var(--pivot-white);">Performance in Every Strand</h2>
     <p class="text-center mb-5 section-subtitle" style="opacity: 0.9; max-width: 700px; margin: 0 auto; color: var(--pivot-white);">
       Benchmarks executed in standardized Docker containers for fair, reproducible testing. Real performance data, consistent conditions.
+      <br><span style="font-size: var(--text-sm); opacity: 0.75;">v1.2.0 results, not yet re-validated for the 2.x line.</span>
     </p>
 
     <div class="performance-grid">

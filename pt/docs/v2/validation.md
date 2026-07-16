@@ -4,7 +4,7 @@ layout: docs
 title: Validação
 permalink: /pt/docs/v2/validation/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP fornece um sistema de validação poderoso e flexível para validar dados recebidos. O validador suporta uma ampla variedade de regras de validação e permite que você valide facilmente dados de formulários, requisições de API e muito mais.

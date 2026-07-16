@@ -4,7 +4,7 @@ layout: docs
 title: Roteamento
 permalink: /pt/docs/v2/routing/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP fornece um sistema de roteamento semelhante ao Express.js que é intuitivo e poderoso. As rotas são definidas usando métodos de verbos HTTP na instância da aplicação.

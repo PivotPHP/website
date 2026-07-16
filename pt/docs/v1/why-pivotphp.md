@@ -12,7 +12,7 @@ version: "1.2.0"
 **O Microframework PHP Evolutivo**
 *Rápido, sem opiniões, minimalista. Construído para performance, projetado para evoluir.*
 
-[![Última Versão](https://img.shields.io/packagist/v/pivotphp/core.svg)](https://packagist.org/packages/pivotphp/pivotphp-core)
+[![Última Versão](https://img.shields.io/packagist/v/pivotphp/core.svg)](https://packagist.org/packages/pivotphp/core)
 [![Status Build](https://img.shields.io/github/actions/workflow/status/pivotphp/pivotphp-core/tests.yml?branch=main)](https://github.com/pivotphp/pivotphp-core/actions)
 [![Licença](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Versão PHP](https://img.shields.io/badge/php-8.1%2B-777bb4.svg)](https://php.net)
@@ -63,7 +63,7 @@ $app->listen(8000);
 ## 🚀 Instalação
 
 ```bash
-composer require pivotphp/pivotphp-core
+composer require pivotphp/core
 ```
 
 **Requisitos:**
@@ -337,7 +337,7 @@ O PivotPHP é um software open-source licenciado sob a [licença MIT](LICENSE).
 
 - **[Site Oficial](https://pivotphp.github.io/website/)** - Site oficial do PivotPHP
 - **[Documentação](https://pivotphp.github.io/website/docs/)** - Documentação completa
-- **[Packagist](https://packagist.org/packages/pivotphp/pivotphp-core)** - Pacote Composer
+- **[Packagist](https://packagist.org/packages/pivotphp/core)** - Pacote Composer
 - **[Benchmarks](https://pivotphp.github.io/benchmarks/)** - Comparações de performance
 
 ---

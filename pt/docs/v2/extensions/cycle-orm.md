@@ -3,7 +3,7 @@ layout: docs
 title: Extensão Cycle ORM v1.0.1
 permalink: /pt/docs/v2/extensions/cycle-orm/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 # Extensão PivotPHP Cycle ORM v1.0.1

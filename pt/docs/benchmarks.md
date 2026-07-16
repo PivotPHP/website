@@ -9,6 +9,8 @@ description: Análise abrangente de performance e benchmarks do PivotPHP
 lang: pt
 ---
 
+> **⚠️ Aviso de versão**: Todos os benchmarks desta página foram executados contra o PivotPHP Core **v1.2.0** (21 de julho de 2025) e **ainda não foram revalidados** para a linha 2.x (versão atual: v2.1.1). Os números abaixo refletem o estado da v1.2.0 e podem não representar a performance da versão atual do framework.
+
 O PivotPHP oferece performance excepcional através de simplicidade educacional e otimizações mantidas. Nossos benchmarks abrangentes demonstram performance real de APIs em vários cenários, executados em containers Docker padronizados para testes justos e reproduzíveis. **v1.2.0 "Simplicidade sobre Otimização Prematura" alcança 3,6M ops/s geração Swagger UI, 2.122 req/s performance HTTP pico, e 1.418 req/s throughput HTTP médio, estabelecendo excelência educacional sem sacrificar capacidades técnicas.**
 
 ## Performance Oficial Release - PivotPHP v1.2.0 - 21 de Julho de 2025

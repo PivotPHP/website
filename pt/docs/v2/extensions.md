@@ -4,7 +4,7 @@ layout: docs
 title: Extensões
 permalink: /pt/docs/v2/extensions/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP tem um ecossistema rico de extensões que adicionam recursos poderosos ao framework principal. Estes pacotes modulares permitem que você escolha exatamente o que precisa para seu projeto.

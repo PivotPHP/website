@@ -3,7 +3,7 @@ layout: docs
 title: Extensão ReactPHP v0.0.2
 permalink: /pt/docs/v2/extensions/reactphp/
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 # Extensão PivotPHP ReactPHP v0.0.2

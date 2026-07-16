@@ -23,15 +23,15 @@ Antes de instalar o PivotPHP, certifique-se de que seu sistema atenda aos seguin
 A maneira recomendada de instalar o PivotPHP é através do [Composer](https://getcomposer.org/):
 
 ```bash
-composer require pivotphp/framework
+composer require pivotphp/core
 ```
 
 ## Criar um Novo Projeto
 
-Para criar um novo projeto PivotPHP com uma estrutura básica:
+Para criar um novo projeto PivotPHP com uma estrutura básica, use o template `pivotphp/skeleton`:
 
 ```bash
-composer create-project pivotphp/pivotphp meu-app
+composer create-project pivotphp/skeleton meu-app
 cd meu-app
 ```
 
@@ -64,7 +64,7 @@ Se você preferir configurar seu projeto manualmente:
    ```
 3. Requisite o PivotPHP:
    ```bash
-   composer require pivotphp/framework
+   composer require pivotphp/core
    ```
 4. Crie seu ponto de entrada:
    ```bash

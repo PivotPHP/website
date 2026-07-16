@@ -4,7 +4,7 @@ layout: docs
 title: Documentação de API com OpenAPI/Swagger
 description: Gere documentação interativa de API automaticamente com OpenAPI 3.0 e Swagger UI
 lang: pt
-version: "2.0.0"
+version: "2.1.1"
 ---
 
 O PivotPHP inclui um poderoso sistema de documentação **OpenAPI/Swagger** que gera automaticamente documentação interativa de API a partir dos comentários do seu código. Construa documentação profissional de API com apenas algumas anotações.
