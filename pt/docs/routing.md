@@ -63,6 +63,24 @@ $app->get('/posts/:ano/:mes/:slug', function ($req, $res) {
 
 > Valores numéricos são convertidos para inteiro: em `/usuario/05`, `$req->param('id')` retorna `5` (`int`). Valores não numéricos chegam como `string`.
 
+### Restrições de Expressão Regular
+
+Restrinja um parâmetro a um padrão com `<regex>`:
+
+```php
+$app->get('/usuario/:id<\d+>', function ($req, $res) {
+    return $res->json(['id' => $req->param('id')]);
+});
+```
+
+Há atalhos prontos: `:slug<slug>` (`[a-z0-9-]+`), `:id<uuid>` e `:data<date>` (`YYYY-MM-DD`):
+
+```php
+$app->get('/artigo/:slug<slug>', function ($req, $res) {
+    return $res->json(['slug' => $req->param('slug')]);
+});
+```
+
 ## Rotas de Controller
 
 Em vez de closures, use um array callable `[Classe::class, 'método']`:
