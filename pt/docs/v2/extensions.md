@@ -66,18 +66,6 @@ O framework PivotPHP Core já inclui vários recursos avançados:
 - **Middleware de Segurança** - Proteção CSRF, XSS e rate limiting integrados
 - **Monitoramento de Performance** - Métricas em tempo real e ferramentas de profiling
 
-### Extensões Planejadas
-
-Estamos planejando desenvolver ou apoiar o desenvolvimento da comunidade para:
-
-- **Sistema de Queue** - Processamento de jobs em background com múltiplos drivers
-- **Cache Avançado** - Cache multi-driver (Redis, Memcached, Arquivo)
-- **Serviço de Email** - Abstração de email com suporte a provedores
-- **Servidor WebSocket** - Comunicação bidirecional em tempo real
-- **GraphQL** - Suporte a linguagem de consulta de API moderna
-- **Painel Admin** - Interfaces admin auto-geradas
-- **Utilitários de Teste** - Helpers e assertions aprimorados para testes
-
 Confira nossa [organização no GitHub]({{ site.github_url }}) e [Packagist](https://packagist.org/packages/pivotphp/) para atualizações sobre novas extensões.
 
 ## Criando Extensões
