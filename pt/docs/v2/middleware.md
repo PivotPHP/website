@@ -131,26 +131,6 @@ $app->get('/api/dados', function($req, $res) {
 })->middleware('cache:300'); // Cache por 300 segundos
 ```
 
-### Middleware de Grupo
-
-Aplique middleware a grupos de rotas:
-
-```php
-$app->group('/api', function($group) {
-    $group->get('/usuarios', [UserController::class, 'index']);
-    $group->post('/usuarios', [UserController::class, 'store']);
-})->middleware(['auth', 'throttle:60,1']);
-
-// Ou dentro do grupo
-$app->group('/admin', function($group) {
-    $group->middleware(['auth', 'admin']);
-
-    $group->get('/dashboard', function($req, $res) {
-        // Dashboard do admin
-    });
-});
-```
-
 ## Middleware Integrados
 
 O PivotPHP inclui várias classes de middleware integradas:

@@ -449,15 +449,19 @@ $app->post('/analisar', function($req, $res) {
 
 ### 2. Aproveite Middleware de Forma Eficiente
 ```php
-// Bom: Middleware condicional
-$app->group('/api', function($app) {
-    $app->use(new RateLimitMiddleware());
-    $app->use(new AuthMiddleware());
-    // Rotas aqui
+// Bom: middleware que só faz o trabalho caro nas rotas que precisam
+$app->use(function ($req, $res, $next) {
+    if (str_starts_with($req->getPath(), '/api/')) {
+        // verificação cara apenas para /api/*
+    }
+    return $next($req, $res);
 });
 
-// Evite: Middleware pesado global
-$app->use(new MiddlewareCaro()); // Aplicado a todas as rotas
+// Evite: trabalho caro executado em todas as rotas
+$app->use(function ($req, $res, $next) {
+    operacaoCara();
+    return $next($req, $res);
+});
 ```
 
 ### 3. Otimize Consultas ao Banco de Dados

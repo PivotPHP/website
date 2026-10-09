@@ -314,9 +314,6 @@ return $response->redirect('/dashboard');
 // Redirecionar com código de status
 return $response->redirect('/login', 302);
 
-// Redirecionar para rota nomeada
-return $response->route('perfil', ['id' => $usuarioId]);
-
 // Redirecionar de volta
 return $response->back();
 
