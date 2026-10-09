@@ -41,41 +41,15 @@ composer install --optimize-autoloader --no-dev
 composer dump-autoload --optimize --no-dev
 ```
 
-### Cache de Configuração
-
-Cache seus arquivos de configuração para melhor performance:
-
-```bash
-# Cachear configuração
-php helix config:cache
-
-# Limpar cache de configuração
-php helix config:clear
-```
-
-### Cache de Rotas
-
-Cache suas rotas para resolução mais rápida:
+O PivotPHP **não tem** uma CLI de cache (`config:cache`, `route:cache`, `view:cache`). A
+otimização relevante no deploy é o autoloader do Composer:
 
 ```bash
-# Cachear rotas
-php helix route:cache
-
-# Limpar cache de rotas
-php helix route:clear
+composer install --optimize-autoloader --no-dev
 ```
 
-### Cache de Views
-
-Se estiver usando um motor de templates:
-
-```bash
-# Cachear views
-php helix view:cache
-
-# Limpar cache de views
-php helix view:clear
-```
+O roteador já mantém seus próprios caches em memória — para aquecê-los, use
+`PivotPHP\Core\Routing\Router::warmupCache()` no boot da aplicação.
 
 ## Configuração do Servidor Web
 
@@ -268,15 +242,15 @@ env[APP_KEY] = "sua-chave"
 
 ### Executando Migrações
 
-```bash
-# Executar migrações
-php helix migrate --force
+O core não tem CLI de migrações. As migrações são feitas pelo `pivotphp/cycle-orm` através
+de classes de comando instanciadas diretamente:
 
-# Com seeding (cuidado em produção!)
-php helix migrate --seed --force
+```php
+use PivotPHP\CycleORM\Commands\MigrateCommand;
+use PivotPHP\CycleORM\Commands\SchemaCommand;
 
-# Rollback se necessário
-php helix migrate:rollback --force
+(new MigrateCommand([], $container))->handle();            // executa as pendentes
+(new SchemaCommand(['--sync' => true], $container))->handle(); // sincroniza o schema
 ```
 
 ### Otimização do Banco de Dados
@@ -324,15 +298,6 @@ cp ${SHARED_DIR}/.env .env
 ln -nfs ${SHARED_DIR}/storage storage
 ln -nfs ${SHARED_DIR}/public/uploads public/uploads
 
-# Executar comandos de deploy
-php helix migrate --force
-php helix config:cache
-php helix route:cache
-php helix view:cache
-
-# Aquecer cache
-php helix cache:warmup
-
 # Trocar symlink atomicamente
 ln -nfs $NEW_RELEASE_DIR $CURRENT_DIR
 
@@ -373,14 +338,6 @@ echo "Deploy concluído com sucesso!"
 
     echo 'Criando link do diretório storage'
     ln -nfs {% raw %}{{ $app_dir }}{% endraw %}/storage {% raw %}{{ $new_release_dir }}{% endraw %}/storage
-
-    echo 'Executando migrações'
-    cd {% raw %}{{ $new_release_dir }}{% endraw %}
-    php helix migrate --force
-
-    echo 'Cacheando configuração'
-    php helix config:cache
-    php helix route:cache
 
     echo 'Criando link da release atual'
     ln -nfs {% raw %}{{ $new_release_dir }}{% endraw %} {% raw %}{{ $app_dir }}{% endraw %}/current
@@ -513,57 +470,25 @@ volumes:
 ### Endpoint de Verificação de Saúde
 
 ```php
-// routes/web.php
-$app->get('/health', function() {
-    $checks = [
-        'database' => $this->checkDatabase(),
-        'cache' => $this->checkCache(),
-        'queue' => $this->checkQueue(),
-        'storage' => $this->checkStorage(),
-    ];
-
-    $healthy = !in_array(false, $checks);
-
-    return response()->json([
-        'status' => $healthy ? 'healthy' : 'unhealthy',
-        'checks' => $checks,
-        'timestamp' => now()->toIso8601String(),
-    ], $healthy ? 200 : 503);
+$app->get('/health', function ($req, $res) {
+    return $res->json([
+        'status'    => 'healthy',
+        'timestamp' => gmdate('c'),
+    ]);
 });
 ```
 
 ### Logging
 
-Configure logging adequado para produção:
+O core usa o logger PSR-3 `PivotPHP\Core\Logging\PsrLogger`. O arquivo de log padrão é
+`pivotphp.log` (configurável via `LOG_PATH`):
 
 ```php
-// config/logging.php
-'channels' => [
-    'daily' => [
-        'driver' => 'daily',
-        'path' => storage_path('logs/helix.log'),
-        'level' => env('LOG_LEVEL', 'error'),
-        'days' => 14,
-    ],
+use PivotPHP\Core\Logging\PsrLogger;
 
-    'slack' => [
-        'driver' => 'slack',
-        'url' => env('LOG_SLACK_WEBHOOK_URL'),
-        'username' => 'PivotPHP Log',
-        'emoji' => ':boom:',
-        'level' => 'critical',
-    ],
-
-    'papertrail' => [
-        'driver' => 'monolog',
-        'level' => 'debug',
-        'handler' => SyslogUdpHandler::class,
-        'handler_with' => [
-            'host' => env('PAPERTRAIL_URL'),
-            'port' => env('PAPERTRAIL_PORT'),
-        ],
-    ],
-],
+$logger = new PsrLogger(__DIR__ . '/logs/app.log');
+$logger->info('Deploy concluído');
+$logger->error('Falha ao processar', ['contexto' => '...']);
 ```
 
 ## Otimização de Performance
