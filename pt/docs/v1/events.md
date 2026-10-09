@@ -286,7 +286,7 @@ Organize listeners de evento em um provedor de serviço:
 ```php
 namespace App\Providers;
 
-use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Core\Providers\ServiceProvider;
 use PivotPHP\Events\Dispatcher;
 
 class EventServiceProvider extends ServiceProvider
