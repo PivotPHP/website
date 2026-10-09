@@ -44,7 +44,7 @@ O ecossistema PivotPHP foi projetado para ser extensível! Estamos animados com 
 
 O framework PivotPHP Core já inclui vários recursos avançados:
 
-- **OpenAPI/Swagger** - Geração automática de documentação de API via utilitário `OpenApiExporter`
+- **OpenAPI/Swagger** - Geração automática de documentação de API via `ApiDocumentationMiddleware`
 - **Modo Alta Performance** - Object pooling e lazy loading (v1.2.0)
 - **Otimização JSON** - Buffer pooling automático para operações JSON (v1.2.0)
 - **Middleware de Segurança** - Proteção CSRF, XSS e rate limiting integrados
