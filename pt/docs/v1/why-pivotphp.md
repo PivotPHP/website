@@ -88,12 +88,13 @@ O PivotPHP se adapta às suas necessidades, não o contrário. Comece simples, e
 
 ```php
 // Comece simples
-$app->get('/', fn() => 'Olá Mundo');
+$app->get('/', fn($req, $res) => $res->send('Olá Mundo'));
 
-// Evolua naturalmente
-$app->group('/api/v1', function($group) {
-    $group->middleware([AuthMiddleware::class, RateLimitMiddleware::class]);
-    $group->resource('/usuarios', UsuarioController::class);
+// Evolua naturalmente: contêiner, middleware e handlers dedicados
+$app->singleton(UsuarioRepository::class, fn() => new UsuarioRepository());
+$app->use('rate-limiter');
+$app->get('/api/v1/usuarios', function ($req, $res) use ($app) {
+    return $res->json($app->make(UsuarioRepository::class)->todos());
 });
 ```
 
