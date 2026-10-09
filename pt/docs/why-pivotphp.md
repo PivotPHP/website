@@ -71,10 +71,7 @@ composer require pivotphp/core
 **Extensões Opcionais:**
 ```bash
 # Para integração com banco de dados
-composer require pivotphp/pivotphp-cycle-orm
-
-# Para middleware adicional
-composer require pivotphp/middleware-collection
+composer require pivotphp/cycle-orm
 ```
 
 ---
@@ -145,13 +142,12 @@ Funciona perfeitamente fora da caixa, configurável quando você precisar.
 
 ```php
 // Nenhum arquivo de config necessário
-$app = new App();
+$app = new Application();
 
 // Mas flexível quando você precisa de controle
-$app = new App([
+$app->configure([
     'debug' => true,
     'cors' => ['origin' => 'localhost:3000'],
-    'cache' => ['driver' => 'redis', 'host' => 'localhost']
 ]);
 ```
 
@@ -253,24 +249,16 @@ $app->get('/api/perfil', function ($req, $res) {
 $app->run();
 ```
 
-**[Mais Exemplos →](https://github.com/pivotphp/examples)**
 
 ---
 
 ## 🌟 Ecossistema
 
 ### Pacotes Oficiais
-- **[pivotphp/pivotphp-cycle-orm](https://github.com/pivotphp/pivotphp-cycle-orm)** - Integração com banco de dados ORM
-- **[pivotphp/middleware-collection](https://github.com/pivotphp/middleware-collection)** - Middleware comum
-- **[pivotphp/jwt-auth](https://github.com/pivotphp/jwt-auth)** - Autenticação JWT
-- **[pivotphp/cache](https://github.com/pivotphp/cache)** - Cache multi-driver
-
-### Pacotes da Comunidade
-- **[pivotphp/testing](https://packagist.org/packages/pivotphp/testing)** - Utilitários de teste
-- **[pivotphp/swagger](https://packagist.org/packages/pivotphp/swagger)** - Documentação OpenAPI
-- **[pivotphp/queue](https://packagist.org/packages/pivotphp/queue)** - Processamento de jobs em background
-
-**[Navegar por todos os pacotes →](https://packagist.org/packages/pivotphp/)**
+- **[pivotphp/core](https://github.com/pivotphp/pivotphp-core)** - O framework (HTTP + roteamento)
+- **[pivotphp/core-routing](https://github.com/pivotphp/pivotphp-core-routing)** - Motor de roteamento
+- **[pivotphp/cycle-orm](https://github.com/pivotphp/pivotphp-cycle-orm)** - Integração com Cycle ORM
+- **[pivotphp/skeleton](https://github.com/pivotphp/pivotphp-skeleton)** - Template `composer create-project`
 
 ---
 
