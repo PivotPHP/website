@@ -1,0 +1,4 @@
+# Jekyll/Liquid templates — never format with Prettier (breaks Liquid tags like {% if ... %})
+*.html
+_site/
+vendor/

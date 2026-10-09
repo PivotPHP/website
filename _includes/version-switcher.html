@@ -14,13 +14,7 @@ match_version %} {% assign current_version = match_version.number %} {% endif %}
     {% for version in versions %}
     <option
       value="{{ version.number }}"
-      {%
-      if
-      version.number=""
-      ="current_version"
-      %}selected{%
-      endif
-      %}
+      {% if version.number == current_version %}selected{% endif %}
     >
       v{{ version.number }} — {{ version.label }}
     </option>
