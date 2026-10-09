@@ -77,7 +77,5 @@
             <li><a href="{{ base_path }}{{ routes.extensions | default: '/docs/extensions/' }}" {% if
                     page.url==routes.extensions %}class="active" {% endif %}>{% if lang == 'pt' %}Visão Geral{% else
                     %}Overview{% endif %}</a></li>
-            <li><a href="{{ base_path }}{{ routes.extensions_reactphp | default: '/docs/extensions/reactphp/' }}" {% if page.url
-                    contains '/extensions/reactphp' %}class="active" {% endif %}>ReactPHP (Async)</a></li>
     </ul>
 </aside>

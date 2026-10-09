@@ -32,23 +32,6 @@ composer require pivotphp/cycle-orm
 - Conexões múltiplas de banco de dados (SQLite, MySQL)
 - Monitoramento de performance e profiling de consultas
 
-### Runtime Assíncrono
-
-#### [Extensão ReactPHP v0.0.2](/pt/docs/extensions/reactphp/)
-Runtime contínuo pronto para produção usando arquitetura orientada a eventos do ReactPHP para aplicações de alta performance.
-
-```bash
-composer require pivotphp/reactphp
-```
-
-**Recursos:**
-- Servidor HTTP contínuo sem reinicializações (40K+ req/s)
-- Compatibilidade com bridge PSR-7 e proteção de estado global
-- I/O orientado a eventos e não-bloqueante
-- Gerenciamento e isolamento de memória
-- Manipulação de desligamento gracioso
-- Pronto para deploy em produção
-
 ## Extensões da Comunidade
 
 O ecossistema PivotPHP foi projetado para ser extensível! Estamos animados com as extensões que a comunidade criará.
@@ -57,7 +40,6 @@ O ecossistema PivotPHP foi projetado para ser extensível! Estamos animados com 
 
 - **[pivotphp/core](https://packagist.org/packages/pivotphp/core)** - Framework principal ([GitHub](https://github.com/PivotPHP/pivotphp-core))
 - **[pivotphp/cycle-orm](https://packagist.org/packages/pivotphp/cycle-orm)** - Integração Cycle ORM ([GitHub](https://github.com/PivotPHP/pivotphp-cycle-orm))
-- **[pivotphp/reactphp](https://packagist.org/packages/pivotphp/reactphp)** - Runtime assíncrono ReactPHP ([GitHub](https://github.com/PivotPHP/pivotphp-reactphp))
 
 ### Recursos Integrados
 
