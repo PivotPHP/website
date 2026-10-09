@@ -115,8 +115,7 @@ window.LanguageRoutes = {
             '/en/docs/changelog/',
             '/en/docs/extensions/',
             '/en/docs/extensions/cycle-orm/',
-            '/en/docs/api-documentation/',
-            '/en/docs/extensions/reactphp/'
+            '/en/docs/api-documentation/'
         ],
         pt: [
             '/pt/',
@@ -143,8 +142,7 @@ window.LanguageRoutes = {
             '/pt/docs/changelog/',
             '/pt/docs/extensions/',
             '/pt/docs/extensions/cycle-orm/',
-            '/pt/docs/api-documentation/',
-            '/pt/docs/extensions/reactphp/'
+            '/pt/docs/api-documentation/'
         ]
     },
 

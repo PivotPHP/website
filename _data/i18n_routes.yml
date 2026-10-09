@@ -21,7 +21,6 @@ default_routes:
   /en/docs/extensions/: /en/docs/extensions/
   /en/docs/extensions/cycle-orm/: /en/docs/extensions/cycle-orm/
   /en/docs/api-documentation/: /en/docs/api-documentation/
-  /en/docs/extensions/reactphp/: /en/docs/extensions/reactphp/
 
 en:
   home: /en/
@@ -45,7 +44,6 @@ en:
   benchmarks: /en/docs/benchmarks/
   extensions: /en/docs/extensions/
   extensions_cycle_orm: /en/docs/extensions/cycle-orm/
-  extensions_reactphp: /en/docs/extensions/reactphp/
 
 pt:
   home: /pt/
@@ -69,4 +67,3 @@ pt:
   benchmarks: /pt/docs/benchmarks/
   extensions: /pt/docs/extensions/
   extensions_cycle_orm: /pt/docs/extensions/cycle-orm/
-  extensions_reactphp: /pt/docs/extensions/reactphp/
