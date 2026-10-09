@@ -108,7 +108,6 @@ pivotphp-benchmarks/
 │   └── benchmarks/run-v120.php    # Execução testes v1.2.0
 ├── phase2/                         # Testes Extensões
 │   ├── docker/Dockerfile-orm-v120 # Container ORM v1.2.0
-│   └── docker/Dockerfile-reactphp-v120 # Container ReactPHP v1.2.0
 └── phase3/                         # Validação Ecossistema
     ├── ecosystem-validation/ecosystem-v120-benchmark.php
     └── docker/docker-compose-v120.yml # Ambiente completo
@@ -269,7 +268,6 @@ Benchmarks abrangentes comparando PivotPHP com frameworks estabelecidos (Docker 
 
 | Variante do Framework | Caso de Uso Especializado | Operações/Seg | Memória | Vantagem Competitiva |
 |-----------------------|---------------------------|----------------|--------|-----------------------|
-| **ReactPHP v0.1.0** | Apps async/longa duração | **1.970.678 ops/s** | 12MB | **🚀 Domina cenários async** |
 | **Core v1.2.0** | APIs estilo Express.js | 2.185.982 ops/s | 20MB | Experiência do desenvolvedor |
 | **ORM v1.0.1** | Operações de banco | 457.870 ops/s | **6MB** | **💾 Campeão de memória** |
 
@@ -372,12 +370,6 @@ Performance real de processamento de API medida contra frameworks estabelecidos:
     <h4>🛡️ API Middleware</h4>
     <div class="metric">460K ops/seg</div>
     <div class="description">vs Slim 4: 461K (gap 0,1%)</div>
-  </div>
-  
-  <div class="component-card">
-    <h4>⚡ ReactPHP Async</h4>
-    <div class="metric">1,97M ops/seg</div>
-    <div class="description">Líder runtime contínuo</div>
   </div>
 </div>
 
@@ -486,7 +478,7 @@ Todos os benchmarks foram conduzidos com containers Docker padronizados:
 - **Isolamento**: Cada variante do framework testada separadamente
 - **Reprodutibilidade**: Todos os testes podem ser replicados com `docker-compose up`
 - **Métricas**: Operações/segundo, requisições/hora, uso de memória
-- **Variantes Testadas**: Core v1.2.0, ORM v1.0.1, ReactPHP v0.1.0
+- **Variantes Testadas**: Core v1.2.0, ORM v1.0.1
 
 ## Entendendo Nossas Métricas de Benchmark
 
@@ -547,7 +539,7 @@ Baseado em análise cross-framework abrangente (Julho 2025):
 
 O PivotPHP não afirma ser o framework PHP mais rápido. Em vez disso, oferece:
 
-1. **Excelência Especializada**: ReactPHP lidera cenários async
+1. **Excelência Especializada**: cada variante domina seu domínio (API, banco)
 2. **Performance Competitiva**: Core dentro de 12,5% de frameworks estabelecidos
 3. **Experiência Superior do Desenvolvedor**: Padrões Express.js em PHP
 4. **Otimização de Memória**: Variante ORM para deploys com restrição de recursos

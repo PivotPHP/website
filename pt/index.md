@@ -11,7 +11,6 @@ http_peak_rps: 2122
 http_average_rps: 1418
 market_position: Educational/Research
 competitive_gap: Educational Focus
-reactphp_performance: 19,707
 core_performance: 78,500
 openapi_performance: 3,499,044
 swagger_performance: 3,616,715

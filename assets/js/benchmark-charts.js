@@ -202,13 +202,12 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(variantCtx, {
             type: 'bar',
             data: {
-                labels: ['PivotPHP ReactPHP', 'Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'],
+                labels: ['Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'],
                 datasets: [
                     {
                         label: 'Cross-Framework Performance (req/sec)',
-                        data: [19707, 6881, 6322, 6227, 3179],
+                        data: [6881, 6322, 6227, 3179],
                         backgroundColor: [
-                            '#7C3AED', // Purple for PivotPHP ReactPHP (winner)
                             '#22c55e', // Green for Slim 4
                             '#3b82f6', // Blue for Lumen
                             '#EC4899', // Pink for PivotPHP Core
@@ -246,15 +245,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             label: function(context) {
                                 const value = context.parsed.y;
                                 let ranking = '';
-                                const labels = ['PivotPHP ReactPHP', 'Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'];
+                                const labels = ['Slim 4', 'Lumen', 'PivotPHP Core', 'Flight'];
                                 const label = labels[context.dataIndex];
                                 
                                 switch(label) {
-                                    case 'PivotPHP ReactPHP': ranking = ' (🚀 1st place - LEADER)'; break;
-                                    case 'Slim 4': ranking = ' (🥈 2nd place)'; break;
-                                    case 'Lumen': ranking = ' (🥉 3rd place)'; break;
-                                    case 'PivotPHP Core': ranking = ' (4th place)'; break;
-                                    case 'Flight': ranking = ' (5th place)'; break;
+                                    case 'Slim 4': ranking = ' (🥇 1st place)'; break;
+                                    case 'Lumen': ranking = ' (🥈 2nd place)'; break;
+                                    case 'PivotPHP Core': ranking = ' (🥉 3rd place)'; break;
+                                    case 'Flight': ranking = ' (4th place)'; break;
                                 }
                                 
                                 return label + ': ' + value.toLocaleString() + ' req/s' + ranking;
@@ -266,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     x: {
                         title: {
                             display: true,
-                            text: 'Cross-Framework Performance + ReactPHP (July 2025)',
+                            text: 'Cross-Framework Performance (July 2025)',
                             color: colors.text,
                             font: {
                                 size: 14,
@@ -288,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Requests per Second (Docker + ReactPHP)',
+                            text: 'Requests per Second (Docker)',
                             color: colors.text,
                             font: {
                                 size: 14,
@@ -320,12 +318,11 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(ecosystemCtx, {
             type: 'doughnut',
             data: {
-                labels: ['ReactPHP (Async)', 'Core (API)', 'ORM (Database)'],
+                labels: ['Core (API)', 'ORM (Database)'],
                 datasets: [{
                     label: 'Specialized Performance (K ops/s)',
-                    data: [1970.7, 2186.0, 457.9],
+                    data: [2186.0, 457.9],
                     backgroundColor: [
-                        colors.accent,
                         colors.primary,
                         colors.secondary
                     ],
@@ -515,11 +512,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         data: [736.6, 1299.9, 460.7],
                         backgroundColor: colors.secondary
                     },
-                    {
-                        label: 'PivotPHP ReactPHP',
-                        data: [null, null, 1970.7],
-                        backgroundColor: colors.accent
-                    }
                 ]
             },
             options: {
