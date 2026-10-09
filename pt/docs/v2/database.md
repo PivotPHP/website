@@ -19,51 +19,33 @@ composer require pivotphp/cycle-orm
 
 ## Configuração
 
-Configure sua conexão de banco de dados em `config/database.php`:
+A integração do Cycle ORM lê as variáveis de ambiente `DB_*`. Configure-as no `.env`:
 
-```php
-return [
-    'default' => env('DB_CONNECTION', 'mysql'),
+```env
+# SQLite (desenvolvimento)
+DB_CONNECTION=sqlite
+DB_DATABASE=./database/database.sqlite
 
-    'connections' => [
-        'mysql' => [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'helix'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'helix'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'schema' => 'public',
-            'sslmode' => 'prefer',
-        ],
-
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
-    ],
-];
+# MySQL (produção)
+# DB_CONNECTION=mysql
+# DB_HOST=localhost
+# DB_PORT=3306
+# DB_DATABASE=meu_banco
+# DB_USERNAME=usuario
+# DB_PASSWORD=senha
 ```
 
+Depois registre o provider:
+
+```php
+use PivotPHP\Core\Core\Application;
+use PivotPHP\CycleORM\CycleServiceProvider;
+
+$app = new Application();
+$app->register(new CycleServiceProvider($app));
+```
+
+## Definindo Entidades
 ## Definindo Entidades
 
 ### Entidade Básica
@@ -508,9 +490,8 @@ $userRepository->select()
 
 ### Criando Migrações
 
-```bash
-php helix migrate:create CreateUsersTable
-```
+As migrações do Cycle ORM são arquivos PHP escritos manualmente (não há gerador via CLI).
+Exemplo de migração:
 
 ```php
 use Cycle\Migrations\Migration;
@@ -539,30 +520,28 @@ class CreateUsersTable extends Migration
 
 ### Executando Migrações
 
-```bash
-# Executar todas as migrações pendentes
-php helix migrate
+```php
+use PivotPHP\CycleORM\Commands\MigrateCommand;
 
-# Reverter último lote
-php helix migrate:rollback
+// Executar as pendentes
+(new MigrateCommand([], $container))->handle();
 
-# Reverter todas
-php helix migrate:reset
-
-# Atualizar (reverter todas e re-executar)
-php helix migrate:refresh
+// Reverter a última
+(new MigrateCommand(['--rollback' => true], $container))->handle();
 ```
 
 ## Geração de Esquema
 
 Gerar esquema de banco de dados a partir de entidades:
 
-```bash
-# Gerar migração a partir de entidades
-php helix cycle:migrate
+```php
+use PivotPHP\CycleORM\Commands\SchemaCommand;
 
-# Sincronizar esquema sem migrações
-php helix cycle:sync
+// Exibir o schema
+(new SchemaCommand([], $container))->handle();
+
+// Sincronizar o schema com as entidades
+(new SchemaCommand(['--sync' => true], $container))->handle();
 ```
 
 ## Eventos e Hooks
