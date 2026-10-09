@@ -1,5 +1,6 @@
 services:
-  # Serviço para desenvolvimento com hot-reload
+  # Serviço para desenvolvimento com hot-reload.
+  # Único serviço iniciado por `docker compose up` (os demais usam profiles).
   jekyll:
     build: .
     command: bundle exec jekyll serve --config _config.yml,_config.dev.yml --watch --force_polling --incremental --livereload --host 0.0.0.0
@@ -14,22 +15,30 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       - JEKYLL_ENV=development
+    user: "${UID:-1000}:${GID:-1000}"
 
-  # Serviço para build de produção e testes
+  # Serviço para build de produção e testes.
+  # Opt-in: docker compose --profile build run --rm jekyll-build
+  # Grava em _site-build/ (não sobrescreve o _site/ do dev).
   jekyll-build:
     build: .
-    command: bundle exec jekyll build --verbose
+    profiles: ["build"]
+    command: bundle exec jekyll build --verbose --destination _site-build
     network_mode: host
     volumes:
       - .:/srv/jekyll
       - bundle_cache:/usr/local/bundle
     environment:
       - JEKYLL_ENV=production
+    user: "${UID:-1000}:${GID:-1000}"
 
-  # Serviço para servir build de produção
+  # Serviço para servir build de produção.
+  # Opt-in: docker compose --profile production up jekyll-production
+  # Grava em _site-production/ (não sobrescreve o _site/ do dev).
   jekyll-production:
     build: .
-    command: bundle exec jekyll serve --no-watch --host 0.0.0.0
+    profiles: ["production"]
+    command: bundle exec jekyll serve --no-watch --host 0.0.0.0 --destination _site-production
     network_mode: host
     ports:
       - "4000:4000"
@@ -38,6 +47,7 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       - JEKYLL_ENV=production
+    user: "${UID:-1000}:${GID:-1000}"
 
 volumes:
   bundle_cache:

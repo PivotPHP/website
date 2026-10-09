@@ -36,11 +36,11 @@ docker-compose up jekyll
 ### Build e Validação
 
 ```bash
-# Build de produção
-docker-compose run --rm jekyll-build
+# Build de produção (grava em _site-build/)
+docker compose --profile build run --rm jekyll-build
 
-# Testar build de produção localmente
-docker-compose up jekyll-production
+# Testar build de produção localmente (grava em _site-production/)
+docker compose --profile production up jekyll-production
 
 # Script completo de validação
 ./validate-site.sh
@@ -68,11 +68,17 @@ Baseado em `ruby:3.1-slim` com:
 
 ### docker-compose.yml
 
-Três serviços configurados:
+Três serviços configurados, separados por **profiles**:
 
-1. **jekyll**: Desenvolvimento com hot-reload
-2. **jekyll-build**: Build de produção
-3. **jekyll-production**: Servidor de produção para testes
+1. **jekyll** (sem profile, inicia com `docker compose up`): Desenvolvimento com hot-reload.
+   Grava em `_site/` com `baseurl` vazio.
+2. **jekyll-build** (`--profile build`): Build de produção. Grava em `_site-build/`.
+3. **jekyll-production** (`--profile production`): Servidor de produção para testes. Grava em
+   `_site-production/`.
+
+Cada serviço de build/produção grava em um destino próprio para não sobrescrever o `_site/`
+do servidor de desenvolvimento (que usa `baseurl: ""`, diferente do `baseurl: "/website"` da
+produção). Os containers rodam com o UID/GID do usuário (via `UID`/`GID` do ambiente).
 
 ### Volume Cache
 

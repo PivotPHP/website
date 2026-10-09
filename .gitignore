@@ -1,4 +1,6 @@
 _site/
+_site-build/
+_site-production/
 .sass-cache/
 .jekyll-cache/
 .jekyll-metadata
