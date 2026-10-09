@@ -31,28 +31,27 @@ O PivotPHP não te diz como construir sua API. Em vez disso, te dá as ferrament
 <?php
 require 'vendor/autoload.php';
 
-use PivotPHP\App;
+use PivotPHP\Core\Core\Application;
 
-$app = new App();
+$app = new Application();
 
 // Rota simples
-$app->get('/ola/:nome', function($req, $res) {
-    $res->json(['mensagem' => "Olá, {$req->params->nome}!"]);
+$app->get('/ola/:nome', function ($req, $res) {
+    return $res->json(['mensagem' => "Olá, {$req->param('nome')}!"]);
 });
 
-// Middleware que simplesmente funciona
-$app->use('/api/*', function($req, $res, $next) {
-    $res->header('Content-Type', 'application/json');
-    $next();
+// Middleware global
+$app->use(function ($req, $res, $next) {
+    $res->header('X-Powered-By', 'PivotPHP');
+    return $next($req, $res);
 });
 
 // Recurso RESTful
-$app->get('/usuarios/:id', function($req, $res) {
-    $usuario = Usuario::find($req->params->id);
-    $res->json($usuario);
+$app->get('/usuarios/:id', function ($req, $res) {
+    return $res->json(['id' => (int) $req->param('id')]);
 });
 
-$app->listen(8000);
+$app->run();
 ```
 
 **⚡ 2 minutos. É tudo que você precisa para construir sua primeira API pronta para produção.**
@@ -188,83 +187,70 @@ O PivotPHP entrega performance competitiva (6.227 req/s Docker validado) sem sac
 ### API REST com Banco de Dados
 ```php
 <?php
-use PivotPHP\App;
-use PivotPHP\Database\DB;
+require 'vendor/autoload.php';
 
-$app = new App();
+use PivotPHP\Core\Core\Application;
 
-// Auto-conecta banco de dados
-DB::connect('mysql://user:pass@localhost/meudb');
+$app = new Application();
 
-$app->get('/usuarios', function($req, $res) {
-    $usuarios = DB::table('usuarios')->get();
-    $res->json($usuarios);
+// Conexão PDO compartilhada pelo contêiner
+$app->singleton(PDO::class, fn() => new PDO(
+    'mysql:host=localhost;dbname=meudb',
+    'user',
+    'pass',
+    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+));
+
+$app->get('/usuarios', function ($req, $res) use ($app) {
+    $usuarios = $app->make(PDO::class)
+        ->query('SELECT id, nome FROM usuarios')
+        ->fetchAll(PDO::FETCH_ASSOC);
+
+    return $res->json($usuarios);
 });
 
-$app->post('/usuarios', function($req, $res) {
-    $usuario = DB::table('usuarios')->create($req->body);
-    $res->json($usuario, 201);
+$app->post('/usuarios', function ($req, $res) use ($app) {
+    $stmt = $app->make(PDO::class)->prepare('INSERT INTO usuarios (nome) VALUES (:nome)');
+    $stmt->execute(['nome' => $req->input('nome')]);
+
+    return $res->status(201)->json(['id' => (int) $app->make(PDO::class)->lastInsertId()]);
 });
 
-$app->listen(8000);
+$app->run();
 ```
 
 ### Microserviço com Autenticação
 ```php
 <?php
-use PivotPHP\App;
-use PivotPHP\Middleware\{Auth, CORS, RateLimit};
+require 'vendor/autoload.php';
 
-$app = new App();
+use PivotPHP\Core\Core\Application;
+use PivotPHP\Core\Authentication\JWTHelper;
 
-// Middleware global
-$app->use(CORS::allow('*'));
-$app->use(RateLimit::perMinute(100));
+$app = new Application();
 
-// Rotas protegidas
-$app->group('/api', function($group) {
-    $group->middleware(Auth::jwt());
+// Limite de requisições por IP (middleware nativo)
+$app->use('rate-limiter');
 
-    $group->get('/perfil', function($req, $res) {
-        $res->json($req->user);
-    });
+// Autenticação JWT com um middleware simples
+$app->use(function ($req, $res, $next) {
+    if (str_starts_with($req->getPath(), '/api/')) {
+        $token = substr($req->getHeaderLine('Authorization'), 7); // remove "Bearer "
+        if (!JWTHelper::isValid($token, $_ENV['JWT_SECRET'])) {
+            return $res->status(401)->json(['error' => 'Não autorizado']);
+        }
 
-    $group->post('/posts', function($req, $res) {
-        $post = Post::create([
-            'user_id' => $req->user->id,
-            'conteudo' => $req->body->conteudo
-        ]);
-        $res->json($post, 201);
-    });
+        $req->setAttribute('user', JWTHelper::decode($token, $_ENV['JWT_SECRET']));
+    }
+
+    return $next($req, $res);
 });
 
-$app->listen(8000);
-```
-
-### API Real-time com WebSockets
-```php
-<?php
-use PivotPHP\App;
-use PivotPHP\WebSocket\Server;
-
-$app = new App();
-
-// Rotas HTTP
-$app->get('/health', fn() => ['status' => 'ok']);
-
-// Servidor WebSocket
-$ws = new Server($app);
-
-$ws->on('connection', function($socket) {
-    $socket->emit('welcome', ['mensagem' => 'Conectado ao PivotPHP']);
+$app->get('/api/perfil', function ($req, $res) {
+    return $res->json($req->getAttribute('user'));
 });
 
-$ws->on('message', function($socket, $dados) {
-    // Broadcast para todos os clientes conectados
-    $socket->broadcast('update', $dados);
-});
-
-$app->listen(8000, $ws);
+$app->run();
 ```
 
 **[Mais Exemplos →](https://github.com/pivotphp/examples)**

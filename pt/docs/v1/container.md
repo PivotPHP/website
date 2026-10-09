@@ -10,7 +10,7 @@ lang: pt
 version: "1.2.0"
 ---
 
-O container de serviços do PivotPHP é uma ferramenta poderosa para gerenciar dependências de classes e realizar injeção de dependência. É essencialmente uma fábrica sofisticada que cria e gerencia instâncias de objetos para sua aplicação.
+O PivotPHP inclui um contêiner de serviços simples, compatível com PSR-11 (`Psr\Container\ContainerInterface`), para registrar e resolver dependências da aplicação. A classe é `PivotPHP\Core\Providers\Container` e a `Application` expõe os métodos mais usados diretamente.
 
 ## Introdução à Injeção de Dependência
 
@@ -18,491 +18,211 @@ Injeção de dependência é uma técnica onde um objeto recebe suas dependênci
 
 ```php
 // Sem injeção de dependência
-class UserController
+class UserService
 {
-    public function index()
+    public function all(): array
     {
         $db = new Database(); // Dependência rígida
-        $users = $db->query('SELECT * FROM users');
-        return json_encode($users);
+        return $db->query('SELECT * FROM users');
     }
 }
 
 // Com injeção de dependência
-class UserController
+class UserService
 {
-    private Database $db;
-
-    public function __construct(Database $db)
+    public function __construct(private Database $db)
     {
-        $this->db = $db; // Dependência injetada
     }
 
-    public function index()
+    public function all(): array
     {
-        $users = $this->db->query('SELECT * FROM users');
-        return json_encode($users);
+        return $this->db->query('SELECT * FROM users');
     }
 }
 ```
 
-## Uso Básico
+## API Disponível
 
-### Vinculação (Binding)
+| Método em `$app` | Descrição |
+|---|---|
+| `bind(string $abstract, mixed $concrete = null, bool $shared = false)` | Registra um serviço. Por padrão, cria uma nova instância a cada resolução |
+| `singleton(string $abstract, mixed $concrete = null)` | Registra um serviço compartilhado (mesma instância sempre) |
+| `instance(string $abstract, mixed $instance)` | Registra um valor ou objeto já construído |
+| `alias(string $alias, string $abstract)` | Cria um nome alternativo para um serviço |
+| `make(string $abstract)` / `resolve(string $id)` | Resolve um serviço registrado |
+| `has(string $id)` | Verifica se um serviço está registrado |
+| `getContainer()` | Retorna o contêiner (`Providers\Container`) |
 
-Registre vinculações no container:
+Os métodos de registro retornam a própria `Application`, permitindo encadeamento.
+
+## Registrando Serviços
+
+### Fábricas (closures)
+
+Quando `$concrete` é uma closure, ela é chamada para construir o serviço e recebe o contêiner como argumento:
 
 ```php
-// Vinculação simples
-$app->bind('database', function($container) {
-    return new Database(
-        $_ENV['DB_HOST'],
-        $_ENV['DB_USER'],
-        $_ENV['DB_PASS']
-    );
+use PivotPHP\Core\Providers\Container;
+
+$app->bind(Database::class, function (Container $c) {
+    return new Database($_ENV['DB_HOST'] ?? 'localhost');
 });
 
-// Vinculação de classe
-$app->bind(Database::class, function($container) {
-    return new MySQLDatabase(config('database'));
+$app->bind(UserService::class, function (Container $c) {
+    return new UserService($c->get(Database::class));
 });
-
-// Vinculação de interface para implementação
-$app->bind(
-    UserRepositoryInterface::class,
-    UserRepository::class
-);
 ```
 
-### Resolução
-
-Recupere instâncias do container:
+### `bind` x `singleton`
 
 ```php
-// Usando make
-$db = $app->make('database');
-$db = $app->make(Database::class);
+// Nova instância a cada make()
+$app->bind('report', fn() => new Report());
+$app->make('report') !== $app->make('report'); // true
 
-// Usando acesso de array
-$db = $app['database'];
+// Mesma instância sempre
+$app->singleton(Cache::class, fn() => new FileCache('/tmp/cache'));
+$app->make(Cache::class) === $app->make(Cache::class); // true
 
-// Usando função helper
-$db = app('database');
-$db = app(Database::class);
+// Equivalente a singleton
+$app->bind(Cache::class, fn() => new FileCache('/tmp/cache'), true);
 ```
 
-### Vinculação Singleton
-
-Crie instâncias compartilhadas que são resolvidas apenas uma vez:
+### Instâncias e valores
 
 ```php
-// Vinculação singleton
-$app->singleton('cache', function($container) {
-    return new CacheManager(
-        $container->make('redis')
-    );
-});
-
-// A mesma instância é retornada toda vez
-$cache1 = $app->make('cache');
-$cache2 = $app->make('cache');
-// $cache1 === $cache2 (true)
+$app->instance(ApiClient::class, new ApiClient($_ENV['API_KEY'] ?? ''));
+$app->instance('app.timezone', 'America/Sao_Paulo');
 ```
 
-### Vinculação de Instância
-
-Vincule uma instância existente:
+### Aliases
 
 ```php
-$api = new ApiClient($_ENV['API_KEY']);
-$app->instance('api', $api);
+$app->singleton(Cache::class, fn() => new FileCache('/tmp/cache'));
+$app->alias('cache', Cache::class);
 
-// Ou vincule a instância diretamente
-$app->instance(ApiClient::class, new ApiClient($_ENV['API_KEY']));
+$app->make('cache') === $app->make(Cache::class); // true
 ```
 
-## Resolução Automática
+### Interfaces
 
-O container pode resolver automaticamente classes e suas dependências:
+Para vincular uma interface a uma implementação, use uma closure que construa o objeto:
 
 ```php
-class UserRepository
-{
-    private Database $db;
+$app->bind(UserRepositoryInterface::class, fn(Container $c) => new SqlUserRepository(
+    $c->get(Database::class)
+));
+```
 
-    public function __construct(Database $db)
-    {
-        $this->db = $db;
-    }
+> **Atenção:** quando `$concrete` não é uma closure, o valor é devolvido como está. `$app->bind(UserRepositoryInterface::class, SqlUserRepository::class)` faz `make()` retornar a **string** `'SqlUserRepository'`, não uma instância.
+
+## Resolvendo Serviços
+
+```php
+$service = $app->make(UserService::class);
+
+if ($app->has('cache')) {
+    $cache = $app->make('cache');
 }
 
-class UserController
-{
-    private UserRepository $repository;
-
-    public function __construct(UserRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-}
-
-// O container cria automaticamente todas as dependências
-$controller = $app->make(UserController::class);
+// Acesso direto ao contêiner PSR-11
+$db = $app->getContainer()->get(Database::class);
 ```
 
-## Injeção de Método
+O contêiner **não faz resolução automática (autowiring)**: apenas serviços registrados podem ser resolvidos. Resolver um identificador não registrado lança `PivotPHP\Core\Exceptions\Container\ServiceNotFoundException` (que implementa `Psr\Container\NotFoundExceptionInterface`). Erros dentro de uma fábrica são relançados como `PivotPHP\Core\Exceptions\Container\ContainerException`.
 
-Injete dependências em chamadas de método:
+## Removendo Serviços
+
+Os métodos de remoção estão no contêiner:
 
 ```php
-class UserController
-{
-    public function show(Request $request, UserRepository $users, $id)
-    {
-        $user = $users->find($id);
-        return response()->json($user);
-    }
-}
-
-// Chamar método com injeção de dependência
-$response = $app->call([UserController::class, 'show'], ['id' => 123]);
+$app->getContainer()->forget(Cache::class); // remove um serviço
+$app->getContainer()->flush();              // remove todos os serviços e aliases
 ```
 
-## Vinculação Contextual
-
-Forneça implementações diferentes baseadas no contexto:
-
-```php
-// Quando UserController precisar de Cache, forneça RedisCache
-$app->when(UserController::class)
-    ->needs(Cache::class)
-    ->give(RedisCache::class);
-
-// Quando AdminController precisar de Cache, forneça FileCache
-$app->when(AdminController::class)
-    ->needs(Cache::class)
-    ->give(FileCache::class);
-
-// Com closure
-$app->when(PhotoController::class)
-    ->needs(Filesystem::class)
-    ->give(function($container) {
-        return Storage::disk('photos');
-    });
-```
-
-## Vinculação de Primitivos
-
-Injete valores primitivos como strings ou inteiros:
-
-```php
-$app->when(Service::class)
-    ->needs('$apiKey')
-    ->give($_ENV['API_KEY']);
-
-$app->when(Mailer::class)
-    ->needs('$options')
-    ->give([
-        'host' => $_ENV['MAIL_HOST'],
-        'port' => $_ENV['MAIL_PORT']
-    ]);
-
-class Service
-{
-    private string $apiKey;
-
-    public function __construct(string $apiKey)
-    {
-        $this->apiKey = $apiKey;
-    }
-}
-```
-
-## Vinculações com Tags
-
-Agrupe vinculações relacionadas com tags:
-
-```php
-// Marcar múltiplas vinculações
-$app->bind('reports.daily', DailyReport::class);
-$app->bind('reports.weekly', WeeklyReport::class);
-$app->bind('reports.monthly', MonthlyReport::class);
-
-$app->tag([
-    'reports.daily',
-    'reports.weekly',
-    'reports.monthly'
-], 'reports');
-
-// Resolver todas as vinculações marcadas
-$reports = $app->tagged('reports');
-
-foreach ($reports as $report) {
-    $report->generate();
-}
-```
+> `flush()` também remove os serviços internos registrados pelos provedores do framework. Use apenas em testes.
 
 ## Provedores de Serviço
 
-Organize suas vinculações em provedores de serviço:
+Organize registros relacionados em [provedores de serviço]({{ '/pt/docs/providers/' | relative_url }}):
 
 ```php
 namespace App\Providers;
 
-use PivotPHP\Core\Core\ServiceProvider;
+use PivotPHP\Core\Providers\Container;
+use PivotPHP\Core\Providers\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Registrar vinculações no container
-     */
     public function register(): void
     {
-        $this->app->singleton(Cache::class, function($app) {
-            return new RedisCache(
-                $app->make('redis.connection')
-            );
-        });
+        $this->app->singleton(Cache::class, fn() => new FileCache('/tmp/cache'));
 
-        $this->app->bind(
-            UserRepositoryInterface::class,
-            UserRepository::class
-        );
-    }
-
-    /**
-     * Inicializar serviços da aplicação
-     */
-    public function boot(): void
-    {
-        // Executar ações após todos os serviços serem registrados
-        $cache = $this->app->make(Cache::class);
-        $cache->flush();
+        $this->app->bind(UserRepositoryInterface::class, fn(Container $c) => new SqlUserRepository(
+            $c->get(Database::class)
+        ));
     }
 }
 ```
 
-## Eventos do Container
+## Padrões Comuns
 
-Escute eventos de resolução:
+### Decorator
 
 ```php
-// Antes de resolver
-$app->resolving(Database::class, function($db, $app) {
-    // Configurar banco de dados antes de retornar
-    $db->setTimezone('UTC');
-});
+$app->singleton(Cache::class, function (Container $c) {
+    $cache = new FileCache('/tmp/cache');
 
-// Após resolver
-$app->afterResolving(Logger::class, function($logger, $app) {
-    // Adicionar handlers após logger ser criado
-    $logger->pushHandler(new StreamHandler('caminho/para/log'));
-});
+    if (($_ENV['APP_ENV'] ?? 'production') === 'local') {
+        return new LoggingCache($cache, $c->get(LoggerInterface::class));
+    }
 
-// Callback de resolução global
-$app->resolving(function($object, $app) {
-    // Chamado para toda resolução
+    return $cache;
 });
 ```
 
-## Estendendo Vinculações
-
-Estenda serviços resolvidos:
+### Strategy por configuração
 
 ```php
-$app->extend(Database::class, function($db, $app) {
-    // Adicionar log de queries
-    $db->enableQueryLog();
-
-    $db->listen(function($query) use ($app) {
-        $app->make('logger')->info($query);
-    });
-
-    return $db;
-});
-```
-
-## Padrão Factory
-
-Crie factories para criação complexa de objetos:
-
-```php
-interface ReportFactory
-{
-    public function create(string $type): Report;
-}
-
-class ReportFactoryImpl implements ReportFactory
-{
-    private Container $container;
-
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
-    public function create(string $type): Report
-    {
-        return match($type) {
-            'daily' => $this->container->make(DailyReport::class),
-            'weekly' => $this->container->make(WeeklyReport::class),
-            'monthly' => $this->container->make(MonthlyReport::class),
-            default => throw new InvalidArgumentException("Tipo de relatório desconhecido: {$type}")
-        };
-    }
-}
-
-$app->singleton(ReportFactory::class, ReportFactoryImpl::class);
-```
-
-## Injeção de Dependência em Controllers
-
-Controllers recebem automaticamente injeção de dependência:
-
-```php
-class UserController
-{
-    private UserRepository $users;
-    private Mailer $mailer;
-
-    public function __construct(UserRepository $users, Mailer $mailer)
-    {
-        $this->users = $users;
-        $this->mailer = $mailer;
-    }
-
-    public function store(Request $request, Validator $validator)
-    {
-        // Ambas dependências do construtor e método são injetadas
-        $validated = $validator->validate($request->all(), [
-            'email' => 'required|email',
-            'name' => 'required|string'
-        ]);
-
-        $user = $this->users->create($validated);
-        $this->mailer->send(new WelcomeEmail($user));
-
-        return response()->json($user);
-    }
-}
-```
-
-## Padrões Avançados
-
-### Padrão Decorator
-
-```php
-interface Cache
-{
-    public function get(string $key);
-    public function set(string $key, $value);
-}
-
-class RedisCache implements Cache
-{
-    // Implementação Redis
-}
-
-class LoggingCache implements Cache
-{
-    private Cache $cache;
-    private Logger $logger;
-
-    public function __construct(Cache $cache, Logger $logger)
-    {
-        $this->cache = $cache;
-        $this->logger = $logger;
-    }
-
-    public function get(string $key)
-    {
-        $this->logger->info("Obtendo chave de cache: {$key}");
-        return $this->cache->get($key);
-    }
-
-    public function set(string $key, $value)
-    {
-        $this->logger->info("Definindo chave de cache: {$key}");
-        return $this->cache->set($key, $value);
-    }
-}
-
-// Vinculação com decoração
-$app->bind(Cache::class, function($app) {
-    $redis = new RedisCache();
-
-    if ($app->environment('local')) {
-        return new LoggingCache($redis, $app->make(Logger::class));
-    }
-
-    return $redis;
-});
-```
-
-### Padrão Strategy
-
-```php
-interface PaymentGateway
-{
-    public function charge(int $amount): bool;
-}
-
-class StripeGateway implements PaymentGateway
-{
-    public function charge(int $amount): bool
-    {
-        // Implementação Stripe
-    }
-}
-
-class PayPalGateway implements PaymentGateway
-{
-    public function charge(int $amount): bool
-    {
-        // Implementação PayPal
-    }
-}
-
-// Vinculação contextual baseada em configuração
-$app->bind(PaymentGateway::class, function($app) {
-    return match(config('payment.gateway')) {
-        'stripe' => $app->make(StripeGateway::class),
-        'paypal' => $app->make(PayPalGateway::class),
-        default => throw new Exception('Gateway de pagamento inválido')
+$app->bind(PaymentGateway::class, function () use ($app) {
+    return match ($app->getConfig()->get('payment.gateway')) {
+        'stripe' => new StripeGateway(),
+        'paypal' => new PayPalGateway(),
+        default => throw new RuntimeException('Gateway de pagamento inválido'),
     };
 });
 ```
 
-## Testando com o Container
+## Testando com o Contêiner
+
+Substitua dependências por dublês com `instance()` antes de resolver o serviço:
 
 ```php
+use PHPUnit\Framework\TestCase;
+use PivotPHP\Core\Core\Application;
+use PivotPHP\Core\Providers\Container;
+
 class UserServiceTest extends TestCase
 {
-    public function test_user_creation()
+    public function testUsaRepositorioInjetado(): void
     {
-        // Mock de dependências
-        $mockRepo = $this->createMock(UserRepository::class);
-        $mockMailer = $this->createMock(Mailer::class);
+        $app = new Application();
 
-        // Vincular mocks ao container
-        $this->app->instance(UserRepository::class, $mockRepo);
-        $this->app->instance(Mailer::class, $mockMailer);
+        $repo = $this->createMock(UserRepositoryInterface::class);
+        $app->instance(UserRepositoryInterface::class, $repo);
+        $app->bind(UserService::class, fn(Container $c) => new UserService(
+            $c->get(UserRepositoryInterface::class)
+        ));
 
-        // Testar com dependências mockadas
-        $service = $this->app->make(UserService::class);
-        $service->createUser(['name' => 'João']);
-
-        // Verificar expectativas do mock
+        $this->assertInstanceOf(UserService::class, $app->make(UserService::class));
     }
 }
 ```
 
-## Melhores Práticas
+## Boas Práticas
 
-1. **Use interfaces**: Vincule a interfaces em vez de classes concretas
-2. **Evite abuso do container**: Não use o container como localizador de serviços
-3. **Mantenha simples**: Não faça engenharia excessiva com abstrações desnecessárias
-4. **Use provedores de serviço**: Organize vinculações relacionadas em provedores
-5. **Documente vinculações**: Comente vinculações complexas para clareza
-6. **Prefira injeção no construtor**: Torna as dependências explícitas
-7. **Use type hints**: Sempre declare tipos nas dependências para auto-resolução
+1. **Registre por interface**: vincule interfaces a fábricas que constroem a implementação.
+2. **Sempre use closures para objetos**: o contêiner não instancia classes a partir do nome.
+3. **Prefira injeção no construtor**: resolva dependências na fábrica e passe-as ao construtor, em vez de chamar o contêiner dentro das classes.
+4. **Use `singleton` para serviços caros**: conexões e clientes HTTP raramente precisam ser recriados.
+5. **Organize em provedores**: agrupe registros relacionados em provedores de serviço.
