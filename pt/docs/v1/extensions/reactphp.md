@@ -530,16 +530,6 @@ $app->get('/api/benchmark', function($req, $res) {
 });
 ```
 
-## 🔮 Recursos Futuros
-
-O roadmap da extensão ReactPHP inclui:
-
-- **Suporte a WebSocket**: Comunicação bidirecional em tempo real
-- **Suporte HTTP/2**: Recursos avançados de protocolo
-- **Clustering Integrado**: Utilização multi-core
-- **Server-Sent Events**: Streaming de eventos em tempo real
-- **Middleware Aprimorado**: Pipeline de middleware específico para ReactPHP
-
 ## 📚 Documentação Relacionada
 
 - [Documentação Oficial do ReactPHP](https://reactphp.org/)
