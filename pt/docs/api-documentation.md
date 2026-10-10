@@ -65,7 +65,7 @@ manualmente.
   "openapi": "3.0.0",
   "info": {
     "title": "PivotPHP API",
-    "version": "4.0.2",
+    "version": "4.1.0",
     "description": "Auto-generated API documentation"
   },
   "servers": [
