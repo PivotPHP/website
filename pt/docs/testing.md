@@ -93,7 +93,7 @@ public function testCreateUser(): void
 
 ## Testando o bootstrap real (skeleton)
 
-O skeleton expõe `bootstrap/app.php`, que devolve a `Application` já montada. Nos testes, defina as
+O skeleton expõe `config/bootstrap/app.php`, que devolve a `Application` já montada. Nos testes, defina as
 variáveis de ambiente antes de incluí-lo:
 
 ```php
@@ -103,7 +103,7 @@ protected function setUp(): void
     $_ENV['APP_DEBUG'] = 'false';
     putenv('APP_ENV=testing');
 
-    $this->app = require __DIR__ . '/../bootstrap/app.php';
+    $this->app = require __DIR__ . '/../config/bootstrap/app.php';
 }
 ```
 

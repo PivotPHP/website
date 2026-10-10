@@ -150,7 +150,7 @@ Métodos públicos podem ser usados como array callable `[Controller::class, 'me
 
 ```php
 <?php
-// app/Controllers/TaskController.php
+// src/Controllers/TaskController.php
 namespace App\Controllers;
 
 use PivotPHP\Http\ExpressRequest;

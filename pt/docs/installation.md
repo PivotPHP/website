@@ -46,15 +46,20 @@ A aplicação sobe em `http://localhost:8000`. A estrutura criada é:
 
 ```
 meu-app/
-├── app/Controllers/       # controllers de exemplo
-├── bootstrap/app.php      # monta a aplicação (config, middleware, rotas)
-├── config/app.php         # configuração app.*
+├── config/
+│   ├── app.php            # configuração app.*
+│   └── bootstrap/app.php  # monta a aplicação (config, middleware, rotas)
 ├── public/index.php       # ponto de entrada HTTP
-├── routes/api.php         # rotas
+├── src/
+│   ├── Controllers/       # controllers de exemplo (namespace App\Controllers)
+│   └── Routers/api.php    # rotas
 ├── tests/                 # testes PHPUnit
 ├── .env.example
 └── composer.json
 ```
+
+Todo `config/*.php` é carregado pelo core como arquivo de configuração (deve retornar um array);
+scripts como o bootstrap ficam em subpastas (`config/bootstrap/`), que o core não varre.
 
 ## Instalação manual
 
