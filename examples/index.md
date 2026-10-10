@@ -1,384 +1,172 @@
 ---
 layout: default
 title: Code Examples
-description: Real-world examples showcasing PivotPHP's capabilities
+description: Exemplos reais usando a API do PivotPHP 4.x
 ---
 
-# Code Examples
+# Exemplos de Código
 
-Learn by example with these real-world PivotPHP applications and snippets.
+Exemplos usando a API atual do PivotPHP 4.x. Todos os handlers recebem
+`PivotPHP\Http\ExpressRequest`/`ExpressResponse` e devem **retornar a resposta**.
 
-## Quick Examples
-
-### 🚀 Basic API
+## API básica
 
 ```php
 use PivotPHP\Core\Core\Application;
 
 $app = new Application();
 
-// Simple REST API
-$app->get('/api/status', function($req, $res) {
-    return $res->json([
-        'status' => 'online',
-        'timestamp' => time(),
-        'version' => '1.0.0'
-    ]);
+$app->get('/api/status', fn ($req, $res) => $res->json([
+    'status' => 'online',
+    'timestamp' => time(),
+    'version' => Application::VERSION,
+]));
+
+$app->run();
+```
+
+## CRUD em memória
+
+```php
+use PivotPHP\Core\Core\Application;
+
+$app = new Application();
+
+$users = [1 => ['id' => 1, 'name' => 'Ana', 'email' => 'ana@exemplo.com']];
+
+$app->get('/api/users', fn ($req, $res) => $res->json(array_values($users)));
+
+$app->get('/api/users/:id<\d+>', function ($req, $res) use ($users) {
+    $user = $users[(int) $req->param('id')] ?? null;
+
+    return $user === null ? $res->error(404, 'Usuário não encontrado') : $res->json($user);
+});
+
+$app->post('/api/users', function ($req, $res) use (&$users) {
+    $name = $req->input('name');
+    $email = $req->input('email');
+
+    if (!is_string($name) || $name === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+        return $res->status(422)->json(['errors' => ['name' => 'obrigatório', 'email' => 'inválido']]);
+    }
+
+    $id = max(array_keys($users)) + 1;
+    $users[$id] = ['id' => $id, 'name' => $name, 'email' => $email];
+
+    return $res->status(201)->header('Location', "/api/users/{$id}")->json($users[$id]);
+});
+
+$app->put('/api/users/:id<\d+>', function ($req, $res) use (&$users) {
+    $id = (int) $req->param('id');
+    if (!isset($users[$id])) {
+        return $res->error(404, 'Usuário não encontrado');
+    }
+
+    $name = $req->input('name');
+    if (is_string($name) && $name !== '') {
+        $users[$id]['name'] = $name;
+    }
+
+    return $res->json($users[$id]);
+});
+
+$app->delete('/api/users/:id<\d+>', function ($req, $res) use (&$users) {
+    $id = (int) $req->param('id');
+    if (!isset($users[$id])) {
+        return $res->error(404, 'Usuário não encontrado');
+    }
+
+    unset($users[$id]);
+
+    return $res->noContent();
 });
 
 $app->run();
 ```
 
-### 🔐 Authenticated Route
+## Autenticação JWT
+
+Os middlewares de segurança vêm do [`pivotphp/security`]({{ '/pt/docs/security/' | relative_url }})
+(instalado com o core; o JWT precisa de `firebase/php-jwt`):
 
 ```php
 use PivotPHP\Core\Core\Application;
-use PivotPHP\Core\Security\Middleware\AuthMiddleware;
+use PivotPHP\Http\Factory\Psr17Factory;
+use PivotPHP\Security\Jwt\{JwtAuthMiddleware, JwtConfig, JwtIssuer};
 
 $app = new Application();
+$factory = new Psr17Factory();
 
-// Protected endpoint
-$app->get('/api/profile', 
-    new AuthMiddleware(),
-    function($req, $res) {
-        $user = $req->getAttribute('user');
-        return $res->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email
-        ]);
-    }
-);
+$jwt = new JwtConfig($_ENV['JWT_SECRET'], publicPaths: ['/login']);
+
+$app->use(new JwtAuthMiddleware($factory, $jwt));
+
+$app->post('/login', function ($req, $res) use ($jwt) {
+    // ... validar credenciais ...
+    $token = (new JwtIssuer($jwt))->issue(['sub' => '42'], ttl: 3600);
+
+    return $res->json(['token' => $token]);
+});
+
+$app->get('/me', fn ($req, $res) => $res->json($req->psr7()->getAttribute('user')));
 
 $app->run();
 ```
 
-### 📊 CRUD Operations
+## Middleware e hooks
 
 ```php
 use PivotPHP\Core\Core\Application;
+use PivotPHP\Core\Events\Event;
 
 $app = new Application();
 
-// Create
-$app->post('/api/users', function($req, $res) {
-    $data = $req->getParsedBody();
-    // Validate and create user
-    $user = User::create($data);
-    return $res->status(201)->json($user);
+// Middleware global (callable)
+$app->use(function ($req, $res, $next) {
+    $response = $next($req->withAttribute('request_id', bin2hex(random_bytes(8))));
+    return $response->withHeader('X-Powered-By', 'PivotPHP');
 });
 
-// Read
-$app->get('/api/users/:id', function($req, $res) {
-    $user = User::find($req->param('id'));
-    if (!$user) {
-        return $res->status(404)->json(['error' => 'User not found']);
-    }
-    return $res->json($user);
-});
+// Listener de evento (PSR-14)
+$app->on(Event::class, fn (Event $e) => $app->getLogger()?->info($e->getName()));
 
-// Update
-$app->put('/api/users/:id', function($req, $res) {
-    $user = User::find($req->param('id'));
-    if (!$user) {
-        return $res->status(404)->json(['error' => 'User not found']);
-    }
-    $user->update($req->getParsedBody());
-    return $res->json($user);
-});
-
-// Delete
-$app->delete('/api/users/:id', function($req, $res) {
-    $user = User::find($req->param('id'));
-    if (!$user) {
-        return $res->status(404)->json(['error' => 'User not found']);
-    }
-    $user->delete();
-    return $res->status(204)->send();
+$app->get('/ping', function ($req, $res) use ($app) {
+    $app->dispatchEvent(new Event('ping', ['at' => time()]));
+    return $res->json(['pong' => true]);
 });
 
 $app->run();
 ```
 
-## Full Applications
+## Banco de dados (PDO)
 
-### 📝 Blog API
-
-A complete blog API with posts, comments, and authentication.
+A conexão PDO do core (`PivotPHP\Core\Database\Database`) usa prepared statements:
 
 ```php
 use PivotPHP\Core\Core\Application;
-use PivotPHP\Core\Security\Middleware\AuthMiddleware;
-use PivotPHP\Core\Security\Middleware\RateLimitMiddleware;
+use PivotPHP\Core\Database\Database;
 
 $app = new Application();
 
-// Middleware
-$auth = new AuthMiddleware();
-$rateLimit = new RateLimitMiddleware(['max' => 100, 'window' => 3600]);
+$app->singleton(Database::class, fn () => new Database([
+    'driver'   => 'sqlite',
+    'database' => __DIR__ . '/app.sqlite',
+]));
 
-// Public routes
-$app->get('/api/posts', $rateLimit, function($req, $res) {
-    $posts = Post::with('author', 'comments')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-    return $res->json($posts);
-});
+$app->get('/users', function ($req, $res) use ($app) {
+    $users = $app->make(Database::class)
+        ->select('SELECT id, name FROM users WHERE active = ?', [1]);
 
-$app->get('/api/posts/:slug', function($req, $res) {
-    $post = Post::where('slug', $req->param('slug'))
-        ->with('author', 'comments.author')
-        ->first();
-    
-    if (!$post) {
-        return $res->status(404)->json(['error' => 'Post not found']);
-    }
-    
-    return $res->json($post);
-});
-
-// Protected routes
-$app->group('/api/admin', function($app) use ($auth) {
-    // Create post
-    $app->post('/posts', $auth, function($req, $res) {
-        $data = $req->getParsedBody();
-        $data['author_id'] = $req->getAttribute('user')->id;
-        
-        $post = Post::create($data);
-        return $res->status(201)->json($post);
-    });
-    
-    // Update post
-    $app->put('/posts/:id', $auth, function($req, $res) {
-        $post = Post::find($req->param('id'));
-        
-        if (!$post) {
-            return $res->status(404)->json(['error' => 'Post not found']);
-        }
-        
-        // Check ownership
-        if ($post->author_id !== $req->getAttribute('user')->id) {
-            return $res->status(403)->json(['error' => 'Forbidden']);
-        }
-        
-        $post->update($req->getParsedBody());
-        return $res->json($post);
-    });
+    return $res->json($users);
 });
 
 $app->run();
 ```
 
-### 🛒 E-commerce Microservice
+## Próximos passos
 
-```php
-use PivotPHP\Core\Core\Application;
-use PivotPHP\Core\Events\EventDispatcher;
-
-$app = new Application();
-$events = $app->get(EventDispatcher::class);
-
-// Product catalog
-$app->get('/api/products', function($req, $res) {
-    $filters = $req->getQueryParams();
-    
-    $query = Product::query();
-    
-    if (isset($filters['category'])) {
-        $query->where('category', $filters['category']);
-    }
-    
-    if (isset($filters['min_price'])) {
-        $query->where('price', '>=', $filters['min_price']);
-    }
-    
-    $products = $query->paginate(20);
-    return $res->json($products);
-});
-
-// Shopping cart
-$app->post('/api/cart/items', function($req, $res) use ($events) {
-    $data = $req->getParsedBody();
-    
-    $product = Product::find($data['product_id']);
-    if (!$product || $product->stock < $data['quantity']) {
-        return $res->status(400)->json(['error' => 'Product not available']);
-    }
-    
-    $cartItem = CartItem::create([
-        'session_id' => session_id(),
-        'product_id' => $data['product_id'],
-        'quantity' => $data['quantity'],
-        'price' => $product->price
-    ]);
-    
-    // Emit event
-    $events->dispatch('cart.item.added', $cartItem);
-    
-    return $res->status(201)->json($cartItem);
-});
-
-// Checkout
-$app->post('/api/checkout', function($req, $res) use ($events) {
-    $items = CartItem::where('session_id', session_id())->get();
-    
-    if ($items->isEmpty()) {
-        return $res->status(400)->json(['error' => 'Cart is empty']);
-    }
-    
-    // Create order
-    $order = Order::create([
-        'total' => $items->sum(fn($item) => $item->price * $item->quantity),
-        'status' => 'pending'
-    ]);
-    
-    // Add items to order
-    foreach ($items as $item) {
-        $order->items()->create($item->toArray());
-    }
-    
-    // Clear cart
-    CartItem::where('session_id', session_id())->delete();
-    
-    // Emit event
-    $events->dispatch('order.created', $order);
-    
-    return $res->json($order);
-});
-
-$app->run();
-```
-
-## Advanced Examples
-
-### 🔄 WebSocket Integration
-
-```php
-use PivotPHP\Core\Core\Application;
-use Ratchet\Http\HttpServer;
-use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
-
-$app = new Application();
-
-// Regular HTTP routes
-$app->get('/chat', function($req, $res) {
-    return $res->html(file_get_contents('chat.html'));
-});
-
-// WebSocket server
-class ChatServer implements MessageComponentInterface {
-    protected $clients;
-    
-    public function __construct() {
-        $this->clients = new \SplObjectStorage;
-    }
-    
-    public function onOpen(ConnectionInterface $conn) {
-        $this->clients->attach($conn);
-    }
-    
-    public function onMessage(ConnectionInterface $from, $msg) {
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                $client->send($msg);
-            }
-        }
-    }
-    
-    public function onClose(ConnectionInterface $conn) {
-        $this->clients->detach($conn);
-    }
-    
-    public function onError(ConnectionInterface $conn, \Exception $e) {
-        $conn->close();
-    }
-}
-
-// Start WebSocket server on different port
-$server = IoServer::factory(
-    new HttpServer(
-        new WsServer(
-            new ChatServer()
-        )
-    ),
-    8080
-);
-
-$server->run();
-```
-
-### 🔐 JWT Authentication
-
-```php
-use PivotPHP\Core\Core\Application;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
-$app = new Application();
-
-$app->post('/api/auth/login', function($req, $res) {
-    $credentials = $req->getParsedBody();
-    
-    $user = User::where('email', $credentials['email'])->first();
-    
-    if (!$user || !password_verify($credentials['password'], $user->password)) {
-        return $res->status(401)->json(['error' => 'Invalid credentials']);
-    }
-    
-    $payload = [
-        'iss' => 'pivotphp-api',
-        'sub' => $user->id,
-        'iat' => time(),
-        'exp' => time() + (60 * 60 * 24) // 24 hours
-    ];
-    
-    $token = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
-    
-    return $res->json([
-        'token' => $token,
-        'user' => $user
-    ]);
-});
-
-// JWT Middleware
-$jwtAuth = function($req, $res, $next) {
-    $auth = $req->getHeader('Authorization')[0] ?? '';
-    
-    if (!preg_match('/Bearer\s+(.*)$/i', $auth, $matches)) {
-        return $res->status(401)->json(['error' => 'No token provided']);
-    }
-    
-    try {
-        $decoded = JWT::decode($matches[1], new Key($_ENV['JWT_SECRET'], 'HS256'));
-        $req = $req->withAttribute('user_id', $decoded->sub);
-        return $next($req, $res);
-    } catch (\Exception $e) {
-        return $res->status(401)->json(['error' => 'Invalid token']);
-    }
-};
-
-// Protected route
-$app->get('/api/me', $jwtAuth, function($req, $res) {
-    $user = User::find($req->getAttribute('user_id'));
-    return $res->json($user);
-});
-
-$app->run();
-```
-
-## 🎯 Next Steps
-
-- Check out the [full documentation](/docs/)
-- Explore the [API reference](/docs/api/)
-- Join our [community](https://github.com/pivotphp/core/discussions)
-- Star us on [GitHub](https://github.com/pivotphp/core)
-
-## 📦 Example Projects
-
-Complete example applications are available on GitHub:
-
-- [pivotphp-example-blog](https://github.com/pivotphp/example-blog) - Blog API with authentication
-- [pivotphp-example-shop](https://github.com/pivotphp/example-shop) - E-commerce microservice
-- [pivotphp-example-chat](https://github.com/pivotphp/example-chat) - Real-time chat application
-- [pivotphp-example-api](https://github.com/pivotphp/example-api) - RESTful API starter
+- [Documentação]({{ '/pt/docs/' | relative_url }})
+- [Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }})
+- [Roteamento]({{ '/pt/docs/routing/' | relative_url }})
+- [Segurança]({{ '/pt/docs/security/' | relative_url }})
+- Repositório: [github.com/PivotPHP](https://github.com/PivotPHP)

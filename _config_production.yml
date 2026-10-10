@@ -4,7 +4,7 @@
 # Site settings
 title: PivotPHP
 tagline: The Evolutionary PHP Microframework  
-description: Build modern APIs with Express.js-like syntax, 2.57M+ ops/sec performance, and zero configuration.
+description: Build modern PHP APIs with Express.js-like syntax on PSR-7/PSR-15, with zero configuration.
 url: "https://pivotphp.github.io"
 baseurl: "/website"
 logo: /assets/images/pivotphp-logo.svg

@@ -9,79 +9,74 @@ permalink: /pt/docs/extensions/
 lang: pt
 ---
 
-O PivotPHP tem um ecossistema rico de extensões que adicionam recursos poderosos ao framework principal. Estes pacotes modulares permitem que você escolha exatamente o que precisa para seu projeto.
+O núcleo do PivotPHP 4.0 é enxuto: aplicação, roteamento e pipeline. Recursos adicionais vivem em
+pacotes (alguns instalados junto com o core) ou em service providers de terceiros.
 
-## Extensões Oficiais
+## Pacotes do ecossistema
 
-### Banco de Dados & ORM
+| Pacote | Papel | Ativo? |
+|---|---|---|
+| [`pivotphp/core`](https://github.com/PivotPHP/pivotphp-core) | Framework (aplicação + pipeline) | ✅ |
+| [`pivotphp/core-routing`](https://github.com/PivotPHP/pivotphp-core-routing) | Motor de roteamento | ✅ |
+| [`pivotphp/http`](https://github.com/PivotPHP/pivotphp-http) | Camada HTTP (`ExpressRequest`/`ExpressResponse`) sobre PSR-7 | ✅ |
+| [`pivotphp/security`](https://github.com/PivotPHP/pivotphp-security) | Middlewares de segurança (CORS, headers, CSRF, JWT, rate limit) | ✅ |
+| [`pivotphp/skeleton`](https://github.com/PivotPHP/pivotphp-skeleton) | Template `composer create-project` | ✅ |
+| [`pivotphp/cycle-orm`]({{ '/pt/docs/extensions/cycle-orm/' | relative_url }}) | Integração com Cycle ORM | ⏸️ **Pausado** (só core 1.x) |
 
-#### [Cycle ORM v1.0.1](/pt/docs/extensions/cycle-orm/)
-Um poderoso ORM DataMapper que fornece uma solução completa de banco de dados com configuração zero.
+Os três primeiros são instalados automaticamente com o `pivotphp/core`. O `pivotphp/security` também
+vem como dependência do core.
 
-```bash
-composer require pivotphp/cycle-orm
-```
+## Módulos integrados ao core
 
-**Recursos:**
-- Configuração zero com padrões sensatos
-- Geração automática de esquema e migrações
-- Padrão repository com cache de performance
-- Suporte a relacionamentos complexos
-- Middleware de transação
-- Conexões múltiplas de banco de dados (SQLite, MySQL)
-- Monitoramento de performance e profiling de consultas
+- **OpenAPI/Swagger** — `ApiDocumentationMiddleware` gera a especificação OpenAPI 3 a partir das
+  rotas (ver [Documentação de API]({{ '/pt/docs/api-documentation/' | relative_url }})).
+- **Container PSR-11** — `PivotPHP\Core\Providers\Container` (ver [Container]({{ '/pt/docs/container/' | relative_url }})).
+- **Eventos PSR-14** — `PivotPHP\Core\Events\EventDispatcher` (ver [Eventos]({{ '/pt/docs/events/' | relative_url }})).
+- **Hooks** — `HookManager` (actions/filters) para extensões.
+- **Logging PSR-3** — `PivotPHP\Core\Logging\PsrLogger`.
+- **Validação** — `PivotPHP\Core\Validation\Validator`.
+- **Banco de dados** — `PivotPHP\Core\Database\Database` (PDO).
+- **Service providers** — mecanismo de extensão (ver [Provedores]({{ '/pt/docs/providers/' | relative_url }})).
 
-## Extensões da Comunidade
+## Criando uma extensão
 
-O ecossistema PivotPHP foi projetado para ser extensível! Estamos animados com as extensões que a comunidade criará.
-
-### Extensões Oficiais Disponíveis
-
-- **[pivotphp/core](https://packagist.org/packages/pivotphp/core)** - Framework principal ([GitHub](https://github.com/PivotPHP/pivotphp-core))
-- **[pivotphp/cycle-orm](https://packagist.org/packages/pivotphp/cycle-orm)** - Integração Cycle ORM ([GitHub](https://github.com/PivotPHP/pivotphp-cycle-orm))
-
-### Recursos Integrados
-
-O framework PivotPHP Core já inclui vários recursos avançados:
-
-- **OpenAPI/Swagger** - Geração automática de documentação de API via `ApiDocumentationMiddleware`
-- **Modo Alta Performance** - Object pooling e lazy loading (v1.2.0)
-- **Otimização JSON** - Buffer pooling automático para operações JSON (v1.2.0)
-- **Middleware de Segurança** - Proteção CSRF, XSS e rate limiting integrados
-- **Monitoramento de Performance** - Métricas em tempo real e ferramentas de profiling
-
-Confira nossa [organização no GitHub]({{ site.github_url }}) e [Packagist](https://packagist.org/packages/pivotphp/) para atualizações sobre novas extensões.
-
-## Criando Extensões
-
-As extensões no PivotPHP seguem um padrão simples usando Service Providers:
+Extensões são service providers. Estenda `PivotPHP\Core\Providers\ServiceProvider`:
 
 ```php
 namespace SeuVendor\SuaExtensao;
 
 use PivotPHP\Core\Providers\ServiceProvider;
 
-class SuaExtensaoServiceProvider extends ServiceProvider
+final class SuaExtensaoServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Registrar serviços
-        $this->container->singleton('seu-servico', function($container) {
-            return new SeuServico($container);
-        });
+        // Apenas vincule serviços ao contêiner.
+        $this->app->singleton(SeuServico::class, fn () => new SeuServico());
     }
-    
+
     public function boot(): void
     {
-        // Inicializar extensão
-        // Registrar rotas, middleware, etc.
+        // Todos os providers já foram registrados: registre rotas, middleware ou hooks.
     }
 }
 ```
 
-### Estrutura da Extensão
+Registre a extensão antes do boot:
 
-Uma estrutura típica de extensão PivotPHP:
+```php
+use App\Providers\SuaExtensaoServiceProvider;
+use PivotPHP\Core\Core\Application;
+
+$app = new Application();
+$app->register(SuaExtensaoServiceProvider::class);
+$app->run();
+```
+
+Há também o atalho `$app->registerExtension($nome, $providerClass)`, que usa o gerenciador de
+extensões do framework.
+
+### Estrutura típica
 
 ```
 sua-extensao/
@@ -89,26 +84,15 @@ sua-extensao/
 │   ├── Providers/
 │   │   └── SuaExtensaoServiceProvider.php
 │   ├── Services/
-│   ├── Middleware/
-│   └── Commands/
-├── config/
-│   └── sua-extensao.php
+│   └── Middleware/
 ├── tests/
 ├── composer.json
 └── README.md
 ```
 
-### Publicando uma Extensão
+## Diretrizes
 
-1. Crie sua extensão seguindo a estrutura acima
-2. Registre no Packagist com a convenção de nomenclatura: `vendor/pivotphp-{nome-extensao}`
-3. Marque suas versões seguindo versionamento semântico
-4. Envie para a lista de extensões oficiais via PR
-
-## Diretrizes para Extensões
-
-- Siga os padrões PSR (PSR-4, PSR-12)
-- Inclua testes abrangentes
-- Forneça documentação clara
-- Use versionamento semântico
-- Seja compatível com a versão mais recente do PivotPHP
+- Siga PSR-4, PSR-12, PSR-7 e PSR-15.
+- Use `declare(strict_types=1)` e passe PHPStan nível 9.
+- Inclua testes e documentação.
+- Use versionamento semântico e declare a versão do `pivotphp/core` com a qual é compatível.

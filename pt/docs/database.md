@@ -9,688 +9,145 @@ permalink: /pt/docs/database/
 lang: pt
 ---
 
-O PivotPHP integra-se perfeitamente com o Cycle ORM, fornecendo uma maneira poderosa e intuitiva de trabalhar com bancos de dados. O Cycle ORM é um ORM moderno e orientado por esquema que oferece excelente desempenho e flexibilidade.
+O `pivotphp/core` inclui uma conexão PDO simples em `PivotPHP\Core\Database\Database` (drivers
+`sqlite`, `mysql`/`mariadb` e `pgsql`/`postgres`). Não há ORM no core.
 
-## Instalação
+> **Cycle ORM pausado.** A extensão [`pivotphp/cycle-orm`]({{ '/pt/docs/extensions/cycle-orm/' | relative_url }})
+> é compatível apenas com o core 1.x e **não** foi migrada para o 4.x. Para ORM no 4.x, use uma
+> biblioteca de sua escolha com o `Database` abaixo ou um ORM independente.
 
-Instale a integração do Cycle ORM:
+## Instanciação
 
-```bash
-composer require pivotphp/cycle-orm
-```
-
-## Configuração
-
-A integração do Cycle ORM lê as variáveis de ambiente `DB_*`. Configure-as no `.env`:
-
-```env
-# SQLite (desenvolvimento)
-DB_CONNECTION=sqlite
-DB_DATABASE=./database/database.sqlite
-
-# MySQL (produção)
-# DB_CONNECTION=mysql
-# DB_HOST=localhost
-# DB_PORT=3306
-# DB_DATABASE=meu_banco
-# DB_USERNAME=usuario
-# DB_PASSWORD=senha
-```
-
-Depois registre o provider:
+`Database` recebe um array de configuração e conecta no construtor:
 
 ```php
-use PivotPHP\Core\Core\Application;
-use PivotPHP\CycleORM\CycleServiceProvider;
+use PivotPHP\Core\Database\Database;
 
-$app = new Application();
-$app->register(new CycleServiceProvider($app));
+// SQLite (desenvolvimento / testes)
+$db = new Database([
+    'driver'   => 'sqlite',
+    'database' => __DIR__ . '/database.sqlite', // ou ':memory:'
+]);
+
+// MySQL / MariaDB (porta padrão 3306, charset utf8mb4)
+$db = new Database([
+    'driver'   => 'mysql',
+    'host'     => '127.0.0.1',
+    'port'     => 3306,
+    'database' => 'meu_banco',
+    'username' => 'usuario',
+    'password' => 'senha',
+]);
+
+// PostgreSQL (porta padrão 5432)
+$db = new Database([
+    'driver'   => 'pgsql',
+    'host'     => '127.0.0.1',
+    'database' => 'meu_banco',
+    'username' => 'usuario',
+    'password' => 'senha',
+]);
 ```
 
-## Definindo Entidades
-## Definindo Entidades
+Drivers aceitos: `sqlite`, `mysql`/`mariadb` → `mysql`, `pgsql`/`postgres`/`postgresql` → `pgsql`.
+Um driver não suportado lança `InvalidArgumentException`.
 
-### Entidade Básica
-
-Crie classes de entidade para representar tabelas do banco de dados:
+Registre a conexão como singleton no contêiner para reutilizá-la:
 
 ```php
-namespace App\Entity;
-
-use Cycle\Annotated\Annotation as Cycle;
-
-#[Cycle\Entity(repository: UserRepository::class)]
-#[Cycle\Table('users')]
-class User
-{
-    #[Cycle\Column(type: 'primary')]
-    private ?int $id = null;
-
-    #[Cycle\Column(type: 'string')]
-    private string $name;
-
-    #[Cycle\Column(type: 'string', unique: true)]
-    private string $email;
-
-    #[Cycle\Column(type: 'string', nullable: true)]
-    private ?string $avatar = null;
-
-    #[Cycle\Column(type: 'datetime')]
-    private \DateTimeInterface $createdAt;
-
-    #[Cycle\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $updatedAt = null;
-
-    public function __construct(string $name, string $email)
-    {
-        $this->name = $name;
-        $this->email = $email;
-        $this->createdAt = new \DateTime();
-    }
-
-    // Getters e setters
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-}
+$app->singleton(Database::class, fn () => new Database([
+    'driver'   => $_ENV['DB_DRIVER'] ?? 'sqlite',
+    'database' => $_ENV['DB_DATABASE'] ?? ':memory:',
+    'host'     => $_ENV['DB_HOST'] ?? 'localhost',
+    'username' => $_ENV['DB_USERNAME'] ?? null,
+    'password' => $_ENV['DB_PASSWORD'] ?? null,
+]));
 ```
 
-### Tipos de Coluna
+## Consultas
 
-Tipos de coluna disponíveis:
+Todos os métodos usam prepared statements com bindings — sempre passe os valores pelo array de
+bindings, nunca por interpolação na string SQL.
 
 ```php
-#[Cycle\Column(type: 'primary')]        // Chave primária auto-incrementada
-#[Cycle\Column(type: 'bigPrimary')]     // Chave primária de inteiro grande
-#[Cycle\Column(type: 'string(255)')]    // VARCHAR com comprimento
-#[Cycle\Column(type: 'text')]           // TEXT
-#[Cycle\Column(type: 'integer')]        // INTEGER
-#[Cycle\Column(type: 'bigInteger')]     // BIGINT
-#[Cycle\Column(type: 'float')]          // FLOAT
-#[Cycle\Column(type: 'double')]         // DOUBLE
-#[Cycle\Column(type: 'decimal(10,2)')]  // DECIMAL com precisão
-#[Cycle\Column(type: 'boolean')]        // BOOLEAN
-#[Cycle\Column(type: 'datetime')]       // DATETIME
-#[Cycle\Column(type: 'date')]           // DATE
-#[Cycle\Column(type: 'time')]           // TIME
-#[Cycle\Column(type: 'timestamp')]      // TIMESTAMP
-#[Cycle\Column(type: 'json')]           // JSON
-#[Cycle\Column(type: 'uuid')]           // UUID
-#[Cycle\Column(type: 'enum', values: ['active', 'inactive'])] // ENUM
+// SELECT (lista)
+$users = $db->select('SELECT id, name FROM users WHERE active = ?', [1]);
+
+// SELECT (um registro)
+$user = $db->selectOne('SELECT * FROM users WHERE id = ?', [$id]);
+
+// INSERT / UPDATE / DELETE (retornam bool / rowCount)
+$db->insert('INSERT INTO users (name, email) VALUES (?, ?)', [$name, $email]);
+$updated = $db->update('UPDATE users SET name = ? WHERE id = ?', [$name, $id]);
+$deleted = $db->delete('DELETE FROM users WHERE id = ?', [$id]);
+
+// Último id inserido
+$id = $db->lastInsertId();
 ```
 
-### Opções de Coluna
+### SQL genérico
 
 ```php
-#[Cycle\Column(
-    type: 'string',
-    nullable: true,              // Permitir NULL
-    default: 'pending',          // Valor padrão
-    unique: true,                // Restrição única
-    name: 'user_email',          // Nome personalizado da coluna
-    precision: 10,               // Para decimal
-    scale: 2,                    // Para decimal
-    unsigned: true,              // Para inteiros
-    length: 100,                 // Para strings
-)]
+$db->statement('INSERT INTO logs (message) VALUES (?)', [$msg]); // um statement
+$db->exec($schemaSql);                                            // múltiplos statements (schema/migrações)
 ```
 
-## Relacionamentos
+## Transações
 
-### Um-para-Muitos
+`transaction()` executa um callback, faz `commit()` no sucesso e `rollback()` para **qualquer**
+`Throwable` (inclusive `Error`, ex.: `TypeError`):
 
 ```php
-#[Cycle\Entity]
-class User
-{
-    #[Cycle\Relation\HasMany(target: Post::class)]
-    private Collection $posts;
-
-    public function __construct()
-    {
-        $this->posts = new ArrayCollection();
-    }
-
-    public function getPosts(): Collection
-    {
-        return $this->posts;
-    }
-
-    public function addPost(Post $post): void
-    {
-        $this->posts->add($post);
-        $post->setUser($this);
-    }
-}
-
-#[Cycle\Entity]
-class Post
-{
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
-    private User $user;
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-}
+$db->transaction(function (Database $db) use ($name, $email) {
+    $db->insert('INSERT INTO users (name, email) VALUES (?, ?)', [$name, $email]);
+    $db->insert('INSERT INTO audit (action) VALUES (?)', ['user.created']);
+});
 ```
 
-### Muitos-para-Muitos
+Manualmente:
 
 ```php
-#[Cycle\Entity]
-class User
-{
-    #[Cycle\Relation\ManyToMany(
-        target: Role::class,
-        through: UserRole::class,
-        throughInnerKey: 'user_id',
-        throughOuterKey: 'role_id'
-    )]
-    private Collection $roles;
-
-    public function getRoles(): Collection
-    {
-        return $this->roles;
-    }
-
-    public function addRole(Role $role): void
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles->add($role);
-        }
-    }
-
-    public function removeRole(Role $role): void
-    {
-        $this->roles->removeElement($role);
-    }
-}
-
-#[Cycle\Entity]
-class Role
-{
-    #[Cycle\Relation\ManyToMany(
-        target: User::class,
-        through: UserRole::class,
-        throughInnerKey: 'role_id',
-        throughOuterKey: 'user_id'
-    )]
-    private Collection $users;
-}
-
-#[Cycle\Entity]
-#[Cycle\Table('user_roles')]
-class UserRole
-{
-    #[Cycle\Column(type: 'primary')]
-    private ?int $id = null;
-
-    #[Cycle\Column(type: 'datetime')]
-    private \DateTimeInterface $assignedAt;
-}
-```
-
-### Um-para-Um
-
-```php
-#[Cycle\Entity]
-class User
-{
-    #[Cycle\Relation\HasOne(
-        target: Profile::class,
-        nullable: true,
-        cascade: true
-    )]
-    private ?Profile $profile = null;
-
-    public function getProfile(): ?Profile
-    {
-        return $this->profile;
-    }
-
-    public function setProfile(Profile $profile): void
-    {
-        $this->profile = $profile;
-        $profile->setUser($this);
-    }
-}
-
-#[Cycle\Entity]
-class Profile
-{
-    #[Cycle\Relation\BelongsTo(target: User::class, nullable: false)]
-    private User $user;
-}
-```
-
-### Entidades Incorporadas
-
-```php
-#[Cycle\Entity]
-class User
-{
-    #[Cycle\Relation\Embedded(target: Address::class, prefix: 'address_')]
-    private Address $address;
-}
-
-#[Cycle\Embeddable]
-class Address
-{
-    #[Cycle\Column(type: 'string')]
-    private string $street;
-
-    #[Cycle\Column(type: 'string')]
-    private string $city;
-
-    #[Cycle\Column(type: 'string', length: 10)]
-    private string $zipCode;
-}
-```
-
-## Repositórios
-
-### Repositório Básico
-
-```php
-namespace App\Repository;
-
-use Cycle\ORM\Select\Repository;
-
-class UserRepository extends Repository
-{
-    public function findByEmail(string $email): ?User
-    {
-        return $this->select()
-            ->where('email', $email)
-            ->fetchOne();
-    }
-
-    public function findActive(): array
-    {
-        return $this->select()
-            ->where('active', true)
-            ->orderBy('created_at', 'DESC')
-            ->fetchAll();
-    }
-
-    public function findWithPosts(int $id): ?User
-    {
-        return $this->select()
-            ->where('id', $id)
-            ->load('posts')
-            ->fetchOne();
-    }
-
-    public function searchByName(string $query): array
-    {
-        return $this->select()
-            ->where('name', 'like', "%{$query}%")
-            ->limit(10)
-            ->fetchAll();
-    }
-}
-```
-
-### Construtor de Consultas
-
-```php
-// Consultas básicas
-$users = $userRepository->select()
-    ->where('age', '>', 18)
-    ->where('country', 'BR')
-    ->orderBy('name')
-    ->fetchAll();
-
-// Condições complexas
-$users = $userRepository->select()
-    ->where(function($query) {
-        $query->where('status', 'active')
-              ->orWhere('role', 'admin');
-    })
-    ->fetchAll();
-
-// Junções
-$posts = $postRepository->select()
-    ->innerJoin('users', 'user_id')
-    ->where('users.active', true)
-    ->fetchAll();
-
-// Agregações
-$count = $userRepository->select()
-    ->where('created_at', '>', new DateTime('-30 days'))
-    ->count();
-
-$stats = $orderRepository->select()
-    ->columns(['status', 'COUNT(*) as total', 'SUM(amount) as revenue'])
-    ->groupBy('status')
-    ->fetchAll();
-```
-
-### Paginação
-
-```php
-class UserRepository extends Repository
-{
-    public function paginate(int $page = 1, int $perPage = 15): Paginator
-    {
-        $query = $this->select()
-            ->orderBy('created_at', 'DESC');
-
-        return new Paginator($query, $page, $perPage);
-    }
-}
-
-// Uso
-$paginator = $userRepository->paginate(
-    page: $request->query('page', 1),
-    perPage: 20
-);
-
-$users = $paginator->getItems();
-$total = $paginator->getTotal();
-$lastPage = $paginator->getLastPage();
-```
-
-## Trabalhando com Entidades
-
-### Criando Entidades
-
-```php
-// Criar nova entidade
-$user = new User('João Silva', 'joao@exemplo.com');
-$user->setAvatar('avatar.jpg');
-
-// Persistir no banco de dados
-$orm->persist($user);
-$orm->run(); // Executar transação
-
-// Ou usando repositório
-$userRepository->persist($user);
-```
-
-### Atualizando Entidades
-
-```php
-// Encontrar e atualizar
-$user = $userRepository->findByPK(1);
-$user->setName('Maria Silva');
-$user->setUpdatedAt(new DateTime());
-
-$orm->persist($user);
-$orm->run();
-```
-
-### Excluindo Entidades
-
-```php
-// Excluir entidade única
-$user = $userRepository->findByPK(1);
-$orm->delete($user);
-$orm->run();
-
-// Excluir múltiplas
-$users = $userRepository->select()
-    ->where('inactive', true)
-    ->where('created_at', '<', new DateTime('-1 year'))
-    ->fetchAll();
-
-foreach ($users as $user) {
-    $orm->delete($user);
-}
-$orm->run();
-```
-
-### Operações em Lote
-
-```php
-// Inserir múltiplas
-$users = [];
-for ($i = 0; $i < 1000; $i++) {
-    $users[] = new User("Usuário {$i}", "usuario{$i}@exemplo.com");
-}
-
-foreach ($users as $user) {
-    $orm->persist($user);
-}
-$orm->run(); // Transação única
-
-// Atualizar múltiplas
-$userRepository->select()
-    ->where('newsletter', true)
-    ->update(['last_notified' => new DateTime()]);
-```
-
-## Migrações
-
-### Criando Migrações
-
-As migrações do Cycle ORM são arquivos PHP escritos manualmente (não há gerador via CLI).
-Exemplo de migração:
-
-```php
-use Cycle\Migrations\Migration;
-
-class CreateUsersTable extends Migration
-{
-    public function up(): void
-    {
-        $this->table('users')
-            ->addColumn('id', 'primary')
-            ->addColumn('name', 'string', ['length' => 255])
-            ->addColumn('email', 'string', ['length' => 255])
-            ->addColumn('password', 'string', ['length' => 255])
-            ->addColumn('created_at', 'datetime')
-            ->addColumn('updated_at', 'datetime', ['nullable' => true])
-            ->addIndex(['email'], ['unique' => true])
-            ->create();
-    }
-
-    public function down(): void
-    {
-        $this->table('users')->drop();
-    }
-}
-```
-
-### Executando Migrações
-
-```php
-use PivotPHP\CycleORM\Commands\MigrateCommand;
-
-// Executar as pendentes
-(new MigrateCommand([], $container))->handle();
-
-// Reverter a última
-(new MigrateCommand(['--rollback' => true], $container))->handle();
-```
-
-## Geração de Esquema
-
-Gerar esquema de banco de dados a partir de entidades:
-
-```php
-use PivotPHP\CycleORM\Commands\SchemaCommand;
-
-// Exibir o schema
-(new SchemaCommand([], $container))->handle();
-
-// Sincronizar o schema com as entidades
-(new SchemaCommand(['--sync' => true], $container))->handle();
-```
-
-## Eventos e Hooks
-
-### Eventos de Entidade
-
-```php
-#[Cycle\Entity]
-class User
-{
-    use TimestampableEntity;
-
-    #[Cycle\Hooks\BeforeCreate]
-    public function beforeCreate(): void
-    {
-        $this->createdAt = new DateTime();
-        $this->generateApiToken();
-    }
-
-    #[Cycle\Hooks\BeforeUpdate]
-    public function beforeUpdate(): void
-    {
-        $this->updatedAt = new DateTime();
-    }
-
-    #[Cycle\Hooks\AfterCreate]
-    public function afterCreate(): void
-    {
-        event(new UserCreated($this));
-    }
-}
-```
-
-### Listeners de Entidade Globais
-
-```php
-class EntityListener
-{
-    public function creating($entity): void
-    {
-        if (method_exists($entity, 'setCreatedBy')) {
-            $entity->setCreatedBy(auth()->user());
-        }
-    }
-
-    public function updating($entity): void
-    {
-        if (method_exists($entity, 'setUpdatedBy')) {
-            $entity->setUpdatedBy(auth()->user());
-        }
-    }
-}
-
-// Registrar no provedor de serviço
-$orm->getSchema()->listen('creating', [EntityListener::class, 'creating']);
-$orm->getSchema()->listen('updating', [EntityListener::class, 'updating']);
-```
-
-## Recursos Avançados
-
-### Exclusão Suave
-
-```php
-#[Cycle\Entity]
-#[Cycle\SoftDelete('deleted_at')]
-class User
-{
-    #[Cycle\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $deletedAt = null;
-}
-
-// Exclusão suave
-$user->delete(); // Define deleted_at
-
-// Consultar incluindo excluídos suavemente
-$users = $userRepository->select()
-    ->withDeleted()
-    ->fetchAll();
-
-// Consultar apenas excluídos suavemente
-$users = $userRepository->select()
-    ->onlyDeleted()
-    ->fetchAll();
-
-// Restaurar
-$user->restore(); // Define deleted_at como null
-```
-
-### Bloqueio Otimista
-
-```php
-#[Cycle\Entity]
-#[Cycle\OptimisticLock('version')]
-class Document
-{
-    #[Cycle\Column(type: 'integer', default: 1)]
-    private int $version = 1;
-}
-
-// Lança exceção se a versão não corresponder
+$db->beginTransaction();
 try {
-    $document->setContent('Novo conteúdo');
-    $orm->persist($document);
-    $orm->run();
-} catch (OptimisticLockException $e) {
-    // Lidar com modificação concorrente
+    // ...
+    $db->commit();
+} catch (\Throwable $e) {
+    $db->rollback();
+    throw $e;
 }
 ```
 
-### Herança de Tabela
+## Acesso ao PDO
+
+Para recursos não cobertos (drivers/atributos específicos, `PDOStatement`):
 
 ```php
-#[Cycle\Entity]
-#[Cycle\SingleTableInheritance(discriminator: 'type')]
-abstract class Vehicle
-{
-    #[Cycle\Column(type: 'primary')]
-    protected ?int $id = null;
-
-    #[Cycle\Column(type: 'string')]
-    protected string $brand;
-}
-
-#[Cycle\Entity]
-#[Cycle\DiscriminatorValue('car')]
-class Car extends Vehicle
-{
-    #[Cycle\Column(type: 'integer')]
-    private int $doors;
-}
-
-#[Cycle\Entity]
-#[Cycle\DiscriminatorValue('motorcycle')]
-class Motorcycle extends Vehicle
-{
-    #[Cycle\Column(type: 'string')]
-    private string $type;
-}
+$pdo = $db->getPdo();
+$stmt = $pdo->prepare('SELECT * FROM users WHERE role = :role');
+$stmt->execute(['role' => 'admin']);
+$rows = $stmt->fetchAll();
 ```
 
-## Melhores Práticas
+## API
 
-1. **Use repositórios**: Mantenha a lógica de banco de dados em classes de repositório
-2. **Evite consultas N+1**: Use carregamento antecipado para relacionamentos
-3. **Use transações**: Envolva múltiplas operações em transações
-4. **Indexe adequadamente**: Adicione índices a colunas consultadas frequentemente
-5. **Use objetos de valor**: Para atributos complexos, use entidades incorporadas
-6. **Mantenha entidades simples**: Entidades devem focar em dados, não em lógica de negócios
-7. **Use DTOs**: Transfira dados entre camadas usando Objetos de Transferência de Dados
-8. **Faça cache de consultas**: Faça cache de dados acessados frequentemente e que mudam raramente
+| Método | Retorno | Descrição |
+|---|---|---|
+| `select(string $query, array $bindings = [])` | `array` | Lista de linhas. |
+| `selectOne(string $query, array $bindings = [])` | `?array` | Uma linha ou `null`. |
+| `insert(string $query, array $bindings = [])` | `bool` | Executa um INSERT. |
+| `update(string $query, array $bindings = [])` | `int` | Linhas afetadas. |
+| `delete(string $query, array $bindings = [])` | `int` | Linhas afetadas. |
+| `statement(string $query, array $bindings = [])` | `bool` | Um statement genérico. |
+| `exec(string $sql)` | `int` | Vários statements separados por `;`. |
+| `lastInsertId()` | `string` | Último id inserido. |
+| `beginTransaction()` / `commit()` / `rollback()` | `bool` | Controle manual de transação. |
+| `transaction(callable $callback)` | `mixed` | Transação com commit/rollback automáticos. |
+| `getPdo()` | `\PDO` | Instância PDO subjacente. |
+
+## Boas práticas
+
+1. **Use sempre bindings** (`?` ou `:nome`); nunca concatene valores na SQL.
+2. **Registre como singleton** para reaproveitar a conexão.
+3. **Use `transaction()`** para agrupar operações relacionadas.
+4. **Mantenha consultas em um repositório** próprio em vez de espalhá-las pelos handlers.
+5. **Para ORM**, prefira uma biblioteca ativa e compatível com o core 4.x.

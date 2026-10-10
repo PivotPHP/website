@@ -1894,13 +1894,13 @@
                         <div class="feature-icon">⚡</div>
                         <h4 class="card-title">Lightning Fast</h4>
                         <p class="card-content">
-                            52M+ operations per second. Built for extreme performance.
+                            Express.js-style routing on PSR-7/PSR-15.
                         </p>
                     </div>
 
                     <div class="stats-card">
-                        <div class="stats-value">52M+</div>
-                        <div class="stats-label">Operations/sec</div>
+                        <div class="stats-value">229</div>
+                        <div class="stats-label">req/sec (Docker)</div>
                     </div>
 
                     <div class="interactive-card">
@@ -2054,7 +2054,7 @@
 <span class="code-keyword">$app</span>-><span class="code-function">get</span>(<span class="code-string">'/api/users/:id'</span>, <span class="code-keyword">function</span> (<span class="code-keyword">$req</span>, <span class="code-keyword">$res</span>) {
     <span class="code-keyword">return</span> <span class="code-keyword">$res</span>-><span class="code-function">json</span>([
         <span class="code-string">'id'</span> => <span class="code-keyword">$req</span>->params->id,
-        <span class="code-string">'performance'</span> => <span class="code-string">'52M+ ops/sec'</span>
+        <span class="code-string">'stack'</span> => <span class="code-string">'PSR-7 / PSR-15'</span>
     ]);
 });
 

@@ -9,23 +9,18 @@ permalink: /pt/docs/routing/
 lang: pt
 ---
 
-O PivotPHP fornece um sistema de roteamento semelhante ao Express.js. As rotas são definidas usando métodos de verbos HTTP na instância da aplicação.
+O roteamento do PivotPHP é inspirado no Express.js. As rotas são registradas na instância da
+aplicação e cada handler **deve retornar a resposta**.
 
-## Roteamento Básico
-
-Uma rota recebe um caminho e um handler. O handler recebe a requisição e a resposta e deve escrever o resultado na resposta:
+## Roteamento básico
 
 ```php
-$app->get('/', function ($req, $res) {
-    return $res->send('Olá Mundo!');
-});
+$app->get('/', fn ($req, $res) => $res->send('Olá Mundo!'));
 ```
 
-> Use sempre os métodos da resposta (`send()`, `json()`, `text()`, `html()`). Retornar uma string diretamente do handler não escreve nada no corpo da resposta.
+### Métodos disponíveis
 
-### Métodos Disponíveis
-
-A `Application` oferece um método por verbo HTTP:
+A `Application` expõe um método por verbo HTTP:
 
 ```php
 $app->get($caminho, $handler);
@@ -35,78 +30,116 @@ $app->patch($caminho, $handler);
 $app->delete($caminho, $handler);
 ```
 
-Não há métodos para `OPTIONS`, `HEAD`, múltiplos verbos (`match`) ou qualquer verbo (`any`) na `Application`. Requisições `HEAD` e `OPTIONS` sem rota correspondente recebem `404`.
+`HEAD` reutiliza a rota `GET` correspondente. Para `OPTIONS` em um caminho conhecido, o framework
+responde `204` com o cabeçalho `Allow`. Se um caminho casar com outro verbo, a resposta é `405` +
+`Allow`; se nenhuma rota casar, é `404`. Verbetes adicionais (`options()`, `head()`, `any()`) existem
+no roteador de baixo nível (`PivotPHP\Routing\Router\Router`), não na `Application`.
 
-## Parâmetros de Rota
+## Parâmetros de rota
 
-Capture segmentos do caminho com `:nome` e leia-os com `$req->param()`:
-
-```php
-$app->get('/usuario/:id', function ($req, $res) {
-    return $res->json(['user_id' => $req->param('id')]);
-});
-```
-
-Você pode ter múltiplos parâmetros:
+Capture segmentos do caminho com `:nome` (ou `{nome}`) e leia-os com `$req->param()`:
 
 ```php
-$app->get('/posts/:ano/:mes/:slug', function ($req, $res) {
-    return $res->json([
-        'ano'  => $req->param('ano'),
-        'mes'  => $req->param('mes'),
-        'slug' => $req->param('slug'),
-    ]);
-});
+$app->get('/usuario/:id', fn ($req, $res) => $res->json(['user_id' => $req->param('id')]));
+$app->get('/arquivos/{nome}', fn ($req, $res) => $res->json($req->params()));
 ```
 
-`param()` aceita um valor padrão como segundo argumento (`$req->param('id', 0)`), devolvido quando o parâmetro não existe.
-
-> Valores numéricos são convertidos para inteiro: em `/usuario/05`, `$req->param('id')` retorna `5` (`int`). Valores não numéricos chegam como `string`.
-
-### Restrições de Expressão Regular
-
-Restrinja um parâmetro a um padrão com `<regex>`:
+Múltiplos parâmetros:
 
 ```php
-$app->get('/usuario/:id<\d+>', function ($req, $res) {
-    return $res->json(['id' => $req->param('id')]);
-});
+$app->get('/posts/:ano/:mes/:slug', fn ($req, $res) => $res->json([
+    'ano'  => $req->param('ano'),
+    'mes'  => $req->param('mes'),
+    'slug' => $req->param('slug'),
+]));
 ```
 
-Há atalhos prontos: `:slug<slug>` (`[a-z0-9-]+`), `:id<uuid>` e `:data<date>` (`YYYY-MM-DD`):
+> Os parâmetros de rota chegam como **string**. Faça o cast que precisar
+> (`(int) $req->param('id')`). `param()` aceita um valor padrão como segundo argumento.
+
+Parâmetros opcionais (`:param?`) **não** são suportados e lançam erro no registro.
+
+### Constraints (expressões regulares)
+
+Restrinja um parâmetro com `<regex>`:
 
 ```php
-$app->get('/artigo/:slug<slug>', function ($req, $res) {
-    return $res->json(['slug' => $req->param('slug')]);
-});
+$app->get('/usuario/:id<\d+>', fn ($req, $res) => $res->json(['id' => $req->param('id')]));
+$app->get('/posts/:slug<[a-z0-9-]+>', $handler);
 ```
 
-## Rotas de Controller
+Há atalhos prontos:
 
-Em vez de closures, use um array callable `[Classe::class, 'método']`:
+| Atalho | Padrão |
+|---|---|
+| `int` | `\d+` |
+| `slug` | `[a-z0-9-]+` |
+| `alpha` | `[a-zA-Z]+` |
+| `alnum` | `[a-zA-Z0-9]+` |
+| `uuid` | UUID canônico |
+| `date` | `\d{4}-\d{2}-\d{2}` |
+| `year` / `month` / `day` | `\d{4}` / `\d{2}` / `\d{2}` |
 
 ```php
-class UserController
-{
-    public function index($req, $res)
-    {
-        return $res->json(['usuarios' => []]);
-    }
-
-    public function show($req, $res)
-    {
-        return $res->json(['id' => $req->param('id')]);
-    }
-}
-
-$app->get('/usuarios', [UserController::class, 'index']);
-$app->get('/usuarios/:id', [UserController::class, 'show']);
+$app->get('/artigos/:slug<slug>', fn ($req, $res) => $res->json(['slug' => $req->param('slug')]));
+$app->get('/arquivos/:id<uuid>', $handler);
+$app->get('/agenda/:dia<date>', $handler);
 ```
 
-Métodos estáticos e de instância são aceitos. Para métodos de instância, o controller é instanciado **sem argumentos** a cada requisição — um construtor com parâmetros obrigatórios causa erro `500`. A sintaxe em string `'UserController@index'` não é suportada.
+## Handlers
 
-## Boas Práticas
+São aceitos três formatos de handler:
 
-1. **Escreva na resposta**: retorne `$res->json(...)`, `$res->send(...)` etc. em todo handler.
-2. **Use controllers** para lógica que cresce além de algumas linhas.
-3. **Valide parâmetros no handler**: confira tipo e formato de `$req->param()` antes de usá-los.
+```php
+// Closure
+$app->get('/users', fn ($req, $res) => $res->json(['users' => []]));
+
+// Função nomeada
+function listUsers($req, $res) { return $res->json([]); }
+$app->get('/users', 'listUsers');
+
+// Array callable (recomendado para controllers)
+$app->get('/users', [UserController::class, 'index']);
+$app->post('/users', [$controller, 'store']);
+```
+
+Array callables `[Classe::class, 'metodo']` funcionam tanto para métodos estáticos quanto de
+instância. Para métodos de instância, a `Application` resolve a instância pelo contêiner a cada
+requisição (respeitando `bind()`/`singleton()`), caindo para `new Classe()` quando não registrada.
+
+> A sintaxe em string `'UserController@index'` **não** é suportada (lança `TypeError`).
+
+## Grupos de rotas
+
+Grupos (prefixo + middleware) vêm do roteador (`PivotPHP\Routing\Router\Router`):
+
+```php
+use PivotPHP\Routing\Router\Router;
+
+Router::group('/admin', function ($router): void {
+    $router->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
+}, [$requireAdmin]);
+```
+
+`Router::use($prefixo, ...$middlewares)` associa middlewares às rotas registradas depois cujo
+caminho começa com o prefixo — sem alterar os caminhos das rotas.
+
+## Arquivos estáticos
+
+O `StaticFileManager` registra cada arquivo de um diretório como uma rota `GET`:
+
+```php
+use PivotPHP\Routing\Router\StaticFileManager;
+
+StaticFileManager::registerDirectory('/public', __DIR__ . '/public');
+```
+
+Arquivos e diretórios ocultos (`.env`, `.git/`, `.well-known/`) nunca são publicados, e symlinks só
+são seguidos quando o alvo permanece dentro do diretório.
+
+## Boas práticas
+
+1. **Sempre retorne a resposta** do handler (`return $res->json(...)`).
+2. **Use controllers** quando a lógica crescer além de algumas linhas.
+3. **Valide os parâmetros** no handler antes de usá-los.
+4. **Prefira constraints** (`:id<\d+>`) para evitar que valores inválidos cheguem ao handler.

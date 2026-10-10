@@ -9,536 +9,216 @@ permalink: /pt/docs/security/
 lang: pt
 ---
 
-O PivotPHP leva a segurança a sério e fornece múltiplas camadas de proteção prontas para uso. Este guia cobre os recursos de segurança disponíveis e as melhores práticas para manter sua aplicação segura.
+A partir da versão 4.0, os middlewares de segurança **não fazem parte do core**: eles vivem no pacote
+[`pivotphp/security`](https://github.com/PivotPHP/pivotphp-security), que é instalado junto com o
+`pivotphp/core`. O pacote segue o padrão PSR-15 e funciona com qualquer pipeline PSR-15.
 
-## Visão Geral
+Princípios do pacote:
 
-O PivotPHP inclui proteção contra vulnerabilidades de segurança comuns:
+- **Um middleware por preocupação**: CORS, proxies confiáveis, headers, CSRF, JWT e rate limiting.
+- **Fail closed**: uma checagem que falha devolve `401`/`403`/`429` e nunca alcança o handler.
+- **Configuração validada**: ajustes inseguros (origem `*` com credenciais, segredo JWT vazio,
+  `POST` declarado "seguro"...) lançam `InvalidConfigurationException` no momento em que a
+  configuração é construída.
 
-- **CSRF** (Cross-Site Request Forgery)
-- **XSS** (Cross-Site Scripting)
-- **Injeção SQL**
-- **Sequestro de Sessão**
-- **Ataques de Força Bruta**
-- **Ataques de Temporização**
-- **Travessia de Diretório**
+## Instalação
 
-## Proteção CSRF
-
-### Como Funciona a Proteção CSRF
-
-O PivotPHP gera tokens únicos para cada sessão para verificar que requisições autenticadas vêm da sua aplicação:
-
-```php
-// Habilitar proteção CSRF globalmente
-$app->middleware(new CsrfMiddleware());
-
-// Em seus formulários
-<form method="POST" action="/perfil">
-    <?= csrf_field() ?>
-    <!-- ou -->
-    <input type="hidden" name="_token" value="<?= csrf_token() ?>">
-
-    <!-- campos do formulário -->
-</form>
-
-// Para requisições AJAX
-fetch('/api/dados', {
-    method: 'POST',
-    headers: {
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(dados)
-});
+```bash
+composer require pivotphp/security
 ```
 
-### Excluindo Rotas
+Os middlewares que geram respostas recebem uma `ResponseFactoryInterface` PSR-17 (por exemplo
+`PivotPHP\Http\Factory\Psr17Factory` ou `Nyholm\Psr7\Factory\Psr17Factory`). Cada adapter depende da
+sua biblioteca, instalada sob demanda:
 
-Algumas rotas podem precisar ser excluídas da proteção CSRF:
+| Middleware | Biblioteca | Instalação |
+|---|---|---|
+| `Cors\CorsMiddleware` | — | — |
+| `Proxy\TrustedProxyMiddleware` | — | — |
+| `Headers\SecurityHeadersMiddleware` | [bepsvpt/secure-headers](https://github.com/bepsvpt/secure-headers) | `composer require bepsvpt/secure-headers` |
+| `Csrf\CsrfMiddleware` | [yiisoft/csrf](https://github.com/yiisoft/csrf) | `composer require yiisoft/csrf` |
+| `Jwt\JwtAuthMiddleware`, `Jwt\JwtIssuer` | [firebase/php-jwt](https://github.com/firebase/php-jwt) | `composer require firebase/php-jwt` |
+| `RateLimit\RateLimitMiddleware` | [symfony/rate-limiter](https://symfony.com/doc/current/rate_limiter.html) | `composer require symfony/rate-limiter` |
 
-```php
-$app->middleware(new CsrfMiddleware([
-    'except' => [
-        '/webhooks/*',
-        '/api/publico/*'
-    ]
-]));
+## Ordem recomendada
+
+```text
+TrustedProxy → SecurityHeaders → CORS → RateLimit → (body parsing) → CSRF → JWT → rotas
 ```
 
-### Verificação de Token Personalizada
+- **TrustedProxy primeiro**, para que todo middleware seguinte veja o IP real do cliente.
+- **SecurityHeaders e CORS antes de qualquer coisa que rejeite**, para que respostas `401`/`403`/`429`
+  ainda tragam os cabeçalhos de segurança e CORS.
+- **CORS antes da autenticação**: requisições preflight não carregam credenciais.
+- **Body parsing antes do CSRF**, para que os campos de formulário estejam visíveis.
+
+## CORS
 
 ```php
-class CustomCsrfMiddleware extends CsrfMiddleware
-{
-    protected function tokensMatch($request): bool
-    {
-        $token = $this->getTokenFromRequest($request);
-        $sessionToken = $request->session()->token();
+use PivotPHP\Http\Factory\Psr17Factory;
+use PivotPHP\Security\Cors\CorsConfig;
+use PivotPHP\Security\Cors\CorsMiddleware;
 
-        return hash_equals($sessionToken, $token);
-    }
-}
+$cors = new CorsMiddleware(new Psr17Factory(), new CorsConfig(
+    allowedOrigins: ['https://app.exemplo.com'],
+    allowCredentials: true,
+));
+
+$app->use($cors);
 ```
 
-## Proteção XSS
+| Opção | Padrão | Observação |
+|---|---|---|
+| `allowedOrigins` | `[]` | `scheme://host[:port]` exato, minúsculo, sem path. `['*']` libera qualquer origem. |
+| `allowedMethods` | `GET, POST, PUT, PATCH, DELETE` | |
+| `allowedHeaders` | `Content-Type, Authorization` | Cabeçalhos aceitos no preflight. |
+| `exposedHeaders` | `[]` | Cabeçalhos legíveis pelo navegador. |
+| `allowCredentials` | `false` | |
+| `maxAge` | `600` | Cache do preflight em segundos; `null` omite o cabeçalho. |
 
-### Escape Automático de Saída
+Comportamento: requisições sem `Origin` passam direto; o preflight (`OPTIONS` +
+`Access-Control-Request-Method`) é respondido pelo middleware (`204` quando permitido, `403` caso
+contrário) e nunca alcança o handler. `'*'` combinado com `allowCredentials: true` é rejeitado na
+configuração.
 
-Sempre escape a entrada do usuário ao exibi-la:
+## Proxies confiáveis
 
 ```php
-// Em templates PHP
-<?= e($entradaUsuario) ?>
-<?= escape($comentario) ?>
+use PivotPHP\Security\Proxy\TrustedProxyConfig;
+use PivotPHP\Security\Proxy\TrustedProxyMiddleware;
 
-// Escape para diferentes contextos
-<?= e($dados, 'html') ?>      // Contexto HTML (padrão)
-<?= e($dados, 'js') ?>        // Contexto JavaScript
-<?= e($dados, 'css') ?>       // Contexto CSS
-<?= e($dados, 'attr') ?>      // Contexto de atributo HTML
+$app->use(new TrustedProxyMiddleware(new TrustedProxyConfig(
+    trustedProxies: ['10.0.0.0/8', '2001:db8::/32'],
+)));
+
+// depois: $request->getAttribute('client_ip')
 ```
 
-### Política de Segurança de Conteúdo
+O cabeçalho de encaminhamento (`X-Forwarded-For` por padrão) só é considerado quando o `REMOTE_ADDR`
+é um proxy confiável. A cadeia é lida da direita para a esquerda; o primeiro endereço não confiável é
+o cliente.
 
-Defina cabeçalhos CSP para prevenir ataques XSS:
+## Headers de segurança
 
 ```php
-$app->middleware(function($request, $handler) {
-    $response = $handler->handle($request);
+use PivotPHP\Security\Headers\SecurityHeadersMiddleware;
 
-    return $response->withHeader(
-        'Content-Security-Policy',
-        "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.exemplo.com; style-src 'self' 'unsafe-inline';"
-    );
-});
+$app->use(new SecurityHeadersMiddleware()); // padrões para APIs
 ```
 
-### Cabeçalhos de Proteção XSS
+Cabeçalhos enviados por padrão:
 
-```php
-class SecurityHeadersMiddleware implements MiddlewareInterface
-{
-    public function process($request, $handler): ResponseInterface
-    {
-        $response = $handler->handle($request);
-
-        return $response
-            ->withHeader('X-XSS-Protection', '1; mode=block')
-            ->withHeader('X-Content-Type-Options', 'nosniff')
-            ->withHeader('X-Frame-Options', 'SAMEORIGIN')
-            ->withHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-    }
-}
+```text
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Security-Policy: default-src 'none'; frame-ancestors 'none'
+X-Permitted-Cross-Domain-Policies: none
 ```
 
-## Autenticação
+`X-XSS-Protection` (descontinuado) não é enviado. Há `SecurityHeadersConfig` para ajustar HSTS, CSP,
+`Referrer-Policy`, `frameOptions` e outros via `overrides`.
 
-### Hash de Senhas
+## CSRF
 
-Sempre faça hash de senhas usando algoritmos seguros:
+Necessário quando a API se autentica com **cookies**. APIs com token no cabeçalho
+`Authorization` não são expostas a CSRF.
 
 ```php
-use PivotPHP\Security\Hash;
+use PivotPHP\Http\Factory\Psr17Factory;
+use PivotPHP\Security\Csrf\CsrfMiddleware;
+use Yiisoft\Csrf\Hmac\HmacCsrfToken;
+use Yiisoft\Csrf\MaskedCsrfToken;
 
-// Fazer hash da senha
-$senhaHash = Hash::make($request->input('senha'));
+$token = new MaskedCsrfToken(new HmacCsrfToken($identityGenerator, $secret, 'sha256', 3600));
+$app->use(new CsrfMiddleware(new Psr17Factory(), $token, new \PivotPHP\Security\Csrf\CsrfConfig()));
 
-// Verificar senha
-if (Hash::check($senhaSimples, $senhaHash)) {
-    // Senha está correta
-}
-
-// Verificar se precisa refazer o hash
-if (Hash::needsRehash($senhaHash)) {
-    $senhaHash = Hash::make($senhaSimples);
-    // Atualizar senha armazenada
-}
+// no handler: $request->getAttribute('csrf_token')->getValue()
 ```
 
-### Exemplo de Autenticação
+Os tokens vêm do `yiisoft/csrf`. Por padrão o token é aceito do campo `_csrf` no corpo ou do
+cabeçalho `X-CSRF-Token`; `GET`/`HEAD`/`OPTIONS` são considerados seguros e não são verificados.
+Falhas devolvem `403` sem alcançar a rota.
+
+## Autenticação JWT
 
 ```php
-class AuthController
-{
-    public function login(Request $request, Response $response)
-    {
-        $credenciais = $request->only(['email', 'senha']);
+use PivotPHP\Http\Factory\Psr17Factory;
+use PivotPHP\Security\Jwt\JwtAuthMiddleware;
+use PivotPHP\Security\Jwt\JwtConfig;
 
-        $usuario = User::where('email', $credenciais['email'])->first();
+$auth = new JwtAuthMiddleware(new Psr17Factory(), new JwtConfig(
+    key: $_ENV['JWT_SECRET'],           // ≥ 32 bytes para HS256
+    algorithm: 'HS256',
+    publicPaths: ['/health', '/docs/*'],
+));
 
-        if (!$usuario || !Hash::check($credenciais['senha'], $usuario->password)) {
-            return $response->unauthorized('Credenciais inválidas');
-        }
+$app->use($auth);
 
-        // Gerar token seguro
-        $token = bin2hex(random_bytes(32));
-
-        // Armazenar token
-        $usuario->api_token = hash('sha256', $token);
-        $usuario->save();
-
-        return $response->json([
-            'token' => $token,
-            'usuario' => $usuario
-        ]);
-    }
-}
+// no handler: $request->getAttribute('user') — as claims como array
 ```
 
-### Autenticação JWT
+Segredos vazios, segredos menores que o tamanho da saída do hash (32/48/64 bytes) e algoritmos
+desconhecidos são rejeitados na configuração. Falhas de verificação devolvem `401` com
+`WWW-Authenticate: Bearer`.
+
+### Emitindo tokens
+
+`JwtIssuer` compartilha a mesma `JwtConfig` usada pelo middleware, garantindo que tokens emitidos e
+verificados coincidam:
 
 ```php
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use PivotPHP\Security\Jwt\JwtIssuer;
 
-class JwtAuth
-{
-    private string $secret;
-
-    public function __construct(string $secret)
-    {
-        $this->secret = $secret;
-    }
-
-    public function generateToken(User $usuario): string
-    {
-        $payload = [
-            'iss' => config('app.url'),
-            'sub' => $usuario->id,
-            'iat' => time(),
-            'exp' => time() + (60 * 60 * 24), // 24 horas
-            'usuario' => [
-                'id' => $usuario->id,
-                'email' => $usuario->email
-            ]
-        ];
-
-        return JWT::encode($payload, $this->secret, 'HS256');
-    }
-
-    public function validateToken(string $token): ?object
-    {
-        try {
-            return JWT::decode($token, new Key($this->secret, 'HS256'));
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-}
+$issuer = new JwtIssuer($config);                 // HS*: assina com o segredo configurado
+$token  = $issuer->issue(['sub' => $userId], ttl: 3600);
 ```
 
-## Limitação de Taxa
+Gere segredos HMAC com `bin2hex(random_bytes(32))` e guarde-os em variável de ambiente ou gerenciador
+de segredos — nunca no código.
 
-Proteja contra ataques de força bruta e abuso de API:
-
-```php
-// Limitação de taxa global
-$app->middleware(new RateLimitMiddleware([
-    'max_attempts' => 60,
-    'decay_minutes' => 1
-]));
-
-// Limites específicos por rota
-$app->post('/login', function($req, $res) {
-    // Lógica de login
-})->middleware('throttle:5,1'); // 5 tentativas por minuto
-
-// Limitação de taxa personalizada
-class CustomRateLimiter extends RateLimitMiddleware
-{
-    protected function resolveRequestSignature($request): string
-    {
-        // Usar ID do usuário se autenticado, senão IP
-        if ($usuario = $request->getAttribute('usuario')) {
-            return 'usuario:' . $usuario->id;
-        }
-
-        return 'ip:' . $request->getServerParams()['REMOTE_ADDR'];
-    }
-}
-```
-
-## Prevenção de Injeção SQL
-
-### Use Vinculação de Parâmetros
-
-Sempre use vinculação de parâmetros para consultas de banco de dados:
+## Rate limiting
 
 ```php
-// Usando query builder (seguro)
-$usuarios = DB::table('usuarios')
-    ->where('email', $email)
-    ->where('ativo', true)
-    ->get();
+use PivotPHP\Http\Factory\Psr17Factory;
+use PivotPHP\Security\RateLimit\RateLimitConfig;
+use PivotPHP\Security\RateLimit\RateLimitMiddleware;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 
-// Usando consultas brutas com vinculação (seguro)
-$usuarios = DB::select(
-    'SELECT * FROM usuarios WHERE email = ? AND ativo = ?',
-    [$email, true]
+$limiter = new RateLimiterFactory(
+    ['id' => 'login', 'policy' => 'sliding_window', 'limit' => 5, 'interval' => '1 minute'],
+    $storage,      // e.g. CacheStorage sobre Redis
+    $lockFactory,  // symfony/lock — necessário para contagem correta em concorrência
 );
 
-// NUNCA faça isso (vulnerável)
-$usuarios = DB::select("SELECT * FROM usuarios WHERE email = '$email'");
+$app->use(new RateLimitMiddleware(new Psr17Factory(), $limiter, new RateLimitConfig(keyPrefix: 'login:')));
 ```
 
-### Validação de Entrada
+Ao exceder o limite, a resposta é `429` com `Retry-After` e `X-RateLimit-*`, sem alcançar o handler.
+Em produção, use um storage compartilhado e um `LockFactory`; `InMemoryStorage` conta por processo.
+
+## Hash de senhas
+
+O pacote de segurança **não** fornece hashing de senhas. Use as funções nativas do PHP:
 
 ```php
-$validator = validate($request->all(), [
-    'email' => 'required|email|max:255',
-    'idade' => 'required|integer|between:18,100',
-    'papel' => 'required|in:admin,usuario,convidado'
-]);
+$hash = password_hash($senha, PASSWORD_DEFAULT);
 
-if ($validator->fails()) {
-    return $response->unprocessable($validator->errors());
-}
-```
-
-## Segurança de Sessão
-
-### Configurar Sessões Seguras
-
-```php
-// Na sua configuração de sessão
-return [
-    'driver' => 'file',
-    'lifetime' => 120,
-    'expire_on_close' => false,
-    'encrypt' => true,
-    'secure' => true,  // Apenas HTTPS
-    'httponly' => true, // Sem acesso JavaScript
-    'same_site' => 'lax',
-    'partitioned' => true
-];
-```
-
-### Prevenção de Fixação de Sessão
-
-```php
-class SessionSecurityMiddleware implements MiddlewareInterface
-{
-    public function process($request, $handler): ResponseInterface
-    {
-        // Regenerar ID de sessão no login
-        if ($request->getUri()->getPath() === '/login' && $request->isPost()) {
-            session_regenerate_id(true);
-        }
-
-        // Verificar sequestro de sessão
-        $sessaoIp = $_SESSION['ip_address'] ?? null;
-        $ipAtual = $request->getServerParams()['REMOTE_ADDR'];
-
-        if ($sessaoIp && $sessaoIp !== $ipAtual) {
-            session_destroy();
-            return response()->unauthorized('Sessão inválida');
-        }
-
-        $_SESSION['ip_address'] = $ipAtual;
-
-        return $handler->handle($request);
+if (password_verify($senha, $hash)) {
+    if (password_needs_rehash($hash, PASSWORD_DEFAULT)) {
+        $hash = password_hash($senha, PASSWORD_DEFAULT);
+        // atualize o hash armazenado
     }
 }
 ```
 
-## Segurança de Upload de Arquivos
+## Boas práticas
 
-### Validar Uploads de Arquivo
-
-```php
-class FileUploadController
-{
-    public function upload(Request $request, Response $response)
-    {
-        $validator = validate($request->all(), [
-            'arquivo' => 'required|file|mimes:jpg,png,pdf|max:2048'
-        ]);
-
-        if ($validator->fails()) {
-            return $response->unprocessable($validator->errors());
-        }
-
-        $arquivo = $request->file('arquivo');
-
-        // Validação adicional
-        if (!$this->isValidFile($arquivo)) {
-            return $response->badRequest('Arquivo inválido');
-        }
-
-        // Gerar nome de arquivo seguro
-        $nomeArquivo = $this->generateSafeFilename($arquivo);
-
-        // Armazenar fora da raiz web
-        $caminho = storage_path('uploads/' . $nomeArquivo);
-        $arquivo->moveTo($caminho);
-
-        return $response->json(['caminho' => $nomeArquivo]);
-    }
-
-    private function isValidFile($arquivo): bool
-    {
-        // Verificar tipo MIME real
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $mimeType = finfo_file($finfo, $arquivo->getStream()->getMetadata('uri'));
-        finfo_close($finfo);
-
-        $tiposPermitidos = ['image/jpeg', 'image/png', 'application/pdf'];
-
-        return in_array($mimeType, $tiposPermitidos);
-    }
-
-    private function generateSafeFilename($arquivo): string
-    {
-        $extensao = pathinfo($arquivo->getClientFilename(), PATHINFO_EXTENSION);
-        return uniqid() . '_' . time() . '.' . $extensao;
-    }
-}
-```
-
-## Criptografia
-
-### Criptografia de Dados
-
-```php
-use PivotPHP\Security\Encryption;
-
-// Criptografar dados
-$criptografado = Encryption::encrypt($dadosSensiveis);
-
-// Descriptografar dados
-$descriptografado = Encryption::decrypt($criptografado);
-
-// Criptografar com chave personalizada
-$criptografado = Encryption::encrypt($dados, $chavePersonalizada);
-```
-
-### Configuração
-
-```php
-// No seu arquivo .env
-APP_KEY=base64:sua-string-aleatoria-de-32-caracteres-aqui
-CIPHER=AES-256-CBC
-```
-
-## Cabeçalhos de Segurança
-
-### Cabeçalhos de Segurança Abrangentes
-
-```php
-class SecurityHeadersMiddleware implements MiddlewareInterface
-{
-    public function process($request, $handler): ResponseInterface
-    {
-        $response = $handler->handle($request);
-
-        return $response
-            // Prevenir XSS
-            ->withHeader('X-XSS-Protection', '1; mode=block')
-
-            // Prevenir MIME sniffing
-            ->withHeader('X-Content-Type-Options', 'nosniff')
-
-            // Prevenir clickjacking
-            ->withHeader('X-Frame-Options', 'DENY')
-
-            // Forçar HTTPS
-            ->withHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
-
-            // Controlar informação de referência
-            ->withHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-
-            // Política de recursos
-            ->withHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()')
-
-            // Política de Segurança de Conteúdo
-            ->withHeader('Content-Security-Policy', $this->getCspPolicy());
-    }
-
-    private function getCspPolicy(): string
-    {
-        return implode('; ', [
-            "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-            "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: https:",
-            "font-src 'self'",
-            "connect-src 'self'",
-            "frame-ancestors 'none'",
-            "base-uri 'self'",
-            "form-action 'self'"
-        ]);
-    }
-}
-```
-
-## Segurança de API
-
-### Autenticação de API
-
-```php
-class ApiAuthMiddleware implements MiddlewareInterface
-{
-    public function process($request, $handler): ResponseInterface
-    {
-        $apiKey = $request->getHeaderLine('X-API-Key');
-
-        if (!$apiKey) {
-            return response()->unauthorized('Chave API necessária');
-        }
-
-        // Comparação de tempo constante para prevenir ataques de temporização
-        $chaveValida = hash('sha256', $_ENV['API_KEY']);
-        $chaveFornecida = hash('sha256', $apiKey);
-
-        if (!hash_equals($chaveValida, $chaveFornecida)) {
-            return response()->unauthorized('Chave API inválida');
-        }
-
-        return $handler->handle($request);
-    }
-}
-```
-
-### Configuração CORS
-
-```php
-$app->middleware(new CorsMiddleware([
-    'allowed_origins' => ['https://app.exemplo.com'],
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE'],
-    'allowed_headers' => ['Content-Type', 'Authorization', 'X-API-Key'],
-    'exposed_headers' => ['X-RateLimit-Remaining'],
-    'max_age' => 86400,
-    'credentials' => true
-]));
-```
-
-## Melhores Práticas de Segurança
-
-1. **Mantenha o PivotPHP Atualizado**: Atualize regularmente para obter patches de segurança
-2. **Use HTTPS**: Sempre use SSL/TLS em produção
-3. **Valide Toda Entrada**: Nunca confie na entrada do usuário
-4. **Princípio do Menor Privilégio**: Dê permissões mínimas necessárias
-5. **Auditorias de Segurança**: Audite regularmente seu código e dependências
-6. **Tratamento de Erros**: Nunca exponha informações sensíveis em mensagens de erro
-7. **Logging**: Registre eventos de segurança para monitoramento
-8. **Variáveis de Ambiente**: Armazene configuração sensível em variáveis de ambiente
-9. **Dependências**: Mantenha todas as dependências atualizadas
-10. **Sanitização de Entrada**: Sanitize dados antes do armazenamento e escape antes da saída
-
-## Checklist de Segurança
-
-- [ ] Proteção CSRF habilitada
-- [ ] Cabeçalhos de proteção XSS configurados
-- [ ] Toda entrada do usuário validada
-- [ ] Senhas com hash usando bcrypt
-- [ ] HTTPS forçado em produção
-- [ ] Cabeçalhos de segurança configurados
-- [ ] Limitação de taxa implementada
-- [ ] Uploads de arquivo validados
-- [ ] Injeção SQL prevenida
-- [ ] Sessões configuradas com segurança
-- [ ] Autenticação de API implementada
-- [ ] Mensagens de erro não vazam informações
-- [ ] Dependências atualizadas regularmente
-- [ ] Log de segurança habilitado
+1. **Mantenha o PivotPHP atualizado** para receber correções de segurança.
+2. **Use HTTPS** em produção e envie HSTS pelos `SecurityHeadersMiddleware`.
+3. **Valide toda entrada** do usuário.
+4. **Segredos no ambiente**, nunca no código.
+5. **Escape a saída** que for renderizada como HTML; o CSP restritivo padrão ajuda.
+6. **Rate limiting em produção precisa de storage compartilhado e lock.**
+7. **`app.debug` desligado** para não expor detalhes de exceções.

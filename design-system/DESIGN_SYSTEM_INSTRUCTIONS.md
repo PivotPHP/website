@@ -5,7 +5,7 @@
 ### 1. Evolutionary Design
 - **Adaptability**: Components should gracefully adapt between light and dark modes
 - **Progressive Enhancement**: Start simple, add complexity as needed
-- **Performance First**: Visual effects should never compromise the 52M+ ops/sec promise
+- **Performance First**: Visual effects should never compromise runtime performance
 
 ### 2. Visual Hierarchy
 - **Clear Focus**: Use the gradient for primary actions only
@@ -128,8 +128,8 @@
 #### 2. Metric Card
 ```html
 <div class="stats-card">
-    <div class="stats-value">52M+</div>
-    <div class="stats-label">Operations/sec</div>
+    <div class="stats-value">229</div>
+    <div class="stats-label">req/sec (Docker)</div>
     <div class="stats-trend positive">↑ 12%</div>
 </div>
 ```
