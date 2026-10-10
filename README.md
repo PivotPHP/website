@@ -128,7 +128,7 @@ ls -la _site/pt/docs/
 ## 🌐 Documentação
 
 - **Documentação Principal**: `pt/docs/` (PT-BR)
-- **Versão Atual**: v4.0.2
+- **Versão Atual**: v4.1.0
 
 ## 📝 License
 
