@@ -128,9 +128,9 @@ $this->assertSame(400, $app->handle($request)->getStatusCode());
 
 ## Isolamento entre testes
 
-O `Router` do `core-routing` mantém estado estático; a `Application` chama `Router::clear()` no boot,
-então **cada nova `Application` começa isolada**. Crie uma nova `Application` em `setUp()` para
-evitar que rotas de um teste vazem para outro.
+Cada `Application` tem o seu próprio roteador (core 5.0), então **cada nova `Application` começa
+isolada** — rotas, grupos e arquivos estáticos de uma não aparecem em outra. Crie uma nova
+`Application` em `setUp()`; não é preciso limpar estado global entre os testes.
 
 ## Mocking
 
