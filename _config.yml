@@ -18,8 +18,8 @@ facebook_url: "https://www.facebook.com/pivotphp"
 author: PivotPHP Team
 
 # Internationalization
-languages: ["en", "pt"]
-default_lang: "en"
+languages: ["pt", "en"]
+default_lang: "pt"
 exclude_from_localization: ["assets", "CNAME"]
 parallel_localization: true
 
