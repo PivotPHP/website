@@ -16,19 +16,19 @@ lang: pt
 <head>
   <meta charset="utf-8" />
   <title>Redirecionando...</title>
-  <meta http-equiv="refresh" content="0; url=/pt/docs/installation/" />
+  <meta http-equiv="refresh" content="0; url={{ site.baseurl }}/pt/docs/installation/" />
   <script>
-    window.location.replace('/pt/docs/installation/');
+    window.location.replace('{{ site.baseurl }}/pt/docs/installation/');
   </script>
   <noscript>
-    <meta http-equiv="refresh" content="0; url=/pt/docs/installation/" />
+    <meta http-equiv="refresh" content="0; url={{ site.baseurl }}/pt/docs/installation/" />
   </noscript>
 </head>
 <body>
   <p>Redirecionando para a documentação...</p>
   <p>
     Se não for redirecionado automaticamente,
-    <a href="/pt/docs/installation/">clique aqui</a>.
+    <a href="{{ site.baseurl }}/pt/docs/installation/">clique aqui</a>.
   </p>
 </body>
 </html>
