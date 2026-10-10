@@ -9,11 +9,12 @@ permalink: /pt/docs/quickstart/
 lang: pt
 ---
 
-Este guia mostrará como criar sua primeira aplicação PivotPHP. Vamos construir uma API REST simples para gerenciar tarefas.
+Este guia mostra como construir sua primeira API com o PivotPHP 4.0. Vamos criar uma API simples de
+tarefas (em memória) em poucos minutos.
 
-## Passo 1: Crie Sua Aplicação
+## Passo 1: Crie a aplicação
 
-Primeiro, crie um novo arquivo `public/index.php`:
+Crie `public/index.php`:
 
 ```php
 <?php
@@ -21,231 +22,192 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PivotPHP\Core\Core\Application;
 
-// Crie a instância da aplicação
 $app = new Application();
 
-// Defina sua primeira rota
-$app->get('/', function($request, $response) {
-    return $response->json([
-        'message' => 'Bem-vindo ao PivotPHP!',
-        'timestamp' => time()
-    ]);
-});
+$app->get('/', fn ($req, $res) => $res->json([
+    'message' => 'Bem-vindo ao PivotPHP!',
+    'timestamp' => time(),
+]));
 
-// Execute a aplicação
 $app->run();
 ```
 
-## Passo 2: Inicie o Servidor de Desenvolvimento
+Handlers recebem um `PivotPHP\Http\ExpressRequest` (`$req`) e um
+`PivotPHP\Http\ExpressResponse` (`$res`) e **devem retornar a resposta**.
 
-Execute o servidor de desenvolvimento PHP integrado:
+## Passo 2: Inicie o servidor de desenvolvimento
 
 ```bash
 php -S localhost:8000 -t public
 ```
 
-Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSON.
+Acesse `http://localhost:8000` para ver o JSON.
 
-## Passo 3: Adicione Mais Rotas
+## Passo 3: Adicione rotas
 
-Vamos criar uma API simples de gerenciamento de tarefas:
+Uma API de tarefas em memória, cobrindo leitura de parâmetros de rota e do corpo da requisição:
 
 ```php
-// Armazenamento de tarefas em memória (apenas para demonstração)
+// Armazenamento em memória (apenas para demonstração)
 $tasks = [];
 
 // Listar todas as tarefas
-$app->get('/tasks', function($req, $res) use (&$tasks) {
-    return $res->json($tasks);
-});
+$app->get('/tasks', fn ($req, $res) => $res->json(array_values($tasks)));
 
 // Obter uma tarefa específica
-$app->get('/tasks/:id', function($req, $res) use (&$tasks) {
+$app->get('/tasks/:id', function ($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
-    if (!isset($tasks[$id])) {
-        return $res->status(404)->json([
-            'error' => 'Tarefa não encontrada'
-        ]);
-    }
-
-    return $res->json($tasks[$id]);
+    return isset($tasks[$id])
+        ? $res->json($tasks[$id])
+        : $res->error(404, 'Tarefa não encontrada');
 });
 
-// Criar uma nova tarefa
-$app->post('/tasks', function($req, $res) use (&$tasks) {
-    $data = $req->body();
+// Criar uma nova tarefa (JSON ou form)
+$app->post('/tasks', function ($req, $res) use (&$tasks) {
+    $title = $req->input('title');
 
-    // Validação simples
-    if (empty($data['title'])) {
-        return $res->status(400)->json([
-            'error' => 'Título é obrigatório'
-        ]);
+    if (!is_string($title) || trim($title) === '') {
+        return $res->status(422)->json(['errors' => ['title' => 'O título é obrigatório.']]);
     }
 
     $id = uniqid();
-    $task = [
+    $tasks[$id] = [
         'id' => $id,
-        'title' => $data['title'],
+        'title' => trim($title),
         'completed' => false,
-        'created_at' => date('Y-m-d H:i:s')
+        'created_at' => date('c'),
     ];
 
-    $tasks[$id] = $task;
-
-    return $res->status(201)->json($task);
+    return $res->status(201)->json($tasks[$id]);
 });
 
 // Atualizar uma tarefa
-$app->put('/tasks/:id', function($req, $res) use (&$tasks) {
+$app->put('/tasks/:id', function ($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
-        return $res->status(404)->json([
-            'error' => 'Tarefa não encontrada'
-        ]);
+        return $res->error(404, 'Tarefa não encontrada');
     }
 
-    $data = $req->body();
-    $tasks[$id] = array_merge($tasks[$id], $data);
+    $completed = $req->input('completed');
+    if (is_bool($completed)) {
+        $tasks[$id]['completed'] = $completed;
+    }
 
     return $res->json($tasks[$id]);
 });
 
-// Deletar uma tarefa
-$app->delete('/tasks/:id', function($req, $res) use (&$tasks) {
+// Remover uma tarefa
+$app->delete('/tasks/:id', function ($req, $res) use (&$tasks) {
     $id = $req->param('id');
 
     if (!isset($tasks[$id])) {
-        return $res->status(404)->json([
-            'error' => 'Tarefa não encontrada'
-        ]);
+        return $res->error(404, 'Tarefa não encontrada');
     }
 
     unset($tasks[$id]);
 
-    return $res->status(204);
+    return $res->noContent();
 });
 ```
 
-## Passo 4: Adicione Middleware
+> `$req->param('id')` devolve a string capturada pela rota. Faça o cast (`(int)`, `(string)`) que
+> precisar no handler.
 
-Vamos adicionar um middleware de logging para registrar todas as requisições:
+## Passo 4: Adicione middleware
+
+Middleware global é registrado com `$app->use()`. Ele pode ser PSR-15 ou um callable
+`fn ($req, $res, $next)`:
 
 ```php
-// Middleware de logging
-$app->use(function($req, $res, $next) {
+// Middleware de logging (callable)
+$app->use(function ($req, $res, $next) {
     $start = microtime(true);
 
-    // Processa a requisição
-    $response = $next($req, $res);
+    // Executa o restante da pipeline
+    $response = $next();
 
-    // Registra a requisição
-    $duration = round((microtime(true) - $start) * 1000, 2);
     error_log(sprintf(
-        "[%s] %s %s - %dms",
-        date('Y-m-d H:i:s'),
-        $req->method(),
-        $req->path(),
-        $duration
+        '[%s] %s %s - %sms',
+        date('c'),
+        $req->getMethod(),
+        $req->getUri()->getPath(),
+        round((microtime(true) - $start) * 1000, 2)
     ));
 
     return $response;
 });
-
-// Middleware de CORS
-$app->use(function($req, $res, $next) {
-    $res->header('Access-Control-Allow-Origin', '*');
-    $res->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    $res->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    if ($req->method() === 'OPTIONS') {
-        return $res->status(204);
-    }
-
-    return $next($req, $res);
-});
 ```
 
-## Passo 5: Organizar o Código
+No callable, `$req` é o `ServerRequestInterface` do PSR-7, e `$next()` executa a pipeline (você pode
+passar uma requisição modificada). Para segurança (CORS, headers, CSRF, JWT) use os middlewares de
+[`pivotphp/security`]({{ '/pt/docs/security/' | relative_url }}).
 
-Para um projeto real, você deve organizar seu código em classes e usar o Container de Serviços:
+## Passo 5: Organize em controllers
+
+Métodos públicos podem ser usados como array callable `[Controller::class, 'metodo']`:
 
 ```php
-// src/Controllers/TaskController.php
+<?php
+// app/Controllers/TaskController.php
 namespace App\Controllers;
 
-class TaskController
+use PivotPHP\Http\ExpressRequest;
+use PivotPHP\Http\ExpressResponse;
+use Psr\Http\Message\ResponseInterface;
+
+final class TaskController
 {
+    /** @var array<string, array<string, mixed>> */
     private array $tasks = [];
 
-    public function index($request, $response)
+    public function index(ExpressRequest $req, ExpressResponse $res): ResponseInterface
     {
-        return $response->json($this->tasks);
+        return $res->json(array_values($this->tasks));
     }
 
-    public function show($request, $response)
+    public function show(ExpressRequest $req, ExpressResponse $res): ResponseInterface
     {
-        $id = $request->param('id');
+        $task = $this->tasks[$req->param('id')] ?? null;
 
-        if (!isset($this->tasks[$id])) {
-            return $response->status(404)->json([
-                'error' => 'Tarefa não encontrada'
-            ]);
-        }
-
-        return $response->json($this->tasks[$id]);
+        return $task === null ? $res->error(404, 'Tarefa não encontrada') : $res->json($task);
     }
 
-    public function store($request, $response)
+    public function store(ExpressRequest $req, ExpressResponse $res): ResponseInterface
     {
-        $data = $request->body();
+        $title = $req->input('title');
 
-        if (empty($data['title'])) {
-            return $response->status(400)->json([
-                'error' => 'Título é obrigatório'
-            ]);
+        if (!is_string($title) || trim($title) === '') {
+            return $res->status(422)->json(['errors' => ['title' => 'O título é obrigatório.']]);
         }
 
         $id = uniqid();
-        $task = [
-            'id' => $id,
-            'title' => $data['title'],
-            'completed' => false,
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+        $this->tasks[$id] = ['id' => $id, 'title' => trim($title), 'completed' => false];
 
-        $this->tasks[$id] = $task;
-
-        return $response->status(201)->json($task);
+        return $res->status(201)->json($this->tasks[$id]);
     }
 }
 ```
 
-Então registre as rotas usando o controller:
+Registre as rotas e, se o controller tiver dependências de construtor, registre-o no contêiner:
 
 ```php
-// Registre o controller no container
-$app->singleton(TaskController::class);
+use App\Controllers\TaskController;
 
-// Use o controller nas rotas
+// Controllers sem dependências são instanciados sob demanda.
 $app->get('/tasks', [TaskController::class, 'index']);
 $app->get('/tasks/:id', [TaskController::class, 'show']);
 $app->post('/tasks', [TaskController::class, 'store']);
 ```
 
-## O Que Vem a Seguir?
+> A sintaxe em string `'TaskController@index'` **não** é suportada (lança `TypeError`). Use sempre o
+> array callable `[TaskController::class, 'index']`.
 
-Parabéns! Você construiu sua primeira aplicação PivotPHP. Para aprender mais:
+## Próximos passos
 
-- Explore [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) para recursos avançados de roteamento
-- Aprenda sobre [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) para processamento de requisições
-- Entenda o [Container de Serviços]({{ '/pt/docs/container/' | relative_url }}) para injeção de dependência
-- Confira integração com [Banco de Dados]({{ '/pt/docs/database/' | relative_url }}) usando Cycle ORM
-- Implemente [Segurança]({{ '/pt/docs/security/' | relative_url }}) para proteger suas rotas
-- Adicione [Validação]({{ '/pt/docs/validation/' | relative_url }}) para garantir integridade dos dados
-
-### Recursos Adicionais
-
-- [Repositório GitHub](https://github.com/PivotPHP)
-- [Exemplos Completos](https://github.com/PivotPHP/pivotphp-core)
+- [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) — parâmetros, constraints e grupos
+- [Middleware]({{ '/pt/docs/middleware/' | relative_url }}) — pipeline PSR-15
+- [Requisições e Respostas]({{ '/pt/docs/requests-responses/' | relative_url }}) — a API de `$req`/`$res`
+- [Container]({{ '/pt/docs/container/' | relative_url }}) — injeção de dependência
+- [Segurança]({{ '/pt/docs/security/' | relative_url }}) — CORS, headers, CSRF, JWT

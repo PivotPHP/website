@@ -44,11 +44,11 @@ en:
       title: "Evolutionary Architecture"
       desc: "Adapts to your needs with a flexible, extensible design"
     performance:
-      title: "52M+ Operations/Second"
-      desc: "Blazing fast performance optimized for modern PHP"
+      title: "Express.js-style API"
+      desc: "Familiar routing on PSR-7/PSR-15, benchmarked in Docker"
     security:
       title: "Security by Design"
-      desc: "Built-in CSRF, XSS protection, and rate limiting"
+      desc: "CORS, security headers, CSRF, JWT and rate limiting via pivotphp/security"
     zero_config:
       title: "Zero Configuration"
       desc: "Start building immediately with sensible defaults"
@@ -129,11 +129,11 @@ pt:
       title: "Arquitetura Evolutiva"
       desc: "Adapta-se às suas necessidades com design flexível e extensível"
     performance:
-      title: "52M+ Operações/Segundo"
-      desc: "Performance extrema otimizada para PHP moderno"
+      title: "API no estilo Express.js"
+      desc: "Roteamento familiar sobre PSR-7/PSR-15, medido em Docker"
     security:
       title: "Segurança por Design"
-      desc: "Proteção CSRF, XSS e rate limiting integrados"
+      desc: "CORS, headers, CSRF, JWT e rate limiting via pivotphp/security"
     zero_config:
       title: "Zero Configuração"
       desc: "Comece a construir imediatamente com padrões sensatos"

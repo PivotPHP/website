@@ -5,7 +5,9 @@ layout: default
 <!-- Documentation Content -->
 <main class="docs-main">
     <div class="container docs-container">
-        {% include docs-sidebar.html %}
+        {% if page.lang and page.lang != site.lang %} {% include
+        docs-sidebar-i18n.html %} {% else %} {% include docs-sidebar.html %} {%
+        endif %}
 
         <!-- Content -->
         <div class="docs-content">
@@ -213,14 +215,10 @@ layout: default
 }
 </style>
 
-<!-- Chart.js for benchmarks -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
 <!-- Documentation Scripts -->
 <script src="{{ '/assets/js/active-nav.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/transitions.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/docs-mobile.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/benchmark-charts.js' | relative_url }}"></script>
 
 <!-- Enhanced interactions for benchmark page -->
 <script>

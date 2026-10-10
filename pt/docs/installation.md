@@ -9,99 +9,95 @@ permalink: /pt/docs/installation/
 lang: pt
 ---
 
+O PivotPHP é instalado via [Composer](https://getcomposer.org/). A versão atual do framework é a
+**4.0.2** e requer **PHP 8.1** ou superior.
+
 ## Requisitos
 
-Antes de instalar o PivotPHP, certifique-se de que seu sistema atenda aos seguintes requisitos:
-
 - **PHP 8.1** ou superior
-- **Composer** (versão mais recente recomendada)
-- **ext-json** extensão PHP
-- **ext-mbstring** extensão PHP
+- **Composer** 2.x
+- Extensões PHP: **ext-json** e **ext-mbstring**
 
-## Instalar via Composer
+O `pivotphp/core` traz três pacotes companheiros como dependências, instalados automaticamente:
 
-A maneira recomendada de instalar o PivotPHP é através do [Composer](https://getcomposer.org/):
+| Pacote | Responsabilidade |
+|---|---|
+| [`pivotphp/core-routing`](https://github.com/PivotPHP/pivotphp-core-routing) | Motor de roteamento |
+| [`pivotphp/http`](https://github.com/PivotPHP/pivotphp-http) | Camada HTTP (`ExpressRequest`/`ExpressResponse`) sobre PSR-7 |
+| [`pivotphp/security`](https://github.com/PivotPHP/pivotphp-security) | Middlewares de segurança (CORS, headers, CSRF, JWT, rate limit, proxies) |
+
+## Instalar em um projeto existente
 
 ```bash
 composer require pivotphp/core
 ```
 
-## Criar um Novo Projeto
+## Criar um novo projeto
 
-Para criar um novo projeto PivotPHP com uma estrutura básica, use o template `pivotphp/skeleton`:
+O template oficial cria um projeto completo (config, rotas, controllers, testes):
 
 ```bash
 composer create-project pivotphp/skeleton meu-app
 cd meu-app
+composer serve
 ```
 
-Isso criará um novo diretório chamado `meu-app` com uma estrutura básica de projeto:
+A aplicação sobe em `http://localhost:8000`. A estrutura criada é:
 
 ```
 meu-app/
-├── public/
-│   └── index.php
-├── src/
-│   ├── Controllers/
-│   ├── Middleware/
-│   └── Providers/
-├── config/
-├── tests/
+├── app/Controllers/       # controllers de exemplo
+├── bootstrap/app.php      # monta a aplicação (config, middleware, rotas)
+├── config/app.php         # configuração app.*
+├── public/index.php       # ponto de entrada HTTP
+├── routes/api.php         # rotas
+├── tests/                 # testes PHPUnit
 ├── .env.example
-├── .gitignore
-├── composer.json
-└── README.md
+└── composer.json
 ```
 
-## Instalação Manual
+## Instalação manual
 
-Se você preferir configurar seu projeto manualmente:
+1. Inicialize o Composer no diretório do projeto:
 
-1. Crie um novo diretório para seu projeto
-2. Inicialize o Composer:
    ```bash
    composer init
    ```
-3. Requisite o PivotPHP:
+
+2. Instale o framework:
+
    ```bash
    composer require pivotphp/core
    ```
-4. Crie seu ponto de entrada:
-   ```bash
-   mkdir public
-   touch public/index.php
+
+3. Crie o ponto de entrada `public/index.php`:
+
+   ```php
+   <?php
+   require __DIR__ . '/../vendor/autoload.php';
+
+   use PivotPHP\Core\Core\Application;
+
+   $app = new Application();
+
+   $app->get('/', fn ($req, $res) => $res->json([
+       'message' => 'PivotPHP está funcionando!',
+       'version' => Application::VERSION,
+   ]));
+
+   $app->run();
    ```
 
-## Verificar a Instalação
+4. Inicie o servidor embutido do PHP:
 
-Para verificar que o PivotPHP está instalado corretamente, crie um arquivo `index.php` simples:
+   ```bash
+   php -S localhost:8000 -t public
+   ```
 
-```php
-<?php
-require __DIR__ . '/../vendor/autoload.php';
+Visite `http://localhost:8000`: você deve receber um JSON confirmando a instalação.
 
-use PivotPHP\Core\Core\Application;
+## Próximos passos
 
-$app = new Application();
-
-$app->get('/', function($request, $response) {
-    return $response->json([
-        'message' => 'PivotPHP está funcionando!', // PivotPHP está rodando!
-        'version' => Application::VERSION
-    ]);
-});
-
-$app->run();
-```
-
-Em seguida, inicie o servidor PHP integrado:
-
-```bash
-php -S localhost:8000 -t public
-```
-
-Visite `http://localhost:8000` em seu navegador. Você deve ver uma resposta JSON confirmando que o PivotPHP está funcionando.
-
-## Próximos Passos
-
-Agora que você tem o PivotPHP instalado, você está pronto para construir sua primeira aplicação! Confira nosso [guia de Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }}) para aprender o básico.
+- [Início Rápido]({{ '/pt/docs/quickstart/' | relative_url }}) — construa sua primeira API
+- [Configuração]({{ '/pt/docs/configuration/' | relative_url }}) — `.env` e o objeto `Config`
+- [Roteamento]({{ '/pt/docs/routing/' | relative_url }}) — parâmetros e constraints

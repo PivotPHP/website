@@ -9,66 +9,37 @@ permalink: /pt/docs/deployment/
 lang: pt
 ---
 
-Este guia cobre as melhores práticas e procedimentos para fazer deploy de aplicações PivotPHP em ambientes de produção.
+Este guia cobre o deploy de aplicações PivotPHP 4.0 em produção (PHP-FPM + Nginx/Apache ou
+containers).
 
-## Requisitos do Servidor
+## Requisitos do servidor
 
-Antes de fazer o deploy, certifique-se de que seu servidor atende a estes requisitos:
-
-- **PHP 8.1** ou superior
-- **Composer** 2.0 ou superior
-- **Servidor Web**: Nginx ou Apache
-- **Banco de Dados**: MySQL 5.7+, PostgreSQL 10+, ou SQLite 3.8.8+
-- **Extensões PHP**:
-  - BCMath
-  - Ctype
-  - JSON
-  - Mbstring
-  - OpenSSL
-  - PDO
-  - Tokenizer
-  - XML
+- **PHP 8.1** ou superior com **ext-json** e **ext-mbstring**
+- **Composer** 2.x
+- Servidor web (Nginx ou Apache) com PHP-FPM
+- Banco de dados (se aplicável): MySQL/MariaDB, PostgreSQL ou SQLite
 
 ## Otimização
 
-### Otimização do Composer
-
-```bash
-# Instalar dependências sem pacotes de desenvolvimento
-composer install --optimize-autoloader --no-dev
-
-# Ou se já estiver instalado
-composer dump-autoload --optimize --no-dev
-```
-
-O PivotPHP **não tem** uma CLI de cache (`config:cache`, `route:cache`, `view:cache`). A
-otimização relevante no deploy é o autoloader do Composer:
+O framework não tem uma CLI de cache (`config:cache`, `route:cache`). A otimização relevante é o
+autoloader do Composer:
 
 ```bash
 composer install --optimize-autoloader --no-dev
 ```
 
-O roteador já mantém seus próprios caches em memória — para aquecê-los, use
-`PivotPHP\Core\Routing\Router::warmupCache()` no boot da aplicação.
+## Configuração do servidor web
 
-## Configuração do Servidor Web
+### Nginx
 
-### Configuração do Nginx
+Aponte o document root para `public/` e encaminhe tudo que não for arquivo para `index.php`:
 
 ```nginx
 server {
     listen 80;
-    listen [::]:80;
-    server_name exemplo.com www.exemplo.com;
-    root /var/www/exemplo.com/public;
-
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header X-Content-Type-Options "nosniff";
-    add_header X-XSS-Protection "1; mode=block";
-
+    server_name exemplo.com;
+    root /var/www/exemplo/public;
     index index.php;
-
-    charset utf-8;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;
@@ -77,411 +48,149 @@ server {
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 
-    error_page 404 /index.php;
-
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
         include fastcgi_params;
-        fastcgi_hide_header X-Powered-By;
     }
 
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-
-    # Cabeçalhos de segurança
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-
-    # Compressão Gzip
-    gzip on;
-    gzip_comp_level 5;
-    gzip_min_length 256;
-    gzip_types application/json application/javascript text/css text/plain;
-}
-
-# Configuração SSL
-server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
-    server_name exemplo.com www.exemplo.com;
-    root /var/www/exemplo.com/public;
-
-    ssl_certificate /etc/letsencrypt/live/exemplo.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/exemplo.com/privkey.pem;
-
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers HIGH:!aNULL:!MD5;
-    ssl_prefer_server_ciphers on;
-
-    # ... resto da configuração igual ao acima
+    location ~ /\.(?!well-known).* { deny all; }
 }
 ```
 
-### Configuração do Apache
+### Apache
 
 ```apache
 <VirtualHost *:80>
     ServerName exemplo.com
-    ServerAlias www.exemplo.com
-    DocumentRoot /var/www/exemplo.com/public
+    DocumentRoot /var/www/exemplo/public
 
-    <Directory /var/www/exemplo.com/public>
+    <Directory /var/www/exemplo/public>
         AllowOverride All
         Require all granted
-
-        # Habilitar .htaccess
         Options -MultiViews -Indexes
 
         RewriteEngine On
-
-        # Lidar com cabeçalho de autorização
         RewriteCond %{HTTP:Authorization} .
         RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-        # Redirecionar barras finais se não for uma pasta...
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteCond %{REQUEST_URI} (.+)/$
-        RewriteRule ^ %1 [L,R=301]
-
-        # Enviar requisições para o controlador frontal...
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^ index.php [L]
     </Directory>
-
-    # Cabeçalhos de segurança
-    Header always set X-Frame-Options "SAMEORIGIN"
-    Header always set X-Content-Type-Options "nosniff"
-    Header always set X-XSS-Protection "1; mode=block"
-    Header always set Referrer-Policy "strict-origin-when-cross-origin"
-
-    ErrorLog ${APACHE_LOG_DIR}/exemplo.com-error.log
-    CustomLog ${APACHE_LOG_DIR}/exemplo.com-access.log combined
 </VirtualHost>
 ```
 
-## Configuração do Ambiente
+> Os cabeçalhos de segurança (HSTS, CSP, `X-Frame-Options`, etc.) podem ser enviados pelo
+> `SecurityHeadersMiddleware` do `pivotphp/security` em vez de duplicá-los no servidor. Veja
+> [Segurança]({{ '/pt/docs/security/' | relative_url }}).
 
-### Arquivo .env de Produção
+## Configuração de ambiente
+
+`.env` na raiz (nunca versionado):
 
 ```bash
-APP_NAME="Minha Aplicação"
+APP_NAME="Minha API"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://exemplo.com
 
-# Segurança
-APP_KEY=base64:sua-chave-aleatoria-segura-aqui
-
-# Banco de Dados
-DB_CONNECTION=mysql
+DB_DRIVER=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=production_db
 DB_USERNAME=db_user
 DB_PASSWORD=senha_segura
-
-# Cache
-CACHE_DRIVER=redis
-SESSION_DRIVER=redis
-QUEUE_DRIVER=redis
-
-# Redis
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-
-# Email
-MAIL_DRIVER=smtp
-MAIL_HOST=smtp.mailgun.org
-MAIL_PORT=587
-MAIL_USERNAME=seu-usuario
-MAIL_PASSWORD=sua-senha
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=noreply@exemplo.com
-MAIL_FROM_NAME="${APP_NAME}"
-
-# Logging
-LOG_CHANNEL=daily
-LOG_LEVEL=error
-
-# Serviços Externos
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=mt1
 ```
 
-### Protegendo Variáveis de Ambiente
+Proteja o arquivo e garanta que ele não entre no Git:
 
 ```bash
-# Definir permissões adequadas
 chmod 600 .env
-
-# Garantir que .env esteja no .gitignore
 echo ".env" >> .gitignore
-
-# Usar variáveis de ambiente do servidor
-# No Apache
-SetEnv APP_KEY "sua-chave"
-
-# No Nginx (na configuração do pool PHP-FPM)
-env[APP_KEY] = "sua-chave"
 ```
 
-## Deploy do Banco de Dados
+> **`APP_DEBUG=false` em produção.** Com debug ligado, respostas de erro expõem mensagem, arquivo,
+> linha e traceback.
 
-### Executando Migrações
+## Schema e migrações
 
-O core não tem CLI de migrações. As migrações são feitas pelo `pivotphp/cycle-orm` através
-de classes de comando instanciadas diretamente:
+O core não traz CLI de migrações. Use o `Database` para rodar SQL de schema/seed (ele aceita vários
+statements via `exec()`):
 
 ```php
-use PivotPHP\CycleORM\Commands\MigrateCommand;
-use PivotPHP\CycleORM\Commands\SchemaCommand;
+use PivotPHP\Core\Database\Database;
 
-(new MigrateCommand([], $container))->handle();            // executa as pendentes
-(new SchemaCommand(['--sync' => true], $container))->handle(); // sincroniza o schema
+$db = new Database([/* config */]);
+$db->exec(file_get_contents(__DIR__ . '/database/schema.sql'));
 ```
 
-### Otimização do Banco de Dados
+Para migrações versionadas, use uma biblioteca de migração de sua preferência ou uma ferramenta de
+ORM independente (o `pivotphp/cycle-orm` está [pausado]({{ '/pt/docs/extensions/cycle-orm/' | relative_url }})).
 
-```sql
--- Exemplo de otimização MySQL
-ALTER TABLE users ADD INDEX idx_email (email);
-ALTER TABLE posts ADD INDEX idx_user_created (user_id, created_at);
-ALTER TABLE sessions ADD INDEX idx_user_id (user_id);
-
--- Analisar tabelas
-ANALYZE TABLE users, posts, comments;
-
--- Otimizar tabelas
-OPTIMIZE TABLE users, posts, comments;
-```
-
-## Deploy Sem Downtime
-
-### Script de Deploy
+## Deploy sem downtime (release + symlink)
 
 ```bash
 #!/bin/bash
+set -e
 
-# Configuração
-APP_DIR="/var/www/exemplo.com"
-NEW_RELEASE_DIR="${APP_DIR}/releases/$(date +%Y%m%d%H%M%S)"
-SHARED_DIR="${APP_DIR}/shared"
-CURRENT_DIR="${APP_DIR}/current"
+APP_DIR="/var/www/exemplo"
+RELEASE="${APP_DIR}/releases/$(date +%Y%m%d%H%M%S)"
+SHARED="${APP_DIR}/shared"
 
-# Criar diretório da nova release
-mkdir -p $NEW_RELEASE_DIR
+mkdir -p "$RELEASE"
+git clone --depth 1 https://github.com/seurepositorio/suaapp.git "$RELEASE"
 
-# Baixar código mais recente
-cd $NEW_RELEASE_DIR
-git clone https://github.com/seurepositorio/suaapp.git .
-
-# Instalar dependências
+cd "$RELEASE"
 composer install --optimize-autoloader --no-dev
 
-# Copiar arquivo de ambiente
-cp ${SHARED_DIR}/.env .env
+ln -nfs "${SHARED}/.env" .env
 
-# Criar links para diretórios compartilhados
-ln -nfs ${SHARED_DIR}/storage storage
-ln -nfs ${SHARED_DIR}/public/uploads public/uploads
+ln -nfs "$RELEASE" "${APP_DIR}/current"
 
-# Trocar symlink atomicamente
-ln -nfs $NEW_RELEASE_DIR $CURRENT_DIR
-
-# Recarregar PHP-FPM
 sudo service php8.1-fpm reload
 
-# Limpar releases antigas (manter últimas 5)
-cd ${APP_DIR}/releases && ls -t | tail -n +6 | xargs rm -rf
+cd "${APP_DIR}/releases" && ls -t | tail -n +6 | xargs -r rm -rf
 
-echo "Deploy concluído com sucesso!"
+echo "Deploy concluído."
 ```
 
-### Usando Envoy
-
-```php
-// Envoy.blade.php
-@servers(['web' => 'usuario@exemplo.com'])
-
-@setup
-    $repository = 'git@github.com:seurepositorio/suaapp.git';
-    $releases_dir = '/var/www/exemplo.com/releases';
-    $app_dir = '/var/www/exemplo.com';
-    $release = date('YmdHis');
-    $new_release_dir = $releases_dir .'/'. $release;
-@endsetup
-
-@task('deploy')
-    echo 'Clonando repositório'
-    [ -d {% raw %}{{ $releases_dir }}{% endraw %} ] || mkdir {% raw %}{{ $releases_dir }}{% endraw %}
-    git clone --depth 1 --branch master {% raw %}{{ $repository }}{% endraw %} {% raw %}{{ $new_release_dir }}{% endraw %}
-
-    echo 'Instalando dependências do composer'
-    cd {% raw %}{{ $new_release_dir }}{% endraw %}
-    composer install --prefer-dist --no-dev --optimize-autoloader
-
-    echo 'Criando link do arquivo .env'
-    ln -nfs {% raw %}{{ $app_dir }}{% endraw %}/.env {% raw %}{{ $new_release_dir }}{% endraw %}/.env
-
-    echo 'Criando link do diretório storage'
-    ln -nfs {% raw %}{{ $app_dir }}{% endraw %}/storage {% raw %}{{ $new_release_dir }}{% endraw %}/storage
-
-    echo 'Criando link da release atual'
-    ln -nfs {% raw %}{{ $new_release_dir }}{% endraw %} {% raw %}{{ $app_dir }}{% endraw %}/current
-
-    echo 'Reiniciando FPM'
-    sudo service php8.1-fpm reload
-@endtask
-```
-
-Executar deploy:
-
-```bash
-envoy run deploy
-```
-
-## Deploy com Containers
-
-### Dockerfile
+## Containers
 
 ```dockerfile
 FROM php:8.1-fpm-alpine
 
-# Instalar dependências
-RUN apk add --no-cache \
-    git \
-    curl \
-    libpng-dev \
-    oniguruma-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    nginx \
-    supervisor
+RUN docker-php-ext-install pdo_mysql mbstring
 
-# Instalar extensões PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Definir diretório de trabalho
 WORKDIR /var/www
-
-# Copiar arquivos da aplicação
 COPY . /var/www
-
-# Instalar dependências da aplicação
 RUN composer install --optimize-autoloader --no-dev
 
-# Copiar arquivos de configuração
-COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY docker/php/php.ini /usr/local/etc/php/conf.d/app.ini
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# Definir permissões
 RUN chown -R www-data:www-data /var/www
+USER www-data
 
-# Expor porta
-EXPOSE 80
-
-# Iniciar serviços
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+EXPOSE 9000
+CMD ["php-fpm"]
 ```
 
-### Docker Compose
-
-```yaml
-version: '3.8'
-
-services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: pivotphp-app
-    container_name: pivotphp-app
-    restart: unless-stopped
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/app.ini
-    networks:
-      - pivotphp
-
-  nginx:
-    image: nginx:alpine
-    container_name: pivotphp-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx:/etc/nginx/conf.d
-    networks:
-      - pivotphp
-
-  mysql:
-    image: mysql:8.0
-    container_name: pivotphp-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: pivotphp
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_PASSWORD: secret
-      MYSQL_USER: pivotphp
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - pivotphp
-
-  redis:
-    image: redis:alpine
-    container_name: pivotphp-redis
-    restart: unless-stopped
-    networks:
-      - pivotphp
-
-networks:
-  pivotphp:
-    driver: bridge
-
-volumes:
-  dbdata:
-    driver: local
-```
+Aponte o Nginx (container ou host) para o FPM na porta 9000.
 
 ## Monitoramento
 
-### Endpoint de Verificação de Saúde
+### Endpoint de saúde
 
 ```php
-$app->get('/health', function ($req, $res) {
-    return $res->json([
-        'status'    => 'healthy',
-        'timestamp' => gmdate('c'),
-    ]);
-});
+$app->get('/health', fn ($req, $res) => $res->json([
+    'status' => 'healthy',
+    'timestamp' => gmdate('c'),
+]));
 ```
 
 ### Logging
 
-O core usa o logger PSR-3 `PivotPHP\Core\Logging\PsrLogger`. O arquivo de log padrão é
-`pivotphp.log` (configurável via `LOG_PATH`):
+O core usa o logger PSR-3 `PivotPHP\Core\Logging\PsrLogger`:
 
 ```php
 use PivotPHP\Core\Logging\PsrLogger;
@@ -491,48 +200,37 @@ $logger->info('Deploy concluído');
 $logger->error('Falha ao processar', ['contexto' => '...']);
 ```
 
-## Otimização de Performance
+## Otimização de performance
 
-### Configuração do OPcache
+### OPcache
 
 ```ini
-; php.ini
 opcache.enable=1
-opcache.enable_cli=1
 opcache.memory_consumption=256
 opcache.interned_strings_buffer=16
 opcache.max_accelerated_files=10000
 opcache.validate_timestamps=0
-opcache.revalidate_freq=0
-opcache.save_comments=0
 ```
 
-### Ajuste do PHP-FPM
+### PHP-FPM
 
 ```ini
-; /etc/php/8.1/fpm/pool.d/www.conf
 pm = dynamic
-pm.max_children = 50
+pm.max_children = 32
 pm.start_servers = 5
 pm.min_spare_servers = 5
-pm.max_spare_servers = 35
+pm.max_spare_servers = 25
 pm.max_requests = 500
 ```
 
-## Checklist de Segurança
+## Checklist de deploy
 
-- [ ] Desabilitar modo de debug (`APP_DEBUG=false`)
-- [ ] Definir APP_KEY segura
-- [ ] Configurar HTTPS com certificado SSL válido
-- [ ] Definir permissões adequadas de arquivo (755 para diretórios, 644 para arquivos)
-- [ ] Desabilitar listagem de diretórios
-- [ ] Configurar regras de firewall
-- [ ] Configurar fail2ban para proteção contra força bruta
-- [ ] Atualizações regulares de segurança
-- [ ] Configurar estratégia de backup
-- [ ] Monitorar logs para atividade suspeita
-- [ ] Usar senhas fortes no banco de dados
-- [ ] Restringir acesso do banco de dados apenas ao localhost
-- [ ] Habilitar logging de consultas para auditoria
-- [ ] Configurar limitação de taxa
-- [ ] Configurar monitoramento e alertas
+- [ ] `APP_DEBUG=false`
+- [ ] `.env` com permissões restritas e fora do Git
+- [ ] HTTPS com certificado válido
+- [ ] `composer install --optimize-autoloader --no-dev`
+- [ ] OPcache habilitado
+- [ ] Health check configurado
+- [ ] Rotação de logs
+- [ ] Middlewares de segurança (`pivotphp/security`) ativos
+- [ ] Rate limiting com storage compartilhado (se usado)

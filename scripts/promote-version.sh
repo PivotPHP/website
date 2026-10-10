@@ -31,7 +31,7 @@ Options:
   --release-date YYYY-MM-DD   Release date
   --support-until YYYY-MM-DD  Support until date
   --eol-date YYYY-MM-DD       End-of-life date
-  --docs-path <path>          Docs path (default: /docs/<version>/)
+  --docs-path <path>          Docs path (default: /pt/docs/)
   --label <text>              Label text
   --badge-text <text>         Badge text
   --badge-color <text>        Badge color
@@ -152,7 +152,7 @@ when 'add'
     'label' => label && !label.empty? ? label : status.capitalize,
     'badge_color' => badge_color && !badge_color.empty? ? badge_color : badge_defaults[status],
     'badge_text' => badge_text && !badge_text.empty? ? badge_text : status.capitalize,
-    'docs_path' => docs_path && !docs_path.empty? ? docs_path : "/pt/docs/v#{version.split('.').first}/",
+    'docs_path' => docs_path && !docs_path.empty? ? docs_path : '/pt/docs/',
     'release_date' => release_date,
     'support_until' => support_until,
     'eol_date' => eol_date,

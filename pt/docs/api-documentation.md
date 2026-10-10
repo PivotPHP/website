@@ -6,10 +6,13 @@ redirect_from:
 layout: docs
 title: Documentação de API com OpenAPI/Swagger
 description: Gere documentação interativa de API automaticamente com OpenAPI 3.0 e Swagger UI
+permalink: /pt/docs/api-documentation/
 lang: pt
 ---
 
-O PivotPHP gera documentação **OpenAPI/Swagger** automaticamente a partir das rotas registradas no `Router` — sem parsing de PHPDoc nem anotações. O responsável é o middleware `ApiDocumentationMiddleware`.
+O PivotPHP gera documentação **OpenAPI/Swagger** automaticamente a partir das rotas registradas no
+`Router` — sem parsing de PHPDoc nem anotações. O responsável é o
+`PivotPHP\Core\Middleware\Http\ApiDocumentationMiddleware`.
 
 ## Habilitando
 
@@ -21,9 +24,7 @@ use PivotPHP\Core\Middleware\Http\ApiDocumentationMiddleware;
 
 $app = new Application();
 
-$app->get('/usuarios', function ($req, $res) {
-    return $res->json(['usuarios' => []]);
-});
+$app->get('/usuarios', fn ($req, $res) => $res->json(['usuarios' => []]));
 
 $app->use(new ApiDocumentationMiddleware([
     'docs_path'    => '/docs',      // JSON OpenAPI 3.0.0
@@ -51,9 +52,11 @@ $app->run();
 
 ## O que é gerado
 
-Cada rota registrada vira uma entrada básica de caminho (método HTTP + caminho) com uma
-resposta `200`. Não há leitura de PHPDoc — anotações como `@api`, `@param` e `@response` são
-ignoradas. Para documentação rica (parâmetros, schemas, descrições), gere o spec manualmente.
+Cada rota registrada vira uma entrada de caminho (método HTTP + caminho) com uma resposta `200`.
+Parâmetros de rota (`:id`, `:id<\d+>`, `{id}`) são normalizados para `{id}` e geram objetos
+`parameters` (`in: path`, `required: true`). Não há leitura de PHPDoc — anotações como `@api`,
+`@param` e `@response` são ignoradas. Para documentação rica (schemas, descrições), gere o spec
+manualmente.
 
 ## Exemplo de saída
 
@@ -62,7 +65,8 @@ ignoradas. Para documentação rica (parâmetros, schemas, descrições), gere o
   "openapi": "3.0.0",
   "info": {
     "title": "PivotPHP API",
-    "version": "2.3.4"
+    "version": "4.0.2",
+    "description": "Auto-generated API documentation"
   },
   "servers": [
     { "url": "http://localhost:8080" }
@@ -71,6 +75,22 @@ ignoradas. Para documentação rica (parâmetros, schemas, descrições), gere o
     "/usuarios": {
       "get": {
         "summary": "Route: get /usuarios",
+        "responses": {
+          "200": { "description": "Successful response" }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "summary": "Route: get /usuarios/{id}",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
         "responses": {
           "200": { "description": "Successful response" }
         }

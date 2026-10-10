@@ -9,160 +9,173 @@ permalink: /pt/docs/requests-responses/
 lang: pt
 ---
 
-O PivotPHP usa objetos de mensagem HTTP compatíveis com PSR-7: `Request` e `Response`
-(`PivotPHP\Core\Http\Request` e `PivotPHP\Core\Http\Response`).
+Os handlers recebem duas fachadas do pacote [`pivotphp/http`](https://github.com/PivotPHP/pivotphp-http):
+`PivotPHP\Http\ExpressRequest` e `PivotPHP\Http\ExpressResponse`. Elas envolvem mensagens **PSR-7**:
+o objeto subjacente é acessível via `psr7()`.
 
-## O Objeto Request
+## O objeto Request
 
 ### Dados de entrada
 
 ```php
-$app->post('/usuarios', function($request, $response) {
-    // Parâmetro de rota
-    $id = $request->param('id');
+$app->post('/usuarios', function ($req, $res) {
+    $id    = $req->param('id');            // parâmetro de rota (string)
+    $todos = $req->params();               // todos os parâmetros de rota
+    $page  = $req->query('page', '1');     // query string
+    $nome  = $req->input('nome');          // corpo parseado, depois query string
+    $dados = $req->json();                 // corpo decodificado como array
 
-    // Entrada (query ou corpo), com padrão opcional
-    $nome  = $request->input('nome', 'Anônimo');
-    $email = $request->get('email');
-
-    // Query string
-    $pagina = $request->getQuery('pagina', 1);
-    $todos  = $request->getQueryParams();
-
-    // Corpo JSON parseado (stdClass)
-    $dados = $request->body();
-    $nome  = $dados->nome ?? null;
+    return $res->json(['id' => $id, 'page' => $page]);
 });
 ```
 
-### Cabeçalhos
+`input()` procura primeiro no corpo parseado (JSON/form) e, em seguida, na query string. `json()`
+decodifica o corpo JSON em array (`[]` para corpo vazio) e lança `MalformedJsonException` (que
+resulta em `400`) para JSON inválido.
+
+### Cabeçalhos e cookies
 
 ```php
-$contentType = $request->header('Content-Type');
-$accept      = $request->getHeaderLine('Accept');
-$todos       = $request->getHeaders();
-
-if ($request->hasHeader('X-Requested-With')) {
-    // requisição AJAX
-}
+$contentType = $req->header('Content-Type');
+$token       = $req->header('Authorization');
+$sessao      = $req->cookie('session');
 ```
 
 ### Informações da requisição
 
 ```php
-$metodo       = $request->getMethod();
-$caminho      = $request->getPath();
-$ip           = $request->ip();
-$userAgent    = $request->userAgent();
-$urlCompleta  = $request->fullUrl();
+$metodo    = $req->method();
+$caminho   = $req->path();
+$ip        = $req->ip();
+$userAgent = $req->userAgent();
 
-if ($request->isAjax())   { /* ... */ }
-if ($request->isSecure()) { /* HTTPS */ }
+$req->isAjax();              // X-Requested-With: XMLHttpRequest
+$req->isJson();              // Content-Type: application/json
+$req->isSecure();            // HTTPS
+$req->accepts('text/html');  // negociação de conteúdo (respeita curingas e q)
 ```
 
 ### Upload de arquivos
 
 ```php
-$app->post('/upload', function($request, $response) {
-    if ($request->hasFile('avatar')) {
-        $arquivo = $request->file('avatar'); // array do PSR-7 UploadedFile
-    }
-});
+$file = $req->file('avatar'); // ?UploadedFileInterface
 ```
 
-### Atributos (PSR-7)
+### Atributos PSR-7
+
+Para transportar dados entre middleware e handler, use atributos na requisição PSR-7:
 
 ```php
-$request = $request->withAttribute('usuario', $usuario);
-$usuario = $request->getAttribute('usuario');
-$todos   = $request->getAttributes();
+$usuario   = $req->psr7()->getAttribute('user');
+$requestId = $req->psr7()->getAttribute('request_id');
 ```
 
-## O Objeto Response
+No middleware, defina-os com `withAttribute()` (a requisição é imutável).
+
+## O objeto Response
+
+Os *setters* são fluentes; os *terminais* atualizam a resposta envolvida e a retornam.
 
 ### Respostas básicas
 
 ```php
-return $response->text('Olá Mundo');
-return $response->html('<h1>Olá Mundo</h1>');
-return $response->json(['mensagem' => 'Sucesso']);
-return $response->send('texto cru');
+return $res->text('Olá Mundo');
+return $res->html('<h1>Olá Mundo</h1>');
+return $res->json(['mensagem' => 'Sucesso']);
+return $res->send($dados);   // JSON para arrays/objetos, texto caso contrário
 ```
 
 ### Códigos de status
 
 ```php
-return $response->status(201)->json($dados);
-
-$status = $response->getStatusCode();
-$razao  = $response->getReasonPhrase();
+return $res->status(201)->json($dados);
 ```
 
-Não há atalhos por código (`ok()`, `created()`, `notFound()` etc.) — use `status($code)`.
+Não há atalhos por código (`ok()`, `created()` etc.) — use `status($code)`.
 
 ### Cabeçalhos
 
 ```php
-$response = $response->header('X-Custom', 'valor');
-$response = $response->withHeader('Content-Type', 'application/json');
-$response = $response->withAddedHeader('X-Custom', 'outro');
+return $res->status(200)->header('X-Custom', 'valor')->json($dados);
 ```
 
 ### Cookies
 
 ```php
-$response = $response->cookie('sessao', $valor, time() + 3600);
-$response = $response->clearCookie('sessao');
+return $res->cookie('sessao', $valor, [
+    'httpOnly' => true,
+    'sameSite' => 'Lax',
+    'maxAge'   => 3600,
+])->json(['ok' => true]);
 ```
 
-### Redirecionamentos
+### Redirecionamentos e vazio
 
 ```php
-return $response->redirect('/dashboard');
-return $response->redirect('/login', 301);
+return $res->redirect('/dashboard');        // 302
+return $res->redirect('/login', 301);       // status customizado
+return $res->noContent();                   // 204
 ```
 
-Não há `back()` nem dados flash.
-
-### Erro e sucesso
+### Erros
 
 ```php
-return $response->error(404);              // {"error": "Not Found", "code": 404}
-return $response->error(422, 'Inválido');  // mensagem customizada
-return $response->success($dados);         // resposta de sucesso padronizada
+return $res->error(404);                    // {"error": "..."} em JSON
+return $res->error(422, 'Tarefa inválida'); // mensagem customizada
 ```
 
-### Download / stream
+### PSR-7 subjacente
 
 ```php
-return $response->streamFile('/caminho/arquivo.pdf', [
-    'Content-Type' => 'application/pdf',
-]);
+$psr7 = $res->psr7(); // ResponseInterface final
 ```
 
-## Trabalhando com JSON
+## Tabela de referência
 
-```php
-$app->post('/api/usuarios', function($request, $response) {
-    $dados = $request->body(); // stdClass
+### `ExpressRequest`
 
-    return $response->json(['status' => 'sucesso']);
-});
-```
+| Método | Descrição |
+|---|---|
+| `params(): array` | Todos os parâmetros de rota. |
+| `param(string $name, mixed $default = null)` | Um parâmetro de rota. |
+| `query(string $name, mixed $default = null)` | Valor da query string. |
+| `input(string $name, mixed $default = null)` | Corpo parseado, depois query string. |
+| `json(): array` | Corpo JSON decodificado; lança `MalformedJsonException` se inválido. |
+| `header(string $name, ?string $default = null)` | Linha de cabeçalho. |
+| `cookie(string $name, ?string $default = null)` | Valor de cookie. |
+| `file(string $name)` | Arquivo enviado (`UploadedFileInterface`). |
+| `ip()`, `userAgent()`, `method()`, `path()` | Metadados da requisição. |
+| `isAjax()`, `isJson()`, `isSecure()`, `accepts(string $type)` | Verificações. |
+| `psr7(): ServerRequestInterface` | Requisição PSR-7 subjacente. |
 
-Não há `jsonp()`, `xml()` nem `csv()`.
+### `ExpressResponse`
 
-## Melhores Práticas
+| Método | Tipo | Descrição |
+|---|---|---|
+| `status(int $code)` | setter | Define o status. |
+| `header(string $name, string $value)` | setter | Define um cabeçalho. |
+| `cookie(string $name, string $value, array $options = [])` | setter | Adiciona `Set-Cookie`. |
+| `json(mixed $data, ?int $status = null)` | terminal | Resposta JSON. |
+| `text(string $text, ?int $status = null)` | terminal | Texto puro. |
+| `html(string $html, ?int $status = null)` | terminal | HTML. |
+| `redirect(string $url, int $status = 302)` | terminal | Redirecionamento. |
+| `noContent(int $status = 204)` | terminal | Resposta vazia. |
+| `send(mixed $data, ?int $status = null)` | terminal | JSON para arrays/objetos, texto caso contrário. |
+| `error(int $status, string $message = '')` | terminal | JSON `{"error": "..."}`. |
+| `psr7(): ResponseInterface` | — | Resposta PSR-7 subjacente. |
+
+## Melhores práticas
 
 1. **Sempre retorne a resposta** de todo handler.
-2. **Use `status()`** para definir códigos HTTP.
-3. **Type hint** `Request`/`Response` para suporte da IDE:
+2. **Use `status()`** para definir códigos HTTP (não há atalhos por código).
+3. **Type-hint** `ExpressRequest`/`ExpressResponse` para suporte da IDE:
 
 ```php
-use PivotPHP\Core\Http\Request;
-use PivotPHP\Core\Http\Response;
+use PivotPHP\Http\ExpressRequest;
+use PivotPHP\Http\ExpressResponse;
+use Psr\Http\Message\ResponseInterface;
 
-$app->post('/usuarios', function (Request $request, Response $response) {
-    return $response->json(['criado' => true]);
+$app->post('/usuarios', function (ExpressRequest $req, ExpressResponse $res): ResponseInterface {
+    return $res->json(['criado' => true]);
 });
 ```

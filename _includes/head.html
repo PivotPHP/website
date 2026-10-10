@@ -58,11 +58,4 @@
 
 <!-- Language Routes System -->
 <script src="{{ '/assets/js/language-routes.js' | relative_url }}"></script>
-<!-- Versioning data for JavaScript (DEVE estar antes do version-routing.js) -->
-<script type="application/json" id="versions-data">
-    {{ site.data.versions.versions | jsonify }}
-  </script>
-
-<!-- Version Routing - Deve estar disponível quando o select é renderizado -->
-<script src="{{ '/assets/js/version-routing.js' | relative_url }}"></script>
 </head>

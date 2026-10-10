@@ -9,355 +9,129 @@ permalink: /pt/docs/middleware/
 lang: pt
 ---
 
-Middleware fornece um mecanismo conveniente para filtrar requisições HTTP que entram em sua aplicação. O PivotPHP implementa o padrão de middleware PSR-15, garantindo compatibilidade com o ecossistema PHP mais amplo.
-
-## Entendendo Middleware
-
-Pense no middleware como camadas de uma cebola. Cada requisição passa por essas camadas ao entrar, e a resposta passa por elas em ordem reversa ao sair.
+Middleware no PivotPHP segue o padrão **PSR-15**. Cada requisição atravessa a pilha de middlewares
+globais e, em seguida, o roteamento; a resposta percorre o caminho de volta.
 
 ```
-Requisição → Middleware 1 → Middleware 2 → Middleware 3 → Handler da Rota
-                                                                  ↓
-Resposta ← Middleware 1 ← Middleware 2 ← Middleware 3 ← Resposta
+Requisição → Middleware 1 → Middleware 2 → Rota (handler)
+                                                ↓
+Resposta  ← Middleware 1 ← Middleware 2 ← Resposta
 ```
 
-## Criando Middleware
+## Registrando middleware global
 
-### Middleware com Closure
-
-A maneira mais simples de criar middleware é usando uma closure:
+Use `$app->use()`. Um middleware pode ser uma classe PSR-15 ou um callable
+`fn ($req, $res, $next)`. O nome de uma classe também pode ser passado como string: ela é resolvida
+pelo contêiner (ou instanciada) automaticamente.
 
 ```php
-$app->middleware(function($request, $handler) {
-    // Antes do processamento da requisição
-    echo "Requisição chegando!\n";
+// Classe PSR-15
+$app->use(new TimingMiddleware());
 
-    // Passar para o próximo middleware/handler
-    $response = $handler->handle($request);
+// Nome da classe (resolvido pelo contêiner)
+$app->use(RateLimitMiddleware::class);
 
-    // Após o processamento da requisição
-    echo "Resposta saindo!\n";
-
-    return $response;
+// Callable
+$app->use(function ($req, $res, $next) {
+    $response = $next();
+    return $response->withHeader('X-Powered-By', 'PivotPHP');
 });
 ```
 
-### Middleware Baseado em Classes
+Middlewares globais rodam em ordem de registro, **antes do roteamento** — inclusive para `404` e
+preflight `OPTIONS`.
 
-Para middleware mais complexo, crie uma classe implementando `MiddlewareInterface`:
+## Escrevendo middleware PSR-15
 
 ```php
 namespace App\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AuthMiddleware implements MiddlewareInterface
+final class AuthMiddleware implements MiddlewareInterface
 {
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
     ): ResponseInterface {
-        // Verificar se o usuário está autenticado
-        $token = $request->getHeaderLine('Authorization');
-
-        if (!$this->isValidToken($token)) {
-            // Retornar cedo com resposta de erro
-            return new JsonResponse([
-                'erro' => 'Não autorizado'
-            ], 401);
+        if ($request->getHeaderLine('Authorization') === '') {
+            return (new \PivotPHP\Http\ExpressResponse())->error(401, 'Não autorizado');
         }
 
-        // Adicionar usuário à requisição
-        $request = $request->withAttribute('user', $this->getUserFromToken($token));
-
-        // Continuar para o próximo middleware
-        return $handler->handle($request);
-    }
-
-    private function isValidToken(string $token): bool
-    {
-        // Lógica de validação do token
-        return !empty($token);
-    }
-
-    private function getUserFromToken(string $token)
-    {
-        // Decodificar token e retornar usuário
-        return ['id' => 1, 'nome' => 'João Silva'];
+        // Modifique a requisição e siga a pipeline.
+        return $handler->handle($request->withAttribute('authenticated', true));
     }
 }
 ```
 
-## Registrando Middleware
+## Middleware callable
 
-### Middleware Global
-
-Registre middleware que executa em toda requisição:
+No formato callable, `$req` é o `ServerRequestInterface` do PSR-7 e `$res` é um
+`ExpressResponse`. `$next()` executa o restante da pipeline e aceita, opcionalmente, uma requisição
+modificada.
 
 ```php
-// Usando uma closure
-$app->middleware(function($req, $handler) {
-    // Executa em toda requisição
-    return $handler->handle($req);
+$app->use(function ($req, $res, $next) {
+    // Antes: pode curto-circuitar respondendo sem chamar $next().
+    if ($req->getHeaderLine('X-Block') !== '') {
+        return $res->error(403, 'Bloqueado');
+    }
+
+    // Modificar a requisição e continuar.
+    $response = $next($req->withAttribute('request_id', bin2hex(random_bytes(8))));
+
+    return $response->withHeader('X-Handled', 'yes');
 });
-
-// Usando uma classe
-$app->middleware(new CorsMiddleware());
-$app->middleware(new LoggingMiddleware());
-
-// Usando nome da classe (será resolvido do container)
-$app->middleware(RateLimitMiddleware::class);
 ```
 
-### Middleware de Rota
+> Cabeçalhos definidos em `$res` **não** são mesclados automaticamente na resposta devolvida por
+> `$next()`. Para alterar a resposta final, use `withHeader()` no retorno de `$next()`.
 
-Aplique middleware a rotas específicas:
+## Middleware por rota e por grupo
+
+A `Application` não tem `$app->use('/caminho', $middleware)`. Para aplicar middleware a um grupo de
+rotas, use o roteador:
 
 ```php
-// Rota única
-$app->get('/admin', function($req, $res) {
-    return $res->json(['admin' => true]);
-})->middleware('auth');
+use PivotPHP\Routing\Router\Router;
 
-// Múltiplos middleware
-$app->post('/api/usuarios', function($req, $res) {
-    // Criar usuário
-})->middleware(['auth', 'throttle:5,1']);
-
-// Middleware com parâmetros
-$app->get('/api/dados', function($req, $res) {
-    // Obter dados
-})->middleware('cache:300'); // Cache por 300 segundos
+Router::group('/admin', function ($router): void {
+    $router->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
+}, [$requireAdmin]);
 ```
 
-## Middleware Integrados
+Para um único caminho, verifique o path dentro do middleware ou use um grupo com o prefixo
+desejado.
 
-O PivotPHP inclui várias classes de middleware integradas:
+## Ordem de execução
 
-### Middleware CORS
+Middlewares executam na ordem em que são registrados; a resposta volta na ordem inversa.
 
 ```php
-use PivotPHP\Middleware\CorsMiddleware;
-
-$app->middleware(new CorsMiddleware([
-    'allowed_origins' => ['https://exemplo.com'],
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'DELETE'],
-    'allowed_headers' => ['Content-Type', 'Authorization'],
-    'exposed_headers' => ['X-Total-Count'],
-    'max_age' => 3600,
-    'credentials' => true
-]));
+$app->use(new Middleware1()); // executa primeiro
+$app->use(new Middleware2()); // executa depois
+$app->use(new Middleware3()); // executa por último
+// Ordem: 1 → 2 → 3 → handler → 3 → 2 → 1
 ```
 
-### Limitação de Taxa
+## Middleware de segurança
 
-```php
-use PivotPHP\Middleware\RateLimitMiddleware;
+Os middlewares de segurança (CORS, headers, CSRF, JWT, rate limiting, proxies confiáveis) vêm do
+pacote [`pivotphp/security`]({{ '/pt/docs/security/' | relative_url }}) e são registrados com
+`$app->use()` como qualquer outro middleware. A ordem recomendada é:
 
-$app->middleware(new RateLimitMiddleware([
-    'max_attempts' => 60,
-    'decay_minutes' => 1,
-    'response_headers' => true // Adicionar headers X-RateLimit-*
-]));
-
-// Ou use o atalho
-$app->middleware('throttle:60,1');
+```text
+TrustedProxy → SecurityHeaders → CORS → RateLimit → (body parsing) → CSRF → JWT → rotas
 ```
 
-### Proteção CSRF
+## Boas práticas
 
-```php
-use PivotPHP\Middleware\CsrfMiddleware;
-
-$app->middleware(new CsrfMiddleware([
-    'except' => ['/webhooks/*'], // Excluir caminhos
-    'token_name' => '_token',
-    'header_name' => 'X-CSRF-TOKEN'
-]));
-```
-
-### Log de Requisições
-
-```php
-use PivotPHP\Middleware\LoggingMiddleware;
-
-$app->middleware(new LoggingMiddleware([
-    'logger' => $logger, // Logger PSR-3
-    'level' => 'info',
-    'format' => '{method} {uri} {status} {response_time}ms'
-]));
-```
-
-## Parâmetros de Middleware
-
-Passe parâmetros para middleware usando sintaxe de dois pontos:
-
-```php
-// Na definição da rota
-$app->get('/cached', function($req, $res) {
-    return $res->json(['hora' => time()]);
-})->middleware('cache:300,public');
-
-// Na classe middleware
-class CacheMiddleware implements MiddlewareInterface
-{
-    private int $duration;
-    private string $visibility;
-
-    public function __construct(int $duration = 60, string $visibility = 'private')
-    {
-        $this->duration = $duration;
-        $this->visibility = $visibility;
-    }
-
-    public function process($request, $handler): ResponseInterface
-    {
-        $response = $handler->handle($request);
-
-        return $response->withHeader(
-            'Cache-Control',
-            "{$this->visibility}, max-age={$this->duration}"
-        );
-    }
-}
-```
-
-## Prioridade de Middleware
-
-Middleware é executado na ordem em que é registrado:
-
-```php
-// Ordem de execução: 1 → 2 → 3 → Rota → 3 → 2 → 1
-$app->middleware(new Middleware1()); // 1
-$app->middleware(new Middleware2()); // 2
-$app->middleware(new Middleware3()); // 3
-```
-
-Para middleware específico de rota:
-
-```php
-// Middleware global executa primeiro, depois middleware de rota
-$app->middleware(new GlobalMiddleware());
-
-$app->get('/teste', function($req, $res) {
-    // Handler
-})->middleware(new RouteMiddleware());
-
-// Ordem: GlobalMiddleware → RouteMiddleware → Handler
-```
-
-## Middleware Condicional
-
-Aplique middleware baseado em condições:
-
-```php
-class ConditionalMiddleware implements MiddlewareInterface
-{
-    public function process($request, $handler): ResponseInterface
-    {
-        // Aplicar apenas a rotas de API
-        if (str_starts_with($request->getUri()->getPath(), '/api/')) {
-            // Aplicar lógica do middleware
-            $request = $request->withHeader('X-API-Request', 'true');
-        }
-
-        return $handler->handle($request);
-    }
-}
-```
-
-## Melhores Práticas de Middleware
-
-1. **Mantenha middleware focado**: Cada middleware deve ter uma única responsabilidade
-2. **A ordem importa**: Registre middleware na ordem correta
-3. **Retornos antecipados**: Retorne cedo para condições de erro para evitar processamento desnecessário
-4. **Requisições imutáveis**: Sempre crie novas instâncias de requisição em vez de modificar
-5. **Use atributos**: Armazene dados do middleware em atributos da requisição
-6. **Trate exceções**: Capture e trate exceções apropriadamente
-
-## Exemplo: Middleware de Autenticação Personalizado
-
-Aqui está um exemplo completo de middleware de autenticação JWT:
-
-```php
-namespace App\Middleware;
-
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-
-class JwtAuthMiddleware implements MiddlewareInterface
-{
-    private string $secret;
-    private array $except = [];
-
-    public function __construct(string $secret, array $except = [])
-    {
-        $this->secret = $secret;
-        $this->except = $except;
-    }
-
-    public function process(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler
-    ): ResponseInterface {
-        // Verificar se a rota está excluída
-        $path = $request->getUri()->getPath();
-        foreach ($this->except as $pattern) {
-            if (fnmatch($pattern, $path)) {
-                return $handler->handle($request);
-            }
-        }
-
-        // Extrair token
-        $token = $this->extractToken($request);
-        if (!$token) {
-            return $this->unauthorizedResponse('Token não fornecido');
-        }
-
-        try {
-            // Decodificar token
-            $decoded = JWT::decode($token, new Key($this->secret, 'HS256'));
-
-            // Adicionar usuário à requisição
-            $request = $request->withAttribute('user', $decoded->user);
-            $request = $request->withAttribute('token', $decoded);
-
-            return $handler->handle($request);
-        } catch (\Exception $e) {
-            return $this->unauthorizedResponse('Token inválido');
-        }
-    }
-
-    private function extractToken(ServerRequestInterface $request): ?string
-    {
-        $header = $request->getHeaderLine('Authorization');
-
-        if (preg_match('/Bearer\s+(.+)/', $header, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
-    }
-
-    private function unauthorizedResponse(string $message): ResponseInterface
-    {
-        return new JsonResponse([
-            'erro' => $message
-        ], 401);
-    }
-}
-
-// Uso
-$app->middleware(new JwtAuthMiddleware($_ENV['JWT_SECRET'], [
-    '/login',
-    '/registrar',
-    '/publico/*'
-]));
-```
+1. **Uma responsabilidade por middleware.**
+2. **A ordem importa**: registre na sequência correta.
+3. **Curto-circuito explícito**: para erros, retorne a resposta sem chamar `$next()`.
+4. **Requisições imutáveis**: use `withAttribute()`/`withHeader()` em vez de mutar o objeto.
+5. **Guarde dados em atributos** da requisição (`getAttribute()`/`withAttribute()`) para consumi-los
+   nos handlers.

@@ -53,8 +53,8 @@
         <li><a href="{{ base_path }}{{ routes.database | default: '/docs/database/' }}" {% if page.url contains 'database'
                 %}class="active" {% endif %}>{% if lang == 'pt' %}Configuração{% else %}Configuration{% endif %}</a></li>
         <li><a href="{{ base_path }}{{ routes.extensions_cycle_orm | default: '/docs/extensions/cycle-orm/' }}" {% if page.url
-                contains '/extensions/cycle-orm' %}class="active" {% endif %}>{% if lang == 'pt' %}Extensão Cycle ORM{% else
-                %}Cycle ORM Extension{% endif %}</a></li>
+                contains '/extensions/cycle-orm' %}class="active" {% endif %}>{% if lang == 'pt' %}Extensão Cycle ORM (pausada){% else
+                %}Cycle ORM Extension (paused){% endif %}</a></li>
     </ul>
 
     <h3>{% if lang == 'pt' %}🧪 Testes & Deploy{% else %}🧪 Testing & Deploy{% endif %}</h3>

@@ -25,8 +25,8 @@ layout: default
 
       <div class="development-notice" style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: var(--radius-lg); padding: var(--space-6); margin: var(--space-8) 0; text-align: center; backdrop-filter: blur(10px);">
         <p style="margin: 0; color: var(--pivot-white); font-size: var(--text-base); line-height: var(--leading-relaxed);">
-          <strong style="color: #22c55e;">✅ v2.1.1</strong><br>
-          <span style="color: rgba(255, 255, 255, 0.9);">{% if lang == 'pt' %}Versão estável, recomendada para novos projetos e produção.{% else %}Stable version, recommended for new projects and production use.{% endif %}</span>
+          <strong style="color: #22c55e;">✅ v4.0.2</strong><br>
+          <span style="color: rgba(255, 255, 255, 0.9);">{% if lang == 'pt' %}Versão estável, recomendada para novos projetos e protótipos.{% else %}Stable version, recommended for new projects and prototypes.{% endif %}</span>
         </p>
       </div>
 
@@ -45,28 +45,28 @@ layout: default
 
       <div class="stats-grid">
         <div class="stats-card">
-          <div class="stats-value">2,122</div>
-          <div class="stats-label">req/sec Peak (Docker Validated)</div>
+          <div class="stats-value">229</div>
+          <div class="stats-label">req/sec (Docker, moderate load)</div>
           <div class="stats-trend">competitive</div>
         </div>
         <div class="stats-card">
-          <div class="stats-value">3rd</div>
-          <div class="stats-label">place (Docker Environment)</div>
-          <div class="stats-trend">performing</div>
-        </div>
-        <div class="stats-card">
-          <div class="stats-value">0.32ms</div>
-          <div class="stats-label">latency (Average)</div>
+          <div class="stats-value">~210ms</div>
+          <div class="stats-label">p95 latency (moderate load)</div>
           <div class="stats-trend">fast</div>
         </div>
         <div class="stats-card">
-          <div class="stats-value">1.61MB</div>
-          <div class="stats-label">memory footprint</div>
-          <div class="stats-trend">ultra-efficient</div>
+          <div class="stats-value">1 CPU</div>
+          <div class="stats-label">512 MB container limit</div>
+          <div class="stats-trend">lightweight</div>
+        </div>
+        <div class="stats-card">
+          <div class="stats-value">0%</div>
+          <div class="stats-label">error rate (smoke test)</div>
+          <div class="stats-trend">reliable</div>
         </div>
       </div>
       <p style="font-size: var(--text-sm); opacity: 0.65; margin-top: var(--space-2);">
-        {% if lang == 'pt' %}Benchmarks da v1.2.0, ainda não revalidados para a linha 2.x.{% else %}v1.2.0 benchmarks, not yet re-validated for the 2.x line.{% endif %}
+        {% if lang == 'pt' %}Resultados do benchmark Docker da API de votação (2026-10-10), PivotPHP 4.0. Veja <a href="/pt/docs/benchmarks/" style="color: inherit; text-decoration: underline;">a página de benchmarks</a>.{% else %}Results from the Docker voting-API benchmark (2026-10-10), PivotPHP 4.0. See <a href="/pt/docs/benchmarks/" style="color: inherit; text-decoration: underline;">the benchmarks page</a>.{% endif %}
       </p>
     </div>
   </div>
@@ -102,12 +102,12 @@ layout: default
     ]);
 });
 
-<span class="code-comment">// Middleware support</span>
+<span class="code-comment">// Middleware support (PSR-15)</span>
+<span class="code-variable">$app</span>-><span class="code-function">use</span>(<span class="code-keyword">new</span> <span class="code-function">SecurityHeadersMiddleware</span>());
+
 <span class="code-variable">$app</span>-><span class="code-function">post</span>(<span class="code-string">'/api/users'</span>,
-    <span class="code-keyword">new</span> <span class="code-function">AuthMiddleware</span>(),
-    <span class="code-keyword">new</span> <span class="code-function">ValidationMiddleware</span>(),
     <span class="code-keyword">function</span> (<span class="code-variable">$req</span>, <span class="code-variable">$res</span>) {
-        <span class="code-variable">$user</span> = <span class="code-function">User</span>::<span class="code-function">create</span>(<span class="code-variable">$req</span>-><span class="code-function">body</span>());
+        <span class="code-variable">$user</span> = <span class="code-function">User</span>::<span class="code-function">create</span>(<span class="code-variable">$req</span>-><span class="code-function">json</span>());
         <span class="code-keyword">return</span> <span class="code-variable">$res</span>-><span class="code-function">status</span>(201)-><span class="code-function">json</span>(<span class="code-variable">$user</span>);
     }
 );
@@ -180,10 +180,10 @@ layout: default
           </svg>
         </div>
         <h3>Competitive Performance APIs</h3>
-        <p>2,122 req/sec peak validated in Docker environment v1.2.0. Educational focus with maintained performance.</p>
+        <p>~230 req/sec and ~210ms p95 in the Docker voting-API benchmark (moderate load, 1 CPU). Honest numbers from a reproducible suite.</p>
         <div class="feature-stats">
-          <span class="stat-badge">2.1K req/sec</span>
           <span class="stat-badge">Docker Tested</span>
+          <span class="stat-badge">Reproducible</span>
         </div>
       </div>
 
@@ -285,12 +285,12 @@ layout: default
           </svg>
         </div>
         <h3>Cycle ORM</h3>
-        <p>{% if lang == 'pt' %}ORM DataMapper poderoso com migrações automáticas e suporte a relacionamentos complexos.{% else %}Powerful DataMapper ORM with automatic migrations and complex relationship support.{% endif %}</p>
+        <p>{% if lang == 'pt' %}Integração com Cycle ORM. <strong>Pausada</strong>: compatível apenas com o core 1.x — ainda não migrada para o 4.x.{% else %}Cycle ORM integration. <strong>Paused</strong>: it supports core 1.x only and has not been migrated to 4.x yet.{% endif %}</p>
         <div class="feature-stats">
           <span class="stat-badge">Database</span>
-          <span class="stat-badge">ORM</span>
+          <span class="stat-badge">Paused</span>
         </div>
-        <a href="{{ '/docs/extensions/cycle-orm/' | relative_url }}" class="feature-link">{% if lang == 'pt' %}Saiba mais{% else %}Learn more{% endif %} →</a>
+        <a href="{{ '/pt/docs/extensions/cycle-orm/' | relative_url }}" class="feature-link">{% if lang == 'pt' %}Saiba mais{% else %}Learn more{% endif %} →</a>
       </div>
 
 
@@ -328,25 +328,25 @@ layout: default
     <h2 class="text-center section-title" style="color: var(--pivot-white);">Performance in Every Strand</h2>
     <p class="text-center mb-5 section-subtitle" style="opacity: 0.9; max-width: 700px; margin: 0 auto; color: var(--pivot-white);">
       Benchmarks executed in standardized Docker containers for fair, reproducible testing. Real performance data, consistent conditions.
-      <br><span style="font-size: var(--text-sm); opacity: 0.75;">v1.2.0 results, not yet re-validated for the 2.x line.</span>
+      <br><span style="font-size: var(--text-sm); opacity: 0.75;">PivotPHP 4.0 results (2026-10-10) — voting API, moderate load.</span>
     </p>
 
     <div class="performance-grid">
       <div class="performance-metric">
-        <span class="performance-value">2,122</span>
-        <span class="performance-label">req/sec Peak</span>
+        <span class="performance-value">229</span>
+        <span class="performance-label">req/sec</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">0.32ms</span>
-        <span class="performance-label">latency avg</span>
+        <span class="performance-value">~210ms</span>
+        <span class="performance-label">p95 latency</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">1.61MB</span>
-        <span class="performance-label">memory footprint</span>
+        <span class="performance-value">1 CPU</span>
+        <span class="performance-label">container limit</span>
       </div>
       <div class="performance-metric">
-        <span class="performance-value">3rd</span>
-        <span class="performance-label">place ranking</span>
+        <span class="performance-value">0%</span>
+        <span class="performance-label">smoke-test errors</span>
       </div>
     </div>
 

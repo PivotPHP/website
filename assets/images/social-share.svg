@@ -80,9 +80,9 @@
     <rect x="0" y="0" width="240" height="90" rx="16"
           fill="rgba(124,58,237,0.05)" stroke="rgba(124,58,237,0.2)" stroke-width="2" />
     <text x="120" y="40" font-family="Inter, sans-serif" font-size="32" font-weight="700"
-          text-anchor="middle" fill="#7C3AED">52M+</text>
+          text-anchor="middle" fill="#7C3AED">PSR-7</text>
     <text x="120" y="65" font-family="Inter, sans-serif" font-size="16" text-anchor="middle"
-          fill="#64748B">ops/sec</text>
+          fill="#64748B">/ PSR-15</text>
   </g>
 
   <g transform="translate(480, 350)">
