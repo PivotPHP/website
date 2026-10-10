@@ -92,19 +92,16 @@ $app->use(function ($req, $res, $next) {
 
 ## Middleware por rota e por grupo
 
-A `Application` não tem `$app->use('/caminho', $middleware)`. Para aplicar middleware a um grupo de
-rotas, use o roteador:
+A `Application` não tem `$app->use('/caminho', $middleware)`. Para um grupo de rotas, passe os
+middlewares para `group()`; para uma única rota, passe-os depois dos metadados:
 
 ```php
-use PivotPHP\Routing\Router\Router;
-
-Router::group('/admin', function ($router): void {
-    $router->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
+$app->group('/admin', function () use ($app): void {
+    $app->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
 }, [$requireAdmin]);
-```
 
-Para um único caminho, verifique o path dentro do middleware ou use um grupo com o prefixo
-desejado.
+$app->get('/health', fn ($req, $res) => $res->json(['ok' => true]), [], $logRequest);
+```
 
 ## Ordem de execução
 

@@ -10,7 +10,7 @@ lang: pt
 ---
 
 O PivotPHP é instalado via [Composer](https://getcomposer.org/). A versão atual do framework é a
-**4.1.0** e requer **PHP 8.1** ou superior.
+**5.0.0** e requer **PHP 8.1** ou superior.
 
 ## Requisitos
 

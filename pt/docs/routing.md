@@ -111,27 +111,32 @@ requisição (respeitando `bind()`/`singleton()`), caindo para `new Classe()` qu
 
 ## Grupos de rotas
 
-Grupos (prefixo + middleware) vêm do roteador (`PivotPHP\Routing\Router\Router`):
+Cada `Application` tem o seu próprio roteador (`PivotPHP\Routing\Router\Router`, desde o core 5.0):
+rotas, grupos e middlewares de uma aplicação nunca aparecem em outra.
 
 ```php
-use PivotPHP\Routing\Router\Router;
-
-Router::group('/admin', function ($router): void {
-    $router->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
+$app->group('/admin', function () use ($app): void {
+    $app->get('/stats', fn ($req, $res) => $res->json(['ok' => true]));
 }, [$requireAdmin]);
 ```
 
-`Router::use($prefixo, ...$middlewares)` associa middlewares às rotas registradas depois cujo
-caminho começa com o prefixo — sem alterar os caminhos das rotas.
+Todo verbo aceita metadados e middlewares de rota depois do handler:
+`$app->get('/health', $handler, [], $logRequest)`. Também existem `options()`, `head()`, `any()` e
+`match(['GET', 'POST'], $path, $handler)`.
+
+Para associar middlewares a um prefixo sem criar grupo, use o roteador da aplicação:
+`$app->getContainer()->get('router')->use('/admin', $requireAdmin)` — vale para as rotas registradas
+depois cujo caminho começa com o prefixo, sem alterar os caminhos.
+
+> Até o core 4.x o `Router` era estático (`Router::group(...)`). No 5.0 essas chamadas estáticas não
+> existem mais; veja o guia de migração do core.
 
 ## Arquivos estáticos
 
 O `StaticFileManager` registra cada arquivo de um diretório como uma rota `GET`:
 
 ```php
-use PivotPHP\Routing\Router\StaticFileManager;
-
-StaticFileManager::registerDirectory('/public', __DIR__ . '/public');
+$app->staticFiles('/public', __DIR__ . '/public');
 ```
 
 Arquivos e diretórios ocultos (`.env`, `.git/`, `.well-known/`) nunca são publicados, e symlinks só
